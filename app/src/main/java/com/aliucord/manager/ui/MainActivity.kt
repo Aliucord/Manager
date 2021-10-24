@@ -48,7 +48,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", Context.MODE_PRIVATE)
+        sharedPreferences =
+            getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", Context.MODE_PRIVATE)
         Github.checkForUpdates()
         setContent {
             AliucordManagerTheme {
@@ -74,24 +75,34 @@ fun MainActivityLayout() {
 
     Scaffold(
         topBar = {
-            val route = navController.currentBackStackEntryAsState().value?.destination?.route ?: Screen.Home.route
+            val route = navController.currentBackStackEntryAsState().value?.destination?.route
+                ?: Screen.Home.route
             TopAppBar(
                 title = { Text(stringResource(Screen.SCREENS.find { it.route == route }!!.displayName)) },
                 backgroundColor = primaryColor,
                 contentColor = MaterialTheme.colors.onPrimary,
-                navigationIcon = if (route != Screen.Home.route) {{
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
-                            tint = MaterialTheme.colors.onPrimary
-                        )
+                navigationIcon = if (route != Screen.Home.route) {
+                    {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onPrimary
+                            )
+                        }
                     }
-                }} else null,
+                } else null,
                 actions = {
                     if (route != Screen.Home.route) return@TopAppBar
                     val context = LocalContext.current
-                    IconButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/${BuildConfig.SUPPORT_SERVER}"))) }) {
+                    IconButton(onClick = {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://discord.gg/${BuildConfig.SUPPORT_SERVER}")
+                            )
+                        )
+                    }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_discord),
                             contentDescription = null,
@@ -105,7 +116,9 @@ fun MainActivityLayout() {
                             tint = MaterialTheme.colors.onPrimary
                         )
                     }
-                    DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { isMenuExpanded = false }) {
+                    DropdownMenu(
+                        expanded = isMenuExpanded,
+                        onDismissRequest = { isMenuExpanded = false }) {
                         DropdownMenuItem(onClick = {
                             isMenuExpanded = false
                             navController.navigate(Screen.Settings.route) {
@@ -144,7 +157,11 @@ fun GrantPermission(permissionState: PermissionState) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(stringResource(R.string.permission_required), style = MaterialTheme.typography.h6, textAlign = TextAlign.Center)
+        Text(
+            stringResource(R.string.permission_required),
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center
+        )
         Spacer(Modifier.height(8.dp))
         Row {
             val context = LocalContext.current
@@ -155,12 +172,17 @@ fun GrantPermission(permissionState: PermissionState) {
             Spacer(Modifier.width(8.dp))
             Button(
                 onClick = {
-                    context.startActivity(Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
-                    ))
+                    context.startActivity(
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                        )
+                    )
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray, contentColor = Color.Black)
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.LightGray,
+                    contentColor = Color.Black
+                )
             ) {
                 Text(stringResource(R.string.open_settings))
             }

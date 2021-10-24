@@ -48,9 +48,11 @@ fun CommitsList(selectedCommit: MutableState<String?>, modifier: Modifier = Modi
     val commits = remember { mutableStateListOf<CommitData>() }
 
     if (isLoading) {
-        ConstraintLayout(modifier = modifier
-            .fillMaxSize()
-            .padding(12.dp)) {
+        ConstraintLayout(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(12.dp)
+        ) {
             CommitsHeader()
             CircularProgressIndicator(modifier = Modifier.constrainAs(createRef()) {
                 top.linkTo(parent.top)
@@ -63,11 +65,23 @@ fun CommitsList(selectedCommit: MutableState<String?>, modifier: Modifier = Modi
         LaunchedEffect(null) {
             coroutineScope.launch {
                 try {
-                    val buildCommits = Github.getCommits(mapOf("sha" to "builds", "path" to "Aliucord.dex", "per_page" to "50"))
+                    val buildCommits = Github.getCommits(
+                        mapOf(
+                            "sha" to "builds",
+                            "path" to "Aliucord.dex",
+                            "per_page" to "50"
+                        )
+                    )
                     val commits2 = Github.getCommits(mapOf("per_page" to "50"))
-                    commits.addAll(commits2.map { c -> CommitData(c, buildCommits.find { bc -> bc.commit.message.substring(6) == c.sha }?.sha) })
+                    commits.addAll(commits2.map { c ->
+                        CommitData(
+                            c,
+                            buildCommits.find { bc -> bc.commit.message.substring(6) == c.sha }?.sha
+                        )
+                    })
                     isLoading = false
-                    if (commits.size > 0) selectedCommit.value = commits.firstOrNull { it.buildSha != null }?.buildSha
+                    if (commits.size > 0) selectedCommit.value =
+                        commits.firstOrNull { it.buildSha != null }?.buildSha
                 } catch (e: Throwable) {
                     Log.e(BuildConfig.TAG, "Failed to get commits", e)
                 }
@@ -83,11 +97,18 @@ fun CommitsList(selectedCommit: MutableState<String?>, modifier: Modifier = Modi
                 .padding(12.dp)
         ) {
             CommitsHeader()
-            AndroidView({ context -> View.inflate(context, R.layout.recycler, null).apply {
-                val rv = this as RecyclerView
-                rv.adapter = CommitsAdapter(commits, dark)
-                rv.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            }})
+            AndroidView({ context ->
+                View.inflate(context, R.layout.recycler, null).apply {
+                    val rv = this as RecyclerView
+                    rv.adapter = CommitsAdapter(commits, dark)
+                    rv.addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
+                }
+            })
         }
     }
 }
@@ -97,7 +118,8 @@ private fun CommitsHeader() {
     Text(stringResource(R.string.commits), style = MaterialTheme.typography.subtitle1)
 }
 
-private class CommitsAdapter(private val commits: List<CommitData>, private val dark: Boolean) : RecyclerView.Adapter<CommitsAdapter.ViewHolder>() {
+private class CommitsAdapter(private val commits: List<CommitData>, private val dark: Boolean) :
+    RecyclerView.Adapter<CommitsAdapter.ViewHolder>() {
     class ViewHolder(view: View, dark: Boolean) : RecyclerView.ViewHolder(view) {
         val sha: TextView = view.findViewById(R.id.commit_sha)
         val message: TextView = view.findViewById(R.id.commit_message)
@@ -108,17 +130,28 @@ private class CommitsAdapter(private val commits: List<CommitData>, private val 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.commit, parent, false), dark)
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.commit, parent, false),
+            dark
+        )
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = commits[position]
         val commit = data.commit
-        val color = if (data.buildSha != null) holder.sha.context.getColor(R.color.primary) else Color.GRAY
+        val color =
+            if (data.buildSha != null) holder.sha.context.getColor(R.color.primary) else Color.GRAY
 
         holder.sha.text = commit.sha.substring(0, 7)
         holder.sha.setTextColor(color)
-        holder.sha.setOnClickListener { it.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(commit.htmlUrl))) }
+        holder.sha.setOnClickListener {
+            it.context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(commit.htmlUrl)
+                )
+            )
+        }
 
         holder.message.text = "${commit.commit.message.split("\n")[0]} - ${commit.author.name}"
     }

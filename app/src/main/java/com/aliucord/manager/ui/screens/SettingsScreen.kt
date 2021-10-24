@@ -63,7 +63,8 @@ fun SettingsScreen() {
             },
             modifier = modifier.clickable { useDexFromStoragePreference.set(!useDexFromStoragePreference.get()) }
         )
-        val color = if (udfs) Color.Unspecified else MaterialTheme.colors.onBackground.copy(ContentAlpha.disabled)
+        val color =
+            if (udfs) Color.Unspecified else MaterialTheme.colors.onBackground.copy(ContentAlpha.disabled)
         ListItem(
             text = { Text(stringResource(R.string.dex_location), color = color) },
             secondaryText = { Text(dexLocationPreference.get(), color = color) },

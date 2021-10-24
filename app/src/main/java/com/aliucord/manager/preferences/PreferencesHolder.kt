@@ -10,4 +10,7 @@ import android.os.Environment
 val themePreference = intPreference("theme")
 val replaceBgPreference = boolPreference("replace_bg", true)
 val useDexFromStoragePreference = boolPreference("use_dex_from_storage")
-val dexLocationPreference = stringPreference("dex_location", Environment.getExternalStorageDirectory().absolutePath + "/Aliucord/Aliucord.dex")
+val dexLocationPreference = stringPreference(
+    "dex_location",
+    Environment.getExternalStorageDirectory().absolutePath + "/Aliucord/Aliucord.dex"
+)

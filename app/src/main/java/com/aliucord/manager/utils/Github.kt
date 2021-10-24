@@ -38,6 +38,6 @@ object Github {
     }
 
     fun getDownloadUrl(ref: String, file: String): String {
-        return "'https://raw.githubusercontent.com/${org}/${repo}/${ref}/${file}";
+        return "'https://raw.githubusercontent.com/${org}/${repo}/${ref}/${file}"
     }
 }

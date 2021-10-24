@@ -32,10 +32,14 @@ fun HomeScreen() {
         Card(modifier = Modifier.padding(bottom = 8.dp)) {
             ListItem(
                 text = { Text("Aliucord") },
-                secondaryText = { Text(buildAnnotatedString {
-                    append("Supported version: ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(selectedCommit.value ?: "blah") }
-                }) },
+                secondaryText = {
+                    Text(buildAnnotatedString {
+                        append("Supported version: ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(selectedCommit.value ?: "blah")
+                        }
+                    })
+                },
                 modifier = Modifier.padding(vertical = 4.dp)
             )
         }

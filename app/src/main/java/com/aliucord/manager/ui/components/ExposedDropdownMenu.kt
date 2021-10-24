@@ -41,7 +41,11 @@ fun ExposedDropdownMenu(
         ListItem(
             text = { Text(items[selectedItem]) },
             trailing = {
-                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null, modifier = Modifier.rotate(rotateAnimation))
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    modifier = Modifier.rotate(rotateAnimation)
+                )
             },
             modifier = Modifier.clickable { expanded = !expanded }
         )
