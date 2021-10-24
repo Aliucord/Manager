@@ -34,6 +34,8 @@ import androidx.navigation.compose.rememberNavController
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.sharedPreferences
+import com.aliucord.manager.ui.screens.HomeScreen
+import com.aliucord.manager.ui.screens.SettingsScreen
 import com.aliucord.manager.ui.theme.AliucordManagerTheme
 import com.aliucord.manager.ui.theme.primaryColor
 import com.aliucord.manager.ui.theme.primaryColorDark
@@ -141,8 +143,12 @@ fun MainActivityLayout() {
                 navController,
                 startDestination = Screen.Home.route
             ) {
-                for (screen in Screen.SCREENS) {
-                    composable(screen.route) { screen.content() }
+                composable(Screen.Home.route) {
+                    HomeScreen()
+                }
+
+                composable(Screen.Settings.route) {
+                    SettingsScreen()
                 }
             }
         }

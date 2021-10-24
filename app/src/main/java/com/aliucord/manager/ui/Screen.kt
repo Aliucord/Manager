@@ -14,7 +14,6 @@ import com.aliucord.manager.ui.screens.SettingsScreen
 sealed class Screen(
     val route: String,
     @StringRes val displayName: Int,
-    val content: @Composable () -> Unit
 ) {
     companion object {
         // NOTE: without lazy it doesn't work, kotlin moment https://youtrack.jetbrains.com/issue/KT-8970
@@ -22,14 +21,12 @@ sealed class Screen(
     }
 
     object Home : Screen(
-        "home",
-        R.string.app_name,
-        { HomeScreen() }
+        route = "home",
+        displayName = R.string.app_name,
     )
 
     object Settings : Screen(
-        "settings",
-        R.string.settings,
-        { SettingsScreen() }
+        route = "settings",
+        displayName = R.string.settings,
     )
 }
