@@ -5,12 +5,10 @@
 
 package com.aliucord.manager.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,17 +17,21 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.aliucord.manager.ui.components.CommitsList
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Preview
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     val selectedCommit = remember { mutableStateOf<String?>(null) }
-    Column(modifier = Modifier.padding(8.dp)) {
-        Card(modifier = Modifier.padding(bottom = 8.dp)) {
+    Column(
+        modifier = Modifier.padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Card {
             ListItem(
                 text = { Text("Aliucord") },
                 secondaryText = {
@@ -40,7 +42,20 @@ fun HomeScreen() {
                         }
                     })
                 },
-                modifier = Modifier.padding(vertical = 4.dp)
+                trailing = {
+                    //TODO button isn't centered for some reasons
+                    TextButton(
+                        onClick = { navController.navigate("install") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Archive,
+                            contentDescription = "install",
+                        )
+                        Text("Install")
+                    }
+                },
+                singleLineSecondaryText = true,
+                modifier = Modifier.padding(vertical = 4.dp),
             )
         }
         Card { CommitsList(selectedCommit) }

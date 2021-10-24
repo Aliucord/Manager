@@ -29,4 +29,9 @@ sealed class Screen(
         route = "settings",
         displayName = R.string.settings,
     )
+
+    object Install : Screen(
+        route = "install",
+        displayName = R.string.installing
+    )
 }

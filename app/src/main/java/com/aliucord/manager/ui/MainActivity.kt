@@ -35,6 +35,7 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.sharedPreferences
 import com.aliucord.manager.ui.screens.HomeScreen
+import com.aliucord.manager.ui.screens.InstallScreen
 import com.aliucord.manager.ui.screens.SettingsScreen
 import com.aliucord.manager.ui.theme.AliucordManagerTheme
 import com.aliucord.manager.ui.theme.primaryColor
@@ -144,11 +145,15 @@ fun MainActivityLayout() {
                 startDestination = Screen.Home.route
             ) {
                 composable(Screen.Home.route) {
-                    HomeScreen()
+                    HomeScreen(navController)
                 }
 
                 composable(Screen.Settings.route) {
                     SettingsScreen()
+                }
+
+                composable(Screen.Install.route) {
+                    InstallScreen(navController)
                 }
             }
         }

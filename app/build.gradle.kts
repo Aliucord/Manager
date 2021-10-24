@@ -5,6 +5,7 @@
 
 val accompanistVersion = "0.20.0"
 val composeVersion = "1.0.4"
+val ktorVersion = "1.6.4"
 
 plugins {
     id("com.android.application")
@@ -33,6 +34,13 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    packagingOptions {
+        resources {
+            excludes.add("META-INF/*.kotlin_module")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -57,15 +65,20 @@ dependencies {
 
     // compose dependencies
     implementation("androidx.activity:activity-compose:1.3.1")
-    implementation("androidx.compose.ui:ui:${composeVersion}")
-    implementation("androidx.compose.material:material:${composeVersion}")
-    implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01")
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
+    // Ktor
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+
     // accompanist dependencies
-    implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")
-    implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // other dependencies
     implementation("com.google.code.gson:gson:2.8.8")
