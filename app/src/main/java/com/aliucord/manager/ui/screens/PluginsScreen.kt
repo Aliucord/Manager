@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.Changelog
 import com.aliucord.manager.utils.Plugin
@@ -51,7 +52,7 @@ fun PluginsScreen() {
                 // TODO - make this get pluginEnabled from Aliucord preferences somehow
                 val isChecked = remember { mutableStateOf(true) }
                 var showDeleteDialog by remember { mutableStateOf(false) }
-                var showChangelogDialog by remember { mutableStateOf(false) }
+                var showChangelogDialog = remember { mutableStateOf(false) }
 
                 if (showDeleteDialog) {
                     AlertDialog(
@@ -83,22 +84,11 @@ fun PluginsScreen() {
                     )
                 }
 
-                if (showChangelogDialog) {
-                    AlertDialog(
-                        onDismissRequest = { showChangelogDialog = false },
-                        title = { Text(stringResource(R.string.changelog, p.manifest.name), style = MaterialTheme.typography.h5) },
-                        text = {
-                            Changelog(p.manifest.changelog!!)
-                        },
-                        confirmButton = {},
-                        dismissButton = {
-                            Button(
-                                onClick = {
-                                    showChangelogDialog = false
-                                },
-                            ) {
-                                Text(stringResource(android.R.string.cancel).uppercase())
-                            }
+                if (showChangelogDialog.value) {
+                    Dialog(
+                        onDismissRequest = { showChangelogDialog.value = false },
+                        content = {
+                            Changelog(p, showChangelogDialog)
                         }
                     )
                 }
@@ -140,7 +130,7 @@ fun PluginsScreen() {
 
                         Row(modifier = Modifier.align(Alignment.End)) {
                             if (p.manifest.changelog != null) {
-                                IconButton(onClick = { showChangelogDialog = true }) {
+                                IconButton(onClick = { showChangelogDialog.value = true }) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_history_white_24dp),
                                         contentDescription = stringResource(

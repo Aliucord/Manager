@@ -1,26 +1,33 @@
 package com.aliucord.manager.ui.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import com.aliucord.manager.R
+import com.aliucord.manager.utils.Plugin
 import java.util.regex.Pattern
 
 private val hyperLinkPattern = Pattern.compile("\\[(.+?)]\\((.+?\\))")
 
 @SuppressLint("ComposableNaming") // Can't use MaterialTheme without Composable, but this is not a component
 @Composable
-private fun AnnotatedString.Builder.hyperlink(content: String, outTags: ArrayList<String>) {
+private fun AnnotatedString.Builder.hyperlink(content: String) {
     var idx = 0
     with (hyperLinkPattern.matcher(content)) {
         while (find()) {
@@ -31,11 +38,11 @@ private fun AnnotatedString.Builder.hyperlink(content: String, outTags: ArrayLis
 
             append(content.substring(idx, start))
             withStyle(style = SpanStyle(color = MaterialTheme.colors.primary, textDecoration = TextDecoration.Underline)) {
+                pushStringAnnotation(title, url)
                 append(title)
+                pop()
             }
-            addStringAnnotation(title, url, start, end)
-            idx = end + 1
-            outTags.add(title)
+            idx = end
         }
     }
     if (idx < content.length) append(content.substring(idx))
@@ -43,43 +50,55 @@ private fun AnnotatedString.Builder.hyperlink(content: String, outTags: ArrayLis
 
 const val bulletPoint = '•'
 @Composable
-fun Changelog(changelog: String) {
-    val scrollState = rememberScrollState()
+fun Changelog(plugin: Plugin, showDialog: MutableState<Boolean>) {
     Column(modifier = Modifier
-        .fillMaxHeight(0.7f)
-        .verticalScroll(scrollState)
+        .background(MaterialTheme.colors.surface)
+        .fillMaxHeight(0.9f)
+        .padding(16.dp)
     ) {
-        changelog.lines().forEach {
-            var line = it.trim()
-            if (line.isNotEmpty()) {
-                when (line[0]) {
-                    '#' -> {
-                        do {
-                            line = line.substring(1);
-                        } while (line.startsWith("#"))
-                        Text(line.trimStart(), style = MaterialTheme.typography.h6)
-                    }
-                    '*' -> {
-                        val tags = ArrayList<String>()
-                        LinkText(
-                            buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
-                                    append(bulletPoint)
+        Text(
+            stringResource(R.string.changelog, plugin.manifest.name),
+            style = MaterialTheme.typography.h4
+        )
+        Divider(color = MaterialTheme.colors.primary)
+        LazyColumn(
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 16.dp)
+                .fillMaxHeight(0.92f)
+        ) {
+            items(plugin.manifest.changelog!!.lines()) {
+                var line = it.trim()
+                if (line.isNotEmpty()) {
+                    when (line[0]) {
+                        '#' -> {
+                            do {
+                                line = line.substring(1);
+                            } while (line.startsWith("#"))
+                            Text(line.trimStart(), style = MaterialTheme.typography.h6)
+                        }
+                        '*' -> {
+                            LinkText(
+                                buildAnnotatedString {
+                                    withStyle(style = SpanStyle(color = MaterialTheme.colors.primary, fontWeight = FontWeight.Bold)) {
+                                        append(bulletPoint)
+                                    }
+                                    hyperlink(line.substring(1))
                                 }
-                                hyperlink(line.substring(1), tags)
-                            }
-                        )
-                    }
-                    else -> {
-                        val tags = ArrayList<String>()
-                        LinkText(
-                            buildAnnotatedString {
-                                hyperlink(line, tags)
-                            }
-                        )
+                            )
+                        }
+                        else -> {
+                            LinkText(
+                                buildAnnotatedString {
+                                    hyperlink(line)
+                                }
+                            )
+                        }
                     }
                 }
             }
+        }
+        Button(onClick = { showDialog.value = false }, modifier = Modifier.align(Alignment.End)) {
+            Text(stringResource(R.string.close))
         }
     }
 }

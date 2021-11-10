@@ -20,4 +20,5 @@
     <string name="delete_plugin_body">Are you sure you want to delete this plugin? This action cannot be undone.</string>
     <string name="delete">Delete</string>
     <string name="changelog">%1$s Changelog</string>
+    <string name="close">Close</string>
 </resources>
