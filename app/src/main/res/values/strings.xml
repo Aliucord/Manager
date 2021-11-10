@@ -21,4 +21,9 @@
     <string name="delete">Delete</string>
     <string name="changelog">%1$s Changelog</string>
     <string name="close">Close</string>
+    <string name="support_server">Support Server</string>
+    <string name="back">Back</string>
+    <string name="install">Install</string>
+    <string name="reinstall">Reinstall</string>
+    <string name="update">Update</string>
 </resources>

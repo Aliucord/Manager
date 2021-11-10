@@ -84,7 +84,7 @@ fun MainActivityLayout() {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.back),
                             tint = MaterialTheme.colors.onPrimary
                         )
                     }
@@ -95,7 +95,7 @@ fun MainActivityLayout() {
                     IconButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/${BuildConfig.SUPPORT_SERVER}"))) }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_discord),
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.support_server),
                             tint = MaterialTheme.colors.onPrimary
                         )
                     }

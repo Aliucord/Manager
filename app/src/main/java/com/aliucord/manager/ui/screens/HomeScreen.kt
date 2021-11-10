@@ -5,15 +5,19 @@
 
 package com.aliucord.manager.ui.screens
 
+import android.content.pm.PackageManager
 import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.CommitsList
 import com.aliucord.manager.utils.Github
 import com.aliucord.manager.utils.Versions
@@ -31,9 +36,15 @@ import kotlinx.coroutines.launch
 @Composable
 @Preview
 fun HomeScreen() {
+    val packageManager = LocalContext.current.packageManager
     val coroutineScope = rememberCoroutineScope { Dispatchers.IO }
     val selectedCommit = remember { mutableStateOf<String?>(null) }
     val versions = remember { mutableStateOf<Versions?>(null) }
+    val installedVersion = remember {
+        try {
+            packageManager.getPackageInfo("com.aliucord", 0).versionName
+        } catch (th: Throwable) { "-" }
+    }
 
     if (versions.value == null) {
         LaunchedEffect(null) {
@@ -49,9 +60,9 @@ fun HomeScreen() {
 
     Column(modifier = Modifier.padding(8.dp)) {
         Card(modifier = Modifier.padding(bottom = 8.dp)) {
-            ListItem(
-                text = { Text("Aliucord") },
-                secondaryText = {
+            Row(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Column {
+                    Text("Aliucord")
                     Text(buildAnnotatedString {
                         append("Supported version: ")
                         withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -59,10 +70,32 @@ fun HomeScreen() {
                                 versions.value?.versionName ?: "?"
                             )
                         }
+                        append("\nInstalled version: ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(installedVersion)
+                        }
                     })
-                },
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
+                }
+                val (drawable, description) = when {
+                    installedVersion == "-" -> R.drawable.ic_download_24dp to R.string.install
+                    installedVersion.startsWith(
+                        versions.value?.versionName ?: "uwu"
+                    ) -> R.drawable.ic_reinstall_24dp to R.string.reinstall
+                    else -> R.drawable.ic_update_24dp to R.string.update
+                }
+                TextButton(onClick = { /* TODO */ }) {
+                    Icon(
+                        painter = painterResource(drawable),
+                        contentDescription = stringResource(description),
+                        tint = MaterialTheme.colors.onPrimary,
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .background(MaterialTheme.colors.primary, CircleShape)
+                            .padding(6.dp)
+                    )
+                    Text(stringResource(description), color = MaterialTheme.colors.primary)
+                }
+            }
         }
         Card { CommitsList(selectedCommit) }
     }
