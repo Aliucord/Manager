@@ -94,7 +94,12 @@ fun CommitsList(selectedCommit: MutableState<String?>, modifier: Modifier = Modi
 
 @Composable
 private fun CommitsHeader() {
-    Text(stringResource(R.string.commits), style = MaterialTheme.typography.subtitle1)
+    Text(
+        stringResource(R.string.commits),
+        style = MaterialTheme.typography.subtitle1,
+        color = MaterialTheme.colors.primary,
+        modifier = Modifier.padding(bottom = 6.dp)
+    )
 }
 
 private class CommitsAdapter(private val commits: List<CommitData>, private val dark: Boolean) : RecyclerView.Adapter<CommitsAdapter.ViewHolder>() {

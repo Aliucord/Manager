@@ -5,13 +5,12 @@
 
 package com.aliucord.manager.ui.screens
 
-import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,9 +59,9 @@ fun HomeScreen() {
 
     Column(modifier = Modifier.padding(8.dp)) {
         Card(modifier = Modifier.padding(bottom = 8.dp)) {
-            Row(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Column {
-                    Text("Aliucord")
+                    Text("Aliucord", style = MaterialTheme.typography.h5, color = MaterialTheme.colors.primary)
                     Text(buildAnnotatedString {
                         append("Supported version: ")
                         withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -83,7 +82,7 @@ fun HomeScreen() {
                     ) -> R.drawable.ic_reinstall_24dp to R.string.reinstall
                     else -> R.drawable.ic_update_24dp to R.string.update
                 }
-                TextButton(onClick = { /* TODO */ }) {
+                IconButton(onClick = { /* TODO */ }) {
                     Icon(
                         painter = painterResource(drawable),
                         contentDescription = stringResource(description),
@@ -91,9 +90,8 @@ fun HomeScreen() {
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .background(MaterialTheme.colors.primary, CircleShape)
-                            .padding(6.dp)
+                            .padding(7.dp)
                     )
-                    Text(stringResource(description), color = MaterialTheme.colors.primary)
                 }
             }
         }
