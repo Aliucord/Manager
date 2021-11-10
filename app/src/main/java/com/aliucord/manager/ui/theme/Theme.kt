@@ -13,20 +13,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.aliucord.manager.preferences.themePreference
 
+private val LightColorPalette = lightColors(
+    primary = primaryColor,
+    primaryVariant = primaryColorDark,
+    secondary = primaryColorLight,
+    error = errorColor,
+)
+
 private val DarkColorPalette = darkColors(
     primary = primaryColor,
     primaryVariant = primaryColorDark,
     secondary = primaryColorLight,
+    error = errorColor,
 
     onPrimary = Color.White,
     background = darkBackground,
-    surface = Color(0xff424242)
+    surface = Color(0xff424242),
 )
 
-private val LightColorPalette = lightColors(
+private val BlackColorPalette = darkColors(
     primary = primaryColor,
     primaryVariant = primaryColorDark,
-    secondary = primaryColorLight
+    secondary = primaryColorLight,
+    error = errorColor,
+
+    onPrimary = Color.White,
+    background = Color(0xff000000),
+    surface = Color(0xff121212)
 )
 
 @Composable
@@ -37,8 +50,14 @@ fun isDark() = when (themePreference.value.value) {
 }
 
 @Composable
+fun getTheme() = if (!isDark()) LightColorPalette else when (themePreference.value.value) {
+    3 -> BlackColorPalette
+    else -> DarkColorPalette
+}
+
+@Composable
 fun AliucordManagerTheme(content: @Composable () -> Unit) {
-    val colors = if (isDark()) DarkColorPalette else LightColorPalette
+    val colors = getTheme()
 
     MaterialTheme(
         colors,

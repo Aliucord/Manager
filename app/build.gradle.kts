@@ -12,12 +12,12 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "com.aliucord.manager"
         minSdk = 24
-        targetSdk = 30
+        targetSdk = 29
         versionCode = 1
         versionName = "0.0.1"
 
@@ -51,17 +51,17 @@ android {
 
 dependencies {
     // core dependencies
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.core:core-ktx:1.7.0")
     implementation("com.google.android.material:material:1.4.0")
 
     // compose dependencies
-    implementation("androidx.activity:activity-compose:1.3.0-rc02")
+    implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.material:material:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha04")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01")
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     // accompanist dependencies
     implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")

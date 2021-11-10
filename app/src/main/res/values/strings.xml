@@ -11,4 +11,13 @@
     <string name="show_menu">Show menu</string>
     <string name="theme">Theme</string>
     <string name="use_dex_from_storage">Use Aliucord.dex from storage</string>
+    <string name="plugins">Plugins</string>
+    <string name="launch_plugins">Launch Plugins Page</string>
+    <string name="plugin_title">%1$s v%2$s by %3$s</string>
+    <string name="delete_plugin">Delete %1$s</string>
+    <string name="search">Search</string>
+    <string name="view_plugin_changelog">View changelog for %1$s</string>
+    <string name="delete_plugin_body">Are you sure you want to delete this plugin? This action cannot be undone.</string>
+    <string name="delete">Delete</string>
+    <string name="changelog">%1$s Changelog</string>
 </resources>

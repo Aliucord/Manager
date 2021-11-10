@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -95,6 +96,15 @@ fun MainActivityLayout() {
                         Icon(
                             painter = painterResource(R.drawable.ic_discord),
                             contentDescription = null,
+                            tint = MaterialTheme.colors.onPrimary
+                        )
+                    }
+                    IconButton(onClick = { navController.navigate(Screen.Plugins.route) {
+                        popUpTo(Screen.Home.route) { saveState = true }
+                    } }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_plugin_24dp),
+                            contentDescription = stringResource(id = R.string.launch_plugins),
                             tint = MaterialTheme.colors.onPrimary
                         )
                     }

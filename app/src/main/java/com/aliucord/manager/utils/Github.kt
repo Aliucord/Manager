@@ -11,14 +11,21 @@ import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
 import java.net.URL
 
+data class Versions(val versionCode: String, val versionName: String, val aliucordHash: String)
+
 object Github {
     private const val org = "Aliucord"
     private const val repo = "Aliucord"
 
-    private const val commitsUrl = "https://api.github.com/repos/${org}/${repo}/commits"
+    private const val commitsUrl = "https://api.github.com/repos/$org/$repo/commits"
+    private const val dataUrl = "https://raw.githubusercontent.com/$org/$repo/builds/data.json"
 
     fun checkForUpdates() {
         // TODO
+    }
+
+    val versions: Versions by lazy {
+        gson.fromJson(InputStreamReader(URL(dataUrl).openStream()), Versions::class.java)
     }
 
     private val commitsCache = HashMap<String, Array<Commit>>()

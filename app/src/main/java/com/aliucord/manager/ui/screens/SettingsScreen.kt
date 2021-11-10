@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -23,7 +25,7 @@ import com.aliucord.manager.preferences.themePreference
 import com.aliucord.manager.preferences.useDexFromStoragePreference
 import com.aliucord.manager.ui.components.ExposedDropdownMenu
 
-private val themes = arrayOf("System", "Light", "Dark")
+private val themes = arrayOf("System", "Light", "Dark", "Black")
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

@@ -53,7 +53,10 @@ fun ExposedDropdownMenu(
         ) {
             items.forEachIndexed { i, item ->
                 DropdownMenuItem(
-                    onClick = { selectItem(i) }
+                    onClick = {
+                        expanded = false
+                        selectItem(i)
+                    }
                 ) {
                     Text(item)
                 }
