@@ -1,33 +1,36 @@
 package com.aliucord.manager.ui.components
 
 import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.theme.discordBrand
 import com.aliucord.manager.ui.theme.discordGreen
 import com.aliucord.manager.ui.theme.discordRed
 import com.aliucord.manager.utils.Plugin
+import java.net.URL
 import java.util.regex.Pattern
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private val hyperLinkPattern = Pattern.compile("\\[(.+?)]\\((.+?\\))")
 @Suppress("RegExpRedundantEscape") // It is very much not redundant and causes a crash lol
@@ -58,6 +61,24 @@ private fun AnnotatedString.Builder.hyperlink(content: String) {
 const val bulletPoint = "● "
 @Composable
 fun Changelog(plugin: Plugin, showDialog: MutableState<Boolean>) {
+    val coroutineScope = rememberCoroutineScope { Dispatchers.IO }
+    val imageBitmap = remember {
+        mutableStateOf<ImageBitmap?>(null)
+    }
+
+    if (imageBitmap.value == null && plugin.manifest.changelogMedia != null) {
+        LaunchedEffect(null) {
+            coroutineScope.launch {
+                try {
+                    imageBitmap.value = URL(plugin.manifest.changelogMedia).openStream().use {
+                        BitmapFactory.decodeStream(it)
+                    }.asImageBitmap()
+                } catch (err: Throwable) {
+                    Log.e(BuildConfig.TAG, "Failed to load changelogMedia ${plugin.manifest.changelogMedia}", err)
+                }
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .background(MaterialTheme.colors.surface)
@@ -69,10 +90,13 @@ fun Changelog(plugin: Plugin, showDialog: MutableState<Boolean>) {
             plugin.manifest.name,
             style = MaterialTheme.typography.h5
         )
-        Divider(color = MaterialTheme.colors.primary, modifier = Modifier.padding(top = 8.dp))
+        Divider(color = MaterialTheme.colors.primary, modifier = Modifier.padding(vertical = 8.dp))
+        imageBitmap.value?.let {
+            Image(it, "", modifier = Modifier.fillMaxWidth())
+        }
         LazyColumn(
             modifier = Modifier
-                .padding(top = 8.dp, bottom = 16.dp)
+                .padding(bottom = 16.dp)
                 .fillMaxHeight(0.92f)
         ) {
             items(plugin.manifest.changelog!!.lines()) {
@@ -146,6 +170,6 @@ private fun LinkText(annotatedString: AnnotatedString, modifier: Modifier = Modi
                 urlHandler.openUri(it.item)
             }
         },
-        modifier = Modifier
+        modifier = modifier
     )
 }
