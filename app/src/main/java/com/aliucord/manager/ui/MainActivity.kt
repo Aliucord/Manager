@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,6 +45,7 @@ import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.intellij.lang.annotations.JdkConstants
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +86,7 @@ fun MainActivityLayout() {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.back),
                             tint = MaterialTheme.colors.onPrimary
                         )
                     }
@@ -92,16 +94,23 @@ fun MainActivityLayout() {
                 actions = {
                     if (route != Screen.Home.route) return@TopAppBar
                     val context = LocalContext.current
-                    IconButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/${BuildConfig.SUPPORT_SERVER}"))) }) {
+                    IconButton(
+                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/${BuildConfig.SUPPORT_SERVER}"))) },
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_discord),
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.support_server),
                             tint = MaterialTheme.colors.onPrimary
                         )
                     }
-                    IconButton(onClick = { navController.navigate(Screen.Plugins.route) {
-                        popUpTo(Screen.Home.route) { saveState = true }
-                    } }) {
+                    IconButton(
+                        onClick = {
+                            navController.navigate(Screen.Plugins.route) {
+                                popUpTo(Screen.Home.route) { saveState = true }
+                            }
+                        },
+                        modifier = Modifier.padding(bottom = 2.dp, start = 8.dp) // Make up for icon being off center
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_plugin_24dp),
                             contentDescription = stringResource(id = R.string.launch_plugins),
