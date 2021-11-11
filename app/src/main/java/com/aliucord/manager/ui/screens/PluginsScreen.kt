@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.Changelog
+import com.aliucord.manager.ui.theme.getTheme
 import com.aliucord.manager.utils.Plugin
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -156,4 +158,8 @@ fun PluginsScreen() {
             }
         }
     }
+
+    rememberSystemUiController().setNavigationBarColor(
+        color = getTheme().background
+    )
 }

@@ -24,6 +24,8 @@ import com.aliucord.manager.preferences.replaceBgPreference
 import com.aliucord.manager.preferences.themePreference
 import com.aliucord.manager.preferences.useDexFromStoragePreference
 import com.aliucord.manager.ui.components.ExposedDropdownMenu
+import com.aliucord.manager.ui.theme.getTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val themes = arrayOf("System", "Light", "Dark", "Black")
 
@@ -80,4 +82,8 @@ fun SettingsScreen() {
             Text(stringResource(R.string.clear_files_cache), textAlign = TextAlign.Center)
         }
     }
+
+    rememberSystemUiController().setNavigationBarColor(
+        color = getTheme().background
+    )
 }

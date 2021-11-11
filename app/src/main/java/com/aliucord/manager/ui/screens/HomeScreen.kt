@@ -14,6 +14,7 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -22,8 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.ui.components.CommitsList
+import com.aliucord.manager.ui.theme.getTheme
 import com.aliucord.manager.utils.Github
 import com.aliucord.manager.utils.Versions
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -66,4 +69,8 @@ fun HomeScreen() {
         }
         Card { CommitsList(selectedCommit) }
     }
+
+    rememberSystemUiController().setNavigationBarColor(
+        color = getTheme().background
+    )
 }
