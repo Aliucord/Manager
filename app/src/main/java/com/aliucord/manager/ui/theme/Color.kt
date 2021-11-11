@@ -12,4 +12,9 @@ val darkBackground = Color(0xff2e2e2e)
 val primaryColor = Color(0xff00c853)
 val primaryColorLight = Color(0xff5efc82)
 val primaryColorDark = Color(0xff009624)
-val errorColor = Color(0xffed4245)
+
+val discordBrand = Color(0xff5865F2)
+val discordGreen = Color(0xff57F287)
+val discordRed = Color(0xffED4245)
+
+val errorColor = discordRed
