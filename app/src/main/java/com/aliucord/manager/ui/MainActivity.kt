@@ -17,13 +17,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,14 +36,12 @@ import com.aliucord.manager.R
 import com.aliucord.manager.preferences.sharedPreferences
 import com.aliucord.manager.ui.theme.AliucordManagerTheme
 import com.aliucord.manager.ui.theme.primaryColor
-import com.aliucord.manager.ui.theme.primaryColorDark
 import com.aliucord.manager.utils.Github
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.intellij.lang.annotations.JdkConstants
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +63,10 @@ fun MainActivityLayout() {
     val systemUiController = rememberSystemUiController()
     val storagePermissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
+    val colors = MaterialTheme.colors
     SideEffect {
-        systemUiController.setSystemBarsColor(primaryColorDark)
+        systemUiController.setNavigationBarColor(colors.background)
+        systemUiController.setStatusBarColor(colors.primary)
         if (!storagePermissionState.hasPermission) storagePermissionState.launchPermissionRequest()
     }
 

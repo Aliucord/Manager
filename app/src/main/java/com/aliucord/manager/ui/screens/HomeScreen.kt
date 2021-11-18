@@ -25,10 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.CommitsList
-import com.aliucord.manager.ui.theme.getTheme
 import com.aliucord.manager.utils.Github
 import com.aliucord.manager.utils.Versions
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -98,8 +96,4 @@ fun HomeScreen() {
         }
         Card { CommitsList(selectedCommit) }
     }
-
-    rememberSystemUiController().setNavigationBarColor(
-        color = getTheme().background
-    )
 }
