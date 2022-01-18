@@ -11,18 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
-import com.aliucord.manager.preferences.dexLocationPreference
-import com.aliucord.manager.preferences.replaceBgPreference
-import com.aliucord.manager.preferences.themePreference
-import com.aliucord.manager.preferences.useDexFromStoragePreference
+import com.aliucord.manager.preferences.*
 import com.aliucord.manager.ui.components.ExposedDropdownMenu
 
 private val themes = arrayOf("System", "Light", "Dark", "Black")
@@ -54,23 +49,49 @@ fun SettingsScreen() {
             },
             modifier = modifier.clickable { replaceBgPreference.set(!replaceBgPreference.get()) }
         )
-        val udfs = useDexFromStoragePreference.get()
+
+        val devModeOn = devModePreference.get()
         ListItem(
-            text = { Text(stringResource(R.string.use_dex_from_storage)) },
+            text = { Text(stringResource(R.string.developer_mode)) },
             trailing = {
                 Checkbox(
-                    checked = udfs,
-                    onCheckedChange = useDexFromStoragePreference::set
+                    checked = devModeOn,
+                    onCheckedChange = devModePreference::set
                 )
             },
-            modifier = modifier.clickable { useDexFromStoragePreference.set(!useDexFromStoragePreference.get()) }
+            modifier = modifier
         )
-        val color = if (udfs) Color.Unspecified else MaterialTheme.colors.onBackground.copy(ContentAlpha.disabled)
-        ListItem(
-            text = { Text(stringResource(R.string.dex_location), color = color) },
-            secondaryText = { Text(dexLocationPreference.get(), color = color) },
-            modifier = if (udfs) modifier.clickable { /*TODO*/ } else modifier
-        )
+        if (devModeOn) {
+            ListItem(
+                text = { Text(stringResource(R.string.debuggable)) },
+                trailing = {
+                    Checkbox(
+                        checked = debuggablePreference.get(),
+                        onCheckedChange = debuggablePreference::set
+                    )
+                },
+                modifier = modifier
+            )
+
+            val udfs = useDexFromStoragePreference.get()
+            ListItem(
+                text = { Text(stringResource(R.string.use_dex_from_storage)) },
+                trailing = {
+                    Checkbox(
+                        checked = udfs,
+                        onCheckedChange = useDexFromStoragePreference::set
+                    )
+                },
+                modifier = modifier.clickable { useDexFromStoragePreference.set(!useDexFromStoragePreference.get()) }
+            )
+            val color =
+                if (udfs) Color.Unspecified else MaterialTheme.colors.onBackground.copy(ContentAlpha.disabled)
+            ListItem(
+                text = { Text(stringResource(R.string.dex_location), color = color) },
+                secondaryText = { Text(dexLocationPreference.get(), color = color) },
+                modifier = if (udfs) modifier.clickable { /*TODO*/ } else modifier
+            )
+        }
         Button(
             onClick = { /*TODO*/ },
             Modifier

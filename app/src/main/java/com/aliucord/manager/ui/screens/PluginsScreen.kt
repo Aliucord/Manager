@@ -52,7 +52,7 @@ fun PluginsScreen() {
                 // TODO - make this get pluginEnabled from Aliucord preferences somehow
                 val isChecked = remember { mutableStateOf(true) }
                 var showDeleteDialog by remember { mutableStateOf(false) }
-                var showChangelogDialog = remember { mutableStateOf(false) }
+                val showChangelogDialog = remember { mutableStateOf(false) }
 
                 if (showDeleteDialog) {
                     AlertDialog(
