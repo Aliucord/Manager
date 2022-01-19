@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.screens.AboutScreen
 import com.aliucord.manager.ui.screens.HomeScreen
 import com.aliucord.manager.ui.screens.PluginsScreen
 import com.aliucord.manager.ui.screens.SettingsScreen
@@ -20,13 +21,19 @@ sealed class Screen(
 ) {
     companion object {
         // NOTE: without lazy it doesn't work, kotlin moment https://youtrack.jetbrains.com/issue/KT-8970
-        val SCREENS by lazy { listOf(Home, Settings, Plugins) }
+        val SCREENS by lazy { listOf(Home, Settings, Plugins, About) }
     }
 
     object Home : Screen(
         "home",
         R.string.app_name,
         { HomeScreen() }
+    )
+
+    object About : Screen(
+        "About",
+        R.string.about,
+        { AboutScreen() }
     )
 
     object Settings : Screen(

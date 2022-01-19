@@ -125,11 +125,19 @@ fun MainActivityLayout() {
                     DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { isMenuExpanded = false }) {
                         DropdownMenuItem(onClick = {
                             isMenuExpanded = false
+                            navController.navigate(Screen.About.route) {
+                                popUpTo(Screen.Home.route) { saveState = true }
+                            }
+                        }) {
+                            Text(stringResource(Screen.About.displayName))
+                        }
+                        DropdownMenuItem(onClick = {
+                            isMenuExpanded = false
                             navController.navigate(Screen.Settings.route) {
                                 popUpTo(Screen.Home.route) { saveState = true }
                             }
                         }) {
-                            Text(stringResource(id = Screen.Settings.displayName))
+                            Text(stringResource(Screen.Settings.displayName))
                         }
                     }
                 }

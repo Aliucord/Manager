@@ -25,4 +25,10 @@
     <string name="install">Install</string>
     <string name="reinstall">Reinstall</string>
     <string name="update">Update</string>
+    <string name="developer_mode">Enable Developer Mode</string>
+    <string name="debuggable">Make Aliucord debuggable</string>
+    <string name="about">About</string>
+    <string name="team">Team</string>
+    <string name="contributors">Contributors</string>
+    <string name="loading">Loading...</string>
 </resources>
