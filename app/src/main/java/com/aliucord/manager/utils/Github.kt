@@ -7,10 +7,10 @@ package com.aliucord.manager.utils
 
 import com.aliucord.manager.models.Commit
 import com.aliucord.manager.models.GithubUser
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
 import java.net.URL
+import kotlin.collections.set
 
 data class Versions(val versionCode: String, val versionName: String, val aliucordHash: String)
 
@@ -33,34 +33,25 @@ object Github {
     private val commitsCache = HashMap<String, Array<Commit>>()
     private val commitsType = object : TypeToken<Array<Commit>>() {}.type
     private val contributorsType = object : TypeToken<Array<GithubUser>>() {}.type
-    private val gson = Gson()
 
     fun getCommits(params: Map<String, String>?): Array<Commit> {
         // return emptyArray()
         val query = params?.map { it.key + "=" + it.value }?.joinToString("&", "?") ?: ""
         if (commitsCache.containsKey(query)) return commitsCache[query] ?: emptyArray()
         val res = InputStreamReader(URL(commitsUrl + query).openStream()).use {
-            gson.fromJson<Array<Commit>>(
-                it,
-                commitsType
-            )
+            gson.fromJson<Array<Commit>>(it, commitsType)
         }
         commitsCache[query] = res
         return res
     }
 
-    val contributors: Array<GithubUser> by lazy {
+    val contributors: Array<GithubUser> by lazy() {
         InputStreamReader(URL(contributorsUrl).openStream()).use { stream ->
-            gson.fromJson<Array<GithubUser>>(
-                stream,
-                contributorsType
-            ).apply {
+            gson.fromJson<Array<GithubUser>>(stream, contributorsType).apply {
                 sortByDescending { it.contributions }
             }
         }
     }
 
-    fun getDownloadUrl(ref: String, file: String): String {
-        return "https://raw.githubusercontent.com/${org}/${repo}/${ref}/${file}";
-    }
+    fun getDownloadUrl(ref: String, file: String) = "https://raw.githubusercontent.com/${org}/${repo}/${ref}/${file}"
 }

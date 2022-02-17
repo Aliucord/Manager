@@ -10,5 +10,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "Aliucord Manager"
 include(":app")

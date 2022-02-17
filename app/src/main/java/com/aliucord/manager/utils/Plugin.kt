@@ -9,9 +9,10 @@ import java.util.zip.ZipFile
 
 data class Manifest(
     val name: String,
-    val authors: Array<Author>,
+    val authors: ArrayList<Author>,
     val description: String,
     val version: String,
+    val updateUrl: String,
     val changelog: String?,
     val changelogMedia: String?
 ) {
@@ -39,21 +40,18 @@ class Plugin(val file: File) {
             }
 
             val files = pluginsDir.listFiles() ?: return emptyList()
-            val plugins = ArrayList<Plugin>(files.size)
 
-            files.forEach {
-                if (!it.name.endsWith(".zip")) {
-                    Log.w(BuildConfig.TAG, "Found non zip ${it.name} in plugins folder.")
-                } else {
-                    try {
-                        plugins.add(Plugin(it))
-                    } catch (th: Throwable) {
-                        Log.e(BuildConfig.TAG, "Failed to load plugin ${it.nameWithoutExtension}", th)
-                    }
+            return files.mapNotNull { file ->
+                if (!file.name.endsWith(".zip")) {
+                    Log.w(BuildConfig.TAG, "Found non zip ${file.name} in plugins folder.")
+                    null
+                } else try {
+                    Plugin(file)
+                } catch (th: Throwable) {
+                    Log.e(BuildConfig.TAG, "Failed to load plugin ${file.nameWithoutExtension}", th)
+                    null
                 }
-            }
-
-            return plugins.apply { sortBy { it.manifest.name }}
+            }.sortedBy { it.manifest.name }
         }
     }
 }

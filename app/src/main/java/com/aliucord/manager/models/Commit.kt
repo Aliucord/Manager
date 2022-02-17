@@ -7,7 +7,7 @@ package com.aliucord.manager.models
 
 import com.google.gson.annotations.SerializedName
 
-class Commit(
+data class Commit(
     @SerializedName("html_url") val htmlUrl: String,
     val sha: String,
     val commit: Commit,

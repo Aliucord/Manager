@@ -5,64 +5,64 @@
 
 package com.aliucord.manager.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import com.aliucord.manager.preferences.themePreference
+import androidx.compose.ui.platform.LocalContext
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-private val LightColorPalette = lightColors(
-    primary = primaryColor,
-    primaryVariant = primaryColorDark,
-    secondary = primaryColorLight,
-    error = errorColor,
+private val DarkColorScheme = darkColorScheme(
+
 )
 
-private val DarkColorPalette = darkColors(
-    primary = primaryColor,
-    primaryVariant = primaryColorDark,
-    secondary = primaryColorLight,
-    error = errorColor,
+private val LightColorScheme = lightColorScheme(
 
+)
+
+private val BlackColorPalette = darkColorScheme(
+    primary = Color.Black,
     onPrimary = Color.White,
-    background = darkBackground,
-    surface = Color(0xff424242),
-)
-
-private val BlackColorPalette = darkColors(
-    primary = primaryColor,
-    primaryVariant = primaryColorDark,
-    secondary = primaryColorLight,
-    error = errorColor,
-
-    onPrimary = Color.White,
-    background = Color(0xff000000),
-    surface = Color(0xff121212)
 )
 
 @Composable
-fun isDark() = when (themePreference.value.value) {
-    0 -> isSystemInDarkTheme()
-    1 -> false
-    else -> true
-}
+fun ManagerTheme(
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    isDynamicColor: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val dynamicColor = isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val colorScheme = when {
+        dynamicColor && isDarkTheme -> dynamicDarkColorScheme(LocalContext.current)
+        dynamicColor && !isDarkTheme -> dynamicLightColorScheme(LocalContext.current)
+        isDarkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
 
-@Composable
-fun getTheme() = if (!isDark()) LightColorPalette else when (themePreference.value.value) {
-    3 -> BlackColorPalette
-    else -> DarkColorPalette
-}
+    val systemUiController = rememberSystemUiController()
 
-@Composable
-fun AliucordManagerTheme(content: @Composable () -> Unit) {
-    val colors = getTheme()
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = colorScheme.background,
+            darkIcons = !isDarkTheme
+        )
+    }
 
     MaterialTheme(
-        colors,
+        colorScheme = colorScheme,
         typography = Typography,
-        shapes = Shapes,
-        content
+        content = content
     )
+}
+
+enum class Theme(val displayName: String) {
+    SYSTEM("System"),
+    LIGHT("Light"),
+    DARK("Dark");
+
+    companion object {
+        fun from(index: Int) = values()[index]
+    }
 }

@@ -7,188 +7,94 @@ package com.aliucord.manager.ui
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.R
 import com.aliucord.manager.preferences.sharedPreferences
-import com.aliucord.manager.ui.theme.AliucordManagerTheme
-import com.aliucord.manager.ui.theme.primaryColor
+import com.aliucord.manager.ui.components.AppBar
+import com.aliucord.manager.ui.components.GrantPermission
+import com.aliucord.manager.ui.screens.*
+import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.utils.Github
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
-import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", Context.MODE_PRIVATE)
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+
         Github.checkForUpdates()
+
         setContent {
-            AliucordManagerTheme {
+            ManagerTheme {
                 MainActivityLayout()
             }
         }
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
+@ExperimentalMaterialApi
+@ExperimentalMaterial3Api
+@ExperimentalFoundationApi
+@ExperimentalPermissionsApi
 @Composable
-fun MainActivityLayout() {
-    val systemUiController = rememberSystemUiController()
+private fun MainActivityLayout() {
     val storagePermissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val navController = rememberNavController()
 
-    val colors = MaterialTheme.colors
-    SideEffect {
-        systemUiController.setNavigationBarColor(colors.background)
-        systemUiController.setStatusBarColor(colors.primary)
-        if (!storagePermissionState.hasPermission) storagePermissionState.launchPermissionRequest()
+    if (!storagePermissionState.hasPermission) SideEffect {
+        storagePermissionState.launchPermissionRequest()
     }
 
-    val navController = rememberNavController()
-    var isMenuExpanded by remember { mutableStateOf(false) }
-
     Scaffold(
-        topBar = {
-            val route = navController.currentBackStackEntryAsState().value?.destination?.route ?: Screen.Home.route
-            TopAppBar(
-                title = { Text(stringResource(Screen.SCREENS.find { it.route == route }!!.displayName)) },
-                backgroundColor = primaryColor,
-                contentColor = MaterialTheme.colors.onPrimary,
-                navigationIcon = if (route != Screen.Home.route) {{
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    }
-                }} else null,
-                actions = {
-                    if (route != Screen.Home.route) return@TopAppBar
-                    val context = LocalContext.current
-                    IconButton(
-                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/${BuildConfig.SUPPORT_SERVER}"))) },
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_discord),
-                            contentDescription = stringResource(R.string.support_server),
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-                            navController.navigate(Screen.Plugins.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                            }
-                        },
-                        modifier = Modifier.padding(bottom = 2.dp, start = 8.dp) // Make up for icon being off center
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_plugin_24dp),
-                            contentDescription = stringResource(id = R.string.launch_plugins),
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    }
-                    IconButton(onClick = { isMenuExpanded = !isMenuExpanded }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.show_menu),
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    }
-                    DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { isMenuExpanded = false }) {
-                        DropdownMenuItem(onClick = {
-                            isMenuExpanded = false
-                            navController.navigate(Screen.About.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                            }
-                        }) {
-                            Text(stringResource(Screen.About.displayName))
-                        }
-                        DropdownMenuItem(onClick = {
-                            isMenuExpanded = false
-                            navController.navigate(Screen.Settings.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                            }
-                        }) {
-                            Text(stringResource(Screen.Settings.displayName))
-                        }
-                    }
-                }
-            )
-        }
-    ) {
+        topBar = { AppBar(navController) }
+    ) { paddingValues ->
         PermissionRequired(
             permissionState = storagePermissionState,
-            permissionNotGrantedContent = { GrantPermission(permissionState = storagePermissionState) },
-            permissionNotAvailableContent = { GrantPermission(permissionState = storagePermissionState) }
+            permissionNotGrantedContent = { GrantPermission(storagePermissionState) },
+            permissionNotAvailableContent = { GrantPermission(storagePermissionState) }
         ) {
             NavHost(
                 navController,
+                modifier = Modifier.padding(paddingValues).padding(12.dp),
                 startDestination = Screen.Home.route
             ) {
-                for (screen in Screen.SCREENS) {
-                    composable(screen.route) { screen.content() }
+                composable(Screen.Home.route) { HomeScreen(navController) }
+                composable(Screen.Commits.route) { CommitsScreen() }
+                composable(Screen.About.route) { AboutScreen() }
+                composable(Screen.Settings.route) { SettingsScreen() }
+                composable(Screen.Store.route) { StoreScreen() }
+                composable(
+                    route = Screen.Installer.route,
+//                    arguments = listOf(
+//                        navArgument("method") { type = NavType.EnumType( type = InstallMethod::class.java ) }
+//                    ))
+                ) {
+                    InstallerScreen()
                 }
             }
         }
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun GrantPermission(permissionState: PermissionState) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(stringResource(R.string.permission_required), style = MaterialTheme.typography.h6, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Row {
-            val context = LocalContext.current
-
-            Button(onClick = { permissionState.launchPermissionRequest() }) {
-                Text(stringResource(R.string.permission_grant))
-            }
-            Spacer(Modifier.width(8.dp))
-            Button(
-                onClick = {
-                    context.startActivity(Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
-                    ))
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray, contentColor = Color.Black)
-            ) {
-                Text(stringResource(R.string.open_settings))
-            }
-        }
-    }
+enum class InstallMethod {
+    DOWNLOAD, INSTALLED, STORAGE
 }

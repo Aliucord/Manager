@@ -7,6 +7,7 @@ package com.aliucord.manager.preferences
 
 import android.content.SharedPreferences
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.edit
 import kotlin.reflect.KProperty
 
 var sharedPreferences: SharedPreferences? = null
@@ -26,12 +27,11 @@ class Preference<T>(
     fun get() = value.value
 
     fun set(newValue: T) {
-        if (value.value != newValue) {
-            value.value = newValue
-            val editor = sharedPreferences!!.edit()
-            editor.setter(key, newValue)
-            editor.apply()
-        }
+        if (value.value == newValue) return
+
+        value.value = newValue
+
+        sharedPreferences!!.edit { setter(key, newValue) }
     }
 }
 

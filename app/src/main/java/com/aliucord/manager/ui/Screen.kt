@@ -6,45 +6,19 @@
 package com.aliucord.manager.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.screens.AboutScreen
-import com.aliucord.manager.ui.screens.HomeScreen
-import com.aliucord.manager.ui.screens.PluginsScreen
-import com.aliucord.manager.ui.screens.SettingsScreen
 
-sealed class Screen(
-    val route: String,
-    @StringRes val displayName: Int,
-    val content: @Composable () -> Unit
-) {
+@ExperimentalFoundationApi
+sealed class Screen(val route: String, @StringRes val displayName: Int) {
     companion object {
-        // NOTE: without lazy it doesn't work, kotlin moment https://youtrack.jetbrains.com/issue/KT-8970
-        val SCREENS by lazy { listOf(Home, Settings, Plugins, About) }
+        val screens by lazy { listOf(Home, About, Settings, Commits, Installer) }
     }
 
-    object Home : Screen(
-        "home",
-        R.string.app_name,
-        { HomeScreen() }
-    )
-
-    object About : Screen(
-        "About",
-        R.string.about,
-        { AboutScreen() }
-    )
-
-    object Settings : Screen(
-        "settings",
-        R.string.settings,
-        { SettingsScreen() }
-    )
-
-    object Plugins : Screen(
-        "plugins",
-        R.string.plugins,
-        { PluginsScreen() }
-    )
+    object Home : Screen("home", R.string.app_name)
+    object About : Screen("about", R.string.about)
+    object Settings : Screen("settings", R.string.settings)
+    object Commits : Screen("commits", R.string.commits)
+    object Installer : Screen("installer", R.string.installer)
+    object Store : Screen("store", R.string.store)
 }

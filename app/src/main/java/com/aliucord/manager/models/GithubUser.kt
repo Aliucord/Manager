@@ -1,3 +1,8 @@
 package com.aliucord.manager.models
 
-data class GithubUser(val login: String, val contributions: Int)
+import com.google.gson.annotations.SerializedName
+
+data class GithubUser(
+    @SerializedName("login") val name: String,
+    val contributions: Int
+)
