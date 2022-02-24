@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AliucordManager" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.AliucordManager" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
     </style>
 </resources>

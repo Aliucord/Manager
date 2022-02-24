@@ -53,14 +53,14 @@ dependencies {
     // core dependencies
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.github.aliucord:libzip:1.0.1")
 
     // compose dependencies
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.ui:ui:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha05")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha06")
     implementation("androidx.compose.material:material:${composeVersion}")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.1.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:${composeVersion}")
     implementation("androidx.navigation:navigation-compose:2.4.1")
 
     // accompanist dependencies
@@ -70,10 +70,11 @@ dependencies {
     // other dependencies
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("io.coil-kt:coil-compose:1.4.0")
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-gson:$ktorVersion")
+
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.65")
 }

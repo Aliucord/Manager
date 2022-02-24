@@ -15,5 +15,6 @@
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 -keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
 -keep class com.aliucord.manager.models.** { private final *; }

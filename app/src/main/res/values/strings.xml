@@ -15,7 +15,7 @@
     <string name="launch_plugins">Launch Plugins Page</string>
     <string name="plugin_title">%1$s v%2$s</string>
     <string name="plugin_authors">By %1$s</string>
-    <string name="delete_plugin">Delete %1$s</string>
+    <string name="uninstall_plugin">Uninstall %1$s</string>
     <string name="search">Search</string>
     <string name="view_plugin_changelog">View changelog for %1$s</string>
     <string name="delete_plugin_body">Are you sure you want to uninstall this plugin? This action cannot be undone.</string>
