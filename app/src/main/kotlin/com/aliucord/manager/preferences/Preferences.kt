@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.edit
 import kotlin.reflect.KProperty
 
-var sharedPreferences: SharedPreferences? = null
+lateinit var sharedPreferences: SharedPreferences
 
 class Preference<T>(
     private val key: String,
@@ -18,7 +18,7 @@ class Preference<T>(
     getter: SharedPreferences.(key: String, defaultValue: T) -> T?,
     private val setter: SharedPreferences.Editor.(key: String, newValue: T) -> Unit
 ) {
-    val value = mutableStateOf(sharedPreferences!!.getter(key, defaultValue) ?: defaultValue)
+    private val value = mutableStateOf(sharedPreferences.getter(key, defaultValue) ?: defaultValue)
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>) = value.value
 
@@ -31,7 +31,7 @@ class Preference<T>(
 
         value.value = newValue
 
-        sharedPreferences!!.edit { setter(key, newValue) }
+        sharedPreferences.edit { setter(key, newValue) }
     }
 }
 

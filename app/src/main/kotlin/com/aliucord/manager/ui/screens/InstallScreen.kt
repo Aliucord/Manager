@@ -1,33 +1,31 @@
 package com.aliucord.manager.ui.screens
 
 import android.content.Intent
-import android.os.Environment
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
-import androidx.navigation.NavController
 import com.aliucord.libzip.Zip
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.Signer
-import com.aliucord.manager.preferences.replaceBg
-import com.aliucord.manager.ui.Screen
-import com.aliucord.manager.utils.DownloadUtils
-import com.aliucord.manager.utils.Github
+import com.aliucord.manager.preferences.Prefs
+import com.aliucord.manager.ui.screens.destinations.HomeScreenDestination
+import com.aliucord.manager.utils.*
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.InputStream
 
 @OptIn(ExperimentalFoundationApi::class)
+@Destination
 @Composable
-fun InstallerScreen(navController: NavController) {
+fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
     var log by remember { mutableStateOf("") }
     val context = LocalContext.current
 
@@ -35,31 +33,36 @@ fun InstallerScreen(navController: NavController) {
         launch(Dispatchers.IO) {
             val supportedVersion = Github.version.versionCode
 
-            log += "Checking for cached APK...\n"
+            val discordApk = apk ?: run {
+                log += "Checking for cached APK...\n"
 
-            val discordApk = File(context.externalCacheDir, "discord-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also
+                File(context.externalCacheDir, "discord-${supportedVersion}.apk").also { file ->
+                    val archiveInfo = context.packageManager.getPackageArchiveInfo(file.path, 0)
 
-                val archiveInfo = context.packageManager.getPackageArchiveInfo(file.path, 0)
+                    if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also
 
-                if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also
+                    log += "Downloading Discord APK...\n"
 
-                log += "Downloading APK...\n"
+                    DownloadUtils.downloadDiscordApk(context, supportedVersion)
 
-                DownloadUtils.downloadDiscordApk(context, supportedVersion)
-
-                log += "Finished downloading APK\n"
+                    log += "Done\n"
+                }
             }
 
-            val manifest = File(context.externalCacheDir, "AndroidManifest.xml").also { file ->
-                if (file.exists()) return@also
+            val useDebuggableManifest = Prefs.debuggable.get()
+            val manifest =
+                File(
+                    context.externalCacheDir,
+                    if (useDebuggableManifest) "AndroidManifest-debuggable.xml" else "AndroidManifest.xml"
+                ).also { file ->
+                    if (file.exists()) return@also
 
-                log += "Downloading patched AndroidManifest.xml...\n"
+                    log += "Downloading patched manifest...\n"
 
-                DownloadUtils.downloadManifest(context)
+                    DownloadUtils.downloadManifest(context, useDebuggableManifest)
 
-                log += "Finished downloading manifest\n"
-            }
+                    log += "Done\n"
+                }
 
             val injector = File(context.externalCacheDir, "Injector.dex").also { file ->
                 if (file.exists()) return@also
@@ -68,13 +71,10 @@ fun InstallerScreen(navController: NavController) {
 
                 DownloadUtils.downloadInjector(context)
 
-                log += "Finished downloading injector\n"
+                log += "Done\n"
             }
 
-            log += "Copying original APK ()\n"
-
-
-            val outputDir = File(Environment.getExternalStorageDirectory(), "Aliucord").also {
+            val outputDir = aliucordDir.also {
                 if (!it.exists() && !it.mkdirs()) throw FileNotFoundException()
             }
 
@@ -148,7 +148,7 @@ fun InstallerScreen(navController: NavController) {
                 close()
             }
 
-            if (replaceBg.get()) {
+            if (Prefs.replaceBg.get()) {
                 log += "Replacing icon background\n"
 
                 val icon1Bytes = assetManager.open("icon1.png").readBytes()
@@ -158,7 +158,8 @@ fun InstallerScreen(navController: NavController) {
                 // androguard arsc resources.arsc --id 0x7f0f0000 (icon1)
                 // androguard arsc resources.arsc --id 0x7f0f0002 and androguard arsc resources.arsc --id 0x7f0f0006 (icon2)
                 val icon1Entries = listOf("MbV.png", "kbF.png", "_eu.png", "EtS.png")
-                val icon2Entries = listOf("_h_.png", "9MB.png", "Dy7.png", "kC0.png", "oEH.png", "RG0.png", "ud_.png", "W_3.png")
+                val icon2Entries =
+                    listOf("_h_.png", "9MB.png", "Dy7.png", "kC0.png", "oEH.png", "RG0.png", "ud_.png", "W_3.png")
 
                 with(Zip(outputApk.absolutePath, 0, 'a')) {
                     icon1Entries.forEach { entry -> deleteEntry("res/$entry") }
@@ -171,9 +172,8 @@ fun InstallerScreen(navController: NavController) {
                 }
             }
 
-            log += "Signing APK\n"
+            log += "Signing APK...\n"
 
-            Signer.newKeystore(File(context.filesDir, "ks.keystore"))
             Signer.signApk(outputApk)
 
             log += "Signed APK\n"
@@ -191,36 +191,23 @@ fun InstallerScreen(navController: NavController) {
             context.startActivity(intent)
 
             launch(Dispatchers.Main) {
-                navController.navigate(Screen.Home.route)
+                navigator.navigate(HomeScreenDestination)
             }
         }
     }
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(log)
 
         Spacer(Modifier.weight(1f, true))
 
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp),
-            progress = 0.5f
-        )
+//        LinearProgressIndicator(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(8.dp),
+//            progress = 0.5f
+//        )
     }
-}
-
-private fun Zip.writeEntry(entryName: String, stream: InputStream) {
-    openEntry(entryName)
-    stream.readBytes().let { bytes -> writeEntry(bytes, bytes.size.toLong()) }
-    closeEntry()
-}
-
-private fun Zip.writeEntry(entryName: String, bytes: ByteArray) {
-    openEntry(entryName)
-    writeEntry(bytes, bytes.size.toLong())
-    closeEntry()
 }

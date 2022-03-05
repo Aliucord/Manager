@@ -21,12 +21,14 @@ fun TeamCard() = ElevatedCard(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            stringResource(R.string.team),
+            text = stringResource(R.string.team),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary
         )
 
-        Column {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             UserEntry("Juby210", "Fox")
             UserEntry("Vendicated", "the ven")
             UserEntry("mwittrien", "your memory gon")

@@ -1,4 +1,4 @@
-package com.aliucord.manager.models
+package com.aliucord.manager.models.github
 
 import com.google.gson.annotations.SerializedName
 

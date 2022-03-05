@@ -1,22 +1,23 @@
-package com.aliucord.manager.utils
+package com.aliucord.manager.models
 
 import android.util.Log
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.models.Manifest
+import com.aliucord.manager.utils.gson
+import com.aliucord.manager.utils.pluginsDir
 import java.io.File
-import java.io.InputStreamReader
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
 
-class Plugin(val file: File) {
+data class Plugin(val file: File) {
     val manifest: Manifest
 
     init {
         ZipFile(file).use { zipFile ->
             val entry = zipFile.getEntry("manifest.json")
                 ?: throw ZipException("Plugin ${file.nameWithoutExtension} has no manifest.")
-            zipFile.getInputStream(entry).use { zis ->
-                manifest = gson.fromJson(InputStreamReader(zis), Manifest::class.java)
+
+            manifest = zipFile.getInputStream(entry).use { zis ->
+                gson.fromJson(zis.reader(), Manifest::class.java)
             }
         }
     }
@@ -31,13 +32,15 @@ class Plugin(val file: File) {
             val files = pluginsDir.listFiles() ?: return emptyList()
 
             return files.mapNotNull { file ->
-                if (!file.name.endsWith(".zip")) {
+                if (file.extension == "zip") {
+                    try {
+                        Plugin(file)
+                    } catch (th: Throwable) {
+                        Log.e(BuildConfig.TAG, "Failed to load plugin ${file.nameWithoutExtension}", th)
+                        null
+                    }
+                } else {
                     Log.w(BuildConfig.TAG, "Found non zip ${file.name} in plugins folder.")
-                    null
-                } else try {
-                    Plugin(file)
-                } catch (th: Throwable) {
-                    Log.e(BuildConfig.TAG, "Failed to load plugin ${file.nameWithoutExtension}", th)
                     null
                 }
             }.sortedBy { it.manifest.name }

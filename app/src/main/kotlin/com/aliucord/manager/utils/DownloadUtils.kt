@@ -11,16 +11,24 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 object DownloadUtils {
+    private const val org = "Aliucord"
+    private const val repo = "Aliucord"
+
     private const val backendHost = "https://aliucord.com/"
+    private const val contentUrl = "https://raw.githubusercontent.com/${org}/${repo}"
 
     suspend fun downloadDiscordApk(ctx: Context, version: String) =
         download(ctx, "$backendHost/download/discord?v=$version", "discord-$version.apk")
 
-    suspend fun downloadManifest(ctx: Context) =
-        download(ctx, Github.getDownloadUrl("builds", "AndroidManifest.xml"), "AndroidManifest.xml")
+    suspend fun downloadManifest(ctx: Context, useDebuggableManifest: Boolean) {
+        if (useDebuggableManifest)
+            download(ctx, "$contentUrl/main/.assets/AndroidManifest-debuggable.xml", "AndroidManifest-debuggable.xml")
+        else {
+            download(ctx, "$contentUrl/main/.assets/AndroidManifest.xml", "AndroidManifest.xml")
+        }
+    }
 
-    suspend fun downloadInjector(ctx: Context) =
-        download(ctx, Github.getDownloadUrl("builds", "Injector.dex"), "Injector.dex")
+    suspend fun downloadInjector(ctx: Context) = download(ctx, "$contentUrl/builds/Injector.dex", "Injector.dex")
 
     private suspend fun download(ctx: Context, url: String, fileName: String): File {
         val downloadManager = ctx.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -42,7 +50,6 @@ object DownloadUtils {
             ctx.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
             receiver.downloadId = DownloadManager.Request(url.toUri()).run {
-//              Users could cancel downloads, guhhhh
                 setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
                 setDestinationUri(File(ctx.externalCacheDir, fileName).toUri())
                 downloadManager.enqueue(this)

@@ -15,15 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
-import com.aliucord.manager.models.GithubUser
+import com.aliucord.manager.models.github.GithubUser
 import com.aliucord.manager.utils.Github
 import com.aliucord.manager.utils.httpClient
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
-@ExperimentalFoundationApi
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ContributorsCard() = ElevatedCard(
     modifier = Modifier.wrapContentHeight().fillMaxWidth()
@@ -35,7 +34,7 @@ fun ContributorsCard() = ElevatedCard(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            stringResource(R.string.contributors),
+            text = stringResource(R.string.contributors),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary
         )

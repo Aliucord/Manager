@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.utils.httpClient
+import com.ramcosta.composedestinations.annotation.Destination
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ private data class Tree(
     )
 }
 
+@Destination
 @Composable
 fun StoreScreen() {
     val plugins = remember { mutableStateListOf<Tree.File>() }

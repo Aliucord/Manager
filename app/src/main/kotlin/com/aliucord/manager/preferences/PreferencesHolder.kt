@@ -5,15 +5,14 @@
 
 package com.aliucord.manager.preferences
 
-import android.os.Environment
+import com.aliucord.manager.utils.aliucordDir
 
-var themePref = intPreference("theme")
-val replaceBg = boolPreference("replace_bg", true)
-val devModePreference = boolPreference("dev_mode", false)
-val debuggablePreference = boolPreference("debuggable")
-val useDexFromStoragePreference = boolPreference("use_dex_from_storage")
-val dexLocationPreference = stringPreference("dex_location", Environment.getExternalStorageDirectory().absolutePath + "/Aliucord/Injector.dex")
-
-object Preferences {
+object Prefs {
+    val theme = intPreference("theme")
     val useBlack = boolPreference("use_black")
+    val replaceBg = boolPreference("replace_bg", true)
+    val devMode = boolPreference("dev_mode", false)
+    val debuggable = boolPreference("debuggable")
+    val useDexFromStorage = boolPreference("use_dex_from_storage")
+    val dexLocation = stringPreference("dex_location", "$aliucordDir/Injector.dex")
 }

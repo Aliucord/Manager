@@ -2,7 +2,7 @@
  * Copyright (c) 2021 Juby210 & Vendicated
  * Licensed under the Open Software License version 3.0
  */
-package com.aliucord.manager
+package com.aliucord.manager.utils
 
 import com.aliucord.libzip.Zip
 import org.bouncycastle.asn1.x500.X500Name
@@ -28,10 +28,12 @@ import java.util.jar.Attributes
 import java.util.jar.JarFile
 import java.util.jar.Manifest
 
+private class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
+
 object Signer {
     private val stripPattern = Regex("^META-INF/(.*)[.](MF|SF|RSA|DSA)$")
 
-    fun newKeystore(out: File?) {
+    private fun newKeystore(out: File?) {
         val password = "password".toCharArray()
         val key = createKey()
 
@@ -42,12 +44,12 @@ object Signer {
         }
     }
 
-    @Throws(Exception::class)
     private fun createKey(): KeySet {
         val pair = KeyPairGenerator.getInstance("RSA").run {
             initialize(2048)
             generateKeyPair()
         }
+
         var serialNumber: BigInteger
 
         do serialNumber = SecureRandom().nextInt().toBigInteger()
@@ -87,10 +89,12 @@ object Signer {
         )
         var zip = Zip(apkFile.absolutePath, 6, 'r')
         val dig = MessageDigest.getInstance("SHA1")
-        val digests = LinkedHashMap<String, String>()
-        val filesToRemove = ArrayList<String>()
+        val digests = linkedMapOf<String, String>()
+        val filesToRemove = arrayListOf<String>()
+
         repeat(zip.totalEntries) { i ->
             zip.openEntryByIndex(i)
+
             val name = zip.entryName
 
             if (stripPattern.matches(name))
@@ -111,7 +115,7 @@ object Signer {
         attrs[Attributes.Name("Created-By")] = "Aliucord Installer"
         val digestAttr = Attributes.Name("SHA1-Digest")
 
-        for ((name, value) in digests) {
+        digests.forEach { (name, value) ->
             val attributes = Attributes()
 
             attributes[digestAttr] = value
@@ -126,11 +130,13 @@ object Signer {
             zip.writeEntry(baos.toByteArray(), baos.size().toLong())
             zip.closeEntry()
         }
+
         val manifestHash = getManifestHash(manifest, dig)
         val tmpManifest = Manifest().apply {
             mainAttributes.putAll(attrs)
         }
         val manifestMainHash = getManifestHash(tmpManifest, dig)
+
         manifest = Manifest()
         attrs = manifest.mainAttributes
         attrs[Attributes.Name.SIGNATURE_VERSION] = "1.0"
@@ -142,7 +148,9 @@ object Signer {
             attributes[digestAttr] = value
             manifest.entries[key] = attributes
         }
+
         var sigBytes: ByteArray
+
         ByteArrayOutputStream().use { sigStream ->
             manifest.write(sigStream)
             sigBytes = sigStream.toByteArray()
@@ -150,6 +158,7 @@ object Signer {
             zip.writeEntry(sigBytes, sigStream.size().toLong())
             zip.closeEntry()
         }
+
         val signature = signSigFile(keySet, sigBytes)
         zip.openEntry("META-INF/CERT.RSA")
         zip.writeEntry(signature, signature.size.toLong())

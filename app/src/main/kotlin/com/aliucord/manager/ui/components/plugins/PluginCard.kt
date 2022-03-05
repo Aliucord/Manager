@@ -16,8 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
+import com.aliucord.manager.models.Plugin
 import com.aliucord.manager.ui.components.Switch
-import com.aliucord.manager.utils.Plugin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,8 +27,7 @@ fun PluginCard(
     onShowChangelog: () -> Unit
 ) {
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(12.dp)

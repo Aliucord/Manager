@@ -1,72 +1,94 @@
 package com.aliucord.manager.ui.components.installer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.Screen
 
-@OptIn(ExperimentalFoundationApi::class)
+enum class DownloadMethod { DOWNLOAD, SELECT }
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun InstallerDialog(
-    visible: MutableState<Boolean>,
-    navController: NavController
-) = AlertDialog(
-    title = {
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(painterResource(R.drawable.ic_discord), "Discord")
-            Spacer(Modifier.width(12.dp))
-            Text("Select Installation Method")
-        }
-    },
-    confirmButton = {
-        Column(
-            modifier = Modifier.wrapContentWidth().padding(32.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            val modifier = Modifier.fillMaxWidth()
+    onDismissRequest: () -> Unit,
+    onConfirm: (DownloadMethod) -> Unit
+) {
+    var selectedMethod by remember { mutableStateOf(DownloadMethod.DOWNLOAD) }
 
+    AlertDialog(
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_download_24dp),
+                contentDescription = stringResource(R.string.download_method)
+            )
+        },
+        title = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(stringResource(R.string.download_method))
+            }
+        },
+        text = {
+            Column {
+                mapOf(
+                    DownloadMethod.DOWNLOAD to stringResource(R.string.download_apk),
+                    DownloadMethod.SELECT to stringResource(R.string.select_apk)
+                ).forEach { (method, name) ->
+                    Column {
+                        Row(
+                            modifier = Modifier.clickable {
+                                selectedMethod = method
+                            },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.labelLarge
+                            )
+
+                            Spacer(Modifier.weight(1f, true))
+
+                            RadioButton(
+                                selected = selectedMethod == method,
+                                onClick = { selectedMethod = method }
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
             Button(
-                modifier = modifier,
                 onClick = {
-                    navController.currentBackStackEntry?.arguments
-                    navController.navigate(Screen.Installer.route)
+                    onConfirm(selectedMethod)
+                    onDismissRequest()
                 }
             ) {
-                Text("Download")
+                Text(stringResource(R.string.confirm))
             }
-
+        },
+        dismissButton = {
             Button(
-                modifier = modifier,
-                onClick = {
-                    navController.navigate(Screen.Installer.route)
-                }
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                )
             ) {
-                Text("From installed app")
+                Text(stringResource(R.string.dismiss))
             }
-
-            Button(
-                modifier = modifier,
-                onClick = {
-                    navController.navigate(Screen.Installer.route)
-                }
-            ) {
-                Text("From storage")
-            }
-        }
-    },
-    onDismissRequest = { visible.value = false }
-)
+        },
+        onDismissRequest = onDismissRequest
+    )
+}

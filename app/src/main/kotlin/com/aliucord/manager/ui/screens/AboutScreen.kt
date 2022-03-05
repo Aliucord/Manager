@@ -1,6 +1,5 @@
 package com.aliucord.manager.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -14,8 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.about.ContributorsCard
 import com.aliucord.manager.ui.components.about.TeamCard
+import com.ramcosta.composedestinations.annotation.Destination
 
-@ExperimentalFoundationApi
+@Destination
 @Composable
 fun AboutScreen() {
     val uriHandler = LocalUriHandler.current

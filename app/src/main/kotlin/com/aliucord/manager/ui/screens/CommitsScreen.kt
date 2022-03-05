@@ -1,97 +1,98 @@
 package com.aliucord.manager.ui.screens
 
-import android.util.Log
-import androidx.annotation.Keep
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.models.Commit
+import androidx.paging.*
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import com.aliucord.manager.R
+import com.aliucord.manager.models.github.Commit
+import com.aliucord.manager.ui.components.ListItem
 import com.aliucord.manager.utils.Github
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
-@Keep
-private data class CommitData(
-    val commit: Commit,
-    val buildSha: String?
-)
+import com.ramcosta.composedestinations.annotation.Destination
 
 @OptIn(ExperimentalMaterialApi::class)
-@ExperimentalMaterialApi
+@Destination
 @Composable
 fun CommitsScreen() {
-    val commits = remember { mutableStateListOf<CommitData>() }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        if (commits.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize().padding(12.dp),
-                contentAlignment = Alignment.Center,
-                content = { CircularProgressIndicator() }
+    val pager = remember {
+        Pager(
+            PagingConfig(
+                pageSize = 30,
+                enablePlaceholders = true,
+                maxSize = 200
             )
+        ) {
+            object : PagingSource<Int, Commit>() {
+                override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Commit> {
+                    val pageNumber = params.key ?: 0
 
-            LaunchedEffect(Unit) {
-                launch(Dispatchers.IO) {
-                    try {
-                        val buildCommits = Github.getCommits(
-                            "sha" to "builds",
-                            "path" to "Aliucord.dex",
-                            "per_page" to "50"
-                        )
-                        val commits2 = Github.getCommits("per_page" to "50")
+                    val response = Github.getCommits("page" to pageNumber.toString())
+                    val prevKey = if (pageNumber > 0) pageNumber - 1 else null
+                    val nextKey = if (response.isNotEmpty()) pageNumber + 1 else null
 
-                        commits.addAll(commits2.map { c ->
-                            CommitData(
-                                commit = c,
-                                buildSha = buildCommits.find { bc -> bc.commit.message.substring(6) == c.sha }?.sha
-                            )
-                        })
-                    } catch (e: Throwable) {
-                        Log.e(BuildConfig.TAG, "Failed to get commits", e)
-                    }
-                }
-            }
-        } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                items(commits.toList()) { data ->
-                    val commit = data.commit
-                    val localUriHandler = LocalUriHandler.current
-
-                    ListItem(
-                        modifier = Modifier.clickable {
-                            localUriHandler.openUri(commit.htmlUrl)
-                        },
-                        text = {
-                            Text(
-                                commit.sha.substring(0, 7),
-                                color = if (data.buildSha != null) MaterialTheme.colorScheme.primary else Color.Unspecified
-                            )
-                        },
-                        secondaryText = { Text("${commit.commit.message.split("\n").first()} - ${commit.author.name}") },
+                    return LoadResult.Page(
+                        data = response,
+                        prevKey = prevKey,
+                        nextKey = nextKey
                     )
                 }
+
+                override fun getRefreshKey(state: PagingState<Int, Commit>) = state.anchorPosition?.let {
+                    state.closestPageToPosition(it)?.prevKey?.plus(1) ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
+                }
             }
+        }
+    }
+
+    val lazyPagingItems = pager.flow.collectAsLazyPagingItems()
+
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        if (lazyPagingItems.loadState.refresh == LoadState.Loading) item {
+            Text(
+                text = stringResource(R.string.paging_initial_load),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+            )
+        }
+
+        items(lazyPagingItems) { commitData ->
+            val localUriHandler = LocalUriHandler.current
+
+            if (commitData == null) return@items
+
+            ListItem(
+                modifier = Modifier.clickable {
+                    localUriHandler.openUri(commitData.htmlUrl)
+                },
+                overlineText = { Text(commitData.sha.substring(0, 7)) },
+                text = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}")}
+            )
+        }
+
+        if (lazyPagingItems.loadState.append == LoadState.Loading) item {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+            )
         }
     }
 }

@@ -6,24 +6,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.aliucord.manager.R
 
 @Composable
 fun ContributorEntry(name: String) {
     val uriHandler = LocalUriHandler.current
 
     Image(
+        modifier = Modifier
+            .size(48.dp)
+            .clickable { uriHandler.openUri("https://github.com/$name") },
         painter = rememberImagePainter(
             data = "https://github.com/$name.png",
             builder = {
                 transformations(CircleCropTransformation())
             }
         ),
-        contentDescription = "Contributor",
-        modifier = Modifier
-            .size(48.dp)
-            .clickable { uriHandler.openUri("https://github.com/$name") }
+        contentDescription = stringResource(R.string.contributor)
     )
 }

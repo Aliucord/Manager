@@ -1,6 +1,6 @@
 package com.aliucord.manager.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -18,34 +18,43 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.Screen
+import com.aliucord.manager.ui.screens.destinations.*
+import com.aliucord.manager.ui.screens.navDestination
 
-@ExperimentalFoundationApi
+@get:StringRes
+private val Destination.title
+    get() = when (this) {
+        HomeScreenDestination -> R.string.home
+        InstallerScreenDestination -> R.string.installer
+        CommitsScreenDestination -> R.string.commits
+        StoreScreenDestination -> R.string.store
+        SettingsScreenDestination -> R.string.settings
+        AboutScreenDestination -> R.string.about
+    }
+
 @Composable
 fun AppBar(navController: NavController) {
-    val route = navController.currentBackStackEntryAsState().value?.destination?.route ?: Screen.Home.route
+    val destination = navController.currentBackStackEntryAsState().value?.navDestination ?: HomeScreenDestination
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     MediumTopAppBar(
         navigationIcon = {
-            if (route != Screen.Home.route) {
+            if (destination != HomeScreenDestination) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(Icons.Default.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground)
                 }
             }
         },
         title = {
-            Text(stringResource(Screen.screens.first { screen ->
-                screen.route == route
-            }.displayName))
+            Text(stringResource(destination.title))
         },
         actions = {
             val localUriHandler = LocalUriHandler.current
 
             IconButton(
                 onClick = {
-                    navController.navigate(Screen.Store.route) {
-                        popUpTo(Screen.Home.route) { saveState = true }
+                    navController.navigate(StoreScreenDestination.route) {
+                        popUpTo(HomeScreenDestination.route) { saveState = true }
                     }
                 },
             ) {
@@ -89,21 +98,17 @@ fun AppBar(navController: NavController) {
                     DropdownMenuItem(
                         onClick = {
                             isMenuExpanded = false
-                            navController.navigate(Screen.About.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                            }
+                            navController.navigate(AboutScreenDestination.route)
                         },
-                        text = { Text(stringResource(Screen.About.displayName)) }
+                        text = { Text(stringResource(AboutScreenDestination.title)) }
                     )
 
                     DropdownMenuItem(
                         onClick = {
                             isMenuExpanded = false
-                            navController.navigate(Screen.Settings.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                            }
+                            navController.navigate(SettingsScreenDestination.route)
                         },
-                        text = { Text(stringResource(Screen.Settings.displayName)) }
+                        text = { Text(stringResource(SettingsScreenDestination.title)) }
                     )
                 }
             }

@@ -18,3 +18,4 @@
 -renamesourcefileattribute SourceFile
 
 -keep class com.aliucord.manager.models.** { private final *; }
+-keep class com.aliucord.libzip.Zip { private final *; }

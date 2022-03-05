@@ -23,9 +23,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.aliucord.manager.R
+import com.aliucord.manager.models.Plugin
 import com.aliucord.manager.ui.components.plugins.Changelog
 import com.aliucord.manager.ui.components.plugins.PluginCard
-import com.aliucord.manager.utils.Plugin
 
 @Composable
 fun PluginsList() = Column(
@@ -46,7 +46,7 @@ fun PluginsList() = Column(
             trailingIcon = { Icon(Icons.Default.Search, stringResource(R.string.search_plugins)) },
             keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions { focusManager.clearFocus() },
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -65,8 +65,6 @@ fun PluginsList() = Column(
                             || authors.any { a -> a.name.contains(search, true) }
                 }
             }) { plugin ->
-                // TODO - make this get pluginEnabled from Aliucord preferences somehow
-                var isChecked by remember { mutableStateOf(true) }
                 var showDeleteDialog by remember { mutableStateOf(false) }
                 var showChangelogDialog by remember { mutableStateOf(false) }
 

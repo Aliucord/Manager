@@ -19,20 +19,19 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.aliucord.manager.R
-import com.aliucord.manager.utils.Plugin
-import java.util.regex.Pattern
+import com.aliucord.manager.models.Plugin
 
-private val hyperLinkPattern = Pattern.compile("\\[(.+?)]\\((.+?\\))")
+private val hyperLinkPattern = Regex("\\[(.+?)]\\((.+?\\))")
 
 @Suppress("RegExpRedundantEscape") // It is very much not redundant and causes a crash lol
-private val headerStylePattern = Pattern.compile("\\{(improved|added|fixed)( marginTop)?\\}")
+private val headerStylePattern = Regex("\\{(improved|added|fixed)( marginTop)?\\}")
 
 @SuppressLint("ComposableNaming") // Can't use MaterialTheme without Composable, but this is not a component
 @Composable
 private fun AnnotatedString.Builder.hyperlink(content: String) {
     var idx = 0
 
-    with(hyperLinkPattern.matcher(content)) {
+    with(hyperLinkPattern.toPattern().matcher(content)) {
         while (find()) {
             val start = start()
             val end = end()
@@ -82,7 +81,7 @@ fun Changelog(
                         painter = rememberImagePainter(mediaUrl) {
                             transformations(RoundedCornersTransformation(14.dp.value))
                         },
-                        contentDescription = "Changelog Media"
+                        contentDescription = stringResource(R.string.changelog_media)
                     )
                 }
 

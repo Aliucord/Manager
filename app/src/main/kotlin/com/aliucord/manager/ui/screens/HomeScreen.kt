@@ -8,7 +8,8 @@ package com.aliucord.manager.ui.screens
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -24,26 +25,28 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.core.net.toFile
 import com.aliucord.manager.R
-import com.aliucord.manager.models.Version
-import com.aliucord.manager.preferences.devModePreference
-import com.aliucord.manager.ui.Screen
+import com.aliucord.manager.models.github.Version
+import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.components.PluginsList
+import com.aliucord.manager.ui.components.installer.DownloadMethod
 import com.aliucord.manager.ui.components.installer.InstallerDialog
+import com.aliucord.manager.ui.screens.destinations.CommitsScreenDestination
+import com.aliucord.manager.ui.screens.destinations.InstallerScreenDestination
 import com.aliucord.manager.utils.Github
 import com.aliucord.manager.utils.gson
 import com.aliucord.manager.utils.httpClient
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@ExperimentalPermissionsApi
-@ExperimentalFoundationApi
+@Destination(start = true)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navigator: DestinationsNavigator) {
     val packageManager = LocalContext.current.packageManager
     var supportedVersion by remember { mutableStateOf<String?>(null) }
     val installedVersion = remember {
@@ -54,9 +57,7 @@ fun HomeScreen(navController: NavController) {
         }
     }
 
-    val showOptionsDialog = remember { mutableStateOf(false) }
-
-    if (supportedVersion == null) LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) {
         launch(Dispatchers.IO) {
             val version = gson.fromJson(httpClient.get<String>(Github.dataUrl), Version::class.java)
 
@@ -69,7 +70,26 @@ fun HomeScreen(navController: NavController) {
         }
     }
 
-    if (showOptionsDialog.value) InstallerDialog(showOptionsDialog, navController)
+    var showOptionsDialog by remember { mutableStateOf(false) }
+
+    if (showOptionsDialog) {
+        val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri == null) return@rememberLauncherForActivityResult
+
+            navigator.navigate(InstallerScreenDestination(uri.toFile()))
+        }
+
+        InstallerDialog(
+            onDismissRequest = { showOptionsDialog = false },
+            onConfirm = { method ->
+                if (method == DownloadMethod.DOWNLOAD) {
+                    navigator.navigate(InstallerScreenDestination())
+                } else {
+                    filePicker.launch(arrayOf("application/octet-stream"))
+                }
+            }
+        )
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -78,7 +98,9 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier.wrapContentHeight()
         ) {
             Column(
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Column {
@@ -113,80 +135,89 @@ fun HomeScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            if (devModePreference.get()) {
-                                showOptionsDialog.value = true
-                            } else {
-                                navController.navigate(Screen.Installer.route) {
-                                    popUpTo(Screen.Home.route) { saveState = true }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Button(
+                            modifier = Modifier.weight(1f, true),
+                            onClick = {
+                                if (Prefs.devMode.get()) {
+                                    showOptionsDialog = true
+                                } else {
+                                    navigator.navigate(InstallerScreenDestination())
                                 }
                             }
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(drawable),
-                            contentDescription = stringResource(description),
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.padding(8.dp)
-                        )
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(8.dp),
+                                painter = painterResource(drawable),
+                                contentDescription = stringResource(description),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
 
-                        Text(stringResource(description))
+                            Text(stringResource(description))
+                        }
+
+                        if (installedVersion == "-") Button(
+                            modifier = Modifier.wrapContentSize(),
+                            onClick = { navigator.navigate(CommitsScreenDestination) },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(8.dp),
+                                painter = painterResource(R.drawable.ic_update_24dp),
+                                contentDescription = "Commits",
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
                     }
 
-                    BoxWithConstraints {
+                    if (installedVersion != "-") {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            if (installedVersion != "-") {
-                                val context = LocalContext.current
+                            val context = LocalContext.current
 
-                                Button(
-                                    modifier = Modifier.weight(1f),
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                                    onClick = {
-                                        val packageURI = Uri.parse("package:com.aliucord")
-                                        val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
+                            Button(
+                                modifier = Modifier.weight(1f),
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                                onClick = {
+                                    val packageURI = Uri.parse("package:com.aliucord")
+                                    val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
 
-                                        context.startActivity(uninstallIntent)
-                                    }
-                                ) {
-                                    Icon(
-                                        modifier = Modifier.padding(8.dp),
-                                        imageVector = Icons.Default.Delete,
-                                        contentDescription = "Uninstall",
-                                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    )
+                                    context.startActivity(uninstallIntent)
                                 }
-
-                                Button(
-                                    modifier = Modifier.weight(1f),
-                                    onClick = {
-                                        packageManager.getLaunchIntentForPackage("com.aliucord")?.let {
-                                            context.startActivity(it)
-                                        } ?: Toast.makeText(context, "Failed to launch Aliucord", Toast.LENGTH_LONG)
-                                            .show()
-                                    },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                                ) {
-                                    Icon(
-                                        modifier = Modifier.padding(8.dp),
-                                        painter = painterResource(R.drawable.ic_launch_24dp),
-                                        contentDescription = "Launch",
-                                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                                    )
-                                }
+                            ) {
+                                Icon(
+                                    modifier = Modifier.padding(8.dp),
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Uninstall",
+                                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                                )
                             }
 
                             Button(
                                 modifier = Modifier.weight(1f),
                                 onClick = {
-                                    navController.navigate(Screen.Commits.route) {
-                                        popUpTo(Screen.Home.route) { saveState = true }
-                                    }
+                                    packageManager.getLaunchIntentForPackage("com.aliucord")?.let {
+                                        context.startActivity(it)
+                                    } ?: Toast.makeText(context, "Failed to launch Aliucord", Toast.LENGTH_LONG)
+                                        .show()
                                 },
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                            ) {
+                                Icon(
+                                    modifier = Modifier.padding(8.dp),
+                                    painter = painterResource(R.drawable.ic_launch_24dp),
+                                    contentDescription = "Launch",
+                                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                            }
+
+                            Button(
+                                modifier = Modifier.weight(1f),
+                                onClick = { navigator.navigate(CommitsScreenDestination) },
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
                             ) {
                                 Icon(
@@ -195,10 +226,6 @@ fun HomeScreen(navController: NavController) {
                                     contentDescription = "Commits",
                                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
-
-                                if (this@BoxWithConstraints.minWidth > 20.dp) {
-                                    Text("Commits", color = MaterialTheme.colorScheme.onSecondaryContainer)
-                                }
                             }
                         }
                     }
@@ -206,7 +233,11 @@ fun HomeScreen(navController: NavController) {
             }
         }
 
-        ElevatedCard(Modifier.fillMaxWidth().weight(1f)) {
+        ElevatedCard(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)

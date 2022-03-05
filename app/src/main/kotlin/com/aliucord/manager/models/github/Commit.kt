@@ -3,7 +3,7 @@
  * Licensed under the Open Software License version 3.0
  */
 
-package com.aliucord.manager.models
+package com.aliucord.manager.models.github
 
 import com.google.gson.annotations.SerializedName
 

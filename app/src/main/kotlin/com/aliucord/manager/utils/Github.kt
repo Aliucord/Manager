@@ -5,8 +5,8 @@
 
 package com.aliucord.manager.utils
 
-import com.aliucord.manager.models.Commit
-import com.aliucord.manager.models.Version
+import com.aliucord.manager.models.github.Commit
+import com.aliucord.manager.models.github.Version
 import io.ktor.client.request.*
 import java.io.InputStreamReader
 import java.net.URL
@@ -28,14 +28,14 @@ object Github {
         gson.fromJson(InputStreamReader(URL(dataUrl).openStream()), Version::class.java)
     }
 
-    private val commitsCache = HashMap<String, Array<Commit>>()
+    private val commitsCache = HashMap<String, List<Commit>>()
 
-    suspend fun getCommits(vararg params: Pair<String, String>): Array<Commit> {
+    suspend fun getCommits(vararg params: Pair<String, String>): List<Commit> {
         val query = params.joinToString("&", "?") { it.first + "=" + it.second }
 
-        if (commitsCache.containsKey(query)) return commitsCache[query] ?: emptyArray()
+        if (commitsCache.containsKey(query)) return commitsCache[query] ?: emptyList()
 
-        val res = httpClient.get<Array<Commit>>(commitsUrl) {
+        val res = httpClient.get<List<Commit>>(commitsUrl) {
             params.forEach { (key, value) -> parameter(key, value) }
         }
 
@@ -43,6 +43,4 @@ object Github {
 
         return res
     }
-
-    fun getDownloadUrl(ref: String, file: String) = "https://raw.githubusercontent.com/$org/$repo/$ref/$file"
 }
