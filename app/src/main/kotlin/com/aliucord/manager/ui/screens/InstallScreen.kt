@@ -1,10 +1,13 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.screens
 
 import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -200,11 +203,11 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
 
         Spacer(Modifier.weight(1f, true))
 
-//        LinearProgressIndicator(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(8.dp),
-//            progress = 0.5f
-//        )
+        //        LinearProgressIndicator(
+        //            modifier = Modifier
+        //                .fillMaxWidth()
+        //                .height(8.dp),
+        //            progress = 0.5f
+        //        )
     }
 }

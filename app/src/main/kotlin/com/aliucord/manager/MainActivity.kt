@@ -1,15 +1,14 @@
 /*
- * Copyright (c) 2021 Juby210
+ * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
  */
+
 
 package com.aliucord.manager
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.Settings
 import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity

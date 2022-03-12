@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.CircularProgressIndicator
@@ -83,7 +86,7 @@ fun CommitsScreen() {
                     localUriHandler.openUri(commitData.htmlUrl)
                 },
                 overlineText = { Text(commitData.sha.substring(0, 7)) },
-                text = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}")}
+                text = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}") }
             )
         }
 

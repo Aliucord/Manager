@@ -1,13 +1,15 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.components
 
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier

@@ -1,9 +1,11 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,8 +63,8 @@ fun PluginsList() = Column(
             items(plugins.filter { plugin ->
                 plugin.manifest.run {
                     name.contains(search, true)
-                            || description.contains(search, true)
-                            || authors.any { a -> a.name.contains(search, true) }
+                        || description.contains(search, true)
+                        || authors.any { a -> a.name.contains(search, true) }
                 }
             }) { plugin ->
                 var showDeleteDialog by remember { mutableStateOf(false) }

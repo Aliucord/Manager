@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.components.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment

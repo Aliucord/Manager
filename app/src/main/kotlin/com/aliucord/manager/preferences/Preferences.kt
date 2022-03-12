@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2021 Juby210
+ * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
  */
+
 
 package com.aliucord.manager.preferences
 

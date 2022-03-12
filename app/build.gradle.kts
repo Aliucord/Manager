@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2021 Juby210
- * Licensed under the Open Software License version 3.0
- */
-
 val pagingVersion = "3.1.0"
 val accompanistVersion = "0.23.0"
 val composeVersion = "1.1.0"

@@ -1,17 +1,15 @@
 /*
- * Copyright (c) 2021 Juby210
+ * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
  */
+
 
 package com.aliucord.manager.ui.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,9 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.components.ListItem
-import com.aliucord.manager.ui.components.settings.PreferenceItem
-import com.aliucord.manager.ui.components.settings.ThemeDialog
-import com.aliucord.manager.ui.components.settings.ThemeSetting
+import com.aliucord.manager.ui.components.settings.*
 import com.ramcosta.composedestinations.annotation.Destination
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.material.ExperimentalMaterialApi::class)

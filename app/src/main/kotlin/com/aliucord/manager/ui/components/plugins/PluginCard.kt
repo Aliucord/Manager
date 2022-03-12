@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.components.plugins
 
 import androidx.compose.foundation.layout.*
@@ -10,10 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.models.Plugin
@@ -91,7 +94,8 @@ fun PluginCard(
                     Icon(
                         painter = painterResource(R.drawable.ic_account_github_white_24dp),
                         contentDescription = "GitHub",
-                        tint = MaterialTheme.colorScheme.onSurface)
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
                 }
 
                 if (plugin.manifest.changelog != null) {

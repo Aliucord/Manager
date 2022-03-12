@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.components
 
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -22,14 +25,16 @@ fun ListItem(
 ) = M2ListItem(
     modifier = modifier,
     icon = icon,
-    overlineText = if (overlineText != null) {{
-        CompositionLocalProvider(
-            LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant,
-            LocalTextStyle provides MaterialTheme.typography.labelMedium
-        ) {
-            overlineText()
+    overlineText = if (overlineText != null) {
+        {
+            CompositionLocalProvider(
+                LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant,
+                LocalTextStyle provides MaterialTheme.typography.labelMedium
+            ) {
+                overlineText()
+            }
         }
-    }} else null,
+    } else null,
     text = {
         CompositionLocalProvider(
             LocalContentColor provides MaterialTheme.colorScheme.onSurface,

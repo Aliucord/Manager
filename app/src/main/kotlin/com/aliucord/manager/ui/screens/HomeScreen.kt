@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2021 Juby210
+ * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
  */
+
 
 package com.aliucord.manager.ui.screens
 
@@ -20,10 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toFile
 import com.aliucord.manager.R
@@ -34,9 +33,7 @@ import com.aliucord.manager.ui.components.installer.DownloadMethod
 import com.aliucord.manager.ui.components.installer.InstallerDialog
 import com.aliucord.manager.ui.screens.destinations.CommitsScreenDestination
 import com.aliucord.manager.ui.screens.destinations.InstallerScreenDestination
-import com.aliucord.manager.utils.Github
-import com.aliucord.manager.utils.gson
-import com.aliucord.manager.utils.httpClient
+import com.aliucord.manager.utils.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import io.ktor.client.request.*

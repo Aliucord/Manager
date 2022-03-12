@@ -1,15 +1,13 @@
 /*
- * Copyright (c) 2021 Juby210
+ * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
  */
+
 
 package com.aliucord.manager.utils
 
 import com.aliucord.manager.preferences.Prefs
-import pxb.android.axml.AxmlReader
-import pxb.android.axml.AxmlVisitor
-import pxb.android.axml.AxmlWriter
-import pxb.android.axml.NodeVisitor
+import pxb.android.axml.*
 
 fun patchManifest(manifestBytes: ByteArray): ByteArray {
     val packageName = "com.aliucord"
@@ -32,7 +30,8 @@ fun patchManifest(manifestBytes: ByteArray): ByteArray {
                     return when (name) {
                         "uses-sdk" -> ReplaceAttrsVisitor(nv, mapOf("targetSdkVersion" to 29))
                         "permission" -> ReplaceAttrsVisitor(nv, mapOf("name" to "$packageName.permission.CONNECT"))
-                        "application" -> object : ReplaceAttrsVisitor(nv, mapOf(REQUEST_LEGACY_STORAGE to 1, "label" to "Aliucord", "debuggable" to debuggable)) {
+                        "application" -> object :
+                            ReplaceAttrsVisitor(nv, mapOf(REQUEST_LEGACY_STORAGE to 1, "label" to "Aliucord", "debuggable" to debuggable)) {
                             private var addLegacyStorage = true
                             private var addDebuggable = debuggable
 
@@ -47,14 +46,18 @@ fun patchManifest(manifestBytes: ByteArray): ByteArray {
                                     "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to "Aliucord"))
                                     "service" -> object : NodeVisitor(visitor) {
                                         override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
-                                            super.attr(ns, name, resourceId, type,
-                                                if (value is String && value.endsWith("CONNECT")) "$packageName.permission.CONNECT" else value)
+                                            super.attr(
+                                                ns, name, resourceId, type,
+                                                if (value is String && value.endsWith("CONNECT")) "$packageName.permission.CONNECT" else value
+                                            )
                                         }
                                     }
                                     "provider" -> object : NodeVisitor(visitor) {
                                         override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
-                                            super.attr(ns, name, resourceId, type,
-                                                if (name == "authorities") (value as String).replace("com.discord", packageName) else value)
+                                            super.attr(
+                                                ns, name, resourceId, type,
+                                                if (name == "authorities") (value as String).replace("com.discord", packageName) else value
+                                            )
                                         }
                                     }
                                     "meta-data" -> object : NodeVisitor(visitor) {
@@ -62,8 +65,10 @@ fun patchManifest(manifestBytes: ByteArray): ByteArray {
 
                                         override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                             if (name == "name" && value == "firebase_crashlytics_collection_enabled") crashlytics = true
-                                            super.attr(ns, name, resourceId, type,
-                                                if (name == "value" && crashlytics) 0 else value)
+                                            super.attr(
+                                                ns, name, resourceId, type,
+                                                if (name == "value" && crashlytics) 0 else value
+                                            )
                                         }
                                     }
                                     else -> visitor

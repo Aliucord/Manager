@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Juby210 & zt
+ * Licensed under the Open Software License version 3.0
+ */
+
 package com.aliucord.manager.ui.components.plugins
 
 import android.annotation.SuppressLint
@@ -132,7 +137,8 @@ fun Changelog(
                                                 modifier = Modifier.padding(top = 16.dp, bottom = 6.dp)
                                             )
                                         }
-                                        line.all { c -> c == '=' } -> {} // Discord ignores =======
+                                        line.all { c -> c == '=' } -> {
+                                        } // Discord ignores =======
                                         else -> {
                                             LinkText(
                                                 buildAnnotatedString {

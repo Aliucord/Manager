@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2021 Juby210
- * Licensed under the Open Software License version 3.0
- */
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {

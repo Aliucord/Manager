@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2021 Juby210 & Vendicated
+ * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
  */
+
 package com.aliucord.manager.utils
 
 import com.aliucord.libzip.Zip
@@ -16,17 +17,13 @@ import org.bouncycastle.cms.jcajce.JcaSignerInfoGeneratorBuilder
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder
 import org.bouncycastle.util.encoders.Base64
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
+import java.io.*
 import java.math.BigInteger
 import java.security.*
 import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 import java.util.*
-import java.util.jar.Attributes
-import java.util.jar.JarFile
-import java.util.jar.Manifest
+import java.util.jar.*
 
 private class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
 
