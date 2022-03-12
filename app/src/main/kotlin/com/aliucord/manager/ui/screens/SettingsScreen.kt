@@ -10,7 +10,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -22,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.components.ListItem
+import com.aliucord.manager.ui.components.TextField
 import com.aliucord.manager.ui.components.settings.*
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -54,6 +59,20 @@ fun SettingsScreen() = Column(
     PreferenceItem(
         title = { Text(stringResource(R.string.replace_bg)) },
         preference = Prefs.replaceBg
+    )
+
+    TextField(
+        value = Prefs.appName.get(),
+        onValueChange = { Prefs.appName.set(it) },
+        placeholder = { Text(stringResource(R.string.app_name_setting)) },
+        label = { Text(stringResource(R.string.app_name_setting)) },
+    )
+
+    TextField(
+        value = Prefs.packageName.get(),
+        onValueChange = { Prefs.packageName.set(it) },
+        placeholder = { Text(stringResource(R.string.package_name)) },
+        label = { Text(stringResource(R.string.package_name)) },
     )
 
     val devModeOn = Prefs.devMode.get()

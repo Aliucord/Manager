@@ -48,7 +48,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
     var supportedVersion by remember { mutableStateOf<String?>(null) }
     val installedVersion = remember {
         try {
-            packageManager.getPackageInfo("com.aliucord", 0).versionName
+            packageManager.getPackageInfo(Prefs.packageName.get(), 0).versionName
         } catch (th: Throwable) {
             "-"
         }
@@ -102,7 +102,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
             ) {
                 Column {
                     Text(
-                        "Aliucord",
+                        "Aliucord${Prefs.packageName.get().let { if (it != "com.aliucord") " ($it)" else ""}}",
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -180,7 +180,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                                 modifier = Modifier.weight(1f),
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
                                 onClick = {
-                                    val packageURI = Uri.parse("package:com.aliucord")
+                                    val packageURI = Uri.parse("package:${Prefs.packageName.get()}")
                                     val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
 
                                     context.startActivity(uninstallIntent)
@@ -197,7 +197,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                             Button(
                                 modifier = Modifier.weight(1f),
                                 onClick = {
-                                    packageManager.getLaunchIntentForPackage("com.aliucord")?.let {
+                                    packageManager.getLaunchIntentForPackage(Prefs.packageName.get())?.let {
                                         context.startActivity(it)
                                     } ?: Toast.makeText(context, "Failed to launch Aliucord", Toast.LENGTH_LONG)
                                         .show()

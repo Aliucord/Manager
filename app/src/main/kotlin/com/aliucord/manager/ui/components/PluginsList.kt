@@ -8,11 +8,8 @@ package com.aliucord.manager.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
@@ -39,22 +36,13 @@ fun PluginsList() = Column(
     var search by remember { mutableStateOf("") }
 
     if (plugins.isNotEmpty()) {
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
+        TextField(
             value = search,
             onValueChange = { search = it },
             placeholder = { Text(stringResource(R.string.search)) },
             trailingIcon = { Icon(Icons.Default.Search, stringResource(R.string.search_plugins)) },
             keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions { focusManager.clearFocus() },
-            shape = RoundedCornerShape(16.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.outline,
-                cursorColor = MaterialTheme.colorScheme.primary
-            )
         )
 
         LazyColumn(

@@ -46,4 +46,6 @@
   <string name="select_apk">Select APK</string>
   <string name="download_method">Download Method</string>
   <string name="changelog_media">Changelog Media</string>
+  <string name="app_name_setting">App Name</string>
+  <string name="package_name">Package Name</string>
 </resources>

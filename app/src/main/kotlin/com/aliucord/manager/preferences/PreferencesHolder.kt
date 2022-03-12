@@ -15,4 +15,6 @@ object Prefs {
     val debuggable = boolPreference("debuggable")
     val useDexFromStorage = boolPreference("use_dex_from_storage")
     val dexLocation = stringPreference("dex_location", "$aliucordDir/Injector.dex")
+    val appName = stringPreference("app_name", "Aliucord")
+    val packageName = stringPreference("package_name", "com.aliucord")
 }

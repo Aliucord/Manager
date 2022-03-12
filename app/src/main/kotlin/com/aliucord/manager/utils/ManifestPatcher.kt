@@ -3,15 +3,13 @@
  * Licensed under the Open Software License version 3.0
  */
 
-
 package com.aliucord.manager.utils
 
 import com.aliucord.manager.preferences.Prefs
 import pxb.android.axml.*
 
 fun patchManifest(manifestBytes: ByteArray): ByteArray {
-    val packageName = "com.aliucord"
-    val debuggable = Prefs.debuggable.get()
+    val packageName = Prefs.packageName.get()
 
     val reader = AxmlReader(manifestBytes)
     val writer = AxmlWriter()
@@ -30,25 +28,37 @@ fun patchManifest(manifestBytes: ByteArray): ByteArray {
                     return when (name) {
                         "uses-sdk" -> ReplaceAttrsVisitor(nv, mapOf("targetSdkVersion" to 29))
                         "permission" -> ReplaceAttrsVisitor(nv, mapOf("name" to "$packageName.permission.CONNECT"))
-                        "application" -> object :
-                            ReplaceAttrsVisitor(nv, mapOf(REQUEST_LEGACY_STORAGE to 1, "label" to "Aliucord", "debuggable" to debuggable)) {
+                        "application" -> object : ReplaceAttrsVisitor(
+                            nv,
+                            mapOf(REQUEST_LEGACY_STORAGE to 1, "label" to Prefs.appName.get(), DEBUGGABLE to Prefs.debuggable.get())
+                        ) {
                             private var addLegacyStorage = true
-                            private var addDebuggable = debuggable
+                            private var addDebuggable = Prefs.debuggable.get()
 
                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                 super.attr(ns, name, resourceId, type, value)
                                 if (name == REQUEST_LEGACY_STORAGE) addLegacyStorage = false
+                                else if (name == DEBUGGABLE) addDebuggable = false
                             }
 
                             override fun child(ns: String?, name: String): NodeVisitor {
                                 val visitor = super.child(ns, name)
                                 return when (name) {
-                                    "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to "Aliucord"))
+                                    "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to Prefs.appName.get()))
                                     "service" -> object : NodeVisitor(visitor) {
+                                        private var disableService = false
+
                                         override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
+                                            if (name == "name" && (
+                                                    value == "com.google.android.gms.analytics.AnalyticsService" ||
+                                                        value == "com.google.android.gms.analytics.AnalyticsJobService")
+                                            ) disableService = true
                                             super.attr(
                                                 ns, name, resourceId, type,
-                                                if (value is String && value.endsWith("CONNECT")) "$packageName.permission.CONNECT" else value
+                                                if (value is String && value.endsWith("CONNECT"))
+                                                    "$packageName.permission.CONNECT"
+                                                else if (disableService && name == "enabled") 0
+                                                else value
                                             )
                                         }
                                     }
@@ -79,7 +89,7 @@ fun patchManifest(manifestBytes: ByteArray): ByteArray {
                                 if (addLegacyStorage)
                                     super.attr(ANDROID_NAMESPACE, REQUEST_LEGACY_STORAGE, -1, TYPE_INT_BOOLEAN, 1)
                                 if (addDebuggable)
-                                    super.attr(ANDROID_NAMESPACE, "debuggable", -1, TYPE_INT_BOOLEAN, 1)
+                                    super.attr(ANDROID_NAMESPACE, DEBUGGABLE, -1, TYPE_INT_BOOLEAN, 1)
                                 super.end()
                             }
                         }
