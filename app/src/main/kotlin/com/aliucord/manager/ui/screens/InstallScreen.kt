@@ -49,21 +49,6 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                 }
             }
 
-            val useDebuggableManifest = Prefs.debuggable.get()
-            val manifest =
-                File(
-                    context.externalCacheDir,
-                    if (useDebuggableManifest) "AndroidManifest-debuggable.xml" else "AndroidManifest.xml"
-                ).also { file ->
-                    if (file.exists()) return@also
-
-                    log += "Downloading patched manifest...\n"
-
-                    DownloadUtils.downloadManifest(context, useDebuggableManifest)
-
-                    log += "Done\n"
-                }
-
             val injector = File(context.externalCacheDir, "Injector.dex").also { file ->
                 if (file.exists()) return@also
 
@@ -84,13 +69,17 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
             log += "Repacking APK\n"
 
             var patched = false
+            var manifestBytes: ByteArray?
 
             with(Zip(outputApk.absolutePath, 6, 'r')) {
-                repeat(totalEntries) { index ->
+                for (index in 0 until totalEntries) {
                     openEntryByIndex(index)
                     val name = entryName
-                    if (name == "classes5.dex") patched = true
                     closeEntry()
+                    if (name == "classes5.dex") {
+                        patched = true
+                        break
+                    }
                 }
 
                 val cacheDir = context.cacheDir.absolutePath
@@ -100,6 +89,10 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                     extractEntry(cacheDir + "/classes" + (i + 1) + ".dex")
                     closeEntry()
                 }
+
+                openEntry("AndroidManifest.xml")
+                manifestBytes = readEntry()
+                closeEntry()
 
                 close()
             }
@@ -136,14 +129,18 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
 
                 writeEntry("classes5.dex", assetManager.open("pine/classes.dex"))
 
-                openEntry("AndroidManifest.xml")
-                compressFile(manifest.absolutePath)
-                closeEntry()
-
                 writeEntry("lib/arm64-v8a/libpine.so", assetManager.open("pine/arm64-v8a/libpine.so"))
                 writeEntry("lib/armeabi-v7a/libpine.so", assetManager.open("pine/armeabi-v7a/libpine.so"))
 
                 writeEntry("classes6.dex", assetManager.open("kotlin/classes.dex"))
+
+                manifestBytes?.let { bytes ->
+                    log += "Patching manifest\n"
+                    val newManifestBytes = patchManifest(bytes)
+                    openEntry("AndroidManifest.xml")
+                    writeEntry(newManifestBytes, newManifestBytes.size.toLong())
+                    closeEntry()
+                }
 
                 close()
             }

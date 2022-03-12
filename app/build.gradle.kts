@@ -89,6 +89,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.65")
+    implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.2 is broken btw
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")

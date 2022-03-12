@@ -11,7 +11,8 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.1.2")
+        // please do not update to 7.1+, it breaks compatibility with arctic fox android studio
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
 
         // NOTE: Do not place your application dependencies here; they belong

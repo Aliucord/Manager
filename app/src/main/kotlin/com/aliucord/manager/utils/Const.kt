@@ -13,3 +13,7 @@ val httpClient = HttpClient(Android) {
 val aliucordDir = File(Environment.getExternalStorageDirectory(), "Aliucord")
 val pluginsDir = File(aliucordDir, "plugins")
 val gson = Gson()
+
+const val MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE"
+const val ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android"
+const val REQUEST_LEGACY_STORAGE = "requestLegacyExternalStorage"
