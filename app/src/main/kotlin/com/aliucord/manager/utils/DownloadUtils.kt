@@ -53,7 +53,7 @@ object DownloadUtils {
 
             receiver.downloadId = DownloadManager.Request(url.toUri()).run {
                 setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                setDestinationUri(File(ctx.externalCacheDir, fileName).toUri())
+                setDestinationUri(ctx.externalCacheDir!!.resolve(fileName).toUri())
                 downloadManager.enqueue(this)
             }
         }

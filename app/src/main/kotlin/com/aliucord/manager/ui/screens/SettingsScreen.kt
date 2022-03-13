@@ -10,11 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -63,17 +59,11 @@ fun SettingsScreen() = Column(
 
     TextField(
         value = Prefs.appName.get(),
-        onValueChange = { Prefs.appName.set(it) },
+        onValueChange = Prefs.appName::set,
         placeholder = { Text(stringResource(R.string.app_name_setting)) },
         label = { Text(stringResource(R.string.app_name_setting)) },
     )
 
-    TextField(
-        value = Prefs.packageName.get(),
-        onValueChange = { Prefs.packageName.set(it) },
-        placeholder = { Text(stringResource(R.string.package_name)) },
-        label = { Text(stringResource(R.string.package_name)) },
-    )
 
     val devModeOn = Prefs.devMode.get()
 
@@ -83,6 +73,13 @@ fun SettingsScreen() = Column(
     )
 
     if (devModeOn) {
+        TextField(
+            value = Prefs.packageName.get(),
+            onValueChange = Prefs.packageName::set,
+            placeholder = { Text(stringResource(R.string.package_name)) },
+            label = { Text(stringResource(R.string.package_name)) },
+        )
+
         PreferenceItem(
             title = { Text(stringResource(R.string.debuggable)) },
             description = { Text(stringResource(R.string.debuggable_description)) },
@@ -106,6 +103,7 @@ fun SettingsScreen() = Column(
             MaterialTheme.colorScheme.onBackground.copy(ContentAlpha.disabled)
         }
 
+        // TODO: Make installer use selected dex file
         ListItem(
             modifier = if (udfs.get()) Modifier.clickable {
                 picker.launch(arrayOf("application/octet-stream"))
@@ -119,9 +117,7 @@ fun SettingsScreen() = Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        onClick = {
-            context.cacheDir.deleteRecursively()
-        }
+        onClick = context.cacheDir::deleteRecursively
     ) {
         Text(stringResource(R.string.clear_files_cache), textAlign = TextAlign.Center)
     }

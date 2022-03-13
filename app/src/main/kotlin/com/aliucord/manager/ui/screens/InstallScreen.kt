@@ -39,7 +39,7 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
             val discordApk = apk ?: run {
                 log += "Checking for cached APK...\n"
 
-                File(context.externalCacheDir, "discord-${supportedVersion}.apk").also { file ->
+                context.externalCacheDir!!.resolve("discord-${supportedVersion}.apk").also { file ->
                     val archiveInfo = context.packageManager.getPackageArchiveInfo(file.path, 0)
 
                     if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also
@@ -52,7 +52,7 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                 }
             }
 
-            val injector = File(context.externalCacheDir, "Injector.dex").also { file ->
+            val injector = context.externalCacheDir!!.resolve("Injector.dex").also { file ->
                 if (file.exists()) return@also
 
                 log += "Downloading injector...\n"
@@ -66,7 +66,7 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                 if (!it.exists() && !it.mkdirs()) throw FileNotFoundException()
             }
 
-            val outputApk = File(outputDir, "Aliucord.apk")
+            val outputApk = outputDir.resolve("Aliucord.apk")
             discordApk.copyTo(outputApk, true)
 
             log += "Repacking APK\n"
@@ -118,7 +118,7 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
 
                 if (!patched) for (i in 2..4) {
                     val name = "classes$i.dex"
-                    val cacheFile = File(context.cacheDir, name)
+                    val cacheFile = context.cacheDir.resolve(name)
 
                     openEntry(name)
                     compressFile(cacheFile.absolutePath)
@@ -179,13 +179,12 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
             log += "Signed APK\n"
 
             val intent = Intent(Intent.ACTION_VIEW).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+
                 setDataAndType(
                     FileProvider.getUriForFile(context, "${BuildConfig.APPLICATION_ID}.provider", outputApk),
                     "application/vnd.android.package-archive"
                 )
-
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
 
             context.startActivity(intent)

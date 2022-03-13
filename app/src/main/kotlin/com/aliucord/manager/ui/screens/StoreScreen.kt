@@ -36,6 +36,7 @@ private data class Tree(
 fun StoreScreen() {
     val plugins = remember { mutableStateListOf<Tree.File>() }
 
+    // TODO: Display cards with option to install plugin
     Column {
         if (plugins.isEmpty()) {
             Box(

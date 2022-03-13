@@ -58,18 +58,18 @@ kotlin {
 }
 
 dependencies {
-    implementation(fileTree("./libs"))
+//    implementation(fileTree("./libs"))
     // core dependencies
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.core:core-ktx:1.7.0")
-//    implementation("com.github.aliucord:libzip:1.0.1")
+    implementation("com.github.aliucord:libzip:1.0.1")
     implementation("androidx.core:core-splashscreen:1.0.0-beta01")
 
     // compose dependencies
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha06")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha07")
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     // accompanist dependencies
@@ -85,6 +85,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.65")
     implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.2 is broken btw
+    implementation("com.android.tools.build:apksig:7.1.2")
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
