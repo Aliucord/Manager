@@ -58,11 +58,11 @@ kotlin {
 }
 
 dependencies {
-//    implementation(fileTree("./libs"))
+    implementation(fileTree("./libs"))
+
     // core dependencies
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("com.github.aliucord:libzip:1.0.1")
     implementation("androidx.core:core-splashscreen:1.0.0-beta01")
 
     // compose dependencies

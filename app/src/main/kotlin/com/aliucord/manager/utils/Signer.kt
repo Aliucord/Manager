@@ -18,8 +18,6 @@ import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 import java.util.*
 
-private class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
-
 object Signer {
     private val password = "password".toCharArray()
 
@@ -79,6 +77,7 @@ object Signer {
 
     fun signApk(apkFile: File) {
         val outputApk = aliucordDir.resolve("Aliucord-Signed.apk")
+
         ApkSigner.Builder(listOf(signerConfig))
             .setV1SigningEnabled(false)
             .setV2SigningEnabled(true)
@@ -88,6 +87,9 @@ object Signer {
             .setOutputApk(outputApk)
             .build()
             .sign()
+
         outputApk.renameTo(apkFile)
     }
+
+    private class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
 }
