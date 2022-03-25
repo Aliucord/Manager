@@ -7,9 +7,12 @@ package com.aliucord.manager.ui.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -24,13 +27,11 @@ import com.aliucord.manager.ui.components.ListItem
 import com.aliucord.manager.ui.components.settings.*
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OptIn(ExperimentalMaterial3Api::class, androidx.compose.material.ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Destination
 @Composable
 fun SettingsScreen() = Column(
-    modifier = Modifier.verticalScroll(
-        state = rememberScrollState()
-    ),
+    modifier = Modifier.verticalScroll(state = rememberScrollState()),
     verticalArrangement = Arrangement.spacedBy(12.dp)
 ) {
     val context = LocalContext.current
@@ -53,11 +54,6 @@ fun SettingsScreen() = Column(
 
     Divider()
 
-    PreferenceItem(
-        title = { Text(stringResource(R.string.replace_bg)) },
-        preference = Prefs.replaceBg
-    )
-
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,6 +63,10 @@ fun SettingsScreen() = Column(
         label = { Text(stringResource(R.string.app_name_setting)) },
     )
 
+    PreferenceItem(
+        title = { Text(stringResource(R.string.replace_bg)) },
+        preference = Prefs.replaceBg
+    )
 
     val devModeOn = Prefs.devMode.get()
 
@@ -75,47 +75,54 @@ fun SettingsScreen() = Column(
         preference = Prefs.devMode
     )
 
-    if (devModeOn) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            value = Prefs.packageName.get(),
-            onValueChange = Prefs.packageName::set,
-            label = { Text(stringResource(R.string.package_name)) },
-        )
+    AnimatedVisibility(
+        visible = devModeOn,
+        exit = shrinkVertically()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                value = Prefs.packageName.get(),
+                onValueChange = Prefs.packageName::set,
+                label = { Text(stringResource(R.string.package_name)) },
+            )
 
-        PreferenceItem(
-            title = { Text(stringResource(R.string.debuggable)) },
-            description = { Text(stringResource(R.string.debuggable_description)) },
-            preference = Prefs.debuggable
-        )
+            PreferenceItem(
+                title = { Text(stringResource(R.string.debuggable)) },
+                description = { Text(stringResource(R.string.debuggable_description)) },
+                preference = Prefs.debuggable
+            )
 
-        val udfs = Prefs.useDexFromStorage
+            val udfs = Prefs.useDexFromStorage
 
-        PreferenceItem(
-            title = { Text(stringResource(R.string.use_dex_from_storage)) },
-            preference = Prefs.useDexFromStorage
-        )
+            PreferenceItem(
+                title = { Text(stringResource(R.string.use_dex_from_storage)) },
+                preference = Prefs.useDexFromStorage
+            )
 
-        val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            if (uri != null) Prefs.dexLocation.set(uri.path!!)
+            val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+                if (uri != null) Prefs.dexLocation.set(uri.path!!)
+            }
+
+            val color = if (udfs.get()) {
+                Color.Unspecified
+            } else {
+                MaterialTheme.colorScheme.onBackground.copy(ContentAlpha.disabled)
+            }
+
+            // TODO: Make installer use selected dex file
+            ListItem(
+                modifier = if (udfs.get()) Modifier.clickable {
+                    picker.launch(arrayOf("application/octet-stream"))
+                } else Modifier,
+                text = { Text(stringResource(R.string.dex_location), color = color) },
+                secondaryText = { Text(Prefs.dexLocation.get(), color = color) }
+            )
         }
-
-        val color = if (udfs.get()) {
-            Color.Unspecified
-        } else {
-            MaterialTheme.colorScheme.onBackground.copy(ContentAlpha.disabled)
-        }
-
-        // TODO: Make installer use selected dex file
-        ListItem(
-            modifier = if (udfs.get()) Modifier.clickable {
-                picker.launch(arrayOf("application/octet-stream"))
-            } else Modifier,
-            text = { Text(stringResource(R.string.dex_location), color = color) },
-            secondaryText = { Text(Prefs.dexLocation.get(), color = color) }
-        )
     }
 
     Button(
