@@ -69,7 +69,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha07")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha08")
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     // accompanist dependencies
@@ -77,11 +77,11 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
 
     // compose destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.3.2-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.3.2-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.3.5-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.3.5-beta")
 
     // other dependencies
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.65")
     implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.2 is broken btw
