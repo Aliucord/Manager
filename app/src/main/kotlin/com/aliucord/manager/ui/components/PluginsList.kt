@@ -36,10 +36,11 @@ fun PluginsList() = Column(
     var search by remember { mutableStateOf("") }
 
     if (plugins.isNotEmpty()) {
-        TextField(
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = search,
             onValueChange = { search = it },
-            placeholder = { Text(stringResource(R.string.search)) },
+            label = { Text(stringResource(R.string.search)) },
             trailingIcon = { Icon(Icons.Default.Search, stringResource(R.string.search_plugins)) },
             keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions { focusManager.clearFocus() },

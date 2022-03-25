@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.components.ListItem
-import com.aliucord.manager.ui.components.TextField
 import com.aliucord.manager.ui.components.settings.*
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -57,10 +56,12 @@ fun SettingsScreen() = Column(
         preference = Prefs.replaceBg
     )
 
-    TextField(
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
         value = Prefs.appName.get(),
         onValueChange = Prefs.appName::set,
-        placeholder = { Text(stringResource(R.string.app_name_setting)) },
         label = { Text(stringResource(R.string.app_name_setting)) },
     )
 
@@ -73,10 +74,12 @@ fun SettingsScreen() = Column(
     )
 
     if (devModeOn) {
-        TextField(
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             value = Prefs.packageName.get(),
             onValueChange = Prefs.packageName::set,
-            placeholder = { Text(stringResource(R.string.package_name)) },
             label = { Text(stringResource(R.string.package_name)) },
         )
 
