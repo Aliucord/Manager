@@ -3,12 +3,11 @@
  * Licensed under the Open Software License version 3.0
  */
 
-
 package com.aliucord.manager.ui.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.*
@@ -29,6 +28,9 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Destination
 @Composable
 fun SettingsScreen() = Column(
+    modifier = Modifier.verticalScroll(
+        state = rememberScrollState()
+    ),
     verticalArrangement = Arrangement.spacedBy(12.dp)
 ) {
     val context = LocalContext.current
