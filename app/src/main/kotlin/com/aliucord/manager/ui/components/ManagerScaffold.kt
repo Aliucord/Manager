@@ -31,7 +31,7 @@ fun ManagerScaffold() {
     Scaffold(
         topBar = { AppBar(navController) }
     ) { paddingValues ->
-        val storagePermissionState = rememberPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val storagePermissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         PermissionRequired(
             permissionState = storagePermissionState,
