@@ -91,8 +91,8 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                 val cacheDir = context.cacheDir.absolutePath
 
                 if (!patched) (1..3).forEach { i ->
-                    openEntry("classes" + (if (i == 1) "" else i) + ".dex")
-                    extractEntry(cacheDir + "/classes" + (i + 1) + ".dex")
+                    openEntry("classes${if (i == 1) "" else i}.dex")
+                    extractEntry("$cacheDir/classes${i + 1}.dex")
                     closeEntry()
                 }
 
@@ -106,18 +106,21 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
             val assetManager = context.assets
 
             with(Zip(outputApk.absolutePath, 6, 'a')) {
-
-                if (!patched) {
-                    (1..3).forEach { i -> deleteEntry("classes${if (i == 1) "" else i}.dex") }
-                } else {
+                if (patched) {
                     deleteEntry("classes.dex")
                     deleteEntry("classes5.dex")
                     deleteEntry("classes6.dex")
+                } else {
+                    (1..3).forEach { i -> deleteEntry("classes${if (i == 1) "" else i}.dex") }
                 }
 
                 deleteEntry("AndroidManifest.xml")
-                deleteEntry("lib/arm64-v8a/libpine.so")
-                deleteEntry("lib/armeabi-v7a/libpine.so")
+
+                listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64").forEach { arch ->
+                    listOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so").forEach { file ->
+                        deleteEntry("lib/$arch$file")
+                    }
+                }
 
                 if (!patched) for (i in 2..4) {
                     val name = "classes$i.dex"
@@ -133,10 +136,13 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                 compressFile(injector.absolutePath)
                 closeEntry()
 
-                writeEntry("classes5.dex", assetManager.open("pine/classes.dex"))
+                writeEntry("classes5.dex", assetManager.open("aliuhook/classes.dex"))
 
-                writeEntry("lib/arm64-v8a/libpine.so", assetManager.open("pine/arm64-v8a/libpine.so"))
-                writeEntry("lib/armeabi-v7a/libpine.so", assetManager.open("pine/armeabi-v7a/libpine.so"))
+                listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64").forEach { arch ->
+                    listOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so").forEach { file ->
+                        writeEntry("lib/$arch$file", assetManager.open("aliuhook/$arch$file"))
+                    }
+                }
 
                 writeEntry("classes6.dex", assetManager.open("kotlin/classes.dex"))
 
