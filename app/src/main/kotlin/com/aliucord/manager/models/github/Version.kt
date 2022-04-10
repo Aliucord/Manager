@@ -5,6 +5,9 @@
 
 package com.aliucord.manager.models.github
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Version(
     val versionCode: String,
     val versionName: String,

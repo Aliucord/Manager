@@ -5,6 +5,9 @@
 
 package com.aliucord.manager.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Manifest(
     val name: String,
     val authors: ArrayList<Author>,
@@ -14,5 +17,6 @@ data class Manifest(
     val changelog: String?,
     val changelogMedia: String?
 ) {
+    @Serializable
     data class Author(val name: String, val id: Long)
 }

@@ -5,9 +5,11 @@
 
 package com.aliucord.manager.models.github
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GithubUser(
-    @SerializedName("login") val name: String,
+    @SerialName("login") val name: String,
     val contributions: Int
 )

@@ -5,14 +5,16 @@
 
 package com.aliucord.manager.models.github
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Commit(
-    @SerializedName("html_url") val htmlUrl: String,
+    @SerialName("html_url") val htmlUrl: String,
     val sha: String,
     val commit: Commit,
     val author: Author
 ) {
-    data class Author(@SerializedName("login") val name: String)
-    data class Commit(val message: String)
+    @Serializable data class Author(@SerialName("login") val name: String)
+    @Serializable data class Commit(val message: String)
 }

@@ -7,12 +7,15 @@ package com.aliucord.manager.models
 
 import android.util.Log
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.utils.gson
+import com.aliucord.manager.utils.json
 import com.aliucord.manager.utils.pluginsDir
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.decodeFromStream
 import java.io.File
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
 
+@OptIn(ExperimentalSerializationApi::class)
 data class Plugin(val file: File) {
     val manifest: Manifest
 
@@ -21,9 +24,7 @@ data class Plugin(val file: File) {
             val entry = zipFile.getEntry("manifest.json")
                 ?: throw ZipException("Plugin ${file.nameWithoutExtension} has no manifest.")
 
-            manifest = zipFile.getInputStream(entry).use { zis ->
-                gson.fromJson(zis.reader(), Manifest::class.java)
-            }
+            manifest = zipFile.getInputStream(entry).use { zis -> json.decodeFromStream(zis) }
         }
     }
 

@@ -7,8 +7,10 @@ package com.aliucord.manager.utils
 
 import com.aliucord.manager.models.github.Commit
 import com.aliucord.manager.models.github.Version
+import io.ktor.client.call.*
 import io.ktor.client.request.*
-import java.io.InputStreamReader
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.decodeFromStream
 import java.net.URL
 import kotlin.collections.set
 
@@ -24,8 +26,9 @@ object Github {
         // TODO
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     val version: Version by lazy {
-        gson.fromJson(InputStreamReader(URL(dataUrl).openStream()), Version::class.java)
+        json.decodeFromStream(URL(dataUrl).openStream())
     }
 
     private val commitsCache = HashMap<String, List<Commit>>()
@@ -35,9 +38,9 @@ object Github {
 
         if (commitsCache.containsKey(query)) return commitsCache[query] ?: emptyList()
 
-        val res = httpClient.get<List<Commit>>(commitsUrl) {
+        val res = httpClient.get(commitsUrl) {
             params.forEach { (key, value) -> parameter(key, value) }
-        }
+        }.body<List<Commit>>()
 
         commitsCache[query] = res
 

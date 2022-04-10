@@ -37,8 +37,10 @@ import com.aliucord.manager.utils.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination(start = true)
@@ -56,7 +58,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
 
     LaunchedEffect(Unit) {
         launch(Dispatchers.IO) {
-            val version = gson.fromJson(httpClient.get<String>(Github.dataUrl), Version::class.java)
+            val version = json.decodeFromString<Version>(httpClient.get(Github.dataUrl).bodyAsText())
 
             supportedVersion = "${version.versionName} - " + when (version.versionCode[3].toString()) {
                 "0" -> "Stable"

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.utils.httpClient
 import com.ramcosta.composedestinations.annotation.Destination
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,10 +48,9 @@ fun StoreScreen() {
 
             LaunchedEffect(Unit) {
                 launch(Dispatchers.IO) {
-                    val content =
-                        httpClient.get<Tree>("https://api.github.com/repos/DiamondMiner88/AllACPlugins/git/trees/master") {
-                            header("accept", "application/json")
-                        }
+                    val content = httpClient.get("https://api.github.com/repos/DiamondMiner88/AllACPlugins/git/trees/master") {
+                        header("accept", "application/json")
+                    }.body<Tree>()
 
                     plugins.addAll(content.tree.filter { it.mode == "160000" })
                 }

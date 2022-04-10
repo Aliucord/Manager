@@ -18,6 +18,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.models.github.GithubUser
 import com.aliucord.manager.utils.Github
 import com.aliucord.manager.utils.httpClient
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,7 +57,7 @@ fun ContributorsCard() = ElevatedCard(
 
             LaunchedEffect(Unit) {
                 launch(Dispatchers.IO) {
-                    contributors.addAll(httpClient.get<List<GithubUser>>(Github.contributorsUrl).sortedByDescending { it.contributions })
+                    contributors.addAll(httpClient.get(Github.contributorsUrl).body<List<GithubUser>>().sortedByDescending { it.contributions })
                 }
             }
         }

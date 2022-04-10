@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.models.Plugin
-import com.aliucord.manager.ui.components.Switch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
