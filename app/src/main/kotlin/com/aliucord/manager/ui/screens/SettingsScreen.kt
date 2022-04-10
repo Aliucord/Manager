@@ -61,6 +61,8 @@ fun SettingsScreen() = Column(
         value = Prefs.appName.get(),
         onValueChange = Prefs.appName::set,
         label = { Text(stringResource(R.string.app_name_setting)) },
+        placeholder = { Text("Aliucord") },
+        singleLine = true
     )
 
     PreferenceItem(
@@ -89,6 +91,8 @@ fun SettingsScreen() = Column(
                 value = Prefs.packageName.get(),
                 onValueChange = Prefs.packageName::set,
                 label = { Text(stringResource(R.string.package_name)) },
+                placeholder = { Text("com.aliucord") },
+                singleLine = true
             )
 
             PreferenceItem(
