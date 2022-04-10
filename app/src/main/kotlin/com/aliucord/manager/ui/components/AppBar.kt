@@ -6,10 +6,10 @@
 package com.aliucord.manager.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.aliucord.manager.BuildConfig
@@ -96,7 +98,7 @@ fun AppBar(navController: NavController) {
                 }
 
                 DropdownMenu(
-                    modifier = Modifier.wrapContentWidth(),
+                    offset = DpOffset(x = 12.dp, y = 0.dp),
                     expanded = isMenuExpanded,
                     onDismissRequest = { isMenuExpanded = false }
                 ) {
@@ -105,6 +107,12 @@ fun AppBar(navController: NavController) {
                             isMenuExpanded = false
                             navController.navigateTo(AboutScreenDestination)
                         },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "About"
+                            )
+                        },
                         text = { Text(stringResource(AboutScreenDestination.title)) }
                     )
 
@@ -112,6 +120,12 @@ fun AppBar(navController: NavController) {
                         onClick = {
                             isMenuExpanded = false
                             navController.navigateTo(SettingsScreenDestination)
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = "Settings"
+                            )
                         },
                         text = { Text(stringResource(SettingsScreenDestination.title)) }
                     )
