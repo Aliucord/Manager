@@ -5,7 +5,6 @@
 
 package com.aliucord.manager.ui.screens
 
-import androidx.annotation.Keep
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,12 +19,13 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 private data class Tree(
     val tree: List<File>
 ) {
-    @Keep
+    @Serializable
     data class File(
         val mode: String,
         val sha: String
