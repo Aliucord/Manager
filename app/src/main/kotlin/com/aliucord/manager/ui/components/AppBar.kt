@@ -23,6 +23,8 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.destinations.*
 import com.aliucord.manager.ui.screens.navDestination
+import com.ramcosta.composedestinations.navigation.navigateTo
+import com.ramcosta.composedestinations.navigation.popUpTo
 
 @get:StringRes
 private val Destination.title
@@ -56,8 +58,8 @@ fun AppBar(navController: NavController) {
 
             IconButton(
                 onClick = {
-                    navController.navigate(StoreScreenDestination.route) {
-                        popUpTo(HomeScreenDestination.route) { saveState = true }
+                    navController.navigateTo(StoreScreenDestination) {
+                        popUpTo(HomeScreenDestination) { saveState = true }
                     }
                 },
             ) {
@@ -101,7 +103,7 @@ fun AppBar(navController: NavController) {
                     DropdownMenuItem(
                         onClick = {
                             isMenuExpanded = false
-                            navController.navigate(AboutScreenDestination.route)
+                            navController.navigateTo(AboutScreenDestination)
                         },
                         text = { Text(stringResource(AboutScreenDestination.title)) }
                     )
@@ -109,7 +111,7 @@ fun AppBar(navController: NavController) {
                     DropdownMenuItem(
                         onClick = {
                             isMenuExpanded = false
-                            navController.navigate(SettingsScreenDestination.route)
+                            navController.navigateTo(SettingsScreenDestination)
                         },
                         text = { Text(stringResource(SettingsScreenDestination.title)) }
                     )

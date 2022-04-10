@@ -28,11 +28,11 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 fun ManagerScaffold() {
     val navController = rememberNavController()
 
-    Scaffold(
-        topBar = { AppBar(navController) }
-    ) { paddingValues ->
-        val storagePermissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val storagePermissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
+    Scaffold(
+        topBar = { if (storagePermissionState.hasPermission) AppBar(navController) }
+    ) { paddingValues ->
         PermissionRequired(
             permissionState = storagePermissionState,
             permissionNotAvailableContent = { GrantPermission(storagePermissionState) },
