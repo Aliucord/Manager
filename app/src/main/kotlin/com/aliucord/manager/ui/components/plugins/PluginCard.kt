@@ -34,7 +34,7 @@ fun PluginCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             var isEnabled by remember { mutableStateOf(true) }
             val uriHandler = LocalUriHandler.current
