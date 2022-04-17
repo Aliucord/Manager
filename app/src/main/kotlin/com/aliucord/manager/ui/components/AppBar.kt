@@ -6,8 +6,7 @@
 package com.aliucord.manager.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -44,7 +43,7 @@ fun AppBar(navController: NavController) {
     val destination = navController.currentBackStackEntryAsState().value?.navDestination ?: HomeScreenDestination
     var isMenuExpanded by remember { mutableStateOf(false) }
 
-    MediumTopAppBar(
+    SmallTopAppBar(
         navigationIcon = {
             if (destination != HomeScreenDestination) {
                 IconButton(onClick = { navController.popBackStack() }) {
