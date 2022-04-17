@@ -18,8 +18,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://jitpack.io")
         maven(url = "https://redditvanced.ddns.net/maven/releases")
+        maven(url = "https://jitpack.io")
     }
 }
 
