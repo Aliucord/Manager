@@ -33,7 +33,6 @@ fun TeamCard() = ElevatedCard(
         ) {
             UserEntry("Juby210", "Fox")
             UserEntry("Vendicated", "the ven")
-            UserEntry("mwittrien", "your memory gon")
         }
     }
 }
