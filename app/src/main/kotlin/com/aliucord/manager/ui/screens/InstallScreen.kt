@@ -16,11 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
-import com.aliucord.libzip.Zip
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.screens.destinations.HomeScreenDestination
 import com.aliucord.manager.utils.*
+import com.github.diamondminer88.zip.ZipReader
+import com.github.diamondminer88.zip.ZipWriter
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
@@ -77,84 +78,67 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
             var patched = false
             var manifestBytes: ByteArray?
 
-            with(Zip(outputApk.absolutePath, 6, 'r')) {
-                for (index in 0 until totalEntries) {
-                    openEntryByIndex(index)
-                    val name = entryName
-                    closeEntry()
-                    if (name == "classes5.dex") {
-                        patched = true
-                        break
-                    }
-                }
+            ZipReader(outputApk).use { zip ->
+                patched = zip.entryNames.contains("classes5.dex")
+                manifestBytes = zip.openEntry("AndroidManifest.xml")?.read()
 
                 val cacheDir = context.cacheDir.absolutePath
 
                 if (!patched) (1..3).forEach { i ->
-                    openEntry("classes${if (i == 1) "" else i}.dex")
-                    extractEntry("$cacheDir/classes${i + 1}.dex")
-                    closeEntry()
+                    val entry = zip.openEntry("classes${if (i == 1) "" else i}.dex")!!
+
+                    File(cacheDir, "classes${i + 1}.dex").apply {
+                        exists() || createNewFile()
+                        writeBytes(entry.read())
+                    }
                 }
-
-                openEntry("AndroidManifest.xml")
-                manifestBytes = readEntry()
-                closeEntry()
-
-                close()
             }
 
             val assetManager = context.assets
 
-            with(Zip(outputApk.absolutePath, 6, 'a')) {
-                if (patched) {
-                    deleteEntry("classes.dex")
-                    deleteEntry("classes5.dex")
-                    deleteEntry("classes6.dex")
-                } else {
-                    (1..3).forEach { i -> deleteEntry("classes${if (i == 1) "" else i}.dex") }
-                }
+            ZipWriter(outputApk, true).use { zip ->
+                val toDelete = if (patched) mutableListOf(
+                    "classes.dex",
+                    "classes5.dex",
+                    "classes6.dex",
+                    "AndroidManifest.xml",
+                ) else mutableListOf(
+                    "classes.dex",
+                    "classes2.dex",
+                    "classes3.dex",
+                    "AndroidManifest.xml",
+                )
 
-                deleteEntry("AndroidManifest.xml")
-
-                listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64").forEach { arch ->
-                    listOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so").forEach { file ->
-                        deleteEntry("lib/$arch$file")
+                for (arch in arrayOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")) {
+                    for (lib in arrayOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so")) {
+                        toDelete += "lib/$arch$lib"
                     }
                 }
+                zip.deleteEntries(*toDelete.toTypedArray())
 
                 if (!patched) for (i in 2..4) {
                     val name = "classes$i.dex"
                     val cacheFile = context.cacheDir.resolve(name)
-
-                    openEntry(name)
-                    compressFile(cacheFile.absolutePath)
-                    closeEntry()
+                    zip.writeEntry(name, cacheFile.readBytes())
                     cacheFile.delete()
                 }
 
-                openEntry("classes.dex")
-                compressFile(injector.absolutePath)
-                closeEntry()
+                zip.writeEntry("classes.dex", injector.readBytes())
+                zip.writeEntry("classes5.dex", assetManager.open("aliuhook/classes.dex").readBytes())
+                zip.writeEntry("classes6.dex", assetManager.open("kotlin/classes.dex").readBytes())
 
-                writeEntry("classes5.dex", assetManager.open("aliuhook/classes.dex"))
-
-                listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64").forEach { arch ->
-                    listOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so").forEach { file ->
-                        writeEntry("lib/$arch$file", assetManager.open("aliuhook/$arch$file"))
+                for (arch in arrayOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")) {
+                    for (lib in arrayOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so")) {
+                        val stream = assetManager.open("aliuhook/$arch$lib")
+                        zip.writeEntry("lib/$arch$lib", stream.readBytes())
                     }
                 }
 
-                writeEntry("classes6.dex", assetManager.open("kotlin/classes.dex"))
-
-                manifestBytes?.let { bytes ->
+                manifestBytes?.let {
                     log += "Patching manifest\n"
-                    val newManifestBytes = patchManifest(bytes)
-                    openEntry("AndroidManifest.xml")
-                    writeEntry(newManifestBytes, newManifestBytes.size.toLong())
-                    closeEntry()
+                    val newManifest = patchManifest(it)
+                    zip.writeEntry("AndroidManifest.xml", newManifest)
                 }
-
-                close()
             }
 
             if (Prefs.replaceBg.get()) {
@@ -170,14 +154,12 @@ fun InstallerScreen(navigator: DestinationsNavigator, apk: File?) {
                 val icon2Entries =
                     listOf("_h_.png", "9MB.png", "Dy7.png", "kC0.png", "oEH.png", "RG0.png", "ud_.png", "W_3.png")
 
-                with(Zip(outputApk.absolutePath, 0, 'a')) {
-                    icon1Entries.forEach { entry -> deleteEntry("res/$entry") }
-                    icon2Entries.forEach { entry -> deleteEntry("res/$entry") }
+                ZipWriter(outputApk, true).use { zip ->
+                    val toDelete = icon1Entries.map { "res/$it" } + icon2Entries.map { "res/$it" }
+                    zip.deleteEntries(*toDelete.toTypedArray())
 
-                    icon1Entries.forEach { entry -> writeEntry("res/$entry", icon1Bytes) }
-                    icon2Entries.forEach { entry -> writeEntry("res/$entry", icon2Bytes) }
-
-                    close()
+                    icon1Entries.forEach { entry -> zip.writeEntry("res/$entry", icon1Bytes) }
+                    icon2Entries.forEach { entry -> zip.writeEntry("res/$entry", icon2Bytes) }
                 }
             }
 

@@ -59,8 +59,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(fileTree("./libs"))
-
     // core dependencies
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.core:core-ktx:1.7.0")
@@ -86,6 +84,7 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.2 is broken btw
     implementation("com.android.tools.build:apksig:7.1.3")
+    implementation("com.github.diamondminer88:zip-android:1.0.0@aar")
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
