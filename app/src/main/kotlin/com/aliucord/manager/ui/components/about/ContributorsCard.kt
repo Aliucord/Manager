@@ -42,9 +42,9 @@ fun ContributorsCard() = ElevatedCard(
 
         if (contributors.isNotEmpty()) {
             LazyVerticalGrid(
-                cells = GridCells.Adaptive(48.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                cells = GridCells.Adaptive(55.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(contributors) { user -> ContributorEntry(user.name) }
             }

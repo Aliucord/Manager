@@ -23,7 +23,7 @@ fun ContributorEntry(name: String) {
 
     Image(
         modifier = Modifier
-            .size(48.dp)
+            .size(55.dp)
             .clickable { uriHandler.openUri("https://github.com/$name") },
         painter = rememberImagePainter(
             data = "https://github.com/$name.png",

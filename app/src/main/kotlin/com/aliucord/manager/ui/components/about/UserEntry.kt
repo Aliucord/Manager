@@ -30,7 +30,9 @@ fun UserEntry(name: String, roles: String) = Column {
                 }
             ),
             contentDescription = null,
-            modifier = Modifier.size(54.dp)
+            modifier = Modifier
+                .size(55.dp)
+                .padding(top = 4.dp, end = 4.dp)
         )
         Column {
             Text(

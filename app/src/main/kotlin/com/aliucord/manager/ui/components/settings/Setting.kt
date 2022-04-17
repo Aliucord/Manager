@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import com.aliucord.manager.preferences.Preference
 import com.aliucord.manager.ui.components.ListItem
 
@@ -20,7 +21,7 @@ fun PreferenceItem(
     preference: Preference<Boolean>
 ) = ListItem(
     icon = icon,
-    modifier = Modifier.clickable {
+    modifier = Modifier.clickable(role = Role.Switch) {
         preference.set(!preference.get())
     },
     text = title,
