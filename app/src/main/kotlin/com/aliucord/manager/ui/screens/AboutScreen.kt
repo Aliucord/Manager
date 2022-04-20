@@ -13,21 +13,23 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.about.ContributorsCard
 import com.aliucord.manager.ui.components.about.TeamCard
+import com.aliucord.manager.ui.viewmodels.AboutViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
 @Composable
 fun AboutScreen() {
     val uriHandler = LocalUriHandler.current
-
+    val viewModel: AboutViewModel = viewModel()
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         TeamCard()
-        ContributorsCard()
+        ContributorsCard(viewModel.contributors)
 
         Spacer(Modifier.weight(1f, true))
 

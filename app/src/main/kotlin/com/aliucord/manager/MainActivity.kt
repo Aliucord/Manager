@@ -15,8 +15,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.preferences.Prefs
@@ -44,6 +42,13 @@ class MainActivity : ComponentActivity() {
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                .setData("package:com.aliucord.manager".toUri())
+
+            startActivity(intent)
+        }
+
         setContent {
             ManagerTheme(
                 isBlack = Prefs.useBlack.get(),
@@ -53,17 +58,6 @@ class MainActivity : ComponentActivity() {
                     theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK
                 }
             ) {
-                val context = LocalContext.current
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-                    SideEffect {
-                        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                            .setData("package:com.aliucord.manager".toUri())
-
-                        context.startActivity(intent)
-                    }
-                }
-
                 ManagerScaffold()
             }
         }

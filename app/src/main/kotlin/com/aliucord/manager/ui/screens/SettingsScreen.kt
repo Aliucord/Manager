@@ -17,14 +17,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.components.ListItem
 import com.aliucord.manager.ui.components.settings.*
+import com.aliucord.manager.ui.viewmodels.SettingsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -34,7 +35,8 @@ fun SettingsScreen() = Column(
     modifier = Modifier.verticalScroll(state = rememberScrollState()),
     verticalArrangement = Arrangement.spacedBy(12.dp)
 ) {
-    val context = LocalContext.current
+    val viewModifier: SettingsViewModel = viewModel()
+
     var showThemeDialog by remember { mutableStateOf(false) }
 
     if (showThemeDialog) {
@@ -133,7 +135,7 @@ fun SettingsScreen() = Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        onClick = context.cacheDir::deleteRecursively
+        onClick = viewModifier::clearCacheDir
     ) {
         Text(stringResource(R.string.clear_files_cache), textAlign = TextAlign.Center)
     }
