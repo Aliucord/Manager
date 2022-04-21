@@ -103,7 +103,7 @@ fun PluginCard(
                 text = plugin.manifest.description,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
-                    .heightIn(max = 60.dp, min = 40.dp)
+                    .heightIn(max = 150.dp, min = 40.dp)
                     .padding(top = 10.dp),
             )
 
