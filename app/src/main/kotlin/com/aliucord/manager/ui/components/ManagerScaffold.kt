@@ -41,7 +41,7 @@ fun ManagerScaffold() {
             DestinationsNavHost(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(horizontal = 12.dp, vertical = 14.dp),
+                    .padding(horizontal = 12.dp, vertical = 4.dp),
                 navGraph = NavGraphs.root,
                 navController = navController,
                 engine = rememberNavHostEngine()

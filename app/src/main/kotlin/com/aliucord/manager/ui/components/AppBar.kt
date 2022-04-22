@@ -47,12 +47,16 @@ fun AppBar(navController: NavController) {
         navigationIcon = {
             if (destination != HomeScreenDestination) {
                 IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(Icons.Default.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground)
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.back),
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
                 }
             }
         },
         title = {
-            Text(stringResource(destination.title))
+            Text(stringResource(destination.title), modifier = Modifier.padding(start = 4.dp))
         },
         actions = {
             val localUriHandler = LocalUriHandler.current
