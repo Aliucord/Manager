@@ -83,9 +83,7 @@ fun PluginsList() = Column(
                     },
                     dismissButton = {
                         Button(
-                            onClick = {
-                                showDeleteDialog = false
-                            },
+                            onClick = { showDeleteDialog = false },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer

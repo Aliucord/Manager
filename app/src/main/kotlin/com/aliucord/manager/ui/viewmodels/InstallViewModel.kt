@@ -1,200 +1,178 @@
 package com.aliucord.manager.ui.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.app.PendingIntent
 import android.content.Intent
-import androidx.compose.runtime.mutableStateListOf
-import androidx.core.content.FileProvider
+import android.content.pm.PackageInstaller
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.aliucord.libzip.Zip
-import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.preferences.Prefs
-import com.aliucord.manager.utils.*
+import com.aliucord.manager.installer.service.InstallService
+import com.aliucord.manager.installer.util.DownloadUtils
+import com.aliucord.manager.installer.util.ManifestPatcher
+import com.aliucord.manager.utils.Signer
+import com.android.zipflinger.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileNotFoundException
+import java.util.zip.Deflater
 
 class InstallViewModel(application: Application) : AndroidViewModel(application) {
-
     private val _returnToHome = MutableSharedFlow<Boolean>()
     val returnToHome = _returnToHome.asSharedFlow()
 
     private var installationRunning: Boolean = false
 
-    val logs = mutableStateListOf<String>()
+    var log by mutableStateOf("")
+        private set
 
-    fun startInstallation(apk: File?) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startInstallation() {
         if (installationRunning) return
 
         viewModelScope.launch(Dispatchers.IO) {
             installationRunning = true
-            val supportedVersion = Github.version.versionCode
 
-            val discordApk = apk ?: run {
-                logs.add("Checking for cached APK...")
+            val context = getApplication<Application>().applicationContext
+            val assetManager = context.assets
+            val externalCacheDir = context.externalCacheDir!!
+            val arch = Build.SUPPORTED_ABIS.first()
+            val supportedVersion = "124206"
 
-                getApplication<Application>().externalCacheDir!!.resolve("discord-${supportedVersion}.apk").also { file ->
-                    val archiveInfo = getApplication<Application>().packageManager.getPackageArchiveInfo(file.path, 0)
+            val baseApk = externalCacheDir.resolve("base-${supportedVersion}.apk").also { file ->
+                val archiveInfo = context.packageManager.getPackageArchiveInfo(file.path, 0)
 
-                    if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also
+                if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also run { log += "Using cached base APK\n"}
 
-                    logs.add("Downloading Discord APK...")
+                log += "Downloading Discord APK... "
 
-                    DownloadUtils.downloadDiscordApk(getApplication<Application>(), supportedVersion)
+                DownloadUtils.downloadDiscordApk(context, supportedVersion)
 
-                    logs.add("Done")
+                log += "Done\n"
+            }
+
+            val libArch = arch.replace("-v", "_v")
+            val libsApk = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").also { file ->
+                if (file.exists()) return@also run { log += "Used cached libs APK\n" }
+
+                log += "Downloading libs APK... "
+
+                DownloadUtils.downloadSplit(context, supportedVersion, "config.$libArch")
+
+                log += "Done\n"
+            }
+
+            val localeApk = externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+                if (file.exists()) return@also run { log += "Using cached locale APK\n" }
+
+                log += "Downloading locale APK... "
+
+                DownloadUtils.downloadSplit(context, supportedVersion, "config.en")
+
+                log += "Done\n"
+            }
+
+            val xxhdpiApk = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+                if (file.exists()) return@also run { log += "Using cached drawables APK\n"}
+
+                log += "Downloading drawables APK... "
+
+                DownloadUtils.downloadSplit(context, supportedVersion, "config.xxhdpi")
+
+                log += "Done\n"
+            }
+
+            val apks = listOf(baseApk, libsApk, localeApk, xxhdpiApk)
+
+            log += "Patching manifest...\n"
+
+            try {
+                val byteArray = ZipRepo(baseApk.absolutePath)
+                    .use { zip -> zip.getContent("AndroidManifest.xml") }
+                    .array()
+
+                ZipArchive(baseApk.toPath()).use { zip ->
+                    val source = BytesSource(ManifestPatcher.patchManifest(byteArray), "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
+
+                    zip.delete("AndroidManifest.xml")
+                    zip.add(source)
                 }
-            }
 
-            val injector = getApplication<Application>().externalCacheDir!!.resolve("Injector.dex").also { file ->
-                if (file.exists()) return@also
+                apks.forEach { apk ->
+                    val byteArray = ZipRepo(apk.absolutePath)
+                        .use { zip -> zip.getContent("AndroidManifest.xml") }
+                        .array()
 
-                logs.add("Downloading injector...")
+                    ZipArchive(apk.toPath()).use { zip ->
+                        val source = BytesSource(ManifestPatcher.renamePackage(byteArray), "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
 
-                DownloadUtils.downloadInjector(getApplication<Application>())
-
-                logs.add("Done")
-            }
-
-            val outputDir = aliucordDir.also {
-                if (!it.exists() && !it.mkdirs()) throw FileNotFoundException()
-            }
-
-            val outputApk = outputDir.resolve("Aliucord.apk")
-            discordApk.copyTo(outputApk, true)
-
-            logs.add("Repacking APK")
-
-            var patched = false
-            var manifestBytes: ByteArray?
-
-            with(Zip(outputApk.absolutePath, 6, 'r')) {
-                for (index in 0 until totalEntries) {
-                    openEntryByIndex(index)
-                    val name = entryName
-                    closeEntry()
-                    if (name == "classes5.dex") {
-                        patched = true
-                        break
+                        zip.delete("AndroidManifest.xml")
+                        zip.add(source)
                     }
                 }
-
-                val cacheDir = getApplication<Application>().cacheDir.absolutePath
-
-                if (!patched) (1..3).forEach { i ->
-                    openEntry("classes${if (i == 1) "" else i}.dex")
-                    extractEntry("$cacheDir/classes${i + 1}.dex")
-                    closeEntry()
-                }
-
-                openEntry("AndroidManifest.xml")
-                manifestBytes = readEntry()
-                closeEntry()
-
-                close()
+            } catch (e: Exception) {
+                log += "An error has occurred"
+                e.printStackTrace()
             }
 
-            val assetManager = getApplication<Application>().assets
+            log += "Patching libraries...\n"
 
-            with(Zip(outputApk.absolutePath, 6, 'a')) {
-                if (patched) {
-                    deleteEntry("classes.dex")
-                    deleteEntry("classes5.dex")
-                    deleteEntry("classes6.dex")
-                } else {
-                    (1..3).forEach { i -> deleteEntry("classes${if (i == 1) "" else i}.dex") }
-                }
+            ZipArchive(libsApk.toPath()).use { zip ->
+                val libs = listOf("libhermes.so", "libc++_shared.so")
 
-                deleteEntry("AndroidManifest.xml")
-
-                listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64").forEach { arch ->
-                    listOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so").forEach { file ->
-                        deleteEntry("lib/$arch$file")
+                libs.forEach { lib -> zip.delete("lib/$arch/$lib") }
+                libs.forEach { lib ->
+                    val source = BytesSource(assetManager.open("lib/$arch/$lib"), "lib/$arch/$lib", Deflater.NO_COMPRESSION).apply {
+                        align(4096)
                     }
-                }
 
-                if (!patched) for (i in 2..4) {
-                    val name = "classes$i.dex"
-                    val cacheFile = getApplication<Application>().cacheDir.resolve(name)
-
-                    openEntry(name)
-                    compressFile(cacheFile.absolutePath)
-                    closeEntry()
-                    cacheFile.delete()
-                }
-
-                openEntry("classes.dex")
-                compressFile(injector.absolutePath)
-                closeEntry()
-
-                writeEntry("classes5.dex", assetManager.open("aliuhook/classes.dex"))
-
-                listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64").forEach { arch ->
-                    listOf("/libaliuhook.so", "/liblsplant.so", "/libc++_shared.so").forEach { file ->
-                        writeEntry("lib/$arch$file", assetManager.open("aliuhook/$arch$file"))
-                    }
-                }
-
-                writeEntry("classes6.dex", assetManager.open("kotlin/classes.dex"))
-
-                manifestBytes?.let { bytes ->
-                    logs.add("Patching manifest")
-                    val newManifestBytes = patchManifest(bytes)
-                    openEntry("AndroidManifest.xml")
-                    writeEntry(newManifestBytes, newManifestBytes.size.toLong())
-                    closeEntry()
-                }
-
-                close()
-            }
-
-            if (Prefs.replaceBg.get()) {
-                logs.add("Replacing icon background")
-
-                val icon1Bytes = assetManager.open("icon1.png").readBytes()
-                val icon2Bytes = assetManager.open("icon2.png").readBytes()
-
-                // use androguard to figure out entries
-                // androguard arsc resources.arsc --id 0x7f0f0000 (icon1)
-                // androguard arsc resources.arsc --id 0x7f0f0002 and androguard arsc resources.arsc --id 0x7f0f0006 (icon2)
-                val icon1Entries = listOf("MbV.png", "kbF.png", "_eu.png", "EtS.png")
-                val icon2Entries =
-                    listOf("_h_.png", "9MB.png", "Dy7.png", "kC0.png", "oEH.png", "RG0.png", "ud_.png", "W_3.png")
-
-                with(Zip(outputApk.absolutePath, 0, 'a')) {
-                    icon1Entries.forEach { entry -> deleteEntry("res/$entry") }
-                    icon2Entries.forEach { entry -> deleteEntry("res/$entry") }
-
-                    icon1Entries.forEach { entry -> writeEntry("res/$entry", icon1Bytes) }
-                    icon2Entries.forEach { entry -> writeEntry("res/$entry", icon2Bytes) }
-
-                    close()
+                    zip.add(source)
                 }
             }
 
-            logs.add("Signing APK...")
+            log += "Signing APKs... "
 
-            Signer.signApk(outputApk)
+            apks.forEach(Signer::signApk)
 
-            logs.add("Signed APK")
+            log += "Done\n"
 
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
-
-                setDataAndType(
-                    FileProvider.getUriForFile(getApplication<Application>(), "${BuildConfig.APPLICATION_ID}.provider", outputApk),
-                    "application/vnd.android.package-archive"
-                )
-            }
-
-            getApplication<Application>().startActivity(intent)
+            installApks(*apks.toTypedArray())
 
             _returnToHome.emit(true)
             installationRunning = false
         }
     }
 
+    private fun installApks(vararg apks: File) {
+        val context = getApplication<Application>().applicationContext
+        val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
+        val packageInstaller = context.packageManager.packageInstaller
+        val sessionId = packageInstaller.createSession(params)
+        val session = packageInstaller.openSession(sessionId)
+
+        apks.forEach { apk ->
+            session.openWrite(apk.name, 0, apk.length()).use {
+                it.write(apk.readBytes())
+
+                session.fsync(it)
+            }
+        }
+
+        val callbackIntent = Intent(context, InstallService::class.java)
+
+        @SuppressLint("UnspecifiedImmutableFlag")
+        val contentIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getService(context, 0, callbackIntent, PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getService(context, 0, callbackIntent, 0)
+        }
+
+        session.commit(contentIntent.intentSender)
+        session.close()
+    }
 }

@@ -1,13 +1,12 @@
-val pagingVersion = "3.1.0"
-val accompanistVersion = "0.23.0"
-val composeVersion = "1.1.1"
+val accompanistVersion = "0.24.7-alpha"
+val composeVersion = "1.2.0-alpha08"
 val ktorVersion = "2.0.0"
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.devtools.ksp") version "1.6.10-1.0.4"
-    kotlin("plugin.serialization") version "1.6.10"
+    id("com.google.devtools.ksp") version "1.6.20-1.0.4"
+    kotlin("plugin.serialization") version "1.6.20"
 }
 
 android {
@@ -40,22 +39,19 @@ android {
 
     kotlinOptions {
         jvmTarget = "11"
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
+    }
+
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
     }
 
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = composeVersion
-}
-
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
-    }
 }
 
 dependencies {
@@ -65,12 +61,15 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")
+    implementation("com.android:zipflinger:7.3.0-alpha09")
+//    implementation("com.github.Aliucord:libzip:1.0.0")
 
     // compose dependencies
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha09")
+    implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     // accompanist dependencies
@@ -78,11 +77,11 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
 
     // compose destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.4.2-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.4.2-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.5.2-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.2-beta")
 
     // other dependencies
-    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation("io.coil-kt:coil-compose:2.0.0-rc03")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.2 is broken btw
     implementation("com.android.tools.build:apksig:7.1.3")

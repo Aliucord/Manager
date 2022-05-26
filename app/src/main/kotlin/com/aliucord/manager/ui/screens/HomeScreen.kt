@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toFile
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
@@ -31,10 +30,12 @@ import com.aliucord.manager.ui.screens.destinations.CommitsScreenDestination
 import com.aliucord.manager.ui.screens.destinations.InstallerScreenDestination
 import com.aliucord.manager.ui.viewmodels.HomeViewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination(start = true)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun HomeScreen(navigator: DestinationsNavigator) {
     val viewModel: HomeViewModel = viewModel()
@@ -45,7 +46,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
         val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@rememberLauncherForActivityResult
 
-            navigator.navigate(InstallerScreenDestination(uri.toFile()))
+            navigator.navigate(InstallerScreenDestination)
         }
 
         InstallerDialog(

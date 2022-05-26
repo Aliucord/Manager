@@ -30,22 +30,22 @@ fun ManagerScaffold() {
 
     val storagePermissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-    Scaffold(
-        topBar = { if (storagePermissionState.hasPermission) AppBar(navController) }
-    ) { paddingValues ->
-        PermissionRequired(
-            permissionState = storagePermissionState,
-            permissionNotAvailableContent = { GrantPermission(storagePermissionState) },
-            permissionNotGrantedContent = { GrantPermission(storagePermissionState) }
-        ) {
-            DestinationsNavHost(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .padding(horizontal = 12.dp, vertical = 14.dp),
-                navGraph = NavGraphs.root,
-                navController = navController,
-                engine = rememberNavHostEngine()
-            )
+    when (storagePermissionState.status) {
+        is PermissionStatus.Denied -> GrantPermission(storagePermissionState)
+        PermissionStatus.Granted -> {
+            Scaffold(
+                topBar = { AppBar(navController) }
+            ) { paddingValues ->
+                DestinationsNavHost(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .padding(horizontal = 12.dp, vertical = 14.dp),
+                    navGraph = NavGraphs.root,
+                    navController = navController,
+                    engine = rememberNavHostEngine()
+                )
+            }
         }
     }
+
 }

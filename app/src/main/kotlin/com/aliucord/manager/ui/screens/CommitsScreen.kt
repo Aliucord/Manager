@@ -77,14 +77,12 @@ fun CommitsScreen() {
         }
 
         items(lazyPagingItems) { commitData ->
-            val localUriHandler = LocalUriHandler.current
-
             if (commitData == null) return@items
 
+            val localUriHandler = LocalUriHandler.current
+
             ListItem(
-                modifier = Modifier.clickable {
-                    localUriHandler.openUri(commitData.htmlUrl)
-                },
+                modifier = Modifier.clickable { localUriHandler.openUri(commitData.htmlUrl) },
                 overlineText = { Text(commitData.sha.substring(0, 7)) },
                 text = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}") }
             )

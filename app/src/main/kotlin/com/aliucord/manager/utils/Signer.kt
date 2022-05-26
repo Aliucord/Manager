@@ -76,13 +76,12 @@ object Signer {
     }
 
     fun signApk(apkFile: File) {
-        val outputApk = aliucordDir.resolve("Aliucord-Signed.apk")
+        val outputApk = aliucordDir.resolve(apkFile.name)
 
         ApkSigner.Builder(listOf(signerConfig))
             .setV1SigningEnabled(false)
             .setV2SigningEnabled(true)
             .setV3SigningEnabled(false)
-            .setOtherSignersSignaturesPreserved(false)
             .setInputApk(apkFile)
             .setOutputApk(outputApk)
             .build()

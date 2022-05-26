@@ -5,25 +5,21 @@
 
 package com.aliucord.manager.ui.screens
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ContentAlpha
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
-import com.aliucord.manager.ui.components.ListItem
 import com.aliucord.manager.ui.components.settings.*
 import com.aliucord.manager.ui.viewmodels.SettingsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -101,32 +97,6 @@ fun SettingsScreen() = Column(
                 title = { Text(stringResource(R.string.debuggable)) },
                 description = { Text(stringResource(R.string.debuggable_description)) },
                 preference = Prefs.debuggable
-            )
-
-            val udfs = Prefs.useDexFromStorage
-
-            PreferenceItem(
-                title = { Text(stringResource(R.string.use_dex_from_storage)) },
-                preference = Prefs.useDexFromStorage
-            )
-
-            val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-                if (uri != null) Prefs.dexLocation.set(uri.path!!)
-            }
-
-            val color = if (udfs.get()) {
-                Color.Unspecified
-            } else {
-                MaterialTheme.colorScheme.onBackground.copy(ContentAlpha.disabled)
-            }
-
-            // TODO: Make installer use selected dex file
-            ListItem(
-                modifier = if (udfs.get()) Modifier.clickable {
-                    picker.launch(arrayOf("application/octet-stream"))
-                } else Modifier,
-                text = { Text(stringResource(R.string.dex_location), color = color) },
-                secondaryText = { Text(Prefs.dexLocation.get(), color = color) }
             )
         }
     }

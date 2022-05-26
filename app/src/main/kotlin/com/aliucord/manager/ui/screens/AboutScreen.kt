@@ -25,6 +25,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun AboutScreen() {
     val uriHandler = LocalUriHandler.current
     val viewModel: AboutViewModel = viewModel()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -42,7 +43,7 @@ fun AboutScreen() {
                 contentDescription = "GitHub"
             )
             Spacer(Modifier.padding(4.dp))
-            Text(stringResource(R.string.source_code))
+            Text(stringResource(R.string.github))
         }
     }
 }

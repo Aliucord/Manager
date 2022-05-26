@@ -7,6 +7,8 @@ package com.aliucord.manager.ui.components.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Style
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,6 +28,12 @@ fun ThemeDialog(
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Style,
+                contentDescription = "Theme"
+            )
+        },
         title = { Text(stringResource(R.string.theme)) },
         text = {
             Column {

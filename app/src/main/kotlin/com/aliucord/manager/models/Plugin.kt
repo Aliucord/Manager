@@ -7,8 +7,8 @@ package com.aliucord.manager.models
 
 import android.util.Log
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.utils.aliucordDir
 import com.aliucord.manager.utils.json
-import com.aliucord.manager.utils.pluginsDir
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromStream
 import java.io.File
@@ -29,6 +29,8 @@ data class Plugin(val file: File) {
     }
 
     companion object {
+        private val pluginsDir = aliucordDir.resolve("plugins")
+
         fun loadAll(): List<Plugin> {
             if (!pluginsDir.exists() && !pluginsDir.mkdirs()) {
                 Log.e(BuildConfig.TAG, "Failed to create plugins dir. Missing Permissions?")
