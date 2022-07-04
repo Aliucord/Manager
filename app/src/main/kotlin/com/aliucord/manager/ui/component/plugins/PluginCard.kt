@@ -30,6 +30,8 @@ fun PluginCard(
     onDelete: () -> Unit,
     onShowChangelog: () -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+
     ElevatedCard(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -37,7 +39,6 @@ fun PluginCard(
             modifier = Modifier.padding(16.dp)
         ) {
             var isEnabled by remember { mutableStateOf(true) }
-            val uriHandler = LocalUriHandler.current
 
             // Header
             Row(
@@ -107,9 +108,10 @@ fun PluginCard(
                     .padding(top = 10.dp),
             )
 
-            // Buttons
-            Row(Modifier.fillMaxWidth()) {
-                IconButton(
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                FilledTonalButton(
                     onClick = {
                         uriHandler.openUri(
                             plugin.manifest.updateUrl
@@ -120,30 +122,25 @@ fun PluginCard(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_account_github_white_24dp),
-                        contentDescription = "GitHub",
-                        tint = MaterialTheme.colorScheme.onSurface
+                        contentDescription = "GitHub"
                     )
                 }
 
                 if (plugin.manifest.changelog != null) {
-                    IconButton(
-                        onClick = onShowChangelog
-                    ) {
+                    FilledTonalButton(onClick = onShowChangelog) {
                         Icon(
                             painter = painterResource(R.drawable.ic_history_white_24dp),
-                            contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
                         )
                     }
                 }
 
                 Spacer(Modifier.weight(1f, true))
 
-                IconButton(onClick = onDelete) {
+                Button(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.uninstall_plugin, plugin.manifest.name),
-                        tint = MaterialTheme.colorScheme.error
+                        contentDescription = stringResource(R.string.uninstall_plugin, plugin.manifest.name)
                     )
                 }
             }
