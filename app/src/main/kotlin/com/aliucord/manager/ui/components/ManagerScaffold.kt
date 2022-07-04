@@ -6,7 +6,6 @@
 package com.aliucord.manager.ui.components
 
 import android.Manifest
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -21,8 +20,7 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalPermissionsApi::class,
-    ExperimentalAnimationApi::class
+    ExperimentalPermissionsApi::class
 )
 @Composable
 fun ManagerScaffold() {
@@ -47,5 +45,4 @@ fun ManagerScaffold() {
             }
         }
     }
-
 }

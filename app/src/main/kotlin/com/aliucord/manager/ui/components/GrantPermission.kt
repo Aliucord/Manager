@@ -24,43 +24,47 @@ import com.google.accompanist.permissions.PermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun GrantPermission(permissionState: PermissionState) = Column(
-    modifier = Modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-) {
-    Text(
-        stringResource(R.string.permission_required),
-        style = MaterialTheme.typography.headlineMedium,
-        textAlign = TextAlign.Center
-    )
-
-    Spacer(Modifier.height(8.dp))
-
-    Row {
-        val context = LocalContext.current
-
-        Button(onClick = { permissionState.launchPermissionRequest() }) {
-            Text(stringResource(R.string.permission_grant))
-        }
-
-        Spacer(Modifier.width(8.dp))
-
-        Button(
-            onClick = {
-                context.startActivity(
-                    Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
-                    )
-                )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-            ),
+fun GrantPermission(permissionState: PermissionState) {
+    Surface {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(stringResource(R.string.open_settings))
+            Text(
+                stringResource(R.string.permission_required),
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Row {
+                val context = LocalContext.current
+
+                Button(onClick = { permissionState.launchPermissionRequest() }) {
+                    Text(stringResource(R.string.permission_grant))
+                }
+
+                Spacer(Modifier.width(8.dp))
+
+                Button(
+                    onClick = {
+                        context.startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                            )
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                ) {
+                    Text(stringResource(R.string.open_settings))
+                }
+            }
         }
     }
 }

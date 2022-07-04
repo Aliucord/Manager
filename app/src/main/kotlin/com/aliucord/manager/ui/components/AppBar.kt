@@ -23,9 +23,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.screens.appDestination
 import com.aliucord.manager.ui.screens.destinations.*
-import com.aliucord.manager.ui.screens.navDestination
-import com.ramcosta.composedestinations.navigation.navigateTo
+import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popUpTo
 
 @get:StringRes
@@ -41,7 +41,7 @@ private val Destination.title
 
 @Composable
 fun AppBar(navController: NavController) {
-    val destination = navController.currentBackStackEntryAsState().value?.navDestination ?: HomeScreenDestination
+    val destination = navController.currentBackStackEntryAsState().value?.appDestination() ?: HomeScreenDestination
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     MediumTopAppBar(
@@ -60,7 +60,7 @@ fun AppBar(navController: NavController) {
 
             IconButton(
                 onClick = {
-                    navController.navigateTo(StoreScreenDestination) {
+                    navController.navigate(StoreScreenDestination) {
                         popUpTo(HomeScreenDestination) { saveState = true }
                     }
                 },
@@ -105,7 +105,7 @@ fun AppBar(navController: NavController) {
                     DropdownMenuItem(
                         onClick = {
                             isMenuExpanded = false
-                            navController.navigateTo(AboutScreenDestination)
+                            navController.navigate(AboutScreenDestination)
                         },
                         leadingIcon = {
                             Icon(
@@ -119,7 +119,7 @@ fun AppBar(navController: NavController) {
                     DropdownMenuItem(
                         onClick = {
                             isMenuExpanded = false
-                            navController.navigateTo(SettingsScreenDestination)
+                            navController.navigate(SettingsScreenDestination)
                         },
                         leadingIcon = {
                             Icon(

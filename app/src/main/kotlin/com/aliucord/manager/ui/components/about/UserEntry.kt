@@ -5,16 +5,16 @@
 
 package com.aliucord.manager.ui.components.about
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
+import coil.compose.AsyncImage
 
 @Composable
 fun UserEntry(name: String, roles: String) = Column {
@@ -22,19 +22,16 @@ fun UserEntry(name: String, roles: String) = Column {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Image(
-            painter = rememberImagePainter(
-                data = "https://github.com/$name.png",
-                builder = {
-                    transformations(CircleCropTransformation())
-                }
-            ),
-            contentDescription = null,
-            modifier = Modifier.size(54.dp)
+        AsyncImage(
+            modifier = Modifier
+                .size(54.dp)
+                .clip(CircleShape),
+            model = "https://github.com/$name.png",
+            contentDescription = null
         )
         Column {
             Text(
-                name,
+                text = name,
                 style = MaterialTheme.typography.titleLarge
             )
             Text(roles)

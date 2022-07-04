@@ -143,49 +143,48 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     }
 
                     if (viewModel.installedVersion != "-") {
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            Button(
-                                modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                                onClick = {
-                                    viewModel.uninstallAliucord()
+                            CompositionLocalProvider(
+                                LocalContentColor provides  MaterialTheme.colorScheme.secondaryContainer
+                            ) {
+                                FilledTonalButton(
+                                    modifier = Modifier.weight(1f),
+                                    onClick = {
+                                        viewModel.uninstallAliucord()
+                                    }
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.padding(8.dp),
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Uninstall"
+                                    )
                                 }
-                            ) {
-                                Icon(
-                                    modifier = Modifier.padding(8.dp),
-                                    imageVector = Icons.Default.Delete,
-                                    contentDescription = "Uninstall",
-                                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                )
-                            }
 
-                            Button(
-                                modifier = Modifier.weight(1f),
-                                onClick = viewModel::launchAliucord,
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                            ) {
-                                Icon(
-                                    modifier = Modifier.padding(8.dp),
-                                    painter = painterResource(R.drawable.ic_launch_24dp),
-                                    contentDescription = "Launch",
-                                    tint = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
-                            }
+                                FilledTonalButton(
+                                    modifier = Modifier.weight(1f),
+                                    onClick = viewModel::launchAliucord
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.padding(8.dp),
+                                        painter = painterResource(R.drawable.ic_launch_24dp),
+                                        contentDescription = "Launch"
+                                    )
+                                }
 
-                            Button(
-                                modifier = Modifier.weight(1f),
-                                onClick = { navigator.navigate(CommitsScreenDestination) },
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                            ) {
-                                Icon(
-                                    modifier = Modifier.padding(8.dp),
-                                    painter = painterResource(R.drawable.ic_update_24dp),
-                                    contentDescription = "Commits",
-                                    tint = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
+                                FilledTonalButton(
+                                    modifier = Modifier.weight(1f),
+                                    onClick = { navigator.navigate(CommitsScreenDestination) }
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.padding(8.dp),
+                                        painter = painterResource(R.drawable.ic_update_24dp),
+                                        contentDescription = "Commits"
+                                    )
+                                }
                             }
                         }
                     }

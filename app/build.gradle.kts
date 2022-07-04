@@ -1,21 +1,21 @@
-val accompanistVersion = "0.24.7-alpha"
-val composeVersion = "1.2.0-alpha08"
-val ktorVersion = "2.0.0"
+val accompanistVersion = "0.24.13-rc"
+val composeVersion = "1.3.0-alpha01"
+val ktorVersion = "2.0.3"
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.devtools.ksp") version "1.6.20-1.0.4"
-    kotlin("plugin.serialization") version "1.6.20"
+    id("com.google.devtools.ksp") version "1.7.0-1.0.6"
+    kotlin("plugin.serialization") version "1.6.21"
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.aliucord.manager"
         minSdk = 24
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "0.0.1"
 
@@ -51,17 +51,17 @@ android {
     }
 
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = composeVersion
+    composeOptions.kotlinCompilerExtensionVersion = "1.2.0"
 }
 
 dependencies {
     implementation(fileTree("./libs"))
 
     // core dependencies
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.core:core-splashscreen:1.0.0-beta02")
-    implementation("com.android:zipflinger:7.3.0-alpha09")
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-splashscreen:1.0.0-rc01")
+    implementation("com.android:zipflinger:7.4.0-alpha07")
 //    implementation("com.github.Aliucord:libzip:1.0.0")
 
     // compose dependencies
@@ -69,22 +69,23 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material:${composeVersion}")
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
-    implementation("androidx.paging:paging-compose:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha15")
 
     // accompanist dependencies
     implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
 
     // compose destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.5.2-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.2-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
 
     // other dependencies
-    implementation("io.coil-kt:coil-compose:2.0.0-rc03")
+    implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.2 is broken btw
-    implementation("com.android.tools.build:apksig:7.1.3")
+    implementation("de.upb.cs.swt:axml:2.1.2") // 2.1.2 is broken btw
+    implementation("com.android.tools.build:apksig:7.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
