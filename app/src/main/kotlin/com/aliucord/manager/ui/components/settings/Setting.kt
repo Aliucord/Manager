@@ -6,12 +6,12 @@
 package com.aliucord.manager.ui.components.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.Switch
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.aliucord.manager.preferences.Preference
-import com.aliucord.manager.ui.components.ListItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreferenceItem(
     icon: @Composable (() -> Unit)? = null,
@@ -19,13 +19,13 @@ fun PreferenceItem(
     description: @Composable (() -> Unit)? = null,
     preference: Preference<Boolean>
 ) = ListItem(
-    icon = icon,
     modifier = Modifier.clickable {
         preference.set(!preference.get())
     },
-    text = title,
-    secondaryText = description,
-    trailing = {
+    leadingContent = icon,
+    headlineText = title,
+    supportingText = description,
+    trailingContent = {
         Switch(
             checked = preference.get(),
             onCheckedChange = preference::set

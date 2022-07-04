@@ -8,9 +8,7 @@ package com.aliucord.manager.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,11 +21,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.aliucord.manager.R
 import com.aliucord.manager.models.github.Commit
-import com.aliucord.manager.ui.components.ListItem
 import com.aliucord.manager.utils.Github
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun CommitsScreen() {
@@ -84,7 +81,7 @@ fun CommitsScreen() {
             ListItem(
                 modifier = Modifier.clickable { localUriHandler.openUri(commitData.htmlUrl) },
                 overlineText = { Text(commitData.sha.substring(0, 7)) },
-                text = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}") }
+                headlineText = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}") }
             )
         }
 
