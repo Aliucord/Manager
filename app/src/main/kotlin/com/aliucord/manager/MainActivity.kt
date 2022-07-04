@@ -19,7 +19,7 @@ import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.preferences.sharedPreferences
-import com.aliucord.manager.ui.components.ManagerScaffold
+import com.aliucord.manager.ui.component.ManagerScaffold
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.theme.Theme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi

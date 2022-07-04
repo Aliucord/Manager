@@ -5,7 +5,7 @@
 
 package com.aliucord.manager.preferences
 
-import com.aliucord.manager.utils.aliucordDir
+import com.aliucord.manager.util.aliucordDir
 
 object Prefs {
     val theme = intPreference("theme")
