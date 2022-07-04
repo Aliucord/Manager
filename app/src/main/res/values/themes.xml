@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
   <style name="Theme.AliucordManager.SplashScreen" parent="Theme.SplashScreen">
     <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-    <item name="postSplashScreenTheme">@style/Theme.AliucordManager</item>
-  </style>
-
-  <style name="Theme.AliucordManager" parent="Theme.AppCompat">
-    <item name="colorPrimary">@color/primary</item>
+    <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>
   </style>
 </resources>

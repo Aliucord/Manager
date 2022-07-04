@@ -10,11 +10,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.provider.Settings
-import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.preferences.Prefs
@@ -22,23 +20,12 @@ import com.aliucord.manager.preferences.sharedPreferences
 import com.aliucord.manager.ui.component.ManagerScaffold
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.theme.Theme
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
-
-        installSplashScreen().setOnExitAnimationListener { provider ->
-            provider.view.animate().apply {
-                interpolator = AccelerateInterpolator()
-                duration = 200L
-
-                alpha(0f)
-                withEndAction(provider::remove)
-                start()
-            }
-        }
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
