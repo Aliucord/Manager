@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.model.Plugin
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PluginCard(
     plugin: Plugin,
@@ -60,18 +59,24 @@ fun PluginCard(
 
                     // Authors
                     val authors = buildAnnotatedString {
-                        pushStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary))
-                        append("By ")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
+                            append("By ")
+                        }
 
-                        val authors = plugin.manifest.authors
-                        authors.forEachIndexed { i, author ->
+                        val iterator = plugin.manifest.authors.iterator()
+
+                        iterator.forEach { author ->
                             withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                                 val start = this@buildAnnotatedString.length
                                 append(author.name)
                                 addStringAnnotation("authorId", author.id.toString(), start, start + author.name.length)
                             }
-                            if (authors.size < i)
-                                append(',')
+
+                            if (iterator.hasNext()) {
+                                withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
+                                    append(", ")
+                                }
+                            }
                         }
                     }
                     ClickableText(
