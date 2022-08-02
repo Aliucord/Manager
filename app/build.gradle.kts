@@ -10,10 +10,10 @@ plugins {
 }
 
 android {
+    namespace = "com.aliucord.manager"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.aliucord.manager"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
