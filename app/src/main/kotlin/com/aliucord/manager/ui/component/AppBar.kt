@@ -39,6 +39,7 @@ private val Destination.title
         AboutScreenDestination -> R.string.about
     }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(navController: NavController) {
     val destination = navController.currentBackStackEntryAsState().value?.appDestination() ?: HomeScreenDestination

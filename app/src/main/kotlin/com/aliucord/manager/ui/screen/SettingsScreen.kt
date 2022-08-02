@@ -23,6 +23,7 @@ import com.aliucord.manager.ui.component.settings.*
 import com.aliucord.manager.ui.viewmodel.SettingsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun SettingsScreen() = Column(

@@ -1,12 +1,12 @@
-val accompanistVersion = "0.24.13-rc"
-val composeVersion = "1.3.0-alpha01"
+val accompanistVersion = "0.26.0-alpha"
+val composeVersion = "1.3.0-alpha02"
 val ktorVersion = "2.0.3"
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.devtools.ksp") version "1.7.0-1.0.6"
-    kotlin("plugin.serialization") version "1.6.21"
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
+    kotlin("plugin.serialization") version "1.7.10"
 }
 
 android {
@@ -51,7 +51,7 @@ android {
     }
 
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = "1.2.0"
+    composeOptions.kotlinCompilerExtensionVersion = "1.3.0-rc01"
 }
 
 dependencies {
@@ -60,15 +60,15 @@ dependencies {
     // core dependencies
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.core:core-splashscreen:1.0.0-rc01")
-    implementation("com.android:zipflinger:7.4.0-alpha07")
+    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("com.android:zipflinger:7.4.0-alpha08")
 //    implementation("com.github.Aliucord:libzip:1.0.0")
 
     // compose dependencies
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
     implementation("androidx.paging:paging-compose:1.0.0-alpha15")
 
     // accompanist dependencies
@@ -76,8 +76,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
 
     // compose destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.7.15-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.7.15-beta")
 
     // other dependencies
     implementation("io.coil-kt:coil-compose:2.1.0")

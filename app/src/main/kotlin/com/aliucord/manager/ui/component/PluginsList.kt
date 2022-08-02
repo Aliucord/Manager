@@ -26,6 +26,7 @@ import com.aliucord.manager.model.Plugin
 import com.aliucord.manager.ui.component.plugins.Changelog
 import com.aliucord.manager.ui.component.plugins.PluginCard
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PluginsList() = Column(
     modifier = Modifier.fillMaxSize(),
