@@ -116,7 +116,7 @@ fun PluginCard(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                FilledTonalButton(
+                IconButton(
                     onClick = {
                         uriHandler.openUri(
                             plugin.manifest.updateUrl
@@ -132,7 +132,7 @@ fun PluginCard(
                 }
 
                 if (plugin.manifest.changelog != null) {
-                    FilledTonalButton(onClick = onShowChangelog) {
+                    IconButton(onClick = onShowChangelog) {
                         Icon(
                             painter = painterResource(R.drawable.ic_history_white_24dp),
                             contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
@@ -142,10 +142,13 @@ fun PluginCard(
 
                 Spacer(Modifier.weight(1f, true))
 
-                Button(onClick = onDelete) {
+                IconButton(
+                    onClick = onDelete
+                ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.uninstall_plugin, plugin.manifest.name)
+                        contentDescription = stringResource(R.string.uninstall_plugin, plugin.manifest.name),
+                        tint = MaterialTheme.colorScheme.error
                     )
                 }
             }

@@ -5,6 +5,7 @@ val ktorVersion = "2.0.3"
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("kotlin-parcelize")
     id("com.google.devtools.ksp") version "1.7.10-1.0.6"
     kotlin("plugin.serialization") version "1.7.10"
 }
@@ -61,8 +62,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("com.android:zipflinger:7.4.0-alpha08")
+    implementation("com.android:zipflinger:7.4.0-alpha09")
 //    implementation("com.github.Aliucord:libzip:1.0.0")
+
+    // androidX activity
+    implementation("androidx.activity:activity-compose:1.6.0-alpha05")
 
     // compose dependencies
     implementation("androidx.compose.ui:ui:${composeVersion}")
@@ -70,21 +74,21 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
     implementation("androidx.compose.material3:material3:1.0.0-alpha15")
     implementation("androidx.paging:paging-compose:1.0.0-alpha15")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")
 
     // accompanist dependencies
     implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
 
-    // compose destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.7.15-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.7.15-beta")
-
     // other dependencies
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("de.upb.cs.swt:axml:2.1.2") // 2.1.2 is broken btw
-    implementation("com.android.tools.build:apksig:7.2.1")
+    implementation("com.android.tools.build:apksig:7.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+
+    // taxi
+    implementation("com.github.X1nto:Taxi:1.0.0")
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
