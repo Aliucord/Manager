@@ -6,7 +6,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
     kotlin("plugin.serialization") version "1.7.10"
 }
 
