@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeamCard() = ElevatedCard(
     modifier = Modifier.wrapContentHeight().fillMaxWidth()

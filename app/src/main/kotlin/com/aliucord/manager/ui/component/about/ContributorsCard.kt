@@ -5,7 +5,6 @@
 
 package com.aliucord.manager.ui.component.about
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.*
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.model.github.GithubUser
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ContributorsCard(contributors: List<GithubUser>) {
     ElevatedCard(

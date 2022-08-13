@@ -5,7 +5,6 @@
 
 package com.aliucord.manager.ui.component.installer
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -18,7 +17,6 @@ import com.aliucord.manager.R
 
 enum class DownloadMethod { DOWNLOAD, SELECT }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun InstallerDialog(
     onDismissRequest: () -> Unit,

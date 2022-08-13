@@ -18,7 +18,6 @@ import com.aliucord.manager.R
 import com.aliucord.manager.preferences.Prefs
 import com.aliucord.manager.ui.theme.Theme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ThemeDialog(
     onDismissRequest: () -> Unit,
