@@ -165,7 +165,6 @@ fun HomeScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
                     .weight(1f, true)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -173,6 +172,7 @@ fun HomeScreen(
                 val lazyPagingItems = viewModel.commits.collectAsLazyPagingItems()
 
                 Text(
+                    modifier = Modifier.padding(16.dp, 16.dp, 16.dp),
                     text = stringResource(R.string.commits),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary
