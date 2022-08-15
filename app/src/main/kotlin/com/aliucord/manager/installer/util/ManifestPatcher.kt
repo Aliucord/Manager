@@ -5,7 +5,6 @@
 
 package com.aliucord.manager.installer.util
 
-import com.aliucord.manager.preferences.Prefs
 import pxb.android.axml.*
 
 object ManifestPatcher {
@@ -15,8 +14,12 @@ object ManifestPatcher {
     private const val DEBUGGABLE = "debuggable"
     private const val LABEL = "label"
 
-    fun patchManifest(manifestBytes: ByteArray): ByteArray {
-        val packageName = Prefs.packageName.get()
+    fun patchManifest(
+        manifestBytes: ByteArray,
+        packageName: String,
+        appName: String,
+        debuggable: Boolean
+    ): ByteArray {
         val reader = AxmlReader(manifestBytes)
         val writer = AxmlWriter()
 
@@ -38,12 +41,12 @@ object ManifestPatcher {
                             "application" -> object : ReplaceAttrsVisitor(
                                 nv,
                                 mapOf(
-                                    LABEL to Prefs.appName.get(),
-                                    DEBUGGABLE to Prefs.debuggable.get(),
+                                    LABEL to appName,
+                                    DEBUGGABLE to debuggable,
                                     USES_CLEARTEXT_TRAFFIC to true
                                 )
                             ) {
-                                private var addDebuggable = Prefs.debuggable.get()
+                                private var addDebuggable = debuggable
                                 private var addUseClearTextTraffic = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
@@ -56,12 +59,15 @@ object ManifestPatcher {
                                     val visitor = super.child(ns, name)
 
                                     return when (name) {
-                                        "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to Prefs.appName.get()))
+                                        "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to appName))
                                         "provider" -> object : NodeVisitor(visitor) {
                                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                                 super.attr(
-                                                    ns, name, resourceId, type,
-                                                    if (name == "authorities") (value as String).replace("com.discord", packageName) else value
+                                                    /* ns = */ ns,
+                                                    /* name = */ name,
+                                                    /* resourceId = */ resourceId,
+                                                    /* type = */ type,
+                                                    /* obj = */ if (name == "authorities") (value as String).replace("com.discord", packageName) else value
                                                 )
                                             }
                                         }
@@ -91,16 +97,20 @@ object ManifestPatcher {
         return writer.toByteArray()
     }
 
-    fun renamePackage(manifestBytes: ByteArray): ByteArray {
-        val packageName = Prefs.packageName.get()
+    fun renamePackage(
+        manifestBytes: ByteArray,
+        packageName: String
+    ): ByteArray {
         val reader = AxmlReader(manifestBytes)
         val writer = AxmlWriter()
 
-        reader.accept(object : AxmlVisitor(writer) {
-            override fun child(ns: String?, name: String?): ReplaceAttrsVisitor {
-                return ReplaceAttrsVisitor(super.child(ns, name), mapOf("package" to packageName))
+        reader.accept(
+            object : AxmlVisitor(writer) {
+                override fun child(ns: String?, name: String?): ReplaceAttrsVisitor {
+                    return ReplaceAttrsVisitor(super.child(ns, name), mapOf("package" to packageName))
+                }
             }
-        })
+        )
 
         return writer.toByteArray()
     }

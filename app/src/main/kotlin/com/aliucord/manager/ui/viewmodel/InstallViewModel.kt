@@ -8,21 +8,29 @@ import android.content.pm.PackageInstaller
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliucord.manager.domain.manager.DownloadManager
+import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.installer.service.InstallService
-import com.aliucord.manager.installer.util.DownloadUtils
 import com.aliucord.manager.installer.util.ManifestPatcher
-import com.aliucord.manager.util.Signer
+import com.aliucord.manager.installer.util.Signer
 import com.android.zipflinger.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import java.io.File
 import java.util.zip.Deflater
 
-class InstallViewModel(application: Application) : AndroidViewModel(application) {
+class InstallViewModel(
+    private val application: Application,
+    private val downloadManager: DownloadManager,
+    private val preferences: PreferencesManager
+) : ViewModel() {
+    private val assetManager = application.assets
+    private val externalCacheDir = application.externalCacheDir!!
+    private val packageInstaller = application.packageManager.packageInstaller
+
     private val _returnToHome = MutableSharedFlow<Boolean>()
     val returnToHome = _returnToHome.asSharedFlow()
 
@@ -31,39 +39,39 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
     var log by mutableStateOf("")
         private set
 
+    init {
+        viewModelScope.launch {
+            startInstallation()
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun startInstallation() {
+    suspend fun startInstallation() {
         if (installationRunning) return
 
-        viewModelScope.launch(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             installationRunning = true
 
-            val context = getApplication<Application>().applicationContext
-            val assetManager = context.assets
-            val externalCacheDir = context.externalCacheDir!!
             val arch = Build.SUPPORTED_ABIS.first()
-            val supportedVersion = "124206"
+            val supportedVersion = preferences.version
 
             val baseApk = externalCacheDir.resolve("base-${supportedVersion}.apk").also { file ->
-                val archiveInfo = context.packageManager.getPackageArchiveInfo(file.path, 0)
+                @Suppress("DEPRECATION")
+                val archiveInfo = application.packageManager.getPackageArchiveInfo(file.path, 0)
 
-                if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also run { log += "Using cached base APK\n"}
+                if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also run { log += "Using cached base APK\n" }
 
                 log += "Downloading Discord APK... "
-
-                DownloadUtils.downloadDiscordApk(context, supportedVersion)
-
+                downloadManager.downloadDiscordApk(supportedVersion)
                 log += "Done\n"
             }
 
             val libArch = arch.replace("-v", "_v")
             val libsApk = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also run { log += "Used cached libs APK\n" }
+                if (file.exists()) return@also run { log += "Using cached libs APK\n" }
 
                 log += "Downloading libs APK... "
-
-                DownloadUtils.downloadSplit(context, supportedVersion, "config.$libArch")
-
+                downloadManager.downloadSplit(supportedVersion, "config.$libArch")
                 log += "Done\n"
             }
 
@@ -71,23 +79,19 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
                 if (file.exists()) return@also run { log += "Using cached locale APK\n" }
 
                 log += "Downloading locale APK... "
-
-                DownloadUtils.downloadSplit(context, supportedVersion, "config.en")
-
+                downloadManager.downloadSplit(supportedVersion, "config.en")
                 log += "Done\n"
             }
 
             val xxhdpiApk = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also run { log += "Using cached drawables APK\n"}
+                if (file.exists()) return@also run { log += "Using cached drawables APK\n" }
 
                 log += "Downloading drawables APK... "
-
-                DownloadUtils.downloadSplit(context, supportedVersion, "config.xxhdpi")
-
+                downloadManager.downloadSplit(supportedVersion, "config.xxhdpi")
                 log += "Done\n"
             }
 
-            val apks = listOf(baseApk, libsApk, localeApk, xxhdpiApk)
+            val apks = arrayOf(baseApk, libsApk, localeApk, xxhdpiApk)
 
             log += "Patching manifest...\n"
 
@@ -97,7 +101,14 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
                     .array()
 
                 ZipArchive(baseApk.toPath()).use { zip ->
-                    val source = BytesSource(ManifestPatcher.patchManifest(byteArray), "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
+                    val patchedBytesArray = ManifestPatcher.patchManifest(
+                        manifestBytes = byteArray,
+                        packageName = preferences.packageName,
+                        appName = preferences.appName,
+                        debuggable = preferences.debuggable,
+                    )
+
+                    val source = BytesSource(patchedBytesArray, "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
 
                     zip.delete("AndroidManifest.xml")
                     zip.add(source)
@@ -109,15 +120,18 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
                         .array()
 
                     ZipArchive(apk.toPath()).use { zip ->
-                        val source = BytesSource(ManifestPatcher.renamePackage(byteArray), "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
+                        val patchedBytes = ManifestPatcher.renamePackage(byteArray, preferences.packageName)
+                        val source = BytesSource(patchedBytes, "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
 
                         zip.delete("AndroidManifest.xml")
                         zip.add(source)
                     }
                 }
             } catch (e: Exception) {
-                log += "An error has occurred"
+                log += "An error has occurred: ${e.message}\n"
                 e.printStackTrace()
+
+                return@withContext
             }
 
             log += "Patching libraries...\n"
@@ -141,7 +155,7 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
 
             log += "Done\n"
 
-            installApks(*apks.toTypedArray())
+            installApks(*apks)
 
             _returnToHome.emit(true)
             installationRunning = false
@@ -149,9 +163,7 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun installApks(vararg apks: File) {
-        val context = getApplication<Application>().applicationContext
         val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
-        val packageInstaller = context.packageManager.packageInstaller
         val sessionId = packageInstaller.createSession(params)
         val session = packageInstaller.openSession(sessionId)
 
@@ -163,13 +175,13 @@ class InstallViewModel(application: Application) : AndroidViewModel(application)
             }
         }
 
-        val callbackIntent = Intent(context, InstallService::class.java)
+        val callbackIntent = Intent(application, InstallService::class.java)
 
         @SuppressLint("UnspecifiedImmutableFlag")
         val contentIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getService(context, 0, callbackIntent, PendingIntent.FLAG_MUTABLE)
+            PendingIntent.getService(application, 0, callbackIntent, PendingIntent.FLAG_MUTABLE)
         } else {
-            PendingIntent.getService(context, 0, callbackIntent, 0)
+            PendingIntent.getService(application, 0, callbackIntent, 0)
         }
 
         session.commit(contentIntent.intentSender)

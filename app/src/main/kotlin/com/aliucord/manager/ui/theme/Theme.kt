@@ -10,27 +10,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-private val LightColorScheme = lightColorScheme()
-private val DarkColorScheme = darkColorScheme()
-private val BlackColorScheme = darkColorScheme(
-    background = Color.Black,
-    surface = Color.Black,
-    primary = Color.LightGray,
-    onPrimary = Color.DarkGray,
-    secondary = Color.Gray,
-    onSecondary = Color.LightGray,
-    secondaryContainer = Color.DarkGray,
-    onSecondaryContainer = Color.White,
-    outline = Color.LightGray
-)
-
 @Composable
 fun ManagerTheme(
-    isBlack: Boolean = false,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     isDynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -39,8 +23,8 @@ fun ManagerTheme(
     val colorScheme = when {
         dynamicColor && isDarkTheme -> dynamicDarkColorScheme(LocalContext.current)
         dynamicColor && !isDarkTheme -> dynamicLightColorScheme(LocalContext.current)
-        isDarkTheme -> if (isBlack) BlackColorScheme else DarkColorScheme
-        else -> LightColorScheme
+        isDarkTheme -> darkColorScheme()
+        else -> lightColorScheme()
     }
 
     val systemUiController = rememberSystemUiController()
@@ -54,19 +38,12 @@ fun ManagerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
         content = content
     )
 }
 
-enum class Theme(
-    val displayName: String
-) {
+enum class Theme(val displayName: String) {
     SYSTEM("System"),
     LIGHT("Light"),
-    DARK("Dark");
-
-    companion object {
-        fun from(index: Int) = values()[index]
-    }
+    DARK("Dark")
 }

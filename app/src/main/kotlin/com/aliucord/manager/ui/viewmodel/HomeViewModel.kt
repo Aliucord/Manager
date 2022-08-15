@@ -5,18 +5,21 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.*
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aliucord.manager.model.github.Version
-import com.aliucord.manager.preferences.Prefs
-import com.aliucord.manager.util.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import kotlinx.coroutines.*
-import kotlinx.serialization.decodeFromString
+import androidx.paging.*
+import com.aliucord.manager.domain.manager.PreferencesManager
+import com.aliucord.manager.domain.repository.GithubRepository
+import com.aliucord.manager.network.dto.Commit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    private val packageManager = getApplication<Application>().packageManager
+class HomeViewModel(
+    private val application: Application,
+    private val githubRepository: GithubRepository,
+    val preferences: PreferencesManager
+) : ViewModel() {
+    private val packageManager = application.packageManager
 
     var supportedVersion by mutableStateOf("")
         private set
@@ -24,43 +27,64 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     var installedVersion by mutableStateOf("-")
         private set
 
-    private fun load() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val version = json.decodeFromString<Version>(httpClient.get(Github.dataUrl).bodyAsText())
+    val commits = Pager(PagingConfig(pageSize = 30)) {
+        object : PagingSource<Int, Commit>() {
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Commit> {
+                val page = params.key ?: 0
 
-            withContext(Dispatchers.Main) {
-                supportedVersion = "${version.versionName} - " + when (version.versionCode[3]) {
-                    '0' -> "Stable"
-                    '1' -> "Beta"
-                    '2' -> "Alpha"
-                    else -> throw NoWhenBranchMatchedException()
-                }
-                installedVersion = try {
-                    packageManager.getPackageInfo(Prefs.packageName.get(), 0).versionName
-                } catch (th: Throwable) {
-                    "-"
-                }
+                val response = githubRepository.getCommits(page)
+                val prevKey = if (page > 0) page - 1 else null
+                val nextKey = if (response.isNotEmpty()) page + 1 else null
+
+                return LoadResult.Page(
+                    data = response,
+                    prevKey = prevKey,
+                    nextKey = nextKey
+                )
+            }
+
+            override fun getRefreshKey(state: PagingState<Int, Commit>) = state.anchorPosition?.let {
+                state.closestPageToPosition(it)?.prevKey?.plus(1) ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
+            }
+        }
+    }.flow.cachedIn(viewModelScope)
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            val version = githubRepository.getVersion()
+
+            supportedVersion = "${version.versionName} - " + when (version.versionCode[3]) {
+                '0' -> "Stable"
+                '1' -> "Beta"
+                '2' -> "Alpha"
+                else -> throw NoWhenBranchMatchedException()
+            }
+
+            installedVersion = try {
+                @Suppress("DEPRECATION")
+                packageManager.getPackageInfo(preferences.packageName, 0).versionName
+            } catch (th: Throwable) {
+                "-"
             }
         }
     }
 
     fun launchAliucord() {
-        packageManager.getLaunchIntentForPackage(Prefs.packageName.get())?.let {
-            getApplication<Application>().startActivity(it)
-        } ?: Toast.makeText(getApplication(), "Failed to launch Aliucord", Toast.LENGTH_LONG)
-            .show()
+        val launchIntent = packageManager.getLaunchIntentForPackage(preferences.packageName)
+
+        if (launchIntent != null) {
+            application.startActivity(launchIntent)
+        } else {
+            Toast.makeText(application, "Failed to launch Aliucord", Toast.LENGTH_LONG).show()
+        }
     }
 
     fun uninstallAliucord() {
-        val packageURI = Uri.parse("package:${Prefs.packageName.get()}")
+        val packageURI = Uri.parse("package:${preferences.packageName}")
         val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
-        getApplication<Application>().startActivity(uninstallIntent)
-    }
-
-    init {
-        load()
+        application.startActivity(uninstallIntent)
     }
 }

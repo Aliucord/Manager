@@ -24,9 +24,6 @@ sealed interface AppDestination : Destination {
     object Install : AppDestination
 
     @Parcelize
-    object Store : AppDestination
-
-    @Parcelize
     object About : AppDestination
 
     @Parcelize

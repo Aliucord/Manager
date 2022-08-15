@@ -3,10 +3,8 @@
  * Licensed under the Open Software License version 3.0
  */
 
-
 package com.aliucord.manager
 
-import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.provider.Settings
@@ -19,23 +17,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.aliucord.manager.preferences.Prefs
-import com.aliucord.manager.preferences.sharedPreferences
+import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.ui.navigation.AppDestination
 import com.aliucord.manager.ui.screen.*
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.theme.Theme
 import com.xinto.taxi.Taxi
 import com.xinto.taxi.rememberBackstackNavigator
+import org.koin.android.ext.android.inject
+
+val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
 
 class MainActivity : ComponentActivity() {
+    private val preferences: PreferencesManager by inject()
+
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
             val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
@@ -46,17 +46,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ManagerTheme(
-                isBlack = Prefs.useBlack.get(),
-                isDarkTheme = run {
-                    val theme = Theme.from(Prefs.theme.get())
-
-                    theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK
-                }
+                isDarkTheme = preferences.theme == Theme.DARK || preferences.theme == Theme.SYSTEM && isSystemInDarkTheme(),
             ) {
                 val navigator = rememberBackstackNavigator<AppDestination>(AppDestination.Home)
 
                 BackHandler {
-                    navigator.pop()
+                    if (!navigator.pop()) finish()
                 }
 
                 Taxi(
@@ -66,11 +61,11 @@ class MainActivity : ComponentActivity() {
                 ) { destination ->
                     when (destination) {
                         is AppDestination.Home -> MainRootScreen(
-                            navigator = navigator
+                            onClickInstall = { navigator.push(AppDestination.Install) },
+                            onClickAbout = { navigator.push(AppDestination.About) },
+                            onClickSettings = { navigator.push(AppDestination.Settings) }
                         )
-                        is AppDestination.Plugins -> PluginsScreen(
-                            navigator = navigator
-                        )
+                        is AppDestination.Plugins -> PluginsScreen()
                         is AppDestination.Install -> InstallerScreen(
                             onClickBack = navigator::pop,
                         )
@@ -78,9 +73,6 @@ class MainActivity : ComponentActivity() {
                             onClickBack = navigator::pop
                         )
                         is AppDestination.About -> AboutScreen(
-                            onClickBack = navigator::pop
-                        )
-                        is AppDestination.Store -> StoreScreen(
                             onClickBack = navigator::pop
                         )
                     }

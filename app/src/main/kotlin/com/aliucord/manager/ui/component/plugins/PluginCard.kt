@@ -5,13 +5,15 @@
 
 package com.aliucord.manager.ui.component.plugins
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalUriHandler
@@ -21,29 +23,26 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
-import com.aliucord.manager.model.Plugin
+import com.aliucord.manager.domain.model.Plugin
 
 @Composable
 fun PluginCard(
     plugin: Plugin,
-    onDelete: () -> Unit,
-    onShowChangelog: () -> Unit
+    onClickDelete: () -> Unit,
+    onClickShowChangelog: () -> Unit
 ) {
-    val uriHandler = LocalUriHandler.current
-
-    ElevatedCard(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    ElevatedCard {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
-            var isEnabled by remember { mutableStateOf(true) }
+            val uriHandler = LocalUriHandler.current
+            var isEnabled by rememberSaveable { mutableStateOf(true) }
 
             // Header
             Row(
-                modifier = Modifier.toggleable(value = isEnabled) {
-                    isEnabled = it
-                }
+                modifier = Modifier.clickable { isEnabled = !isEnabled }
             ) {
                 Column {
                     // Name
@@ -79,16 +78,14 @@ fun PluginCard(
                             }
                         }
                     }
+
                     ClickableText(
                         text = authors,
                         style = MaterialTheme.typography.labelMedium,
-                        onClick = {
-                            authors.getStringAnnotations("authorId", it, it)
+                        onClick = { offset ->
+                            authors.getStringAnnotations("authorId", offset, offset)
                                 .firstOrNull()
-                                ?.let { (id) ->
-                                    val url = "https://discord.com/users/$id"
-                                    uriHandler.openUri(url)
-                                }
+                                ?.let { (id) -> uriHandler.openUri("https://discord.com/users/$id") }
                         }
                     )
                 }
@@ -102,15 +99,15 @@ fun PluginCard(
                 )
             }
 
-            Divider(modifier = Modifier.alpha(0.1f))
+            Divider(modifier = Modifier.alpha(0.3f))
 
             // Description
             Text(
-                text = plugin.manifest.description,
-                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .heightIn(max = 150.dp, min = 40.dp)
                     .padding(top = 10.dp),
+                text = plugin.manifest.description,
+                style = MaterialTheme.typography.bodyMedium
             )
 
             Row(
@@ -118,23 +115,19 @@ fun PluginCard(
             ) {
                 IconButton(
                     onClick = {
-                        uriHandler.openUri(
-                            plugin.manifest.updateUrl
-                                .replace("raw.githubusercontent.com", "github.com")
-                                .replaceFirst("/builds.*".toRegex(), "")
-                        )
+                        uriHandler.openUri(plugin.manifest.repositoryUrl)
                     }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_account_github_white_24dp),
-                        contentDescription = "GitHub"
+                        contentDescription = stringResource(R.string.github)
                     )
                 }
 
                 if (plugin.manifest.changelog != null) {
-                    IconButton(onClick = onShowChangelog) {
+                    IconButton(onClick = onClickShowChangelog) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_history_white_24dp),
+                            imageVector = Icons.Default.History,
                             contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
                         )
                     }
@@ -142,12 +135,10 @@ fun PluginCard(
 
                 Spacer(Modifier.weight(1f, true))
 
-                IconButton(
-                    onClick = onDelete
-                ) {
+                IconButton(onClick = onClickDelete) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.uninstall_plugin, plugin.manifest.name),
+                        contentDescription = stringResource(R.string.uninstall),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }

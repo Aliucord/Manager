@@ -32,7 +32,7 @@ fun GrantPermission(permissionState: PermissionState) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                stringResource(R.string.permission_required),
+                text = stringResource(R.string.permission_required),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center
             )
@@ -42,7 +42,7 @@ fun GrantPermission(permissionState: PermissionState) {
             Row {
                 val context = LocalContext.current
 
-                Button(onClick = { permissionState.launchPermissionRequest() }) {
+                Button(onClick = permissionState::launchPermissionRequest) {
                     Text(stringResource(R.string.permission_grant))
                 }
 
@@ -52,15 +52,11 @@ fun GrantPermission(permissionState: PermissionState) {
                     onClick = {
                         context.startActivity(
                             Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                                /* action = */ Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                /* uri = */ Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
                             )
                         )
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                    ),
+                    }
                 ) {
                     Text(stringResource(R.string.open_settings))
                 }

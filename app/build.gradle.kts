@@ -1,7 +1,3 @@
-val accompanistVersion = "0.26.1-alpha"
-val composeVersion = "1.3.0-alpha03"
-val ktorVersion = "2.1.0"
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -28,6 +24,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -40,14 +37,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
-    }
-
-    applicationVariants.all {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
     }
 
     buildFeatures.compose = true
@@ -68,6 +57,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.6.0-beta01")
 
     // compose dependencies
+    val composeVersion = "1.3.0-alpha03"
+
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
@@ -76,8 +67,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")
 
     // accompanist dependencies
+    val accompanistVersion = "0.26.1-alpha"
     implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
+
+    // Koin
+    val koinVersion = "3.2.0"
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
 
     // other dependencies
     implementation("io.coil-kt:coil-compose:2.1.0")
@@ -90,8 +87,9 @@ dependencies {
     implementation("com.github.X1nto:Taxi:1.1.0")
 
     // ktor
+    val ktorVersion = "2.1.0"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 }

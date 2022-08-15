@@ -3,29 +3,18 @@ package com.aliucord.manager.ui.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aliucord.manager.model.github.GithubUser
-import com.aliucord.manager.util.Github
-import com.aliucord.manager.util.httpClient
-import io.ktor.client.call.*
-import io.ktor.client.request.*
+import com.aliucord.manager.network.dto.GithubUser
+import com.aliucord.manager.domain.repository.GithubRepository
 import kotlinx.coroutines.launch
 
-class AboutViewModel : ViewModel() {
-
+class AboutViewModel(
+    private val githubRepository: GithubRepository
+) : ViewModel() {
     val contributors = mutableStateListOf<GithubUser>()
 
-    fun load() {
+    init {
         viewModelScope.launch {
-            val githubContributors = httpClient.get(Github.contributorsUrl).body<List<GithubUser>>()
-                .sortedByDescending {
-                    it.contributions
-                }
-            contributors.addAll(githubContributors)
+            contributors.addAll(githubRepository.getContributors())
         }
     }
-
-    init {
-        load()
-    }
-
 }

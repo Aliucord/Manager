@@ -5,8 +5,6 @@
 
 package com.aliucord.manager.ui.screen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,25 +14,21 @@ import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.aliucord.manager.R
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
+import org.koin.androidx.compose.getViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun InstallerScreen(
+    viewModel: InstallViewModel = getViewModel(),
     onClickBack: () -> Unit
 ) {
-    val viewModel: InstallViewModel = viewModel()
-
     val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
-    if (navigateMain) onClickBack
 
-    LaunchedEffect(Unit) {
-        viewModel.startInstallation()
-    }
-
+    if (navigateMain) onClickBack()
 
     Scaffold(
         topBar = {
@@ -44,7 +38,7 @@ fun InstallerScreen(
                     IconButton(onClick = onClickBack) {
                         Icon(
                             imageVector = Icons.Default.NavigateBefore,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -62,6 +56,7 @@ fun InstallerScreen(
                     modifier = Modifier.fillParentMaxWidth()
                 )
             }
+
             item {
                 Text(
                     text = viewModel.log,
