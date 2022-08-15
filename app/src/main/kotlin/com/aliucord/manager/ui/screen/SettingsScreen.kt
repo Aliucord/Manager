@@ -72,6 +72,12 @@ fun SettingsScreen(
                 }
             )
 
+            SwitchSetting(
+                checked = preferences.dynamicColor,
+                title = { Text(stringResource(R.string.dynamic_color)) },
+                onCheckedChange = { preferences.dynamicColor = it }
+            )
+
             Divider()
 
             OutlinedTextField(
@@ -158,6 +164,7 @@ fun SwitchSetting(
     title: @Composable () -> Unit,
     description: @Composable (() -> Unit)? = null,
     onCheckedChange: (Boolean) -> Unit,
+    enabled: Boolean = true
 ) {
     ListItem(
         modifier = Modifier.clickable { onCheckedChange(!checked) },
@@ -166,6 +173,7 @@ fun SwitchSetting(
         supportingText = description,
         trailingContent = {
             Switch(
+                enabled = enabled,
                 checked = checked,
                 onCheckedChange = onCheckedChange
             )

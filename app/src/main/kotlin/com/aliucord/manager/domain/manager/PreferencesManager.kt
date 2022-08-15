@@ -7,6 +7,7 @@ import com.aliucord.manager.ui.theme.Theme
 
 class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager(preferences) {
     var theme by enumPreference("theme", Theme.SYSTEM)
+    var dynamicColor by booleanPreference("dynamic_color", true)
     var replaceBg by booleanPreference("replace_bg", true)
     var devMode by booleanPreference("dev_mode", false)
     var debuggable by booleanPreference("debuggable", false)

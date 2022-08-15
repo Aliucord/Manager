@@ -47,6 +47,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ManagerTheme(
                 isDarkTheme = preferences.theme == Theme.DARK || preferences.theme == Theme.SYSTEM && isSystemInDarkTheme(),
+                isDynamicColor = preferences.dynamicColor
             ) {
                 val navigator = rememberBackstackNavigator<AppDestination>(AppDestination.Home)
 
@@ -65,7 +66,6 @@ class MainActivity : ComponentActivity() {
                             onClickAbout = { navigator.push(AppDestination.About) },
                             onClickSettings = { navigator.push(AppDestination.Settings) }
                         )
-                        is AppDestination.Plugins -> PluginsScreen()
                         is AppDestination.Install -> InstallerScreen(
                             onClickBack = navigator::pop,
                         )
