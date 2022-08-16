@@ -174,12 +174,12 @@ fun SettingsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SwitchSetting(
+    enabled: Boolean = true,
     checked: Boolean,
     icon: @Composable (() -> Unit)? = null,
     title: @Composable () -> Unit,
     description: @Composable (() -> Unit)? = null,
-    onCheckedChange: (Boolean) -> Unit,
-    enabled: Boolean = true
+    onCheckedChange: (Boolean) -> Unit
 ) {
     ListItem(
         modifier = Modifier.clickable { onCheckedChange(!checked) },
@@ -260,7 +260,7 @@ fun GroupHeader(
         contentAlignment = Alignment.CenterStart
     ) {
         Text(
-            title,
+            text = title,
             color = color,
             fontSize = LocalTextStyle.current.fontSize.times(0.95f),
             fontWeight = FontWeight.SemiBold

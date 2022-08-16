@@ -48,7 +48,7 @@
   <string name="launch">Launch</string>
   <string name="uninstall">Uninstall</string>
   <string name="version">Version</string>
-    <string name="dynamic_color">Dynamic color</string>
+  <string name="dynamic_color">Dynamic color</string>
   <string name="appearance">Appearance</string>
   <string name="advanced">Advanced</string>
 </resources>
