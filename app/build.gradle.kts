@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -84,7 +86,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     // taxi
-    implementation("com.github.X1nto:Taxi:1.1.0")
+    implementation("com.github.X1nto:Taxi:1.2.0")
 
     // ktor
     val ktorVersion = "2.1.0"
