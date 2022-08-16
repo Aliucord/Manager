@@ -18,9 +18,6 @@ sealed interface AppDestination : Destination {
     object Home : AppDestination
 
     @Parcelize
-    object Plugins : AppDestination
-
-    @Parcelize
     object Install : AppDestination
 
     @Parcelize
