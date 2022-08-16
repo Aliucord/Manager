@@ -9,13 +9,15 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NavigateBefore
-import androidx.compose.material.icons.filled.Style
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
@@ -29,9 +31,14 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = getViewModel(),
     onClickBack: () -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
+        decayAnimationSpec = rememberSplineBasedDecay(),
+        state = rememberTopAppBarState()
+    )
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            MediumTopAppBar(
+            LargeTopAppBar(
                 title = { Text(stringResource(R.string.settings)) },
                 navigationIcon = {
                     IconButton(onClick = onClickBack) {
@@ -40,7 +47,8 @@ fun SettingsScreen(
                             contentDescription = stringResource(R.string.back)
                         )
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -61,10 +69,13 @@ fun SettingsScreen(
                 )
             }
 
+            GroupHeader(stringResource(R.string.appearance))
+
             ListItem(
                 modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
                 headlineText = { Text(stringResource(R.string.theme)) },
                 supportingText = { Text(stringResource(R.string.theme_setting_description)) },
+                leadingContent = { Icon(Icons.Default.Style, null) },
                 trailingContent = {
                     FilledTonalButton(onClick = viewModel::showThemeDialog) {
                         Text(preferences.theme.displayName)
@@ -75,10 +86,18 @@ fun SettingsScreen(
             SwitchSetting(
                 checked = preferences.dynamicColor,
                 title = { Text(stringResource(R.string.dynamic_color)) },
-                onCheckedChange = { preferences.dynamicColor = it }
+                onCheckedChange = { preferences.dynamicColor = it },
+                icon = { Icon(Icons.Default.Palette, null) }
             )
 
-            Divider()
+            GroupHeader(stringResource(R.string.advanced))
+
+            SwitchSetting(
+                checked = preferences.replaceBg,
+                title = { Text(stringResource(R.string.replace_bg)) },
+                onCheckedChange = { preferences.replaceBg = it },
+                icon = { Icon(Icons.Default.AppShortcut, null) }
+            )
 
             OutlinedTextField(
                 modifier = Modifier
@@ -92,15 +111,10 @@ fun SettingsScreen(
             )
 
             SwitchSetting(
-                checked = preferences.replaceBg,
-                title = { Text(stringResource(R.string.replace_bg)) },
-                onCheckedChange = { preferences.replaceBg = it }
-            )
-
-            SwitchSetting(
                 checked = preferences.devMode,
-                title = { Text(stringResource(R.string.advanced_options)) },
-                onCheckedChange = { preferences.devMode = it }
+                title = { Text(stringResource(R.string.developer_options)) },
+                onCheckedChange = { preferences.devMode = it },
+                icon = { Icon(Icons.Default.Code, null) }
             )
 
             AnimatedVisibility(
@@ -136,7 +150,8 @@ fun SettingsScreen(
                         checked = preferences.debuggable,
                         title = { Text(stringResource(R.string.debuggable)) },
                         description = { Text(stringResource(R.string.debuggable_description)) },
-                        onCheckedChange = { preferences.debuggable = it }
+                        onCheckedChange = { preferences.debuggable = it },
+                        icon = { Icon(Icons.Default.BugReport, null) }
                     )
                 }
             }
@@ -231,4 +246,24 @@ fun ThemeDialog(
             }
         }
     )
+}
+
+@Composable
+fun GroupHeader(
+    title: String,
+    color: Color = MaterialTheme.colorScheme.primary
+) {
+    Box(
+        Modifier
+            .padding(start = 12.dp)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            title,
+            color = color,
+            fontSize = LocalTextStyle.current.fontSize.times(0.95f),
+            fontWeight = FontWeight.SemiBold
+        )
+    }
 }

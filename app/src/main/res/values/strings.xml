@@ -22,7 +22,7 @@
   <string name="install">Install</string>
   <string name="reinstall">Reinstall</string>
   <string name="update">Update</string>
-  <string name="advanced_options">Show advanced options</string>
+  <string name="developer_options">Developer options</string>
   <string name="debuggable">Debuggable</string>
   <string name="debuggable_description">Enable debuggable flag</string>
   <string name="about">About</string>
@@ -49,4 +49,6 @@
   <string name="uninstall">Uninstall</string>
   <string name="version">Version</string>
     <string name="dynamic_color">Dynamic color</string>
+  <string name="appearance">Appearance</string>
+  <string name="advanced">Advanced</string>
 </resources>
