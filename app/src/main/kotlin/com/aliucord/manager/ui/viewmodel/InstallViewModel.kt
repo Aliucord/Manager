@@ -40,7 +40,7 @@ class InstallViewModel(
         private set
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Main) {
             startInstallation()
         }
     }
