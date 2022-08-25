@@ -59,12 +59,12 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.6.0-beta01")
 
     // compose dependencies
-    val composeVersion = "1.3.0-alpha03"
+    val composeVersion = "1.3.0-beta01"
 
     implementation("androidx.compose.ui:ui:${composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha16")
+    implementation("androidx.compose.material3:material3:1.0.0-beta01")
     implementation("androidx.paging:paging-compose:1.0.0-alpha16")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")
 
