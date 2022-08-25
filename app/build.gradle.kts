@@ -56,7 +56,7 @@ dependencies {
 //    implementation("com.github.Aliucord:libzip:1.0.0")
 
     // androidX activity
-    implementation("androidx.activity:activity-compose:1.6.0-beta01")
+    implementation("androidx.activity:activity-compose:1.6.0-rc01")
 
     // compose dependencies
     val composeVersion = "1.3.0-beta01"
@@ -79,11 +79,11 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
 
     // other dependencies
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("de.upb.cs.swt:axml:2.1.3") // 2.1.2 is broken btw
     implementation("com.android.tools.build:apksig:7.2.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
     // taxi
     implementation("com.github.X1nto:Taxi:1.2.0")
