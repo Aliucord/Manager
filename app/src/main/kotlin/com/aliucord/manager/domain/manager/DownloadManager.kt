@@ -14,11 +14,11 @@ class DownloadManager(
     private val downloadManager = context.getSystemService<DownloadManager>()!!
 
     suspend fun downloadDiscordApk(version: String): File {
-        return download("$backendHost/download/discord?v=$version", "base-$version.apk")
+        return download("$BACKEND_HOST/download/discord?v=$version", "base-$version.apk")
     }
 
     suspend fun downloadSplit(version: String, split: String): File {
-        return download("$backendHost/download/discord?v=$version&split=$split", "$split-$version.apk")
+        return download("$BACKEND_HOST/download/discord?v=$version&split=$split", "$split-$version.apk")
     }
 
     private suspend fun download(url: String, fileName: String): File {
@@ -47,6 +47,6 @@ class DownloadManager(
     }
 
     companion object {
-        private const val backendHost = "https://aliucord.com/"
+        private const val BACKEND_HOST = "https://aliucord.com/"
     }
 }

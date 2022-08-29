@@ -13,25 +13,25 @@ class GithubService(
     private val httpClient: HttpClient
 ) {
     suspend fun getCommits(page: Int): List<Commit> = withContext(Dispatchers.IO) {
-        httpClient.get(commitsUrl) {
+        httpClient.get(COMMITS_URL) {
             parameter("page", page)
         }.body()
     }
 
     suspend fun getVersion(): String = withContext(Dispatchers.IO) {
-        httpClient.get(dataUrl).bodyAsText()
+        httpClient.get(DATA_URL).bodyAsText()
     }
 
     suspend fun getContributors(): List<GithubUser> = withContext(Dispatchers.IO) {
-        httpClient.get(contributorsUrl).body()
+        httpClient.get(CONTRIBUTORS_URL).body()
     }
 
     companion object {
-        private const val org = "Aliucord"
-        private const val repo = "Aliucord"
+        private const val ORG = "Aliucord"
+        private const val REPO = "Aliucord"
 
-        private const val commitsUrl = "https://api.github.com/repos/$org/$repo/commits"
-        private const val contributorsUrl = "https://api.github.com/repos/$org/$repo/contributors"
-        private const val dataUrl = "https://raw.githubusercontent.com/$org/$repo/builds/data.json"
+        private const val COMMITS_URL = "https://api.github.com/repos/$ORG/$REPO/commits"
+        private const val CONTRIBUTORS_URL = "https://api.github.com/repos/$ORG/$REPO/contributors"
+        private const val DATA_URL = "https://raw.githubusercontent.com/$ORG/$REPO/builds/data.json"
     }
 }
