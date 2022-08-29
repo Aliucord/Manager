@@ -81,7 +81,8 @@ dependencies {
     // other dependencies
     implementation("io.coil-kt:coil-compose:2.2.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("de.upb.cs.swt:axml:2.1.3") // 2.1.2 is broken btw
+    @Suppress("GradleDependency")
+    implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.3 is broken btw
     implementation("com.android.tools.build:apksig:7.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
