@@ -48,51 +48,44 @@ android {
 dependencies {
     implementation(fileTree("./libs"))
 
-    // core dependencies
-    implementation("androidx.appcompat:appcompat:1.5.0")
-    implementation("androidx.core:core-ktx:1.8.0")
+    // AndroidX
+    implementation("androidx.core:core-ktx:1.9.0-rc01")
     implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("com.android:zipflinger:7.4.0-alpha09")
-//    implementation("com.github.Aliucord:libzip:1.0.0")
-
-    // androidX activity
     implementation("androidx.activity:activity-compose:1.6.0-rc01")
-
-    // compose dependencies
-    val composeVersion = "1.3.0-beta01"
-
-    implementation("androidx.compose.ui:ui:${composeVersion}")
-    implementation("androidx.compose.ui:ui-tooling:${composeVersion}")
-    implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-beta01")
     implementation("androidx.paging:paging-compose:1.0.0-alpha16")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")
+
+    // Compose
+    val composeVersion = "1.3.0-beta01"
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation("androidx.compose.material3:material3:1.0.0-beta01")
 
     // accompanist dependencies
     val accompanistVersion = "0.26.2-beta"
     implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")
     implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
 
-    // Koin
-    val koinVersion = "3.2.0"
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
-
-    // other dependencies
-    implementation("io.coil-kt:coil-compose:2.2.0")
-    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    @Suppress("GradleDependency")
-    implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.3 is broken btw
-    implementation("com.android.tools.build:apksig:7.2.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
-
-    // taxi
-    implementation("com.github.X1nto:Taxi:1.2.0")
-
-    // ktor
+    // Ktor
     val ktorVersion = "2.1.0"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+    // Koin
+    val koinVersion = "3.2.0"
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
+
+    // Other
+    implementation("io.coil-kt:coil-compose:2.2.0")
+    implementation("com.github.X1nto:Taxi:1.2.0")
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
+    implementation("com.android:zipflinger:7.4.0-alpha10")
+//    implementation("com.github.Aliucord:libzip:1.0.0")
+    @Suppress("GradleDependency")
+    implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.3 is broken btw
+    implementation("com.android.tools.build:apksig:7.4.0-alpha09")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }
