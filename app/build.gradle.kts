@@ -63,8 +63,8 @@ dependencies {
 
     // accompanist dependencies
     val accompanistVersion = "0.26.2-beta"
-    implementation("com.google.accompanist:accompanist-systemuicontroller:${accompanistVersion}")
-    implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // Ktor
     val ktorVersion = "2.1.0"
@@ -86,6 +86,6 @@ dependencies {
 //    implementation("com.github.Aliucord:libzip:1.0.0")
     @Suppress("GradleDependency")
     implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.3 is broken btw
-    implementation("com.android.tools.build:apksig:7.4.0-alpha09")
+    implementation("com.android.tools.build:apksig:7.4.0-alpha10")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }
