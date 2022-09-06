@@ -64,12 +64,12 @@ dependencies {
     // accompanist dependencies
     val accompanistVersion = "0.26.2-beta"
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-permissions:accompanistVersion")
 
     // Ktor
-    val ktorVersion = "2.1.0"
+    val ktorVersion = "2.1.1"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
