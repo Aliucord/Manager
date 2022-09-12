@@ -61,7 +61,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.0-beta02")
 
     // accompanist dependencies
-    val accompanistVersion = "0.26.2-beta"
+    val accompanistVersion = "0.26.3-beta"
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
