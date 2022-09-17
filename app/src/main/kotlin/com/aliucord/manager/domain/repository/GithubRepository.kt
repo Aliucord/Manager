@@ -7,7 +7,6 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class GithubRepository(
-    private val json: Json,
     private val service: GithubService
 ) {
     suspend fun getCommits(page: Int) = service.getCommits(page)
@@ -15,5 +14,5 @@ class GithubRepository(
     suspend fun getContributors() = service.getContributors()
         .sortedByDescending(GithubUser::contributions)
 
-    suspend fun getVersion() = json.decodeFromString<Version>(service.getVersion())
+    suspend fun getVersion() = service.getVersion()
 }

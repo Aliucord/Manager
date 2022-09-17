@@ -11,7 +11,6 @@ import org.koin.dsl.module
 val httpModule =  module {
     fun provideJson() = Json {
         ignoreUnknownKeys = true
-        isLenient = true
     }
 
     fun provideHttpClient(json: Json) = HttpClient(CIO) {
