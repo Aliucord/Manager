@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.navigation.HomeDestination
@@ -28,8 +29,13 @@ fun MainRootScreen(
 
     Scaffold(
         topBar = {
-            MediumTopAppBar(
-                title = { Text(stringResource(mainRootNavigator.currentDestination.label)) },
+            TopAppBar(
+                title = {
+                    Text(
+                        stringResource(mainRootNavigator.currentDestination.label),
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    )
+                },
                 actions = {
                     val localUriHandler = LocalUriHandler.current
 

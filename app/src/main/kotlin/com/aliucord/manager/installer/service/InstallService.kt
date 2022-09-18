@@ -19,14 +19,14 @@ class InstallService : Service() {
                 startActivity(confirmationIntent)
             }
             PackageInstaller.STATUS_SUCCESS -> Toast.makeText(
-                /* context = */ this,
-                /* text = */ "Successfully installed Aliucord!",
-                /* duration = */ Toast.LENGTH_LONG
+                 this,
+                 "Successfully installed Aliucord!",
+                 Toast.LENGTH_LONG
             ).show()
             PackageInstaller.STATUS_FAILURE_ABORTED -> Toast.makeText(
-                /* context = */ this,
-                /* text = */ "Aborted installation",
-                /* duration = */ Toast.LENGTH_LONG
+                this,
+                "Aborted installation",
+                Toast.LENGTH_LONG
             ).show()
             else -> {
                 Log.i(BuildConfig.TAG, "Installation failed: error code $statusCode")

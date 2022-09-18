@@ -37,7 +37,7 @@ fun SettingsScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
                 title = { Text(stringResource(R.string.settings)) },
                 navigationIcon = {
                     IconButton(onClick = onClickBack) {
@@ -216,7 +216,9 @@ fun ThemeDialog(
             Column {
                 Theme.values().forEach { theme ->
                     Row(
-                        modifier = Modifier.clickable { selectedTheme = theme },
+                        modifier = Modifier
+                            .clickable { selectedTheme = theme }
+                            .padding(start = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(

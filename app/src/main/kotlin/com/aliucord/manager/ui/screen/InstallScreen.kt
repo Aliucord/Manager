@@ -44,7 +44,7 @@ fun InstallerScreen(
 
     Scaffold(
         topBar = {
-            MediumTopAppBar(
+            TopAppBar(
                 title = { Text("Installer") },
                 navigationIcon = {
                     IconButton(onClick = onClickBack) {
@@ -61,18 +61,19 @@ fun InstallerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
-                .padding(horizontal = 12.dp, vertical = 14.dp)
         ) {
             stickyHeader {
                 LinearProgressIndicator(
-                    modifier = Modifier.fillParentMaxWidth()
+                    modifier = Modifier
+                        .fillParentMaxWidth()
+                        .padding(bottom = 4.dp)
                 )
             }
 
             item {
                 Text(
                     text = viewModel.log,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp)
                 )
             }
         }
