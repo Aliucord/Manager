@@ -111,7 +111,6 @@ fun PluginCard(
             )
 
             Row(
-                modifier = Modifier.padding(horizontal = 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 IconButton(
