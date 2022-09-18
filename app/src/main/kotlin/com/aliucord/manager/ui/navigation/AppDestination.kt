@@ -8,6 +8,7 @@ import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.screen.InstallData
 import com.xinto.taxi.Destination
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -18,7 +19,7 @@ sealed interface AppDestination : Destination {
     object Home : AppDestination
 
     @Parcelize
-    object Install : AppDestination
+    data class Install(val installData: InstallData) : AppDestination
 
     @Parcelize
     object About : AppDestination

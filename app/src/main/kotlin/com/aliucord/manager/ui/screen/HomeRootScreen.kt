@@ -20,7 +20,7 @@ import com.xinto.taxi.rememberNavigator
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun MainRootScreen(
-    onClickInstall: () -> Unit,
+    onClickInstall: (InstallData) -> Unit,
     onClickAbout: () -> Unit,
     onClickSettings: () -> Unit
 ) {

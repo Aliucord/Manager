@@ -62,11 +62,12 @@ class MainActivity : ComponentActivity() {
                 ) { destination ->
                     when (destination) {
                         is AppDestination.Home -> MainRootScreen(
-                            onClickInstall = { navigator.push(AppDestination.Install) },
+                            onClickInstall = { navigator.push(AppDestination.Install(it)) },
                             onClickAbout = { navigator.push(AppDestination.About) },
                             onClickSettings = { navigator.push(AppDestination.Settings) }
                         )
                         is AppDestination.Install -> InstallerScreen(
+                            installData = destination.installData,
                             onClickBack = navigator::pop,
                         )
                         is AppDestination.Settings -> SettingsScreen(
