@@ -14,7 +14,7 @@ data class Commit(
     val htmlUrl: String,
     val sha: String,
     val commit: Commit,
-    val author: Author
+    val author: Author?
 ) {
     @Serializable
     data class Author(@SerialName("login") val name: String)

@@ -201,7 +201,7 @@ fun HomeScreen(
                         ListItem(
                             modifier = Modifier.clickable { uriHandler.openUri(commitData.htmlUrl) },
                             overlineText = { Text(commitData.sha.substring(0, 7)) },
-                            headlineText = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author.name}") }
+                            headlineText = { Text("${commitData.commit.message.split("\n").first()} - ${commitData.author?.name ?: "UNKNOWN"}") }
                         )
                     }
 
