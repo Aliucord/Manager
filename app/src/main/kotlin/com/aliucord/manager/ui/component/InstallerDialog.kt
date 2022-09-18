@@ -16,13 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.screen.InstallData
 
 enum class DownloadMethod { DOWNLOAD, SELECT }
 
 @Composable
 fun InstallerDialog(
     onDismissRequest: () -> Unit,
-    onConfirm: (DownloadMethod) -> Unit
+    onConfirm: (InstallData) -> Unit
 ) {
     var selectedMethod by rememberSaveable { mutableStateOf(DownloadMethod.DOWNLOAD) }
 
@@ -66,7 +67,11 @@ fun InstallerDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm(selectedMethod)
+                    onConfirm(
+                        InstallData(
+                            selectedMethod,
+                        )
+                    )
                     onDismissRequest()
                 }
             ) {

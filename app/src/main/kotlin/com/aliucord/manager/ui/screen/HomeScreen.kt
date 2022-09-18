@@ -26,8 +26,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.component.DownloadMethod
-import com.aliucord.manager.ui.component.InstallerDialog
+import com.aliucord.manager.ui.component.*
 import com.aliucord.manager.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -35,7 +34,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = getViewModel(),
-    onClickInstall: () -> Unit
+    onClickInstall: (InstallData) -> Unit
 ) {
     var showOptionsDialog by remember { mutableStateOf(false) }
 
@@ -43,15 +42,19 @@ fun HomeScreen(
         val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@rememberLauncherForActivityResult
 
-            onClickInstall()
+            onClickInstall(
+                InstallData(
+                    DownloadMethod.SELECT,
+                )
+            )
         }
 
         InstallerDialog(
             onDismissRequest = { showOptionsDialog = false },
-            onConfirm = { method ->
-                when (method) {
-                    DownloadMethod.DOWNLOAD -> onClickInstall()
+            onConfirm = { data ->
+                when (data.downloadMethod) {
                     DownloadMethod.SELECT -> filePicker.launch(arrayOf("application/octet-stream"))
+                    DownloadMethod.DOWNLOAD -> onClickInstall(data)
                 }
             }
         )
@@ -110,7 +113,11 @@ fun HomeScreen(
                                 if (viewModel.preferences.devMode) {
                                     showOptionsDialog = true
                                 } else {
-                                    onClickInstall()
+                                    onClickInstall(
+                                        InstallData(
+                                            DownloadMethod.DOWNLOAD,
+                                        )
+                                    )
                                 }
                             }
                         ) {

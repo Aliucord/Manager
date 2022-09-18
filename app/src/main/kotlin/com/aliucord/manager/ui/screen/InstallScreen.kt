@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.ui.screen
 
+import android.os.Parcelable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,14 +18,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.component.DownloadMethod
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
+import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
+
+@Parcelize
+data class InstallData(
+    val downloadMethod: DownloadMethod,
+    var baseApk: String? = null,
+    var splits: List<String>? = null,
+) : Parcelable
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun InstallerScreen(
-    viewModel: InstallViewModel = getViewModel(),
-    onClickBack: () -> Unit
+    installData: InstallData,
+    onClickBack: () -> Unit,
+    viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) }),
 ) {
     val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
 

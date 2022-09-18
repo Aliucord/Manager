@@ -15,6 +15,7 @@ import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.installer.service.InstallService
 import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.installer.util.Signer
+import com.aliucord.manager.ui.screen.InstallData
 import com.android.zipflinger.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,7 +26,8 @@ import java.util.zip.Deflater
 class InstallViewModel(
     private val application: Application,
     private val downloadManager: DownloadManager,
-    private val preferences: PreferencesManager
+    private val preferences: PreferencesManager,
+    private val installData: InstallData,
 ) : ViewModel() {
     private val assetManager = application.assets
     private val externalCacheDir = application.externalCacheDir!!
