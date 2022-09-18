@@ -42,7 +42,7 @@ fun MainRootScreen(
                     IconButton(
                         onClick = {
                             localUriHandler.openUri("https://discord.gg/${BuildConfig.SUPPORT_SERVER}")
-                        },
+                        }
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_discord),

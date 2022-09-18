@@ -35,9 +35,9 @@ object Signer {
         val certificate = keyStore.getCertificate(alias) as X509Certificate
 
         ApkSigner.SignerConfig.Builder(
-            /* name = */ "Aliucord Manager signer",
-            /* privateKey = */ keyStore.getKey(alias, password) as PrivateKey,
-            /* certificates = */ listOf(certificate),
+            "Aliucord Manager signer",
+            keyStore.getKey(alias, password) as PrivateKey,
+            listOf(certificate)
         ).build()
     }
 

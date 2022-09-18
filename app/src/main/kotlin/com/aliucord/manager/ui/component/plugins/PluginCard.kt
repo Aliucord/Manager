@@ -111,13 +111,13 @@ fun PluginCard(
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 IconButton(
                     modifier = Modifier.size(25.dp),
                     onClick = {
                         uriHandler.openUri(plugin.manifest.repositoryUrl)
-                    },
+                    }
                 ) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),

@@ -112,12 +112,12 @@ fun PluginsScreen(
                     }
                 },
                 keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions { focusManager.clearFocus() },
+                keyboardActions = KeyboardActions { focusManager.clearFocus() }
             )
 
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 8.dp, top = 6.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
                     viewModel.plugins.filter { plugin ->

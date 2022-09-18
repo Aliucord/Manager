@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                         )
                         is AppDestination.Install -> InstallerScreen(
                             installData = destination.installData,
-                            onClickBack = navigator::pop,
+                            onClickBack = navigator::pop
                         )
                         is AppDestination.Settings -> SettingsScreen(
                             onClickBack = navigator::pop

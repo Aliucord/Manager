@@ -28,7 +28,7 @@ import org.koin.core.parameter.parametersOf
 data class InstallData(
     val downloadMethod: DownloadMethod,
     var baseApk: String? = null,
-    var splits: List<String>? = null,
+    var splits: List<String>? = null
 ) : Parcelable
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -36,7 +36,7 @@ data class InstallData(
 fun InstallerScreen(
     installData: InstallData,
     onClickBack: () -> Unit,
-    viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) }),
+    viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) })
 ) {
     val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
 

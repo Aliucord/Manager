@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 
 class GithubService(
     private val httpClient: HttpClient,
-    private val json: Json,
+    private val json: Json
 ) {
     suspend fun getCommits(page: Int): List<Commit> = withContext(Dispatchers.IO) {
         httpClient.get(COMMITS_URL) {
