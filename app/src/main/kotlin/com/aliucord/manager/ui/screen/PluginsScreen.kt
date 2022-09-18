@@ -116,7 +116,8 @@ fun PluginsScreen(
             )
 
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                contentPadding = PaddingValues(bottom = 8.dp, top = 6.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(
                     viewModel.plugins.filter { plugin ->

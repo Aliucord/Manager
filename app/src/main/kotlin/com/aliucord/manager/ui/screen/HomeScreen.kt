@@ -58,7 +58,9 @@ fun HomeScreen(
     }
 
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ElevatedCard {
@@ -180,7 +182,7 @@ fun HomeScreen(
 
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
                         item {

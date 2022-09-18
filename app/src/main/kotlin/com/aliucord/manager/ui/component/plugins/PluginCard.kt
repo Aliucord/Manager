@@ -105,28 +105,32 @@ fun PluginCard(
             Text(
                 modifier = Modifier
                     .heightIn(max = 150.dp, min = 40.dp)
-                    .padding(top = 10.dp),
+                    .padding(top = 10.dp, bottom = 20.dp),
                 text = plugin.manifest.description,
                 style = MaterialTheme.typography.bodyMedium
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier.padding(horizontal = 0.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 IconButton(
+                    modifier = Modifier.size(25.dp),
                     onClick = {
                         uriHandler.openUri(plugin.manifest.repositoryUrl)
-                    }
+                    },
                 ) {
                     Icon(
+                        modifier = Modifier.fillMaxSize(),
                         painter = painterResource(R.drawable.ic_account_github_white_24dp),
                         contentDescription = stringResource(R.string.github)
                     )
                 }
 
                 if (plugin.manifest.changelog != null) {
-                    IconButton(onClick = onClickShowChangelog) {
+                    IconButton(modifier = Modifier.size(25.dp), onClick = onClickShowChangelog) {
                         Icon(
+                            modifier = Modifier.fillMaxSize(),
                             imageVector = Icons.Default.History,
                             contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
                         )
@@ -135,8 +139,9 @@ fun PluginCard(
 
                 Spacer(Modifier.weight(1f, true))
 
-                IconButton(onClick = onClickDelete) {
+                IconButton(modifier = Modifier.size(25.dp), onClick = onClickDelete) {
                     Icon(
+                        modifier = Modifier.fillMaxSize(),
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(R.string.uninstall),
                         tint = MaterialTheme.colorScheme.error

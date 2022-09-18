@@ -32,7 +32,7 @@ fun AboutScreen(
 ) {
     Scaffold(
         topBar = {
-            MediumTopAppBar(
+            TopAppBar(
                 title = { Text(stringResource(R.string.about)) },
                 navigationIcon = {
                     IconButton(onClick = onClickBack) {
