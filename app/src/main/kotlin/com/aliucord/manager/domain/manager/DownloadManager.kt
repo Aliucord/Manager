@@ -5,6 +5,7 @@ import android.content.*
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import java.io.File
+import java.net.URL
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -21,7 +22,7 @@ class DownloadManager(
         return download("$BACKEND_HOST/download/discord?v=$version&split=$split", "$split-$version.apk")
     }
 
-    private suspend fun download(url: String, fileName: String): File {
+    suspend fun download(url: String, fileName: String): File {
         return suspendCoroutine { continuation ->
             val receiver = object : BroadcastReceiver() {
                 var downloadId = 0L
@@ -31,7 +32,7 @@ class DownloadManager(
 
                     if (downloadId == id) {
                         context.unregisterReceiver(this)
-                        continuation.resume(context.filesDir)
+                        continuation.resume(context.externalCacheDir!!.resolve(fileName))
                     }
                 }
             }

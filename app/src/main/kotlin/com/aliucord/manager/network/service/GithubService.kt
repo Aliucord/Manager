@@ -30,12 +30,26 @@ class GithubService(
         httpClient.get(CONTRIBUTORS_URL).body()
     }
 
+    suspend fun getReleases(repoType: AliucordRepo): List<GithubRelease> = withContext(Dispatchers.IO) {
+        httpClient.get(repoType.releasesUrl).body()
+    }
+
     companion object {
         private const val ORG = "Aliucord"
         private const val REPO = "Aliucord"
+        private const val HERMES_REPO = "Hermes"
+        private const val NATIVE_REPO = "AliucordNative"
 
         private const val COMMITS_URL = "https://api.github.com/repos/$ORG/$REPO/commits"
         private const val CONTRIBUTORS_URL = "https://api.github.com/repos/$ORG/$REPO/contributors"
         private const val DATA_URL = "https://raw.githubusercontent.com/$ORG/$REPO/builds/data.json"
+
+        private const val HERMES_RELEASES_URL = "https://api.github.com/repos/TymanWasTaken/Aliucord$HERMES_REPO/releases"
+        private const val ALIUCORD_NATIVE_RELEASES_URL = "https://api.github.com/repos/TymanWasTaken/$NATIVE_REPO/releases"
+    }
+
+    enum class AliucordRepo(val releasesUrl: String) {
+        HERMES(HERMES_RELEASES_URL),
+        ALIUCORD_NATIVE(ALIUCORD_NATIVE_RELEASES_URL)
     }
 }

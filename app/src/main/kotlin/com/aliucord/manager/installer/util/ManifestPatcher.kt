@@ -13,6 +13,9 @@ object ManifestPatcher {
     private const val USES_CLEARTEXT_TRAFFIC = "usesCleartextTraffic"
     private const val DEBUGGABLE = "debuggable"
     private const val LABEL = "label"
+    private const val PACKAGE = "package"
+    private const val COMPILE_SDK_VERSION = "compileSdkVersion"
+    private const val COMPILE_SDK_VERSION_CODENAME = "compileSdkVersionCodename"
 
     fun patchManifest(
         manifestBytes: ByteArray,
@@ -25,7 +28,14 @@ object ManifestPatcher {
 
         reader.accept(object : AxmlVisitor(writer) {
             override fun child(ns: String?, name: String?) =
-                object : ReplaceAttrsVisitor(super.child(ns, name), mapOf("package" to packageName)) {
+                object : ReplaceAttrsVisitor(
+                    super.child(ns, name),
+                    mapOf(
+                        PACKAGE to packageName,
+                        COMPILE_SDK_VERSION to "23",
+                        COMPILE_SDK_VERSION_CODENAME to "6.0-2438415"
+                    )
+                ) {
                     private var addManagePerm = true
 
                     override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {

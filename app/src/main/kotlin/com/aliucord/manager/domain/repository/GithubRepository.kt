@@ -15,4 +15,6 @@ class GithubRepository(
         .sortedByDescending(GithubUser::contributions)
 
     suspend fun getVersion() = service.getVersion()
+
+    suspend fun getReleases(repo: GithubService.AliucordRepo) = service.getReleases(repo)
 }
