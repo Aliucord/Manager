@@ -51,7 +51,10 @@ fun PluginsScreen(
             },
             confirmButton = {
                 Button(
-                    onClick = { viewModel.uninstallPlugin(plugin) }
+                    onClick = {
+                        viewModel.uninstallPlugin(plugin)
+                        viewModel.hideUninstallDialog()
+                    }
                 ) {
                     Text(stringResource(android.R.string.ok))
                 }
