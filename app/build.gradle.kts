@@ -103,7 +103,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.1")
     implementation("com.github.X1nto:Taxi:1.2.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("com.android:zipflinger:7.4.0-alpha10")
+    implementation("com.android:zipflinger:8.0.0-alpha01")
 //    implementation("com.github.Aliucord:libzip:1.0.0")
     @Suppress("GradleDependency")
     implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.3 is broken btw
