@@ -34,6 +34,7 @@ class InstallViewModel(
     private val installData: InstallData
 ) : ViewModel() {
     private val externalCacheDir = application.externalCacheDir!!
+    private val filesDir = application.filesDir!!
     private val packageInstaller = application.packageManager.packageInstaller
 
     private val dexRegex = Regex("classes(\\d)?\\.dex")
@@ -59,6 +60,8 @@ class InstallViewModel(
         withContext(Dispatchers.IO) {
             installationRunning = true
 
+            externalCacheDir.resolve("patched").runCatching { deleteRecursively() }
+
             val arch = Build.SUPPORTED_ABIS.first()
             val supportedVersion = preferences.version
 
@@ -68,7 +71,7 @@ class InstallViewModel(
                 log += "Downloading Discord APK... "
                 downloadManager.downloadDiscordApk(supportedVersion)
                 log += "Done\n"
-            }
+            }.copyTo(externalCacheDir.resolve("patched").resolve("base-${supportedVersion}.apk"), true)
 
             val libArch = arch.replace("-v", "_v")
             val libsApkFile = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").also { file ->
@@ -77,7 +80,7 @@ class InstallViewModel(
                 log += "Downloading libs APK... "
                 downloadManager.downloadSplit(supportedVersion, "config.$libArch")
                 log += "Done\n"
-            }
+            }.copyTo(externalCacheDir.resolve("patched").resolve("config.$libArch-${supportedVersion}.apk"), true)
 
             val localeApkFile = externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
                 if (file.exists()) return@also run { log += "Using cached locale APK\n" }
@@ -85,7 +88,7 @@ class InstallViewModel(
                 log += "Downloading locale APK... "
                 downloadManager.downloadSplit(supportedVersion, "config.en")
                 log += "Done\n"
-            }
+            }.copyTo(externalCacheDir.resolve("patched").resolve("config.en-${supportedVersion}.apk"), true)
 
             val xxhdpiApkFile = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) return@also run { log += "Using cached drawables APK\n" }
@@ -93,7 +96,7 @@ class InstallViewModel(
                 log += "Downloading drawables APK... "
                 downloadManager.downloadSplit(supportedVersion, "config.xxhdpi")
                 log += "Done\n"
-            }
+            }.copyTo(externalCacheDir.resolve("patched").resolve("config.xxhdpi-${supportedVersion}.apk"), true)
 
             val (hermesLibrary, cppRuntimeLibrary) = run {
                 val latestHermesRelease = githubRepository
@@ -105,21 +108,22 @@ class InstallViewModel(
                 if (
                     hermesFile.exists()
                     && cppRuntimeFile.exists()
-                ) (hermesFile to cppRuntimeFile).also { log += "Using cached patched libraries\n" }
+                ) arrayOf(hermesFile, cppRuntimeFile).also { log += "Using cached patched libraries\n" }
                 else {
                     log += "Downloading patched libraries... "
 
-                    (
+                    arrayOf(
                         downloadManager.download(
                             url = latestHermesRelease.assets.find { it.name == "hermes-release.aar" }!!.browserDownloadUrl,
                             fileName = hermesFile.name
-                        ) to downloadManager.download(
+                        ),
+                        downloadManager.download(
                             url = latestHermesRelease.assets.find { it.name == "hermes-cppruntime-release.aar" }!!.browserDownloadUrl,
                             fileName = cppRuntimeFile.name
                         )
                     ).also { log += "Done\n" }
                 }
-            }
+            }.map { it.copyTo(externalCacheDir.resolve("patched").resolve(it.name), true) }
 
             val latestAliucordNativeRelease = githubRepository
                 .getReleases(GithubService.AliucordRepo.ALIUCORD_NATIVE).reduce { current, new ->
@@ -134,7 +138,7 @@ class InstallViewModel(
                     url = latestAliucordNativeRelease.assets.find { it.name == "classes.dex" }!!.browserDownloadUrl,
                     fileName = "classes-${latestAliucordNativeRelease.tagName}.dex"
                 ).also { log += "Done\n" }
-            }
+            }.copyTo(externalCacheDir.resolve("patched").resolve("classes-${latestAliucordNativeRelease.tagName}.dex"), true)
 
             val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, xxhdpiApkFile)
 
