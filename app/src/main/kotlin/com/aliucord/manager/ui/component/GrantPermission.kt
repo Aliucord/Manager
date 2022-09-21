@@ -43,7 +43,7 @@ fun GrantPermission(permissionState: PermissionState) {
                 val context = LocalContext.current
 
                 Button(onClick = permissionState::launchPermissionRequest) {
-                    Text(stringResource(R.string.permission_grant))
+                    Text(stringResource(R.string.permissions_grant))
                 }
 
                 Spacer(Modifier.width(8.dp))

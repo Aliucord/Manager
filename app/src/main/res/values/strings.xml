@@ -5,7 +5,6 @@
   <string name="dex_location">Dex location</string>
   <string name="open_settings">Open settings</string>
   <string name="permission_required">You need to grant storage permission to use this app</string>
-  <string name="permission_grant">Grant permission</string>
   <string name="replace_bg">Replace app icon with Aliucord variant</string>
   <string name="settings">Settings</string>
   <string name="show_menu">Show menu</string>
@@ -51,4 +50,7 @@
   <string name="dynamic_color">Dynamic color</string>
   <string name="appearance">Appearance</string>
   <string name="advanced">Advanced</string>
+  <string name="permissions_grant">Grant Permissions</string>
+  <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since this device is above Android 10, MANAGE_EXTERNAL_STORAGE is required to access ~/Aliucord, where shared data is stored.</string>
+
 </resources>
