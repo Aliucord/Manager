@@ -30,8 +30,12 @@ class GithubService(
         httpClient.get(CONTRIBUTORS_URL).body()
     }
 
-    suspend fun getReleases(repoType: AliucordRepo): List<GithubRelease> = withContext(Dispatchers.IO) {
-        httpClient.get(repoType.releasesUrl).body()
+    suspend fun getHermesReleases(): List<GithubRelease> = withContext(Dispatchers.IO) {
+        httpClient.get(HERMES_RELEASES_URL).body()
+    }
+
+    suspend fun getAliucordNativeReleases(): List<GithubRelease> = withContext(Dispatchers.IO) {
+        httpClient.get(ALIUCORD_NATIVE_RELEASES_URL).body()
     }
 
     companion object {
@@ -46,10 +50,5 @@ class GithubService(
 
         private const val HERMES_RELEASES_URL = "https://api.github.com/repos/$ORG/$HERMES_REPO/releases"
         private const val ALIUCORD_NATIVE_RELEASES_URL = "https://api.github.com/repos/$ORG/$NATIVE_REPO/releases"
-    }
-
-    enum class AliucordRepo(val releasesUrl: String) {
-        HERMES(HERMES_RELEASES_URL),
-        ALIUCORD_NATIVE(ALIUCORD_NATIVE_RELEASES_URL)
     }
 }

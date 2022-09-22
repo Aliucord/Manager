@@ -33,9 +33,7 @@ object ManifestPatcher {
                     mapOf(
                         PACKAGE to packageName,
                         COMPILE_SDK_VERSION to 23,
-                        COMPILE_SDK_VERSION_CODENAME to "6.0-2438415",
-                        "platformBuildVersionCode" to 23,
-                        "platformBuildVersionName" to 6
+                        COMPILE_SDK_VERSION_CODENAME to "6.0-2438415"
                     )
                 ) {
                     private var addExternalStoragePerm = false
@@ -56,6 +54,7 @@ object ManifestPatcher {
                                     if (name != "maxSdkVersion") super.attr(ns, name, resourceId, type, obj)
                                 }
                             }
+
                             "application" -> object : ReplaceAttrsVisitor(
                                 nv,
                                 mapOf(
@@ -81,14 +80,15 @@ object ManifestPatcher {
                                         "provider" -> object : NodeVisitor(visitor) {
                                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                                 super.attr(
-                                                    /* ns = */ ns,
-                                                    /* name = */ name,
-                                                    /* resourceId = */ resourceId,
-                                                    /* type = */ type,
-                                                    /* obj = */ if (name == "authorities") (value as String).replace("com.discord", packageName) else value
+                                                    ns,
+                                                    name,
+                                                    resourceId,
+                                                    type,
+                                                    if (name == "authorities") (value as String).replace("com.discord", packageName) else value
                                                 )
                                             }
                                         }
+
                                         else -> visitor
                                     }
                                 }
@@ -99,6 +99,7 @@ object ManifestPatcher {
                                     super.end()
                                 }
                             }
+
                             else -> nv
                         }
                     }

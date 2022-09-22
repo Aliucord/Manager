@@ -100,7 +100,7 @@ class InstallViewModel(
 
             val (hermesLibrary, cppRuntimeLibrary) = run {
                 val latestHermesRelease = githubRepository
-                    .getReleases(GithubService.AliucordRepo.HERMES).reduce { current, new ->
+                    .getHermesReleases().reduce { current, new ->
                         if (Instant.parse(current.createdAt).isBefore(Instant.parse(new.createdAt))) new else current
                     }
                 val hermesFile = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar")
@@ -126,7 +126,7 @@ class InstallViewModel(
             }.map { it.copyTo(externalCacheDir.resolve("patched").resolve(it.name), true) }
 
             val latestAliucordNativeRelease = githubRepository
-                .getReleases(GithubService.AliucordRepo.ALIUCORD_NATIVE).reduce { current, new ->
+                .getAliucordNativeReleases().reduce { current, new ->
                     if (Instant.parse(current.createdAt).isBefore(Instant.parse(new.createdAt))) new else current
                 }
 
@@ -192,9 +192,7 @@ class InstallViewModel(
                     // Check if the file is a dex file, if not ignore it by returning null
                     val match = dexRegex.matchEntire(it) ?: return@mapNotNull null
                     // Return a Pair<Int, String> with the ordinal of the classes.dex file and the actual filename
-                    (
-                        match.groups[1]?.value?.toInt() ?: 1
-                    ) to it
+                    (match.groups[1]?.value?.toInt() ?: 1) to it
                 }.sortedByDescending { (ordinal) ->
                     // Sort the dex files by ordinal (descending) so they can be renamed without any conflicts
                     ordinal

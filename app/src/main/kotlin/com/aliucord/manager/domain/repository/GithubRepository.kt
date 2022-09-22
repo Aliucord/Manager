@@ -16,5 +16,7 @@ class GithubRepository(
 
     suspend fun getVersion() = service.getVersion()
 
-    suspend fun getReleases(repo: GithubService.AliucordRepo) = service.getReleases(repo)
+    suspend fun getHermesReleases() = service.getHermesReleases()
+
+    suspend fun getAliucordNativeReleases() = service.getAliucordNativeReleases()
 }
