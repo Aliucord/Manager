@@ -5,10 +5,10 @@
 
 package com.aliucord.manager.installer.util
 
+import android.Manifest
 import pxb.android.axml.*
 
 object ManifestPatcher {
-    private const val MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE"
     private const val ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android"
     private const val USES_CLEARTEXT_TRAFFIC = "usesCleartextTraffic"
     private const val DEBUGGABLE = "debuggable"
@@ -32,22 +32,30 @@ object ManifestPatcher {
                     super.child(ns, name),
                     mapOf(
                         PACKAGE to packageName,
-                        COMPILE_SDK_VERSION to "23",
-                        COMPILE_SDK_VERSION_CODENAME to "6.0-2438415"
+                        COMPILE_SDK_VERSION to 23,
+                        COMPILE_SDK_VERSION_CODENAME to "6.0-2438415",
+                        "platformBuildVersionCode" to 23,
+                        "platformBuildVersionName" to 6
                     )
                 ) {
-                    private var addManagePerm = true
-
-                    override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
-                        super.attr(ns, name, resourceId, type, value)
-
-                        if (value == MANAGE_EXTERNAL_STORAGE) addManagePerm = false
-                    }
+                    private var addExternalStoragePerm = false
 
                     override fun child(ns: String?, name: String): NodeVisitor {
                         val nv = super.child(ns, name)
 
+                        // Add MANAGE_EXTERNAL_STORAGE when necessary
+                        if (addExternalStoragePerm) super.child(null, "uses-permission").attr(
+                            ANDROID_NAMESPACE, "name", 16842755, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                        ).also { addExternalStoragePerm = false }
+
                         return when (name) {
+                            "uses-permission" -> object : NodeVisitor(nv) {
+                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, obj: Any?) {
+                                    // Set the add external storage permission to be added after WRITE_EXTERNAL_STORAGE (which is after read)
+                                    if (name == "name" && obj as String == Manifest.permission.READ_EXTERNAL_STORAGE) addExternalStoragePerm = true
+                                    if (name != "maxSdkVersion") super.attr(ns, name, resourceId, type, obj)
+                                }
+                            }
                             "application" -> object : ReplaceAttrsVisitor(
                                 nv,
                                 mapOf(
@@ -93,13 +101,6 @@ object ManifestPatcher {
                             }
                             else -> nv
                         }
-                    }
-
-                    override fun end() {
-                        if (addManagePerm) super.child(null, "uses-permission").attr(
-                            ANDROID_NAMESPACE, "name", -1, TYPE_STRING, MANAGE_EXTERNAL_STORAGE
-                        )
-                        super.end()
                     }
                 }
         })
