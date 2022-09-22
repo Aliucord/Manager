@@ -42,16 +42,21 @@ object ManifestPatcher {
                         val nv = super.child(ns, name)
 
                         // Add MANAGE_EXTERNAL_STORAGE when necessary
-                        if (addExternalStoragePerm) super.child(null, "uses-permission").attr(
-                            ANDROID_NAMESPACE, "name", 16842755, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                        ).also { addExternalStoragePerm = false }
+                        if (addExternalStoragePerm) {
+                            super.child(null, "uses-permission").attr(
+                                ANDROID_NAMESPACE, "name", 16842755, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                            )
+                            addExternalStoragePerm = false
+                        }
 
                         return when (name) {
                             "uses-permission" -> object : NodeVisitor(nv) {
                                 override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, obj: Any?) {
-                                    // Set the add external storage permission to be added after WRITE_EXTERNAL_STORAGE (which is after read)
-                                    if (name == "name" && obj as String == Manifest.permission.READ_EXTERNAL_STORAGE) addExternalStoragePerm = true
                                     if (name != "maxSdkVersion") super.attr(ns, name, resourceId, type, obj)
+                                    // Set the add external storage permission to be added after WRITE_EXTERNAL_STORAGE (which is after read)
+                                    if (name == "name" && (obj as String) == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                                        addExternalStoragePerm = true
+                                    }
                                 }
                             }
 
@@ -84,11 +89,14 @@ object ManifestPatcher {
                                                     name,
                                                     resourceId,
                                                     type,
-                                                    if (name == "authorities") (value as String).replace("com.discord", packageName) else value
+                                                    if (name == "authorities") {
+                                                        (value as String).replace("com.discord", packageName)
+                                                    } else {
+                                                        value
+                                                    }
                                                 )
                                             }
                                         }
-
                                         else -> visitor
                                     }
                                 }
