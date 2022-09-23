@@ -43,20 +43,21 @@ object ManifestPatcher {
 
                         // Add MANAGE_EXTERNAL_STORAGE when necessary
                         if (addExternalStoragePerm) {
-                            super.child(null, "uses-permission").attr(
-                                // hardcoded id here is necessary to make it work, otherwise the permission is greyed out.
-                                // TODO: Check if this is consistent, if not find an alternative
-                                ANDROID_NAMESPACE, "name", 16842755, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                            )
+                            super
+                                .child(null, "uses-permission")
+                                .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
                             addExternalStoragePerm = false
                         }
 
                         return when (name) {
                             "uses-permission" -> object : NodeVisitor(nv) {
-                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, obj: Any?) {
-                                    if (name != "maxSdkVersion") super.attr(ns, name, resourceId, type, obj)
+                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
+                                    if (name != "maxSdkVersion") {
+                                        super.attr(ns, name, resourceId, type, value)
+                                    }
+
                                     // Set the add external storage permission to be added after WRITE_EXTERNAL_STORAGE (which is after read)
-                                    if (name == "name" && (obj as String) == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                                    if (name == "name" && value == Manifest.permission.READ_EXTERNAL_STORAGE) {
                                         addExternalStoragePerm = true
                                     }
                                 }
