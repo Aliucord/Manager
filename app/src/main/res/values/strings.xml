@@ -4,7 +4,6 @@
   <string name="commits">Commits</string>
   <string name="dex_location">Dex location</string>
   <string name="open_settings">Open settings</string>
-  <string name="permission_required">You need to grant storage permission to use this app</string>
   <string name="replace_bg">Replace app icon with Aliucord variant</string>
   <string name="settings">Settings</string>
   <string name="show_menu">Show menu</string>
