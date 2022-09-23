@@ -21,9 +21,15 @@ val httpModule =  module {
             config {
                 dns(object : Dns {
                     override fun lookup(hostname: String): List<InetAddress> {
+                        val addresses = Dns.SYSTEM.lookup(hostname)
+
                         // Github's nameservers do not respond to IPv6 requests for raw.githubusercontent.com,
                         // which causes CIO, Android and OkHTTP to all hang
-                        return Dns.SYSTEM.lookup(hostname).filterIsInstance<Inet4Address>()
+                        return if (hostname == "raw.githubusercontent.com") {
+                            addresses.filterIsInstance<Inet4Address>()
+                        } else {
+                            addresses
+                        }
                     }
                 })
             }
