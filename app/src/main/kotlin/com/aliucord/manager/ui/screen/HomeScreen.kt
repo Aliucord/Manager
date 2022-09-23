@@ -26,7 +26,8 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.component.*
+import com.aliucord.manager.ui.dialog.DownloadMethod
+import com.aliucord.manager.ui.dialog.InstallerDialog
 import com.aliucord.manager.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.getViewModel
 

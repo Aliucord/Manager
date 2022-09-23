@@ -3,7 +3,7 @@
  * Licensed under the Open Software License version 3.0
  */
 
-package com.aliucord.manager.ui.component
+package com.aliucord.manager.ui.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

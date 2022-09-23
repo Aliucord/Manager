@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.component.DownloadMethod
+import com.aliucord.manager.ui.dialog.DownloadMethod
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
