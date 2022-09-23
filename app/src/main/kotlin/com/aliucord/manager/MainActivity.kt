@@ -5,8 +5,7 @@
 
 package com.aliucord.manager
 
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -47,7 +46,9 @@ class MainActivity : ComponentActivity() {
                     if (!navigator.pop()) finish()
                 }
 
-                ManageStorageDialog()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    ManageStorageDialog()
+                }
 
                 Taxi(
                     modifier = Modifier.fillMaxSize(),
