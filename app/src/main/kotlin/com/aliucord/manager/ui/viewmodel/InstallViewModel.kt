@@ -12,26 +12,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
+import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.service.InstallService
 import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.installer.util.Signer
+import com.aliucord.manager.network.service.GithubService
 import com.aliucord.manager.ui.screen.InstallData
 import com.android.zipflinger.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.io.File
+import java.time.Instant
 import java.util.zip.Deflater
 
 class InstallViewModel(
     private val application: Application,
     private val downloadManager: DownloadManager,
     private val preferences: PreferencesManager,
-    private val installData: InstallData,
+    private val githubRepository: GithubRepository,
+    private val installData: InstallData
 ) : ViewModel() {
-    private val assetManager = application.assets
     private val externalCacheDir = application.externalCacheDir!!
+    private val filesDir = application.filesDir!!
     private val packageInstaller = application.packageManager.packageInstaller
+
+    private val dexRegex = Regex("classes(\\d)?\\.dex")
 
     private val _returnToHome = MutableSharedFlow<Boolean>()
     val returnToHome = _returnToHome.asSharedFlow()
@@ -54,55 +60,149 @@ class InstallViewModel(
         withContext(Dispatchers.IO) {
             installationRunning = true
 
+            externalCacheDir.resolve("patched").runCatching { deleteRecursively() }
+
             val arch = Build.SUPPORTED_ABIS.first()
             val supportedVersion = preferences.version
 
-            val baseApk = externalCacheDir.resolve("base-${supportedVersion}.apk").also { file ->
-                @Suppress("DEPRECATION")
-                val archiveInfo = application.packageManager.getPackageArchiveInfo(file.path, 0)
-
-                if (archiveInfo?.versionCode.toString().startsWith(supportedVersion)) return@also run { log += "Using cached base APK\n" }
+            // Download base.apk
+            val baseApkFile = externalCacheDir.resolve("base-${supportedVersion}.apk").also { file ->
+                if (file.exists()) return@also run { log += "Using cached base APK\n" }
 
                 log += "Downloading Discord APK... "
-                downloadManager.downloadDiscordApk(supportedVersion)
-                log += "Done\n"
+                downloadManager.downloadDiscordApk(supportedVersion).apply {
+                    copyTo(
+                        externalCacheDir
+                            .resolve("patched")
+                            .resolve(this.name),
+                        true
+                    )
+                }.also { log += "Done\n" }
             }
 
+            // Download the native libraries split
             val libArch = arch.replace("-v", "_v")
-            val libsApk = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").also { file ->
+            val libsApkFile = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").also { file ->
                 if (file.exists()) return@also run { log += "Using cached libs APK\n" }
 
                 log += "Downloading libs APK... "
-                downloadManager.downloadSplit(supportedVersion, "config.$libArch")
-                log += "Done\n"
+                downloadManager.downloadSplit(
+                    version = supportedVersion,
+                    split = "config.$libArch"
+                ).apply {
+                    copyTo(
+                        externalCacheDir
+                            .resolve("patched")
+                            .resolve(this.name),
+                        true
+                    )
+                }.also { log += "Done\n" }
             }
 
-            val localeApk = externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+            // Download the locale split
+            val localeApkFile = externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
                 if (file.exists()) return@also run { log += "Using cached locale APK\n" }
 
                 log += "Downloading locale APK... "
-                downloadManager.downloadSplit(supportedVersion, "config.en")
-                log += "Done\n"
+                downloadManager.downloadSplit(
+                    version = supportedVersion,
+                    split = "config.en"
+                ).apply {
+                    copyTo(
+                        externalCacheDir
+                            .resolve("patched")
+                            .resolve(this.name),
+                        true
+                    )
+                }.also { log += "Done\n" }
             }
 
-            val xxhdpiApk = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+            // Download the drawables split
+            val xxhdpiApkFile = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) return@also run { log += "Using cached drawables APK\n" }
 
                 log += "Downloading drawables APK... "
-                downloadManager.downloadSplit(supportedVersion, "config.xxhdpi")
+                downloadManager.downloadSplit(
+                    version = supportedVersion,
+                    split = "config.xxhdpi"
+                ).apply {
+                    copyTo(
+                        externalCacheDir
+                            .resolve("patched")
+                            .resolve(this.name),
+                        true
+                    )
+                }.also { log += "Done\n" }
+            }
+
+            // Fetch gh releases for Aliucord/Hermes
+            val latestHermesRelease = githubRepository
+                .getHermesReleases().reduce { current, new ->
+                    if (Instant.parse(current.createdAt).isBefore(Instant.parse(new.createdAt))) new else current
+                }
+
+            // Download the hermes-release.aar file to replace in the apk
+            val hermesLibrary = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
+                if (file.exists()) return@also run { log += "Using cached patched hermes library\n" }
+
+                log += "Downloading cached patched hermes library... "
+                downloadManager.download(
+                    url = latestHermesRelease.assets.find { it.name == "hermes-release.aar" }!!.browserDownloadUrl,
+                    fileName = "hermes-release-${latestHermesRelease.tagName}.aar"
+                )
                 log += "Done\n"
             }
 
-            val apks = arrayOf(baseApk, libsApk, localeApk, xxhdpiApk)
+            // Download the hermes-cppruntime-release.aar file to replace in the apk
+            val cppRuntimeLibrary = externalCacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
+                if (file.exists()) return@also run { log += "Using cached patched c++ runtime library\n" }
 
-            log += "Patching manifest...\n"
+                log += "Downloading patched c++ runtime library... "
+                downloadManager.download(
+                    url = latestHermesRelease.assets.find { it.name == "hermes-cppruntime-release.aar" }!!.browserDownloadUrl,
+                    fileName = "hermes-cppruntime-release-${latestHermesRelease.tagName}.aar"
+                )
+                log += "Done\n"
+            }
+
+            // Fetch the gh releases for Aliucord/AliucordNative
+            val latestAliucordNativeRelease = githubRepository
+                .getAliucordNativeReleases().reduce { current, new ->
+                    if (Instant.parse(current.createdAt).isBefore(Instant.parse(new.createdAt))) {
+                        new
+                    } else {
+                        current
+                    }
+                }
+
+            // Download the Aliucord classes.dex file to add to the apk
+            val aliucordDexFile = externalCacheDir.resolve("classes-${latestAliucordNativeRelease.tagName}.dex").also { file ->
+                if (file.exists()) return@also run { log += "Using cached Aliucord dex file\n" }
+
+                log += "Downloading Aliucord dex file... "
+                downloadManager.download(
+                    url = latestAliucordNativeRelease.assets.find { it.name == "classes.dex" }!!.browserDownloadUrl,
+                    fileName = "classes-${latestAliucordNativeRelease.tagName}.dex"
+                ).apply {
+                    copyTo(
+                        externalCacheDir
+                            .resolve("patched")
+                            .resolve(this.name),
+                        true
+                    )
+                }.also { log += "Done\n" }
+            }
+
+            val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, xxhdpiApkFile)
+
+            log += "Patching manifest... "
 
             try {
-                val byteArray = ZipRepo(baseApk.absolutePath)
+                val byteArray = ZipRepo(baseApkFile.absolutePath)
                     .use { zip -> zip.getContent("AndroidManifest.xml") }
                     .array()
 
-                ZipArchive(baseApk.toPath()).use { zip ->
+                ZipArchive(baseApkFile.toPath()).use { zip ->
                     val patchedBytesArray = ManifestPatcher.patchManifest(
                         manifestBytes = byteArray,
                         packageName = preferences.packageName,
@@ -135,22 +235,65 @@ class InstallViewModel(
 
                 return@withContext
             }
+            log += "Done\n"
 
-            log += "Patching libraries...\n"
+            log += "Patching java classes... "
 
-            ZipArchive(libsApk.toPath()).use { zip ->
-                val libs = listOf("libhermes.so", "libc++_shared.so")
+            ZipArchive(baseApkFile.toPath()).use { baseApk ->
+                // List all files in the base apk, in order to increment the ordinals of all dex files
+                baseApk.listEntries().mapNotNull {
+                    // Check if the file is a dex file, if not ignore it by returning null
+                    val match = dexRegex.matchEntire(it) ?: return@mapNotNull null
+                    // Return a Pair<Int, String> with the ordinal of the classes.dex file and the actual filename
+                    (match.groups[1]?.value?.toInt() ?: 1) to it
+                }.sortedByDescending { (ordinal) ->
+                    // Sort the dex files by ordinal (descending) so they can be renamed without any conflicts
+                    ordinal
+                }.forEach { (ordinal, fileName) ->
+                    println("Moving $fileName ($ordinal) to classes${ordinal + 1}.dex")
+                    // Read the dex file
+                    val inputStream = baseApk.getInputStream(fileName)
+                    // Construct a new BytesSource with the same data, but incrementing
+                    // the ordinal by one to make room for the Aliucord classes.dex
+                    val incrementedDex = BytesSource(inputStream, "classes${ordinal + 1}.dex", Deflater.DEFAULT_COMPRESSION)
+                    // Add the incremented dex file to the apk
+                    baseApk.add(incrementedDex)
+                    // Remove the original dex file
+                    baseApk.delete(fileName)
+                }
+                // Add the Aliucord classes.dex file
+                baseApk.add(
+                    BytesSource(aliucordDexFile.inputStream(), "classes.dex", Deflater.DEFAULT_COMPRESSION)
+                )
+            }
+            log += "Done\n"
 
-                libs.forEach { lib -> zip.delete("lib/$arch/$lib") }
-                libs.forEach { lib ->
-                    val source = BytesSource(assetManager.open("lib/$arch/$lib"), "lib/$arch/$lib", Deflater.NO_COMPRESSION).apply {
-                        align(4096)
+            log += "Patching libraries... "
+
+            ZipArchive(libsApkFile.toPath()).use { libsApk ->
+                // Loop over the aar files
+                listOf(hermesLibrary, cppRuntimeLibrary).forEach {
+                    // Open each aar file as a zip file
+                    ZipArchive(it.toPath()).use { aar ->
+                        // Map the aar name to the library name
+                        val lib = with(it.name) {
+                            when {
+                                startsWith("hermes-release") -> "libhermes.so"
+                                startsWith("hermes-cppruntime-release") -> "libc++_shared.so"
+                                else -> throw Error("Unable to map .aar name to .so name")
+                            }
+                        }
+                        // Delete existing library
+                        libsApk.delete("lib/$arch/$lib")
+                        // Add new library
+                        val source = BytesSource(aar.getInputStream("jni/$arch/$lib"), "lib/$arch/$lib", Deflater.NO_COMPRESSION).apply {
+                            align(4096)
+                        }
+                        libsApk.add(source)
                     }
-
-                    zip.add(source)
                 }
             }
-
+            log += "Done\n"
             log += "Signing APKs... "
 
             apks.forEach(Signer::signApk)

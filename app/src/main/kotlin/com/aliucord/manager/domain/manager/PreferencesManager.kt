@@ -15,5 +15,5 @@ class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager
     var dexLocation by stringPreference("dex_location", "$aliucordDir/Injector.dex")
     var appName by stringPreference("app_name", "Aliucord")
     var packageName by stringPreference("package_name", "com.aliucord")
-    var version by stringPreference("version", "124206")
+    var version by stringPreference("version", "146108")
 }

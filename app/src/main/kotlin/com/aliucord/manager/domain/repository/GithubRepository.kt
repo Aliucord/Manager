@@ -15,4 +15,8 @@ class GithubRepository(
         .sortedByDescending(GithubUser::contributions)
 
     suspend fun getVersion() = service.getVersion()
+
+    suspend fun getHermesReleases() = service.getHermesReleases()
+
+    suspend fun getAliucordNativeReleases() = service.getAliucordNativeReleases()
 }

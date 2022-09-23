@@ -5,14 +5,17 @@
 
 package com.aliucord.manager.installer.util
 
+import android.Manifest
 import pxb.android.axml.*
 
 object ManifestPatcher {
-    private const val MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE"
     private const val ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android"
     private const val USES_CLEARTEXT_TRAFFIC = "usesCleartextTraffic"
     private const val DEBUGGABLE = "debuggable"
     private const val LABEL = "label"
+    private const val PACKAGE = "package"
+    private const val COMPILE_SDK_VERSION = "compileSdkVersion"
+    private const val COMPILE_SDK_VERSION_CODENAME = "compileSdkVersionCodename"
 
     fun patchManifest(
         manifestBytes: ByteArray,
@@ -25,19 +28,40 @@ object ManifestPatcher {
 
         reader.accept(object : AxmlVisitor(writer) {
             override fun child(ns: String?, name: String?) =
-                object : ReplaceAttrsVisitor(super.child(ns, name), mapOf("package" to packageName)) {
-                    private var addManagePerm = true
-
-                    override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
-                        super.attr(ns, name, resourceId, type, value)
-
-                        if (value == MANAGE_EXTERNAL_STORAGE) addManagePerm = false
-                    }
+                object : ReplaceAttrsVisitor(
+                    super.child(ns, name),
+                    mapOf(
+                        PACKAGE to packageName,
+                        COMPILE_SDK_VERSION to 23,
+                        COMPILE_SDK_VERSION_CODENAME to "6.0-2438415"
+                    )
+                ) {
+                    private var addExternalStoragePerm = false
 
                     override fun child(ns: String?, name: String): NodeVisitor {
                         val nv = super.child(ns, name)
 
+                        // Add MANAGE_EXTERNAL_STORAGE when necessary
+                        if (addExternalStoragePerm) {
+                            super.child(null, "uses-permission").attr(
+                                // hardcoded id here is necessary to make it work, otherwise the permission is greyed out.
+                                // TODO: Check if this is consistent, if not find an alternative
+                                ANDROID_NAMESPACE, "name", 16842755, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                            )
+                            addExternalStoragePerm = false
+                        }
+
                         return when (name) {
+                            "uses-permission" -> object : NodeVisitor(nv) {
+                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, obj: Any?) {
+                                    if (name != "maxSdkVersion") super.attr(ns, name, resourceId, type, obj)
+                                    // Set the add external storage permission to be added after WRITE_EXTERNAL_STORAGE (which is after read)
+                                    if (name == "name" && (obj as String) == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                                        addExternalStoragePerm = true
+                                    }
+                                }
+                            }
+
                             "application" -> object : ReplaceAttrsVisitor(
                                 nv,
                                 mapOf(
@@ -63,11 +87,15 @@ object ManifestPatcher {
                                         "provider" -> object : NodeVisitor(visitor) {
                                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                                 super.attr(
-                                                    /* ns = */ ns,
-                                                    /* name = */ name,
-                                                    /* resourceId = */ resourceId,
-                                                    /* type = */ type,
-                                                    /* obj = */ if (name == "authorities") (value as String).replace("com.discord", packageName) else value
+                                                    ns,
+                                                    name,
+                                                    resourceId,
+                                                    type,
+                                                    if (name == "authorities") {
+                                                        (value as String).replace("com.discord", packageName)
+                                                    } else {
+                                                        value
+                                                    }
                                                 )
                                             }
                                         }
@@ -81,15 +109,9 @@ object ManifestPatcher {
                                     super.end()
                                 }
                             }
+
                             else -> nv
                         }
-                    }
-
-                    override fun end() {
-                        if (addManagePerm) super.child(null, "uses-permission").attr(
-                            ANDROID_NAMESPACE, "name", -1, TYPE_STRING, MANAGE_EXTERNAL_STORAGE
-                        )
-                        super.end()
                     }
                 }
         })
