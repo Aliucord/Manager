@@ -44,6 +44,8 @@ object ManifestPatcher {
                         // Add MANAGE_EXTERNAL_STORAGE when necessary
                         if (addExternalStoragePerm) {
                             super.child(null, "uses-permission").attr(
+                                // hardcoded id here is necessary to make it work, otherwise the permission is greyed out.
+                                // TODO: Check if this is consistent, if not find an alternative
                                 ANDROID_NAMESPACE, "name", 16842755, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE
                             )
                             addExternalStoragePerm = false
