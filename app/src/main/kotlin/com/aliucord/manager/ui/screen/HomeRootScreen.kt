@@ -4,7 +4,6 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,8 +21,7 @@ import com.xinto.taxi.rememberNavigator
 @Composable
 fun MainRootScreen(
     onClickInstall: (InstallData) -> Unit,
-    onClickAbout: () -> Unit,
-    onClickSettings: () -> Unit
+    onClickAbout: () -> Unit
 ) {
     val mainRootNavigator = rememberNavigator(HomeDestination.HOME)
 
@@ -54,13 +52,6 @@ fun MainRootScreen(
                         Icon(
                             imageVector = Icons.Default.Info,
                             contentDescription = stringResource(R.string.about)
-                        )
-                    }
-
-                    IconButton(onClick = onClickSettings) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = stringResource(R.string.settings)
                         )
                     }
                 }
@@ -102,7 +93,9 @@ fun MainRootScreen(
                 HomeDestination.HOME -> HomeScreen(
                     onClickInstall = onClickInstall
                 )
+
                 HomeDestination.PLUGINS -> PluginsScreen()
+                HomeDestination.SETTINGS -> SettingsScreen()
             }
         }
     }

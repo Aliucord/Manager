@@ -2,10 +2,8 @@ package com.aliucord.manager.ui.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Extension
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screen.InstallData
@@ -35,5 +33,6 @@ enum class HomeDestination(
     @StringRes val label: Int
 ) : Destination {
     HOME(Icons.Default.Home, Icons.Outlined.Home, R.string.home),
-    PLUGINS(Icons.Default.Extension, Icons.Outlined.Extension, R.string.plugins)
+    PLUGINS(Icons.Default.Extension, Icons.Outlined.Extension, R.string.plugins),
+    SETTINGS(Icons.Default.Settings, Icons.Outlined.Settings, R.string.settings)
 }
