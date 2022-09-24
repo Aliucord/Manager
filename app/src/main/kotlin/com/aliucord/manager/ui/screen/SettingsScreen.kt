@@ -16,7 +16,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,145 +28,124 @@ import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = getViewModel(),
-    onClickBack: () -> Unit
+    viewModel: SettingsViewModel = getViewModel()
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 14.dp)
+            .verticalScroll(state = rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        val preferences = viewModel.preferences
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.settings)) },
-                navigationIcon = {
-                    IconButton(onClick = onClickBack) {
-                        Icon(
-                            imageVector = Icons.Default.NavigateBefore,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior
+        if (viewModel.showThemeDialog) {
+            ThemeDialog(
+                currentTheme = preferences.theme,
+                onDismissRequest = viewModel::hideThemeDialog,
+                onConfirm = viewModel::setTheme
             )
         }
-    ) { paddingValues ->
-        Column(
+
+        GroupHeader(stringResource(R.string.appearance))
+
+        ListItem(
+            modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
+            headlineText = { Text(stringResource(R.string.theme)) },
+            supportingText = { Text(stringResource(R.string.theme_setting_description)) },
+            leadingContent = { Icon(Icons.Default.Style, null) },
+            trailingContent = {
+                FilledTonalButton(onClick = viewModel::showThemeDialog) {
+                    Text(preferences.theme.displayName)
+                }
+            }
+        )
+
+        SwitchSetting(
+            checked = preferences.dynamicColor,
+            title = { Text(stringResource(R.string.dynamic_color)) },
+            onCheckedChange = { preferences.dynamicColor = it },
+            icon = { Icon(Icons.Default.Palette, null) }
+        )
+
+        GroupHeader(stringResource(R.string.advanced))
+
+        SwitchSetting(
+            checked = preferences.replaceBg,
+            title = { Text(stringResource(R.string.replace_bg)) },
+            onCheckedChange = { preferences.replaceBg = it },
+            icon = { Icon(Icons.Default.AppShortcut, null) }
+        )
+
+        OutlinedTextField(
             modifier = Modifier
-                .padding(paddingValues)
-                .padding(horizontal = 12.dp, vertical = 14.dp)
-                .verticalScroll(state = rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            value = preferences.appName,
+            onValueChange = viewModel::setAppName,
+            label = { Text(stringResource(R.string.app_name_setting)) },
+            placeholder = { Text("Aliucord") },
+            singleLine = true
+        )
+
+        SwitchSetting(
+            checked = preferences.devMode,
+            title = { Text(stringResource(R.string.developer_options)) },
+            onCheckedChange = { preferences.devMode = it },
+            icon = { Icon(Icons.Default.Code, null) }
+        )
+
+        AnimatedVisibility(
+            visible = preferences.devMode,
+            enter = expandVertically(),
+            exit = shrinkVertically()
         ) {
-            val preferences = viewModel.preferences
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    value = preferences.packageName,
+                    onValueChange = viewModel::setPackageName,
+                    label = { Text(stringResource(R.string.package_name)) },
+                    placeholder = { Text("com.aliucord") },
+                    singleLine = true
+                )
 
-            if (viewModel.showThemeDialog) {
-                ThemeDialog(
-                    currentTheme = preferences.theme,
-                    onDismissRequest = viewModel::hideThemeDialog,
-                    onConfirm = viewModel::setTheme
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    value = preferences.version,
+                    onValueChange = viewModel::setVersion,
+                    label = { Text(stringResource(R.string.version)) },
+                    singleLine = true
+                )
+
+                SwitchSetting(
+                    checked = preferences.debuggable,
+                    title = { Text(stringResource(R.string.debuggable)) },
+                    description = { Text(stringResource(R.string.debuggable_description)) },
+                    onCheckedChange = { preferences.debuggable = it },
+                    icon = { Icon(Icons.Default.BugReport, null) }
                 )
             }
+        }
 
-            GroupHeader(stringResource(R.string.appearance))
-
-            ListItem(
-                modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
-                headlineText = { Text(stringResource(R.string.theme)) },
-                supportingText = { Text(stringResource(R.string.theme_setting_description)) },
-                leadingContent = { Icon(Icons.Default.Style, null) },
-                trailingContent = {
-                    FilledTonalButton(onClick = viewModel::showThemeDialog) {
-                        Text(preferences.theme.displayName)
-                    }
-                }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            onClick = viewModel::clearCacheDir
+        ) {
+            Text(
+                text = stringResource(R.string.clear_files_cache),
+                textAlign = TextAlign.Center
             )
-
-            SwitchSetting(
-                checked = preferences.dynamicColor,
-                title = { Text(stringResource(R.string.dynamic_color)) },
-                onCheckedChange = { preferences.dynamicColor = it },
-                icon = { Icon(Icons.Default.Palette, null) }
-            )
-
-            GroupHeader(stringResource(R.string.advanced))
-
-            SwitchSetting(
-                checked = preferences.replaceBg,
-                title = { Text(stringResource(R.string.replace_bg)) },
-                onCheckedChange = { preferences.replaceBg = it },
-                icon = { Icon(Icons.Default.AppShortcut, null) }
-            )
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
-                value = preferences.appName,
-                onValueChange = viewModel::setAppName,
-                label = { Text(stringResource(R.string.app_name_setting)) },
-                placeholder = { Text("Aliucord") },
-                singleLine = true
-            )
-
-            SwitchSetting(
-                checked = preferences.devMode,
-                title = { Text(stringResource(R.string.developer_options)) },
-                onCheckedChange = { preferences.devMode = it },
-                icon = { Icon(Icons.Default.Code, null) }
-            )
-
-            AnimatedVisibility(
-                visible = preferences.devMode,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
-                        value = preferences.packageName,
-                        onValueChange = viewModel::setPackageName,
-                        label = { Text(stringResource(R.string.package_name)) },
-                        placeholder = { Text("com.aliucord") },
-                        singleLine = true
-                    )
-
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
-                        value = preferences.version,
-                        onValueChange = viewModel::setVersion,
-                        label = { Text(stringResource(R.string.version)) },
-                        singleLine = true
-                    )
-
-                    SwitchSetting(
-                        checked = preferences.debuggable,
-                        title = { Text(stringResource(R.string.debuggable)) },
-                        description = { Text(stringResource(R.string.debuggable_description)) },
-                        onCheckedChange = { preferences.debuggable = it },
-                        icon = { Icon(Icons.Default.BugReport, null) }
-                    )
-                }
-            }
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                onClick = viewModel::clearCacheDir
-            ) {
-                Text(
-                    text = stringResource(R.string.clear_files_cache),
-                    textAlign = TextAlign.Center
-                )
-            }
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
