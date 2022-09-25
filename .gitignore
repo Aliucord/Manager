@@ -9,3 +9,4 @@ release
 .externalNativeBuild
 .cxx
 local.properties
+*.log

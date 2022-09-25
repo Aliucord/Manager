@@ -26,7 +26,10 @@ object Signer {
         val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
 
         aliucordDir.resolve("ks.keystore").also {
-            if (!it.exists()) newKeystore(it)
+            if (!it.exists()) {
+                aliucordDir.mkdir()
+                newKeystore(it)
+            }
         }.inputStream().use { stream ->
             keyStore.load(stream, null)
         }
