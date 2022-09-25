@@ -267,7 +267,7 @@ class InstallViewModel(
                     }
                 }
 
-                log += "\n"
+                log += "Done\n"
             }
 
             log += "Patching manifest... "
