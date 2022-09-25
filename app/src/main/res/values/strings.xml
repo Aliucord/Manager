@@ -50,5 +50,5 @@
   <string name="appearance">Appearance</string>
   <string name="advanced">Advanced</string>
   <string name="permissions_grant">Grant Permissions</string>
-  <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since this device is above Android 10, MANAGE_EXTERNAL_STORAGE is required to access ~/Aliucord, where shared data is stored.</string>
+  <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
 </resources>
