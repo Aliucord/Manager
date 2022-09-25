@@ -16,59 +16,69 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.google.accompanist.permissions.*
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun StoragePermissionsDialog() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        var manageStorageGranted by remember { mutableStateOf(Environment.isExternalStorageManager()) }
-
-        if (!manageStorageGranted) {
-            AlertDialog(
-                onDismissRequest = {},
-                confirmButton = {
-                    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                        if (Environment.isExternalStorageManager())
-                            manageStorageGranted = true
-                    }
-
-                    Button(
-                        onClick = {
-                            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                                .setData("package:${BuildConfig.APPLICATION_ID}".toUri())
-                                .let { launcher.launch(it) }
-                        },
-                    ) {
-                        Text(stringResource(R.string.open_settings))
-                    }
-                },
-                title = { Text(stringResource(R.string.permissions_grant)) },
-                text = { Text(stringResource(R.string.permissions_manage_storage_body)) },
-                properties = DialogProperties(
-                    dismissOnBackPress = false,
-                    dismissOnClickOutside = false
-                )
-            )
-        }
+        ManageStorageDialog()
     } else {
-        val writeStorageState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        ExternalStorageDialog()
+    }
+}
 
-        if (!writeStorageState.status.isGranted) {
-            AlertDialog(
-                onDismissRequest = {},
-                confirmButton = {
-                    Button(
-                        onClick = { writeStorageState.launchPermissionRequest() },
-                    ) {
-                        Text(stringResource(R.string.confirm))
-                    }
-                },
-                title = { Text(stringResource(R.string.permissions_grant)) },
-                text = { Text(stringResource(R.string.permissions_regular_body)) },
-                properties = DialogProperties(
-                    dismissOnBackPress = false,
-                    dismissOnClickOutside = false
-                )
+@Composable
+private fun ManageStorageDialog() {
+    var manageStorageGranted by remember { mutableStateOf(Environment.isExternalStorageManager()) }
+
+    if (!manageStorageGranted) {
+        AlertDialog(
+            onDismissRequest = {},
+            confirmButton = {
+                val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    if (Environment.isExternalStorageManager())
+                        manageStorageGranted = true
+                }
+
+                Button(
+                    onClick = {
+                        Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                            .setData("package:${BuildConfig.APPLICATION_ID}".toUri())
+                            .let { launcher.launch(it) }
+                    },
+                ) {
+                    Text(stringResource(R.string.open_settings))
+                }
+            },
+            title = { Text(stringResource(R.string.permissions_grant)) },
+            text = { Text(stringResource(R.string.permissions_grant_body)) },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
             )
-        }
+        )
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun ExternalStorageDialog() {
+    val writeStorageState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    if (!writeStorageState.status.isGranted) {
+        AlertDialog(
+            onDismissRequest = {},
+            confirmButton = {
+                Button(
+                    onClick = { writeStorageState.launchPermissionRequest() },
+                ) {
+                    Text(stringResource(R.string.confirm))
+                }
+            },
+            title = { Text(stringResource(R.string.permissions_grant)) },
+            text = { Text(stringResource(R.string.permissions_grant_body)) },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        )
     }
 }
