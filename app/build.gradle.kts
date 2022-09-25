@@ -105,8 +105,7 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android:zipflinger:8.0.0-alpha01")
 //    implementation("com.github.Aliucord:libzip:1.0.0")
-    @Suppress("GradleDependency")
-    implementation("de.upb.cs.swt:axml:2.1.1") // 2.1.3 is broken btw
+    implementation("com.aliucord:axml:1.0.0")
     implementation("com.android.tools.build:apksig:7.4.0-alpha10")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }

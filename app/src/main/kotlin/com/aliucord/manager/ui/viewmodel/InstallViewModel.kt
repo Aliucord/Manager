@@ -16,12 +16,14 @@ import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.service.InstallService
 import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.installer.util.Signer
-import com.aliucord.manager.network.service.GithubService
 import com.aliucord.manager.ui.screen.InstallData
 import com.android.zipflinger.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import pxb.android.arsc.ArscParser
+import pxb.android.arsc.Value
+import pxb.android.axml.*
 import java.io.File
 import java.time.Instant
 import java.util.zip.Deflater
@@ -194,6 +196,79 @@ class InstallViewModel(
             }
 
             val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, xxhdpiApkFile)
+
+            if (preferences.replaceIcon) {
+                log += "Replacing App Icon... "
+
+                ZipArchive(baseApkFile.toPath()).use { baseApk ->
+                    val manifestReader = baseApk.getContent("AndroidManifest.xml").array()
+                        .let { AxmlReader(it) }
+
+                    var squareIconId: Int? = null
+                    var roundIconId: Int? = null
+
+                    manifestReader.accept(
+                        object : AxmlVisitor(AxmlWriter()) {
+                            override fun child(ns: String?, name: String?): NodeVisitor {
+                                return object : NodeVisitor(super.child(ns, name)) {
+                                    override fun child(ns: String?, name: String?): NodeVisitor {
+                                        val nv = super.child(ns, name)
+
+                                        return when (name) {
+                                            "application" -> object : NodeVisitor(nv) {
+                                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
+                                                    when (name) {
+                                                        "icon" -> squareIconId = value as Int
+                                                        "roundIcon" -> roundIconId = value as Int
+                                                    }
+                                                }
+                                            }
+                                            else -> nv
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    )
+
+                    val arscPkg = baseApk.getContent("resources.arsc").array()
+                        .let { ArscParser(it).parse() }
+                        .takeIf { it.size == 1 }
+                        ?.firstOrNull()
+                        ?: throw Error("Invalid number of packages in arsc")
+
+                    val mipmaps = arscPkg.types.values.find { it.name == "mipmap" }
+                        ?: throw Error("No mipmap type in arsc")
+
+                    val resPrefix = (arscPkg.id shl 24) or (mipmaps.id shl 16)
+
+                    val getResPaths: (Int?) -> List<String> = { targetResId ->
+                        mipmaps.configs.flatMap { config ->
+                            config.resources
+                                .filterValues { (it.spec.id or resPrefix) == targetResId }
+                                .map { (_, res) -> (res.value as Value).raw }
+                        }
+                    }
+
+                    // TODO: support patching the adaptive icon
+                    val squareIconPaths = getResPaths(squareIconId).filter { !it.endsWith("xml") }
+                    val roundIconPaths = getResPaths(roundIconId).filter { !it.endsWith("xml") }
+
+                    getResPaths(squareIconId).filter { it.endsWith("xml") }.forEach { baseApk.delete(it) }
+                    getResPaths(roundIconId).filter { it.endsWith("xml") }.forEach { baseApk.delete(it) }
+
+                    squareIconPaths.forEach {
+                        baseApk.delete(it)
+                        baseApk.add(BytesSource(application.assets.open("ic_logo_square.png").readBytes(), it, Deflater.DEFAULT_COMPRESSION))
+                    }
+                    roundIconPaths.forEach {
+                        baseApk.delete(it)
+                        baseApk.add(BytesSource(application.assets.open("ic_logo_round.png").readBytes(), it, Deflater.DEFAULT_COMPRESSION))
+                    }
+                }
+
+                log += "\n"
+            }
 
             log += "Patching manifest... "
 
