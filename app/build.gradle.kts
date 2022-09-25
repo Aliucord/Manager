@@ -105,7 +105,7 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android:zipflinger:8.0.0-alpha01")
 //    implementation("com.github.Aliucord:libzip:1.0.0")
-    implementation("com.aliucord:axml:1.0.0")
+    implementation("com.aliucord:axml:1.0.1")
     implementation("com.android.tools.build:apksig:7.4.0-beta01")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }
