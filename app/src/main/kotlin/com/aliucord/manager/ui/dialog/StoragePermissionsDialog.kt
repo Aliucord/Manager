@@ -34,8 +34,9 @@ private fun ManageStorageDialog() {
             onDismissRequest = {},
             confirmButton = {
                 val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (Environment.isExternalStorageManager())
+                    if (Environment.isExternalStorageManager()) {
                         manageStorageGranted = true
+                    }
                 }
 
                 Button(
@@ -43,7 +44,7 @@ private fun ManageStorageDialog() {
                         Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
                             .setData("package:${BuildConfig.APPLICATION_ID}".toUri())
                             .let { launcher.launch(it) }
-                    },
+                    }
                 ) {
                     Text(stringResource(R.string.open_settings))
                 }
@@ -67,9 +68,7 @@ private fun ExternalStorageDialog() {
         AlertDialog(
             onDismissRequest = {},
             confirmButton = {
-                Button(
-                    onClick = { writeStorageState.launchPermissionRequest() },
-                ) {
+                Button(onClick = writeStorageState::launchPermissionRequest) {
                     Text(stringResource(R.string.confirm))
                 }
             },
