@@ -92,9 +92,9 @@ fun SettingsScreen(
             GroupHeader(stringResource(R.string.advanced))
 
             SwitchSetting(
-                checked = preferences.replaceBg,
+                checked = preferences.replaceIcon,
                 title = { Text(stringResource(R.string.replace_bg)) },
-                onCheckedChange = { preferences.replaceBg = it },
+                onCheckedChange = { preferences.replaceIcon = it },
                 icon = { Icon(Icons.Default.AppShortcut, null) }
             )
 
