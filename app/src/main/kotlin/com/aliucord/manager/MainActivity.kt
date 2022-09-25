@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.domain.manager.PreferencesManager
-import com.aliucord.manager.ui.dialog.ManageStorageDialog
+import com.aliucord.manager.ui.dialog.StoragePermissionsDialog
 import com.aliucord.manager.ui.navigation.AppDestination
 import com.aliucord.manager.ui.screen.*
 import com.aliucord.manager.ui.theme.ManagerTheme
@@ -46,9 +46,7 @@ class MainActivity : ComponentActivity() {
                     if (!navigator.pop()) finish()
                 }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    ManageStorageDialog()
-                }
+                StoragePermissionsDialog()
 
                 Taxi(
                     modifier = Modifier.fillMaxSize(),
