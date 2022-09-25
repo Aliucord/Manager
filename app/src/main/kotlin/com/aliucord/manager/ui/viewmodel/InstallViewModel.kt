@@ -21,9 +21,6 @@ import com.android.zipflinger.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import pxb.android.arsc.ArscParser
-import pxb.android.arsc.Value
-import pxb.android.axml.*
 import java.io.File
 import java.time.Instant
 import java.util.zip.Deflater
@@ -198,72 +195,21 @@ class InstallViewModel(
             val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, xxhdpiApkFile)
 
             if (preferences.replaceIcon) {
-                log += "Replacing App Icon... "
+                log += "Replacing App Icons... "
 
                 ZipArchive(baseApkFile.toPath()).use { baseApk ->
-                    val manifestReader = baseApk.getContent("AndroidManifest.xml").array()
-                        .let { AxmlReader(it) }
+                    val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
+                    val icons = arrayOf("icons/ic_logo_foreground.png", "icons/ic_logo_square.png", "icons/ic_logo_foreground.png")
 
-                    var squareIconId: Int? = null
-                    var roundIconId: Int? = null
+                    for (icon in icons) {
+                        val newIcon = application.assets.open("icons/$icon")
+                            .use { it.readBytes() }
 
-                    manifestReader.accept(
-                        object : AxmlVisitor(AxmlWriter()) {
-                            override fun child(ns: String?, name: String?): NodeVisitor {
-                                return object : NodeVisitor(super.child(ns, name)) {
-                                    override fun child(ns: String?, name: String?): NodeVisitor {
-                                        val nv = super.child(ns, name)
-
-                                        return when (name) {
-                                            "application" -> object : NodeVisitor(nv) {
-                                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
-                                                    when (name) {
-                                                        "icon" -> squareIconId = value as Int
-                                                        "roundIcon" -> roundIconId = value as Int
-                                                    }
-                                                }
-                                            }
-                                            else -> nv
-                                        }
-                                    }
-                                }
-                            }
+                        for (mipmap in mipmaps) {
+                            val path = "res/$mipmap/$icon"
+                            baseApk.delete(path)
+                            baseApk.add(BytesSource(newIcon, path, Deflater.DEFAULT_COMPRESSION))
                         }
-                    )
-
-                    val arscPkg = baseApk.getContent("resources.arsc").array()
-                        .let { ArscParser(it).parse() }
-                        .takeIf { it.size == 1 }
-                        ?.firstOrNull()
-                        ?: throw Error("Invalid number of packages in arsc")
-
-                    val mipmaps = arscPkg.types.values.find { it.name == "mipmap" }
-                        ?: throw Error("No mipmap type in arsc")
-
-                    val resPrefix = (arscPkg.id shl 24) or (mipmaps.id shl 16)
-
-                    val getResPaths: (Int?) -> List<String> = { targetResId ->
-                        mipmaps.configs.flatMap { config ->
-                            config.resources
-                                .filterValues { (it.spec.id or resPrefix) == targetResId }
-                                .map { (_, res) -> (res.value as Value).raw }
-                        }
-                    }
-
-                    // TODO: support patching the adaptive icon
-                    val squareIconPaths = getResPaths(squareIconId).filter { !it.endsWith("xml") }
-                    val roundIconPaths = getResPaths(roundIconId).filter { !it.endsWith("xml") }
-
-                    getResPaths(squareIconId).filter { it.endsWith("xml") }.forEach { baseApk.delete(it) }
-                    getResPaths(roundIconId).filter { it.endsWith("xml") }.forEach { baseApk.delete(it) }
-
-                    squareIconPaths.forEach {
-                        baseApk.delete(it)
-                        baseApk.add(BytesSource(application.assets.open("ic_logo_square.png").readBytes(), it, Deflater.DEFAULT_COMPRESSION))
-                    }
-                    roundIconPaths.forEach {
-                        baseApk.delete(it)
-                        baseApk.add(BytesSource(application.assets.open("ic_logo_round.png").readBytes(), it, Deflater.DEFAULT_COMPRESSION))
                     }
                 }
 
