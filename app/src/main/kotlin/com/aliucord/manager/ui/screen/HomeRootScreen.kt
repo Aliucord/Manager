@@ -14,16 +14,15 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.navigation.HomeDestination
-import com.xinto.taxi.Taxi
-import com.xinto.taxi.rememberNavigator
+import com.xinto.taxi.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun MainRootScreen(
+    mainRootNavigator: RegularNavigator<HomeDestination>,
     onClickInstall: (InstallData) -> Unit,
     onClickAbout: () -> Unit
 ) {
-    val mainRootNavigator = rememberNavigator(HomeDestination.HOME)
 
     Scaffold(
         topBar = {
