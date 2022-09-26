@@ -16,7 +16,6 @@ import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.service.InstallService
 import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.installer.util.Signer
-import com.aliucord.manager.network.service.GithubService
 import com.aliucord.manager.ui.screen.InstallData
 import com.android.zipflinger.*
 import kotlinx.coroutines.*
@@ -194,6 +193,28 @@ class InstallViewModel(
             }
 
             val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, xxhdpiApkFile)
+
+            if (preferences.replaceIcon) {
+                log += "Replacing App Icons... "
+
+                ZipArchive(baseApkFile.toPath()).use { baseApk ->
+                    val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
+                    val icons = arrayOf("ic_logo_foreground.png", "ic_logo_square.png", "ic_logo_foreground.png")
+
+                    for (icon in icons) {
+                        val newIcon = application.assets.open("icons/$icon")
+                            .use { it.readBytes() }
+
+                        for (mipmap in mipmaps) {
+                            val path = "res/$mipmap/$icon"
+                            baseApk.delete(path)
+                            baseApk.add(BytesSource(newIcon, path, Deflater.DEFAULT_COMPRESSION))
+                        }
+                    }
+                }
+
+                log += "Done\n"
+            }
 
             log += "Patching manifest... "
 
