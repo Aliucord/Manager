@@ -43,7 +43,8 @@ fun CommitList(
                 modifier = Modifier.padding(20.dp, 20.dp, 20.dp),
                 text = stringResource(R.string.commits),
                 style = MaterialTheme.typography.titleMedium.copy(
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 ),
                 color = MaterialTheme.colorScheme.primary
             )

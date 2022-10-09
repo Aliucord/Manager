@@ -33,13 +33,10 @@ fun InfoCard(
             Text(
                 text = "Aliucord${packageName.let { if (it != "com.aliucord") " ($it)" else "" }}",
                 style = MaterialTheme.typography.titleMedium.copy(
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 ),
                 color = MaterialTheme.colorScheme.primary
-            )
-
-            Spacer(
-                modifier = Modifier.height(5.dp)
             )
 
             Text(
@@ -60,7 +57,7 @@ fun InfoCard(
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
