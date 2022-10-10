@@ -1,10 +1,7 @@
 package com.aliucord.manager.domain.repository
 
 import com.aliucord.manager.network.dto.GithubUser
-import com.aliucord.manager.network.dto.Version
 import com.aliucord.manager.network.service.GithubService
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 class GithubRepository(
     private val service: GithubService

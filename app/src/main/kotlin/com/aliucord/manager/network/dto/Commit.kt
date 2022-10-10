@@ -18,6 +18,7 @@ data class Commit(
 ) {
     @Serializable
     data class Author(@SerialName("login") val name: String)
+
     @Serializable
     data class Commit(val message: String)
 }

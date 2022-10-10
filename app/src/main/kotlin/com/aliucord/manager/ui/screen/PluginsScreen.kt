@@ -84,7 +84,7 @@ fun PluginsScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         val search = viewModel.search
 
@@ -119,8 +119,8 @@ fun PluginsScreen(
             )
 
             LazyColumn(
-                contentPadding = PaddingValues(bottom = 8.dp, top = 6.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                contentPadding = PaddingValues(bottom = 15.dp, top = 6.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 items(
                     viewModel.plugins.filter { plugin ->

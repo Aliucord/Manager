@@ -106,6 +106,7 @@ fun Changelog(
                                         modifier = Modifier.padding(top = 16.dp, bottom = 6.dp)
                                     )
                                 }
+
                                 '*' -> {
                                     LinkText(
                                         modifier = Modifier.padding(bottom = 2.dp),
@@ -123,6 +124,7 @@ fun Changelog(
                                         }
                                     )
                                 }
+
                                 else -> {
                                     when {
                                         line.endsWith("marginTop}") -> {
@@ -135,7 +137,8 @@ fun Changelog(
                                                 modifier = Modifier.padding(top = 16.dp, bottom = 6.dp)
                                             )
                                         }
-                                        line.all { c -> c == '=' } -> { } // Discord ignores =======
+
+                                        line.all { c -> c == '=' } -> {} // Discord ignores =======
                                         else -> {
                                             LinkText(
                                                 annotatedString = buildAnnotatedString {

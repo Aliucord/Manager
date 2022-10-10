@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalUriHandler
@@ -21,9 +22,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.model.Plugin
+import com.aliucord.manager.ui.util.joinToAnnotatedString
 
 @Composable
 fun PluginCard(
@@ -31,81 +34,86 @@ fun PluginCard(
     onClickDelete: () -> Unit,
     onClickShowChangelog: () -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+    var isEnabled by rememberSaveable { mutableStateOf(true) }
+
     ElevatedCard {
+        // Header
+        Row(
+            modifier = Modifier
+                .clickable { isEnabled = !isEnabled }
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                // Name
+                Text(
+                    buildAnnotatedString {
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(plugin.manifest.name)
+                        }
+
+                        append(" v${plugin.manifest.version}")
+                    }
+                )
+
+                // Authors
+                val authors = buildAnnotatedString {
+                    withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                        plugin.manifest.authors.joinToAnnotatedString(
+                            prefix = {
+                                withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
+                                    append("By ")
+                                }
+                            }
+                        ) { author ->
+                            val start = this@joinToAnnotatedString.length
+                            withStyle(
+                                SpanStyle(
+                                    textDecoration = TextDecoration.Underline
+                                )
+                            ) {
+                                append(author.name)
+                            }
+                            addStringAnnotation("authorId", author.id.toString(), start, start + author.name.length)
+                        }
+                    }
+                }
+
+                ClickableText(
+                    text = authors,
+                    style = MaterialTheme.typography.labelMedium,
+                    onClick = { offset ->
+                        authors.getStringAnnotations("authorId", offset, offset)
+                            .firstOrNull()
+                            ?.let { (id) -> uriHandler.openUri("https://discord.com/users/$id") }
+                    }
+                )
+            }
+
+            Spacer(Modifier.weight(1f, true))
+
+            // Toggle Switch
+            Switch(
+                checked = isEnabled,
+                onCheckedChange = { isEnabled = it }
+            )
+        }
+
+        Divider(modifier = Modifier
+            .alpha(0.3f)
+            .padding(horizontal = 16.dp))
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            val uriHandler = LocalUriHandler.current
-            var isEnabled by rememberSaveable { mutableStateOf(true) }
-
-            // Header
-            Row(
-                modifier = Modifier.clickable { isEnabled = !isEnabled }
-            ) {
-                Column {
-                    // Name
-                    Text(
-                        buildAnnotatedString {
-                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                                append(plugin.manifest.name)
-                            }
-
-                            append(" v${plugin.manifest.version}")
-                        }
-                    )
-
-                    // Authors
-                    val authors = buildAnnotatedString {
-                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
-                            append("By ")
-                        }
-
-                        val iterator = plugin.manifest.authors.iterator()
-
-                        iterator.forEach { author ->
-                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                                val start = this@buildAnnotatedString.length
-                                append(author.name)
-                                addStringAnnotation("authorId", author.id.toString(), start, start + author.name.length)
-                            }
-
-                            if (iterator.hasNext()) {
-                                withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
-                                    append(", ")
-                                }
-                            }
-                        }
-                    }
-
-                    ClickableText(
-                        text = authors,
-                        style = MaterialTheme.typography.labelMedium,
-                        onClick = { offset ->
-                            authors.getStringAnnotations("authorId", offset, offset)
-                                .firstOrNull()
-                                ?.let { (id) -> uriHandler.openUri("https://discord.com/users/$id") }
-                        }
-                    )
-                }
-
-                Spacer(Modifier.weight(1f, true))
-
-                // Toggle Switch
-                Switch(
-                    checked = isEnabled,
-                    onCheckedChange = { isEnabled = it }
-                )
-            }
-
-            Divider(modifier = Modifier.alpha(0.3f))
-
             // Description
             Text(
                 modifier = Modifier
                     .heightIn(max = 150.dp, min = 40.dp)
-                    .padding(top = 10.dp, bottom = 20.dp),
+                    .padding(bottom = 20.dp),
                 text = plugin.manifest.description,
                 style = MaterialTheme.typography.bodyMedium
             )
