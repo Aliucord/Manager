@@ -120,7 +120,7 @@ fun AboutScreen(
                 ) {
                     UserEntry("Vendicated", "the ven")
                     UserEntry("Juby210", "Fox")
-                    UserEntry("Rushii", "explod", "diamondminer88")
+                    UserEntry("rushii", "explod", "DiamondMiner88")
                 }
             }
 

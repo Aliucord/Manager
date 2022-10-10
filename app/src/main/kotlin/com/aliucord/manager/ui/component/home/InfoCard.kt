@@ -56,7 +56,7 @@ fun InfoCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
