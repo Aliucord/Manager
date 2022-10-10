@@ -56,6 +56,8 @@ fun InfoCard(
                 style = MaterialTheme.typography.bodyMedium
             )
 
+            Spacer(modifier = Modifier.height(5.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -64,11 +66,13 @@ fun InfoCard(
                 val (icon, description) = when (currentVersion) {
                     "-" -> Icons.Default.Download to R.string.install
                     supportedVersion -> Icons.Default.Refresh to R.string.reinstall
-                    else -> Icons.Default.Refresh to R.string.update
+                    else -> Icons.Default.Update to R.string.update
                 }
 
                 FilledTonalIconButton(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(min = 45.dp),
                     onClick = onDownloadClick
                 ) {
                     Row(
@@ -88,7 +92,9 @@ fun InfoCard(
 
                 if (currentVersion != "-") {
                     FilledTonalIconButton(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 45.dp),
                         onClick = onUninstallClick
                     ) {
                         Icon(
@@ -98,7 +104,9 @@ fun InfoCard(
                     }
 
                     FilledTonalIconButton(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 45.dp),
                         onClick = onLaunchClick
                     ) {
                         Icon(

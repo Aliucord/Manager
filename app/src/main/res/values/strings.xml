@@ -29,7 +29,9 @@
   <string name="contributors">Contributors</string>
   <string name="search_plugins">Search Plugins</string>
   <string name="github">GitHub</string>
+  <string name="website">Website</string>
   <string name="installer">Installer</string>
+  <string name="contributions">%o contributions</string>
   <string name="theme_setting_description">Manager appearance</string>
   <string name="no_plugins_installed">No plugins installed!</string>
   <string name="paging_initial_load">Loading…</string>
@@ -52,4 +54,5 @@
   <string name="advanced">Advanced</string>
   <string name="permissions_grant">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="aliucord_description">A modification for the Discord Android App</string>
 </resources>
