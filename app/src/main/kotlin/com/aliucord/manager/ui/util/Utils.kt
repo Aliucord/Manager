@@ -3,7 +3,7 @@ package com.aliucord.manager.ui.util
 import androidx.compose.ui.text.AnnotatedString
 
 context(AnnotatedString.Builder)
-inline fun <T> Iterable<T>.joinToAnnotatedString(
+    inline fun <T> Iterable<T>.joinToAnnotatedString(
     separator: AnnotatedString.Builder.() -> Unit = { append(", ") },
     prefix: AnnotatedString.Builder.() -> Unit = {},
     postfix: AnnotatedString.Builder.() -> Unit = {},

@@ -11,7 +11,7 @@ import org.koin.dsl.module
 import java.net.Inet4Address
 import java.net.InetAddress
 
-val httpModule =  module {
+val httpModule = module {
     fun provideJson() = Json {
         ignoreUnknownKeys = true
     }

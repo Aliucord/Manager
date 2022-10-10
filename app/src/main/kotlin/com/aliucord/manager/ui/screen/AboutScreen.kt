@@ -28,14 +28,14 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun AboutScreen(
     viewModel: AboutViewModel = getViewModel(),
-    onClickBack: () -> Unit
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.about)) },
                 navigationIcon = {
-                    IconButton(onClick = onClickBack) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Default.NavigateBefore,
                             contentDescription = stringResource(R.string.back)

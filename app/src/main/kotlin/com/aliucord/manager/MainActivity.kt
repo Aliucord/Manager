@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
                 BackHandler {
                     if (!navigator.pop()) {
-                        if(homeRootNavigator.currentDestination == HomeDestination.HOME)
+                        if (homeRootNavigator.currentDestination == HomeDestination.HOME)
                             finish()
                         else
                             homeRootNavigator.replace(HomeDestination.HOME)
@@ -62,17 +62,20 @@ class MainActivity : ComponentActivity() {
                     when (destination) {
                         is AppDestination.Home -> MainRootScreen(
                             mainRootNavigator = homeRootNavigator,
-                            onClickInstall = { navigator.push(AppDestination.Install(it)) },
-                            onClickAbout = { navigator.push(AppDestination.About) }
+                            onInstallClick = { navigator.push(AppDestination.Install(it)) },
+                            onAboutClick = { navigator.push(AppDestination.About) }
                         )
+
                         is AppDestination.Install -> InstallerScreen(
                             installData = destination.installData,
-                            onClickBack = navigator::pop
+                            onBackClick = navigator::pop
                         )
-                        is AppDestination.Settings -> SettingsScreen()
+
                         is AppDestination.About -> AboutScreen(
-                            onClickBack = navigator::pop
+                            onBackClick = navigator::pop
                         )
+
+                        else -> {}
                     }
                 }
             }

@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.aliucord.manager.ui.dialog.DownloadMethod
-import com.aliucord.manager.ui.dialog.InstallerDialog
 import com.aliucord.manager.ui.component.home.CommitList
 import com.aliucord.manager.ui.component.home.InfoCard
+import com.aliucord.manager.ui.dialog.DownloadMethod
+import com.aliucord.manager.ui.dialog.InstallerDialog
 import com.aliucord.manager.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.getViewModel
 

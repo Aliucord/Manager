@@ -100,6 +100,7 @@ object ManifestPatcher {
                                                 )
                                             }
                                         }
+
                                         else -> visitor
                                     }
                                 }

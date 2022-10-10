@@ -15,12 +15,14 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.component.settings.*
 import com.aliucord.manager.ui.theme.Theme
 import com.aliucord.manager.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.compose.getViewModel
@@ -28,149 +30,139 @@ import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = getViewModel()
+    viewModel: SettingsViewModel = getViewModel(),
+    onAboutClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 14.dp)
-            .verticalScroll(state = rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        val preferences = viewModel.preferences
+    Column {
+        TopAppBar(
+            title = { Text(stringResource(R.string.settings)) },
+            actions = {
+                val localUriHandler = LocalUriHandler.current
 
-        if (viewModel.showThemeDialog) {
-            ThemeDialog(
-                currentTheme = preferences.theme,
-                onDismissRequest = viewModel::hideThemeDialog,
-                onConfirm = viewModel::setTheme
-            )
-        }
+                IconButton(
+                    onClick = {
+                        localUriHandler.openUri("https://discord.gg/${BuildConfig.SUPPORT_SERVER}")
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_discord),
+                        contentDescription = stringResource(R.string.support_server)
+                    )
+                }
 
-        GroupHeader(stringResource(R.string.appearance))
-
-        ListItem(
-            modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
-            headlineText = { Text(stringResource(R.string.theme)) },
-            supportingText = { Text(stringResource(R.string.theme_setting_description)) },
-            leadingContent = { Icon(Icons.Default.Style, null) },
-            trailingContent = {
-                FilledTonalButton(onClick = viewModel::showThemeDialog) {
-                    Text(preferences.theme.displayName)
+                IconButton(onClick = onAboutClick) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = stringResource(R.string.about)
+                    )
                 }
             }
         )
 
-        SwitchSetting(
-            checked = preferences.dynamicColor,
-            title = { Text(stringResource(R.string.dynamic_color)) },
-            onCheckedChange = { preferences.dynamicColor = it },
-            icon = { Icon(Icons.Default.Palette, null) }
-        )
-
-        GroupHeader(stringResource(R.string.advanced))
-
-        SwitchSetting(
-            checked = preferences.replaceIcon,
-            title = { Text(stringResource(R.string.replace_bg)) },
-            onCheckedChange = { preferences.replaceIcon = it },
-            icon = { Icon(Icons.Default.AppShortcut, null) }
-        )
-
-        OutlinedTextField(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp),
-            value = preferences.appName,
-            onValueChange = viewModel::setAppName,
-            label = { Text(stringResource(R.string.app_name_setting)) },
-            placeholder = { Text("Aliucord") },
-            singleLine = true
-        )
-
-        SwitchSetting(
-            checked = preferences.devMode,
-            title = { Text(stringResource(R.string.developer_options)) },
-            onCheckedChange = { preferences.devMode = it },
-            icon = { Icon(Icons.Default.Code, null) }
-        )
-
-        AnimatedVisibility(
-            visible = preferences.devMode,
-            enter = expandVertically(),
-            exit = shrinkVertically()
+                .verticalScroll(state = rememberScrollState())
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+            val preferences = viewModel.preferences
+
+            if (viewModel.showThemeDialog) {
+                ThemeDialog(
+                    currentTheme = preferences.theme,
+                    onDismissRequest = viewModel::hideThemeDialog,
+                    onConfirm = viewModel::setTheme
+                )
+            }
+
+            SettingsHeader(stringResource(R.string.appearance))
+
+            SettingsItem(
+                modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
+                icon = { Icon(Icons.Default.Style, null) },
+                text = { Text(stringResource(R.string.theme)) }
             ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                    value = preferences.packageName,
-                    onValueChange = viewModel::setPackageName,
-                    label = { Text(stringResource(R.string.package_name)) },
-                    placeholder = { Text("com.aliucord") },
-                    singleLine = true
-                )
+                FilledTonalButton(onClick = viewModel::showThemeDialog) {
+                    Text(preferences.theme.displayName)
+                }
+            }
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                    value = preferences.version,
-                    onValueChange = viewModel::setVersion,
-                    label = { Text(stringResource(R.string.version)) },
-                    singleLine = true
-                )
+            SettingsSwitch(
+                label = stringResource(R.string.dynamic_color),
+                pref = preferences.dynamicColor,
+                icon = { Icon(Icons.Default.Palette, null) }
+            ) {
+                preferences.dynamicColor = it
+            }
 
-                SwitchSetting(
-                    checked = preferences.debuggable,
-                    title = { Text(stringResource(R.string.debuggable)) },
-                    description = { Text(stringResource(R.string.debuggable_description)) },
-                    onCheckedChange = { preferences.debuggable = it },
-                    icon = { Icon(Icons.Default.BugReport, null) }
+            SettingsHeader(stringResource(R.string.advanced))
+
+            SettingsSwitch(
+                label = stringResource(R.string.replace_bg),
+                secondaryLabel = stringResource(R.string.replace_bg_description),
+                pref = preferences.replaceIcon,
+                icon = { Icon(Icons.Default.AppShortcut, null) }
+            ) {
+                preferences.replaceIcon = it
+            }
+
+            SettingsTextField(
+                label = stringResource(R.string.app_name_setting),
+                pref = preferences.appName,
+                onPrefChange = viewModel::setAppName
+            )
+
+            SettingsSwitch(
+                label = stringResource(R.string.developer_options),
+                pref = preferences.devMode,
+                icon = { Icon(Icons.Default.Code, null) }
+            ) {
+                preferences.devMode = it
+            }
+
+            AnimatedVisibility(
+                visible = preferences.devMode,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+
+                    SettingsTextField(
+                        label = stringResource(R.string.package_name),
+                        pref = preferences.packageName,
+                        onPrefChange = viewModel::setPackageName
+                    )
+
+                    SettingsTextField(
+                        label = stringResource(R.string.version),
+                        pref = preferences.version,
+                        onPrefChange = viewModel::setVersion
+                    )
+
+                    SettingsSwitch(
+                        label = stringResource(R.string.debuggable),
+                        secondaryLabel = stringResource(R.string.debuggable_description),
+                        pref = preferences.debuggable,
+                        icon = { Icon(Icons.Default.BugReport, null) }
+                    ) {
+                        preferences.debuggable = it
+                    }
+                }
+            }
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(18.dp),
+                onClick = viewModel::clearCacheDir
+            ) {
+                Text(
+                    text = stringResource(R.string.clear_files_cache),
+                    textAlign = TextAlign.Center
                 )
             }
         }
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            onClick = viewModel::clearCacheDir
-        ) {
-            Text(
-                text = stringResource(R.string.clear_files_cache),
-                textAlign = TextAlign.Center
-            )
-        }
     }
-
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SwitchSetting(
-    enabled: Boolean = true,
-    checked: Boolean,
-    icon: @Composable (() -> Unit)? = null,
-    title: @Composable () -> Unit,
-    description: @Composable (() -> Unit)? = null,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    ListItem(
-        modifier = Modifier.clickable { onCheckedChange(!checked) },
-        leadingContent = icon,
-        headlineText = title,
-        supportingText = description,
-        trailingContent = {
-            Switch(
-                enabled = enabled,
-                checked = checked,
-                onCheckedChange = onCheckedChange
-            )
-        }
-    )
 }
 
 @Composable
@@ -225,24 +217,4 @@ fun ThemeDialog(
             }
         }
     )
-}
-
-@Composable
-fun GroupHeader(
-    title: String,
-    color: Color = MaterialTheme.colorScheme.primary
-) {
-    Box(
-        Modifier
-            .padding(start = 12.dp)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text(
-            text = title,
-            color = color,
-            fontSize = LocalTextStyle.current.fontSize.times(0.95f),
-            fontWeight = FontWeight.SemiBold
-        )
-    }
 }

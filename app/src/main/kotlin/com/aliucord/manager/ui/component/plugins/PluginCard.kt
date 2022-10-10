@@ -40,7 +40,9 @@ fun PluginCard(
     ElevatedCard {
         // Header
         Row(
-            modifier = Modifier.clickable { isEnabled = !isEnabled }.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 14.dp),
+            modifier = Modifier
+                .clickable { isEnabled = !isEnabled }
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
@@ -66,9 +68,11 @@ fun PluginCard(
                             }
                         ) { author ->
                             val start = this@joinToAnnotatedString.length
-                            withStyle(SpanStyle(
-                                textDecoration = TextDecoration.Underline
-                            )) {
+                            withStyle(
+                                SpanStyle(
+                                    textDecoration = TextDecoration.Underline
+                                )
+                            ) {
                                 append(author.name)
                             }
                             addStringAnnotation("authorId", author.id.toString(), start, start + author.name.length)
@@ -96,7 +100,9 @@ fun PluginCard(
             )
         }
 
-        Divider(modifier = Modifier.alpha(0.3f).padding(horizontal = 16.dp))
+        Divider(modifier = Modifier
+            .alpha(0.3f)
+            .padding(horizontal = 16.dp))
 
         Column(
             modifier = Modifier
