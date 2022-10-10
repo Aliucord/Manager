@@ -32,10 +32,7 @@ fun InfoCard(
         ) {
             Text(
                 text = "Aliucord${packageName.let { if (it != "com.aliucord") " ($it)" else "" }}",
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                ),
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 23.sp),
                 color = MaterialTheme.colorScheme.primary
             )
 
@@ -56,10 +53,10 @@ fun InfoCard(
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            Spacer(modifier = Modifier.height(5.dp))
-
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
@@ -72,8 +69,9 @@ fun InfoCard(
                 FilledTonalIconButton(
                     modifier = Modifier
                         .weight(1f)
-                        .heightIn(min = 45.dp),
-                    onClick = onDownloadClick
+                        .heightIn(min = 50.dp),
+                    onClick = onDownloadClick,
+                    shape = ShapeDefaults.Large
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -94,8 +92,9 @@ fun InfoCard(
                     FilledTonalIconButton(
                         modifier = Modifier
                             .weight(1f)
-                            .heightIn(min = 45.dp),
-                        onClick = onUninstallClick
+                            .heightIn(min = 50.dp),
+                        onClick = onUninstallClick,
+                        shape = ShapeDefaults.Large
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -106,8 +105,9 @@ fun InfoCard(
                     FilledTonalIconButton(
                         modifier = Modifier
                             .weight(1f)
-                            .heightIn(min = 45.dp),
-                        onClick = onLaunchClick
+                            .heightIn(min = 50.dp),
+                        onClick = onLaunchClick,
+                        shape = ShapeDefaults.Large
                     ) {
                         Icon(
                             imageVector = Icons.Default.Launch,

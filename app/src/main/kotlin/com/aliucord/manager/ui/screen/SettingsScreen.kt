@@ -73,6 +73,8 @@ fun SettingsScreen(
             preferences.replaceIcon = it
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
         SettingsTextField(
             label = stringResource(R.string.app_name_setting),
             pref = preferences.appName,
@@ -122,10 +124,11 @@ fun SettingsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(18.dp),
+            shape = ShapeDefaults.Large,
             onClick = viewModel::clearCacheDir
         ) {
             Text(
-                text = stringResource(R.string.clear_files_cache),
+                text = stringResource(R.string.clear_cache),
                 textAlign = TextAlign.Center
             )
         }

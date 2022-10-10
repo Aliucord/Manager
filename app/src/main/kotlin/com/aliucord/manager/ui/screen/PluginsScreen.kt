@@ -119,7 +119,7 @@ fun PluginsScreen(
             )
 
             LazyColumn(
-                contentPadding = PaddingValues(bottom = 8.dp, top = 6.dp),
+                contentPadding = PaddingValues(bottom = 15.dp, top = 6.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 items(

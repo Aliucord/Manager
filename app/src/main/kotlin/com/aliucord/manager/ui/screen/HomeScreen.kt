@@ -76,6 +76,5 @@ fun HomeScreen(
         CommitList(
             commits = viewModel.commits
         )
-
     }
 }
