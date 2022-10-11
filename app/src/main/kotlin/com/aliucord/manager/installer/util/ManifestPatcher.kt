@@ -110,6 +110,7 @@ object ManifestPatcher {
                                                 )
                                             }
                                         }
+
                                         else -> visitor
                                     }
                                 }

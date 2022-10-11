@@ -35,19 +35,19 @@ data class InstallData(
 @Composable
 fun InstallerScreen(
     installData: InstallData,
-    onClickBack: () -> Unit,
+    onBackClick: () -> Unit,
     viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) })
 ) {
     val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
 
-    if (navigateMain) onClickBack()
+    if (navigateMain) onBackClick()
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Installer") },
                 navigationIcon = {
-                    IconButton(onClick = onClickBack) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Default.NavigateBefore,
                             contentDescription = stringResource(R.string.back)
