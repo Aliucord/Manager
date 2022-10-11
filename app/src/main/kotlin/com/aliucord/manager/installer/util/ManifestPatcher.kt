@@ -78,14 +78,17 @@ object ManifestPatcher {
                                 mapOf(
                                     LABEL to appName,
                                     DEBUGGABLE to debuggable,
-                                    USES_CLEARTEXT_TRAFFIC to true
+                                    USES_CLEARTEXT_TRAFFIC to true,
+                                    REQUEST_LEGACY_EXTERNAL_STORAGE to true
                                 )
                             ) {
                                 private var addDebuggable = debuggable
+                                private var addLegacyStorage = true
                                 private var addUseClearTextTraffic = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     super.attr(ns, name, resourceId, type, value)
+                                    if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false;
                                     if (name == DEBUGGABLE) addDebuggable = false
                                     if (name == USES_CLEARTEXT_TRAFFIC) addUseClearTextTraffic = false
                                 }
@@ -116,7 +119,7 @@ object ManifestPatcher {
                                 }
 
                                 override fun end() {
-                                    super.attr(ANDROID_NAMESPACE, REQUEST_LEGACY_EXTERNAL_STORAGE, -1, TYPE_INT_BOOLEAN, 1)
+                                    if (addLegacyStorage) super.attr(ANDROID_NAMESPACE, REQUEST_LEGACY_EXTERNAL_STORAGE, -1, TYPE_INT_BOOLEAN, 1)
                                     if (addDebuggable) super.attr(ANDROID_NAMESPACE, DEBUGGABLE, -1, TYPE_INT_BOOLEAN, 1)
                                     if (addUseClearTextTraffic) super.attr(ANDROID_NAMESPACE, USES_CLEARTEXT_TRAFFIC, -1, TYPE_INT_BOOLEAN, 1)
                                     super.end()
