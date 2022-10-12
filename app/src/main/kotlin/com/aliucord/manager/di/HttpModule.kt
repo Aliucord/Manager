@@ -1,5 +1,6 @@
 package com.aliucord.manager.di
 
+import com.aliucord.manager.network.service.HttpService
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -41,4 +42,5 @@ val httpModule = module {
 
     singleOf(::provideJson)
     singleOf(::provideHttpClient)
+    singleOf(::HttpService)
 }

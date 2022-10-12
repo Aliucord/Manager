@@ -16,6 +16,7 @@ import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.service.InstallService
 import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.installer.util.Signer
+import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.screen.InstallData
 import com.android.zipflinger.*
 import kotlinx.coroutines.*
@@ -135,10 +136,12 @@ class InstallViewModel(
             }
 
             // Fetch gh releases for Aliucord/Hermes
-            val latestHermesRelease = githubRepository
-                .getHermesReleases().reduce { current, new ->
-                    if (Instant.parse(current.createdAt).isBefore(Instant.parse(new.createdAt))) new else current
-                }
+            val latestHermesRelease = githubRepository.getHermesReleases().fold(
+                success = { releases ->
+                    releases.maxBy { Instant.parse(it.createdAt) }
+                },
+                fail = { throw it }
+            )
 
             // Download the hermes-release.aar file to replace in the apk
             val hermesLibrary = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
@@ -165,14 +168,12 @@ class InstallViewModel(
             }
 
             // Fetch the gh releases for Aliucord/AliucordNative
-            val latestAliucordNativeRelease = githubRepository
-                .getAliucordNativeReleases().reduce { current, new ->
-                    if (Instant.parse(current.createdAt).isBefore(Instant.parse(new.createdAt))) {
-                        new
-                    } else {
-                        current
-                    }
-                }
+            val latestAliucordNativeRelease = githubRepository.getAliucordNativeReleases().fold(
+                success = { releases ->
+                    releases.maxBy { Instant.parse(it.createdAt) }
+                },
+                fail = { throw it }
+            )
 
             // Download the Aliucord classes.dex file to add to the apk
             val aliucordDexFile = externalCacheDir.resolve("classes-${latestAliucordNativeRelease.tagName}.dex").also { file ->
