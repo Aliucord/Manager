@@ -34,7 +34,6 @@
   <string name="contributions">%o contributions</string>
   <string name="theme_setting_description">Manager appearance</string>
   <string name="no_plugins_installed">No plugins installed!</string>
-  <string name="paging_initial_load">Loading…</string>
   <string name="contributor">Contributor</string>
   <string name="apply">Apply</string>
   <string name="confirm">Confirm</string>

@@ -11,6 +11,7 @@ import androidx.paging.*
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.dto.Commit
+import com.aliucord.manager.network.utils.fold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -32,14 +33,18 @@ class HomeViewModel(
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Commit> {
                 val page = params.key ?: 0
 
-                val response = githubRepository.getCommits(page)
-                val prevKey = if (page > 0) page - 1 else null
-                val nextKey = if (response.isNotEmpty()) page + 1 else null
+                return githubRepository.getCommits(page).fold(
+                    success = { commits ->
+                        val prevKey = if (page > 0) page - 1 else null
+                        val nextKey = if (commits.isNotEmpty()) page + 1 else null
 
-                return LoadResult.Page(
-                    data = response,
-                    prevKey = prevKey,
-                    nextKey = nextKey
+                        LoadResult.Page(
+                            data = commits,
+                            prevKey = prevKey,
+                            nextKey = nextKey
+                        )
+                    },
+                    fail = { LoadResult.Error(it) }
                 )
             }
 
@@ -51,14 +56,7 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val version = githubRepository.getVersion()
-
-            supportedVersion = "${version.versionName} - " + when (version.versionCode[3]) {
-                '0' -> "Stable"
-                '1' -> "Beta"
-                '2' -> "Alpha"
-                else -> throw NoWhenBranchMatchedException()
-            }
+            _fetchSupportedVersion()
 
             installedVersion = try {
                 @Suppress("DEPRECATION")
@@ -66,6 +64,28 @@ class HomeViewModel(
             } catch (th: Throwable) {
                 "-"
             }
+        }
+    }
+
+    private suspend fun _fetchSupportedVersion() {
+        val version = githubRepository.getVersion()
+
+        supportedVersion = version.fold(
+            success = {
+                "${it.versionName} - " + when (it.versionCode[3]) {
+                    '0' -> "Stable"
+                    '1' -> "Beta"
+                    '2' -> "Alpha"
+                    else -> throw NoWhenBranchMatchedException()
+                }
+            },
+            fail = { "Failed to retrieve version" }
+        )
+    }
+
+    fun fetchSupportedVersion() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _fetchSupportedVersion()
         }
     }
 
