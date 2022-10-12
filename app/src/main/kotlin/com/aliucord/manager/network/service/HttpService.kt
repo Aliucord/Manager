@@ -1,5 +1,7 @@
 package com.aliucord.manager.network.service
 
+import android.util.Log
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.network.utils.ApiError
 import com.aliucord.manager.network.utils.ApiFailure
 import com.aliucord.manager.network.utils.ApiResponse
@@ -17,14 +19,13 @@ class HttpService(
     suspend inline fun <reified T> request(builder: HttpRequestBuilder.() -> Unit = {}): ApiResponse<T> {
         var body: String? = null
 
-        // TODO: log errors
-        return try {
+        val response = try {
             val response = http.request(builder)
 
             if (response.status.isSuccess()) {
                 body = response.bodyAsText()
 
-                ApiResponse.Success(json.decodeFromString(body))
+                ApiResponse.Success(json.decodeFromString<T>(body))
             } else {
                 body = try {
                     response.bodyAsText()
@@ -32,10 +33,13 @@ class HttpService(
                     null
                 }
 
+                Log.e(BuildConfig.TAG, "Failed to fetch, api error, http: ${response.status}, body: $body")
                 ApiResponse.Error(ApiError(response.status, body))
             }
         } catch (t: Throwable) {
+            Log.e(BuildConfig.TAG, "Failed to fetch. body: $body", t)
             ApiResponse.Failure(ApiFailure(t, body))
         }
+        return response
     }
 }
