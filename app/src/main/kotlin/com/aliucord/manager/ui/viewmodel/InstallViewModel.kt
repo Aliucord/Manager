@@ -156,7 +156,7 @@ class InstallViewModel(
             val hermesLibrary = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
                 if (file.exists()) return@also run { log += "Using cached patched hermes library\n" }
 
-                log += "Downloading cached patched hermes library... "
+                log += "Downloading patched hermes library... "
                 downloadManager.download(
                     url = latestHermesRelease.assets.find { it.name == "hermes-release.aar" }!!.browserDownloadUrl,
                     fileName = "hermes-release-${latestHermesRelease.tagName}.aar"
