@@ -33,11 +33,11 @@ class HttpService(
                     null
                 }
 
-                Log.e(BuildConfig.TAG, "Failed to fetch, api error, http: ${response.status}, body: $body")
+                Log.e(BuildConfig.TAG, "Failed to fetch: API error, http status: ${response.status}, body: $body")
                 ApiResponse.Error(ApiError(response.status, body))
             }
         } catch (t: Throwable) {
-            Log.e(BuildConfig.TAG, "Failed to fetch. body: $body", t)
+            Log.e(BuildConfig.TAG, "Failed to fetch: error: $t, body: $body")
             ApiResponse.Failure(ApiFailure(t, body))
         }
         return response
