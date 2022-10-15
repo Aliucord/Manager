@@ -65,73 +65,85 @@ class InstallViewModel(
             val supportedVersion = preferences.version
 
             // Download base.apk
-            val baseApkFile = externalCacheDir.resolve("base-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also run { log += "Using cached base APK\n" }
+            val baseApkFile = externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
+                if (file.exists()) {
+                    log += "Using cached base APK\n"
+                } else {
+                    log += "Downloading Discord APK... "
+                    downloadManager.downloadDiscordApk(supportedVersion)
+                    log += "Done\n"
+                }
 
-                log += "Downloading Discord APK... "
-                downloadManager.downloadDiscordApk(supportedVersion).apply {
-                    copyTo(
-                        externalCacheDir
-                            .resolve("patched")
-                            .resolve(this.name),
-                        true
-                    )
-                }.also { log += "Done\n" }
+                file.copyTo(
+                    externalCacheDir
+                        .resolve("patched")
+                        .resolve(file.name),
+                    true
+                )
             }
 
             // Download the native libraries split
             val libArch = arch.replace("-v", "_v")
-            val libsApkFile = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also run { log += "Using cached libs APK\n" }
-
-                log += "Downloading libs APK... "
-                downloadManager.downloadSplit(
-                    version = supportedVersion,
-                    split = "config.$libArch"
-                ).apply {
-                    copyTo(
-                        externalCacheDir
-                            .resolve("patched")
-                            .resolve(this.name),
-                        true
+            val libsApkFile = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
+                if (file.exists()) {
+                    log += "Using cached libs APK\n"
+                } else {
+                    log += "Downloading libs APK... "
+                    downloadManager.downloadSplit(
+                        version = supportedVersion,
+                        split = "config.$libArch"
                     )
-                }.also { log += "Done\n" }
+                    log += "Done\n"
+                }
+
+                file.copyTo(
+                    externalCacheDir
+                        .resolve("patched")
+                        .resolve(file.name),
+                    true
+                )
             }
 
             // Download the locale split
             val localeApkFile = externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also run { log += "Using cached locale APK\n" }
-
-                log += "Downloading locale APK... "
-                downloadManager.downloadSplit(
-                    version = supportedVersion,
-                    split = "config.en"
-                ).apply {
-                    copyTo(
-                        externalCacheDir
-                            .resolve("patched")
-                            .resolve(this.name),
-                        true
+                if (file.exists()) {
+                    log += "Using cached locale APK\n"
+                } else {
+                    log += "Downloading locale APK... "
+                    downloadManager.downloadSplit(
+                        version = supportedVersion,
+                        split = "config.en"
                     )
-                }.also { log += "Done\n" }
+                    log += "Done\n"
+                }
+
+                file.copyTo(
+                    externalCacheDir
+                        .resolve("patched")
+                        .resolve(file.name),
+                    true
+                )
             }
 
             // Download the drawables split
             val xxhdpiApkFile = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
-                if (file.exists()) return@also run { log += "Using cached drawables APK\n" }
-
-                log += "Downloading drawables APK... "
-                downloadManager.downloadSplit(
-                    version = supportedVersion,
-                    split = "config.xxhdpi"
-                ).apply {
-                    copyTo(
-                        externalCacheDir
-                            .resolve("patched")
-                            .resolve(this.name),
-                        true
+                if (file.exists()) {
+                    log += "Using cached drawables APK\n"
+                } else {
+                    log += "Downloading drawables APK... "
+                    downloadManager.downloadSplit(
+                        version = supportedVersion,
+                        split = "config.xxhdpi"
                     )
-                }.also { log += "Done\n" }
+                    log += "Done\n"
+                }
+
+                file.copyTo(
+                    externalCacheDir
+                        .resolve("patched")
+                        .resolve(file.name),
+                    true
+                )
             }
 
             // Fetch gh releases for Aliucord/Hermes
@@ -144,7 +156,7 @@ class InstallViewModel(
             val hermesLibrary = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
                 if (file.exists()) return@also run { log += "Using cached patched hermes library\n" }
 
-                log += "Downloading cached patched hermes library... "
+                log += "Downloading patched hermes library... "
                 downloadManager.download(
                     url = latestHermesRelease.assets.find { it.name == "hermes-release.aar" }!!.browserDownloadUrl,
                     fileName = "hermes-release-${latestHermesRelease.tagName}.aar"
