@@ -12,6 +12,7 @@ fun SettingsTextField(
     label: String,
     disabled: Boolean = false,
     pref: String,
+    error: Boolean = false,
     onPrefChange: (String) -> Unit,
 ) {
     Box(modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp)) {
@@ -21,6 +22,7 @@ fun SettingsTextField(
             onValueChange = onPrefChange,
             enabled = !disabled,
             label = { Text(label) },
+            isError = error,
             singleLine = true
         )
     }

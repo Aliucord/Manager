@@ -100,7 +100,8 @@ fun SettingsScreen(
                 SettingsTextField(
                     label = stringResource(R.string.package_name),
                     pref = preferences.packageName,
-                    onPrefChange = viewModel::setPackageName
+                    onPrefChange = viewModel::setPackageName,
+                    error = viewModel.packageNameError
                 )
 
                 SettingsTextField(
