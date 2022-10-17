@@ -235,7 +235,7 @@ class InstallViewModel(
                         ?: throw IllegalStateException("No manifest in ${apk.name}")
 
                     ZipWriter(apk, true).use { zip ->
-                        val patchedManifestBytes = if (apk.name == baseApkFile.name) {
+                        val patchedManifestBytes = if (apk == baseApkFile) {
                             ManifestPatcher.patchManifest(
                                 manifestBytes = manifest,
                                 packageName = preferences.packageName,
@@ -246,7 +246,7 @@ class InstallViewModel(
                             ManifestPatcher.renamePackage(manifest, preferences.packageName)
                         }
 
-                        zip.deleteEntry("AndroidManifest.xml")
+                        zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile) // Preserve alignment in libs apk
                         zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
                     }
                 }
@@ -283,33 +283,30 @@ class InstallViewModel(
 
             log += "Patching libraries... "
 
-            // ZipWriter(libsApkFile, true).use { libsApk ->
-            //     // Process the hermes and cpp runtime library
-            //     for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
-            //         // Map .aar to the embedded .so inside
-            //         val binaryName = with(libFile.name) {
-            //             when {
-            //                 startsWith("hermes-release") -> "libhermes.so"
-            //                 startsWith("hermes-cppruntime-release") -> "libc++_shared.so"
-            //                 else -> throw Error("Unable to map $this to embedded .so")
-            //             }
-            //         }
-            //
-            //         // Read the embedded .so inside the .aar library
-            //         val libBytes = ZipReader(libFile).use { libZip ->
-            //             libZip.openEntry("jni/$arch/$binaryName")?.read()
-            //                 ?: throw IllegalStateException("Failed to read jni/$arch/$binaryName from ${libFile.name}")
-            //         }
-            //
-            //         // Delete the old binary and add the new one instead
-            //         libsApk.deleteEntry("lib/$arch/$binaryName", true)
-            //         libsApk.writeEntry("_lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
-            //     }
-            // }
+            ZipWriter(libsApkFile, true).use { libsApk ->
+                // Process the hermes and cpp runtime library
+                for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
+                    // Map .aar to the embedded .so inside
+                    val binaryName = with(libFile.name) {
+                        when {
+                            startsWith("hermes-release") -> "libhermes.so"
+                            startsWith("hermes-cppruntime-release") -> "libc++_shared.so"
+                            else -> throw Error("Unable to map $this to embedded .so")
+                        }
+                    }
 
-            // ZipReader(libsApkFile).use {
-            //     it.entries.withIndex().forEach { println("${it.index} ${it.value.name}") }
-            // }
+                    // Read the embedded .so inside the .aar library
+                    val libBytes = ZipReader(libFile).use { libZip ->
+                        libZip.openEntry("jni/$arch/$binaryName")?.read()
+                            ?: throw IllegalStateException("Failed to read jni/$arch/$binaryName from ${libFile.name}")
+                    }
+
+                    // Delete the old binary and add the new one instead
+                    libsApk.deleteEntry("lib/$arch/$binaryName", true)
+                    libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
+                }
+            }
+
             log += "Done\n"
             log += "Signing APKs... "
 
