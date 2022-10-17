@@ -68,7 +68,6 @@ android {
 }
 
 dependencies {
-
     // AndroidX
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
@@ -80,7 +79,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-beta03")
+    implementation("androidx.compose.material3:material3:1.0.0-rc01")
 
     // accompanist dependencies
     val accompanistVersion = "0.26.3-beta"
@@ -103,8 +102,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.1")
     implementation("com.github.X1nto:Taxi:1.2.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("com.android:zipflinger:8.0.0-alpha01")
+    implementation("io.github.diamondminer88:zip-android:2.0.0@aar")
     implementation("com.aliucord:axml:1.0.1")
-    implementation("com.android.tools.build:apksig:7.4.0-beta01")
+    implementation("com.android.tools.build:apksig:7.4.0-beta02")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }
