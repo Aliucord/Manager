@@ -74,7 +74,8 @@ fun HomeScreen(
         )
 
         CommitList(
-            commits = viewModel.commits
+            commits = viewModel.commits,
+            onRetry = { viewModel.fetchSupportedVersion() }
         )
     }
 }

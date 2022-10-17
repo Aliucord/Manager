@@ -22,11 +22,13 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.network.dto.Commit
+import com.aliucord.manager.ui.component.LoadFailure
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun CommitList(
-    commits: Flow<PagingData<Commit>>
+    commits: Flow<PagingData<Commit>>,
+    onRetry: () -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier.padding(bottom = 16.dp)
@@ -48,27 +50,42 @@ fun CommitList(
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(bottom = 12.dp)
             ) {
-                if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
-                    item {
-                        Text(
+                when (lazyPagingItems.loadState.refresh) {
+                    LoadState.Loading -> item {
+                        CircularProgressIndicator(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .wrapContentWidth(Alignment.CenterHorizontally),
-                            text = stringResource(R.string.paging_initial_load)
+                                .padding(vertical = 16.dp)
+                                .wrapContentWidth(Alignment.CenterHorizontally)
                         )
+                    }
+                    is LoadState.Error -> item {
+                        Box(
+                            modifier = Modifier
+                                .fillParentMaxSize()
+                                .padding(bottom = 50.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadFailure(onRetry = {
+                                lazyPagingItems.retry()
+                                onRetry()
+                            })
+                        }
+                    }
+                    is LoadState.NotLoading -> {
+                        items(lazyPagingItems) { commit ->
+                            if (commit != null) {
+                                CommitItem(commit)
+                            }
+                        }
                     }
                 }
 
-                items(lazyPagingItems) { commitData ->
-                    if (commitData == null) return@items
-
-                    CommitItem(commitData)
-                }
-
-                if (lazyPagingItems.loadState.append == LoadState.Loading) {
-                    item {
+                when (lazyPagingItems.loadState.append) {
+                    LoadState.Loading -> item {
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -76,6 +93,12 @@ fun CommitList(
                                 .wrapContentWidth(Alignment.CenterHorizontally)
                         )
                     }
+                    is LoadState.Error -> item {
+                        LoadFailure(onRetry = {
+                            lazyPagingItems.retry()
+                        })
+                    }
+                    else -> {}
                 }
             }
         }

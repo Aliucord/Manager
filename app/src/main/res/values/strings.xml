@@ -34,7 +34,6 @@
   <string name="contributions">%o contributions</string>
   <string name="theme_setting_description">Manager appearance</string>
   <string name="no_plugins_installed">No plugins installed!</string>
-  <string name="paging_initial_load">Loading…</string>
   <string name="contributor">Contributor</string>
   <string name="apply">Apply</string>
   <string name="confirm">Confirm</string>
@@ -55,4 +54,6 @@
   <string name="permissions_grant">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="aliucord_description">A modification for the Discord Android App</string>
+  <string name="load_fail">Failed to load</string>
+  <string name="retry">Retry</string>
 </resources>

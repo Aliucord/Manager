@@ -11,7 +11,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.component.LoadFailure
 import com.aliucord.manager.ui.component.contributors
 import com.aliucord.manager.ui.viewmodel.AboutViewModel
 import org.koin.androidx.compose.getViewModel
@@ -110,21 +112,31 @@ fun AboutScreen(
                 }
             }
 
-            item {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                ) {
-                    UserEntry("Vendicated", "the ven")
-                    UserEntry("Juby210", "Fox")
-                    UserEntry("rushii", "explod", "DiamondMiner88")
+            if (!viewModel.fetchError) {
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp, bottom = 20.dp)
+                    ) {
+                        UserEntry("Vendicated", "the ven")
+                        UserEntry("Juby210", "Fox")
+                        UserEntry("rushii", "explod", "DiamondMiner88")
+                    }
+                }
+
+                contributors(viewModel.contributors)
+            } else {
+                item {
+                    Box(
+                        modifier = Modifier.padding(top = 12.dp)
+                    ) {
+                        LoadFailure(onRetry = { viewModel.fetchContributors() })
+                    }
                 }
             }
-
-            contributors(viewModel.contributors)
         }
     }
 }
