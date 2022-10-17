@@ -102,7 +102,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.1")
     implementation("com.github.X1nto:Taxi:1.2.0")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("io.github.diamondminer88:zip-android:2.0.0@aar")
+    implementation("io.github.diamondminer88:zip-android:2.1.0@aar")
     implementation("com.aliucord:axml:1.0.1")
     implementation("com.android.tools.build:apksig:7.4.0-beta02")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
