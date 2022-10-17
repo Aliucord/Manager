@@ -9,8 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.aliucord.manager.R
 
 @Composable
 fun LoadFailure(onRetry: () -> Unit) {
@@ -20,7 +22,7 @@ fun LoadFailure(onRetry: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Failed to load",
+            text = stringResource(R.string.load_fail),
             style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp),
             color = MaterialTheme.colorScheme.error
         )
@@ -28,7 +30,7 @@ fun LoadFailure(onRetry: () -> Unit) {
             onClick = onRetry,
             shape = MaterialTheme.shapes.extraLarge
         ) {
-            Text(text = "Retry")
+            Text(text = stringResource(R.string.retry))
         }
     }
 }
