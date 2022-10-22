@@ -72,5 +72,7 @@ inline fun annotatingStringResource(
             lastIndex = valueEnd + 1
             offset += 3 + annotationName.length
         }
+
+        append(string.substring(lastIndex))
     }
 }
