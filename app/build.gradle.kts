@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+import java.io.ByteArrayOutputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -21,6 +23,11 @@ android {
 
         buildConfigField("String", "TAG", "\"AliucordManager\"")
         buildConfigField("String", "SUPPORT_SERVER", "\"EsNDvBaHVU\"")
+
+        buildConfigField("String", "GIT_BRANCH", "\"${getCurrentBranch()}\"")
+        buildConfigField("String", "GIT_COMMIT", "\"${getLatestCommit()}\"")
+        buildConfigField("boolean", "GIT_LOCAL_COMMITS", "${gitHasLocalCommits()}")
+        buildConfigField("boolean", "GIT_LOCAL_CHANGES", "${gitHasLocalChanges()}")
     }
 
     buildTypes {
@@ -106,4 +113,40 @@ dependencies {
     implementation("com.aliucord:axml:1.0.1")
     implementation("com.android.tools.build:apksig:7.4.0-beta02")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+}
+
+fun getCurrentBranch(): String? =
+    exec("git", "name-rev", "--name-only", "HEAD")
+
+fun getLatestCommit(): String? =
+    exec("git", "rev-parse", "--short", "HEAD")
+
+fun gitHasLocalCommits(): Boolean {
+    val branch = getCurrentBranch() ?: return false
+    return exec("git", "log", "origin/$branch..HEAD")?.isNotEmpty() ?: false
+}
+
+fun gitHasLocalChanges(): Boolean =
+    exec("git", "status", "-s")?.isNotEmpty() ?: false
+
+fun exec(vararg command: String): String? {
+    return try {
+        val stdout = ByteArrayOutputStream()
+        val errout = ByteArrayOutputStream()
+
+        exec {
+            commandLine = command.toList()
+            standardOutput = stdout
+            errorOutput = errout
+            isIgnoreExitValue = true
+        }
+
+        if (errout.size() > 0)
+            throw Error(errout.toString(Charsets.UTF_8))
+
+        stdout.toString(Charsets.UTF_8).trim()
+    } catch (t: Throwable) {
+        t.printStackTrace()
+        null
+    }
 }

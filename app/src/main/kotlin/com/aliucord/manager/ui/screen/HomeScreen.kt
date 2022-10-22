@@ -14,8 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.ui.component.home.CommitList
 import com.aliucord.manager.ui.component.home.InfoCard
-import com.aliucord.manager.ui.dialog.DownloadMethod
-import com.aliucord.manager.ui.dialog.InstallerDialog
+import com.aliucord.manager.ui.dialog.*
 import com.aliucord.manager.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -33,6 +32,7 @@ fun HomeScreen(
             onClickInstall(
                 InstallData(
                     DownloadMethod.SELECT,
+                    DiscordType.REACT_NATIVE
                 )
             )
         }
@@ -65,6 +65,7 @@ fun HomeScreen(
                     onClickInstall(
                         InstallData(
                             DownloadMethod.DOWNLOAD,
+                            DiscordType.REACT_NATIVE
                         )
                     )
                 }

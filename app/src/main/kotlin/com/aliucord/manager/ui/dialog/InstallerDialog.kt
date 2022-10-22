@@ -19,6 +19,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.screen.InstallData
 
 enum class DownloadMethod { DOWNLOAD, SELECT }
+enum class DiscordType { KOTLIN, REACT_NATIVE }
 
 @Composable
 fun InstallerDialog(
@@ -70,6 +71,7 @@ fun InstallerDialog(
                     onConfirm(
                         InstallData(
                             selectedMethod,
+                            DiscordType.REACT_NATIVE
                         )
                     )
                     onDismissRequest()
