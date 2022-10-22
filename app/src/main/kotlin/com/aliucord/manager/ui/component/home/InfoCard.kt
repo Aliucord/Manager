@@ -34,7 +34,7 @@ fun InfoCard(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "${stringResource(R.string.aliucord)} ${packageName}}",
+                text = "${stringResource(R.string.aliucord)} ($packageName)",
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 23.sp),
                 color = MaterialTheme.colorScheme.primary
             )
