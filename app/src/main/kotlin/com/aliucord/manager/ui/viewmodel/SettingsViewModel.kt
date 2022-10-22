@@ -50,8 +50,6 @@ class SettingsViewModel(
     }
 
     override fun onCleared() {
-        super.onCleared()
-
         if (!PACKAGE_REGEX.matches(preferences.packageName)) {
             preferences.packageName = initialPackageName
         }
