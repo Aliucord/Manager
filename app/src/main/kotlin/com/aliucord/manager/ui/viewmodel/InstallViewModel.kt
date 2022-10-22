@@ -18,13 +18,12 @@ import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.installer.util.Signer
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.screen.InstallData
-import com.android.zipflinger.*
+import com.github.diamondminer88.zip.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.io.File
 import java.time.Instant
-import java.util.zip.Deflater
 
 class InstallViewModel(
     private val application: Application,
@@ -210,7 +209,7 @@ class InstallViewModel(
             if (preferences.replaceIcon) {
                 log += "Replacing App Icons... "
 
-                ZipArchive(baseApkFile.toPath()).use { baseApk ->
+                ZipWriter(baseApkFile, true).use { baseApk ->
                     val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
                     val icons = arrayOf("ic_logo_foreground.png", "ic_logo_square.png", "ic_logo_foreground.png")
 
@@ -220,8 +219,8 @@ class InstallViewModel(
 
                         for (mipmap in mipmaps) {
                             val path = "res/$mipmap/$icon"
-                            baseApk.delete(path)
-                            baseApk.add(BytesSource(newIcon, path, Deflater.DEFAULT_COMPRESSION))
+                            baseApk.deleteEntry(path)
+                            baseApk.writeEntry(path, newIcon)
                         }
                     }
                 }
@@ -229,38 +228,27 @@ class InstallViewModel(
                 log += "Done\n"
             }
 
-            log += "Patching manifest... "
-
+            log += "Patching manifests... "
             try {
-                val byteArray = ZipRepo(baseApkFile.absolutePath)
-                    .use { zip -> zip.getContent("AndroidManifest.xml") }
-                    .array()
-
-                ZipArchive(baseApkFile.toPath()).use { zip ->
-                    val patchedBytesArray = ManifestPatcher.patchManifest(
-                        manifestBytes = byteArray,
-                        packageName = preferences.packageName,
-                        appName = preferences.appName,
-                        debuggable = preferences.debuggable,
-                    )
-
-                    val source = BytesSource(patchedBytesArray, "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
-
-                    zip.delete("AndroidManifest.xml")
-                    zip.add(source)
-                }
-
                 apks.forEach { apk ->
-                    val byteArray = ZipRepo(apk.absolutePath)
-                        .use { zip -> zip.getContent("AndroidManifest.xml") }
-                        .array()
+                    val manifest = ZipReader(apk)
+                        .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
+                        ?: throw IllegalStateException("No manifest in ${apk.name}")
 
-                    ZipArchive(apk.toPath()).use { zip ->
-                        val patchedBytes = ManifestPatcher.renamePackage(byteArray, preferences.packageName)
-                        val source = BytesSource(patchedBytes, "AndroidManifest.xml", Deflater.DEFAULT_COMPRESSION)
+                    ZipWriter(apk, true).use { zip ->
+                        val patchedManifestBytes = if (apk == baseApkFile) {
+                            ManifestPatcher.patchManifest(
+                                manifestBytes = manifest,
+                                packageName = preferences.packageName,
+                                appName = preferences.appName,
+                                debuggable = preferences.debuggable,
+                            )
+                        } else {
+                            ManifestPatcher.renamePackage(manifest, preferences.packageName)
+                        }
 
-                        zip.delete("AndroidManifest.xml")
-                        zip.add(source)
+                        zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile) // Preserve alignment in libs apk
+                        zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
                     }
                 }
             } catch (e: Exception) {
@@ -273,60 +261,53 @@ class InstallViewModel(
 
             log += "Patching java classes... "
 
-            ZipArchive(baseApkFile.toPath()).use { baseApk ->
-                // List all files in the base apk, in order to increment the ordinals of all dex files
-                baseApk.listEntries().mapNotNull {
-                    // Check if the file is a dex file, if not ignore it by returning null
-                    val match = dexRegex.matchEntire(it) ?: return@mapNotNull null
-                    // Return a Pair<Int, String> with the ordinal of the classes.dex file and the actual filename
-                    (match.groups[1]?.value?.toInt() ?: 1) to it
-                }.sortedByDescending { (ordinal) ->
-                    // Sort the dex files by ordinal (descending) so they can be renamed without any conflicts
-                    ordinal
-                }.forEach { (ordinal, fileName) ->
-                    println("Moving $fileName ($ordinal) to classes${ordinal + 1}.dex")
-                    // Read the dex file
-                    val inputStream = baseApk.getInputStream(fileName)
-                    // Construct a new BytesSource with the same data, but incrementing
-                    // the ordinal by one to make room for the Aliucord classes.dex
-                    val incrementedDex = BytesSource(inputStream, "classes${ordinal + 1}.dex", Deflater.DEFAULT_COMPRESSION)
-                    // Add the incremented dex file to the apk
-                    baseApk.add(incrementedDex)
-                    // Remove the original dex file
-                    baseApk.delete(fileName)
-                }
-                // Add the Aliucord classes.dex file
-                baseApk.add(
-                    BytesSource(aliucordDexFile.inputStream(), "classes.dex", Deflater.DEFAULT_COMPRESSION)
+            val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
+                Pair(
+                    // Find the amount of .dex files in apk
+                    zip.entryNames.count { it.endsWith(".dex") },
+
+                    // Get the first classes.dex bytes
+                    zip.openEntry("classes.dex")?.read()
+                        ?: throw IllegalStateException("No classes.dex in base apk")
                 )
+            }
+
+            ZipWriter(baseApkFile, true).use { zip ->
+                // Move first classes.dex to the dex file count + 1 to make place for Aliucord's .dex
+                zip.deleteEntry("classes.dex")
+                zip.writeEntry("classes${dexCount + 1}.dex", firstDexBytes)
+
+                // Add Aliucord's .dex and make it load first by being the first .dex
+                zip.writeEntry("classes.dex", aliucordDexFile.readBytes())
             }
             log += "Done\n"
 
             log += "Patching libraries... "
 
-            ZipArchive(libsApkFile.toPath()).use { libsApk ->
-                // Loop over the aar files
-                listOf(hermesLibrary, cppRuntimeLibrary).forEach {
-                    // Open each aar file as a zip file
-                    ZipArchive(it.toPath()).use { aar ->
-                        // Map the aar name to the library name
-                        val lib = with(it.name) {
-                            when {
-                                startsWith("hermes-release") -> "libhermes.so"
-                                startsWith("hermes-cppruntime-release") -> "libc++_shared.so"
-                                else -> throw Error("Unable to map .aar name to .so name")
-                            }
+            ZipWriter(libsApkFile, true).use { libsApk ->
+                // Process the hermes and cpp runtime library
+                for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
+                    // Map .aar to the embedded .so inside
+                    val binaryName = with(libFile.name) {
+                        when {
+                            startsWith("hermes-release") -> "libhermes.so"
+                            startsWith("hermes-cppruntime-release") -> "libc++_shared.so"
+                            else -> throw Error("Unable to map $this to embedded .so")
                         }
-                        // Delete existing library
-                        libsApk.delete("lib/$arch/$lib")
-                        // Add new library
-                        val source = BytesSource(aar.getInputStream("jni/$arch/$lib"), "lib/$arch/$lib", Deflater.NO_COMPRESSION).apply {
-                            align(4096)
-                        }
-                        libsApk.add(source)
                     }
+
+                    // Read the embedded .so inside the .aar library
+                    val libBytes = ZipReader(libFile).use { libZip ->
+                        libZip.openEntry("jni/$arch/$binaryName")?.read()
+                            ?: throw IllegalStateException("Failed to read jni/$arch/$binaryName from ${libFile.name}")
+                    }
+
+                    // Delete the old binary and add the new one instead
+                    libsApk.deleteEntry("lib/$arch/$binaryName", true)
+                    libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
                 }
             }
+
             log += "Done\n"
             log += "Signing APKs... "
 
