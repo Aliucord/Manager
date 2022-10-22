@@ -67,6 +67,7 @@
   <string name="contributors">Contributors</string>
   <string name="contributors_contributions">%o contributions</string>
   <string name="contributors_contributor">Contributor</string>
+  <string name="contributors_commit_title">§name§%1$s§ §middle§authored§ §commit§%2$s§</string>
 
   <string name="selector_download_apk">Download APK</string>
   <string name="selector_select_apk">Select APK</string>
