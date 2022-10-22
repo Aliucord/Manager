@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import com.aliucord.manager.R
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.dto.Commit
@@ -25,7 +26,10 @@ class HomeViewModel(
     var supportedVersion by mutableStateOf("")
         private set
 
-    var installedVersion by mutableStateOf("-")
+    var supportedVersionType by mutableStateOf(R.string.version_unknown)
+        private set
+
+    var installedVersion by mutableStateOf("")
         private set
 
     val commits = Pager(PagingConfig(pageSize = 30)) {
@@ -62,6 +66,7 @@ class HomeViewModel(
                 @Suppress("DEPRECATION")
                 packageManager.getPackageInfo(preferences.packageName, 0).versionName
             } catch (th: Throwable) {
+                // TODO: translated error message
                 "-"
             }
         }
@@ -70,16 +75,19 @@ class HomeViewModel(
     private suspend fun _fetchSupportedVersion() {
         val version = githubRepository.getVersion()
 
-        supportedVersion = version.fold(
+        version.fold(
             success = {
-                "${it.versionName} - " + when (it.versionCode[3]) {
-                    '0' -> "Stable"
-                    '1' -> "Beta"
-                    '2' -> "Alpha"
-                    else -> throw NoWhenBranchMatchedException()
+                supportedVersion = it.versionName
+                supportedVersionType = when (it.versionCode[3]) {
+                    '0' -> R.string.version_stable
+                    '1' -> R.string.version_beta
+                    '2' -> R.string.version_alpha
+                    else -> R.string.version_unknown
                 }
             },
-            fail = { "Failed to retrieve version" }
+            fail = {
+                supportedVersionType = R.string.version_load_fail
+            }
         )
     }
 
@@ -95,7 +103,7 @@ class HomeViewModel(
         if (launchIntent != null) {
             application.startActivity(launchIntent)
         } else {
-            Toast.makeText(application, "Failed to launch Aliucord", Toast.LENGTH_LONG).show()
+            Toast.makeText(application, R.string.launch_aliucord_fail, Toast.LENGTH_LONG).show()
         }
     }
 

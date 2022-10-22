@@ -57,6 +57,7 @@ fun HomeScreen(
         InfoCard(
             packageName = viewModel.preferences.packageName,
             supportedVersion = viewModel.supportedVersion,
+            supportedVersionType = viewModel.supportedVersionType,
             currentVersion = viewModel.installedVersion,
             onDownloadClick = {
                 if (viewModel.preferences.devMode) {

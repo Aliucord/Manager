@@ -23,6 +23,7 @@
   <string name="action_close">Close</string>
   <string name="action_open_settings">Open settings</string>
   <string name="action_search">Search</string>
+  <string name="action_loading_trailing">Loading…</string>
 
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
@@ -30,6 +31,7 @@
   <string name="install_success">Successfully installed Aliucord</string>
   <string name="install_aborted">Aborted Aliucord installation</string>
   <string name="install_failed">Installation failed with error %o</string>
+  <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
 
   <string name="settings_theme">Theme</string>
   <string name="settings_advanced">Advanced</string>
@@ -58,6 +60,7 @@
   <string name="plugins_search">Search Plugins</string>
   <string name="plugins_none_installed">No plugins installed!</string>
   <string name="plugins_changelog_media">Changelog Media</string>
+  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
 
   <string name="navigation_back">Back</string>
   <string name="navigation_home">Home</string>
@@ -74,4 +77,12 @@
   <string name="selector_download_method">Download Method</string>
 
   <string name="network_load_fail">Failed to load</string>
+
+  <string name="version_supported">Supported version:</string>
+  <string name="version_installed">Installed version:</string>
+  <string name="version_stable">Stable</string>
+  <string name="version_beta">Beta</string>
+  <string name="version_alpha">Alpha</string>
+  <string name="version_unknown" translatable="false" />
+  <string name="version_load_fail">Failed to retrieve version</string>
 </resources>

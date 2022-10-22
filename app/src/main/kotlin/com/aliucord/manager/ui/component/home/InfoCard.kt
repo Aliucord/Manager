@@ -1,6 +1,8 @@
 package com.aliucord.manager.ui.component.home
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -18,6 +20,7 @@ import com.aliucord.manager.R
 fun InfoCard(
     packageName: String,
     supportedVersion: String,
+    @StringRes supportedVersionType: Int,
     currentVersion: String,
     onDownloadClick: () -> Unit,
     onUninstallClick: () -> Unit,
@@ -31,22 +34,25 @@ fun InfoCard(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Aliucord${packageName.let { if (it != "com.aliucord") " ($it)" else "" }}",
+                text = "${stringResource(R.string.aliucord)} ${packageName}}",
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 23.sp),
                 color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 buildAnnotatedString {
-                    append("Supported version: ")
-
+                    append(stringResource(R.string.version_supported))
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(" ")
                         append(supportedVersion)
+                        append(" - ")
+                        append(stringResource(supportedVersionType))
                     }
 
-                    append("\nInstalled version: ")
-
+                    append('\n')
+                    append(stringResource(R.string.version_installed))
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(" ")
                         append(currentVersion)
                     }
                 },
