@@ -46,10 +46,10 @@ private fun ManageStorageDialog() {
                             .let { launcher.launch(it) }
                     }
                 ) {
-                    Text(stringResource(R.string.open_settings))
+                    Text(stringResource(R.string.action_open_settings))
                 }
             },
-            title = { Text(stringResource(R.string.permissions_grant)) },
+            title = { Text(stringResource(R.string.permissions_grant_title)) },
             text = { Text(stringResource(R.string.permissions_grant_body)) },
             properties = DialogProperties(
                 dismissOnBackPress = false,
@@ -69,10 +69,10 @@ private fun ExternalStorageDialog() {
             onDismissRequest = {},
             confirmButton = {
                 Button(onClick = writeStorageState::launchPermissionRequest) {
-                    Text(stringResource(R.string.confirm))
+                    Text(stringResource(R.string.action_confirm))
                 }
             },
-            title = { Text(stringResource(R.string.permissions_grant)) },
+            title = { Text(stringResource(R.string.permissions_grant_title)) },
             text = { Text(stringResource(R.string.permissions_grant_body)) },
             properties = DialogProperties(
                 dismissOnBackPress = false,

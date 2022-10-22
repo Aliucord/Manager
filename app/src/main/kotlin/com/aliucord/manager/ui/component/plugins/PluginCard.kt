@@ -139,7 +139,7 @@ fun PluginCard(
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             imageVector = Icons.Default.History,
-                            contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
+                            contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name)
                         )
                     }
                 }
@@ -150,7 +150,7 @@ fun PluginCard(
                     Icon(
                         modifier = Modifier.fillMaxSize(),
                         imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.uninstall),
+                        contentDescription = stringResource(R.string.action_uninstall),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }

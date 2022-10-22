@@ -43,12 +43,12 @@ fun AboutScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.about)) },
+                title = { Text(stringResource(R.string.navigation_about)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = stringResource(R.string.navigation_back)
                         )
                     }
                 }
@@ -68,19 +68,19 @@ fun AboutScreen(
                 ) {
                     AsyncImage(
                         model = "https://github.com/Aliucord.png",
-                        contentDescription = "Aliucord",
+                        contentDescription = stringResource(R.string.aliucord),
                         modifier = Modifier.size(71.dp)
                     )
 
                     Text(
-                        text = "Aliucord",
+                        text = stringResource(R.string.aliucord),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontSize = 26.sp
                         )
                     )
 
                     Text(
-                        text = stringResource(R.string.aliucord_description),
+                        text = stringResource(R.string.app_description),
                         style = MaterialTheme.typography.titleSmall.copy(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )

@@ -61,9 +61,9 @@ fun InfoCard(
             ) {
 
                 val (icon, description) = when (currentVersion) {
-                    "-" -> Icons.Default.Download to R.string.install
-                    supportedVersion -> Icons.Default.Refresh to R.string.reinstall
-                    else -> Icons.Default.Update to R.string.update
+                    "-" -> Icons.Default.Download to R.string.action_install
+                    supportedVersion -> Icons.Default.Refresh to R.string.action_reinstall
+                    else -> Icons.Default.Update to R.string.action_update
                 }
 
                 FilledTonalIconButton(
@@ -98,7 +98,7 @@ fun InfoCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.uninstall)
+                            contentDescription = stringResource(R.string.action_uninstall)
                         )
                     }
 
@@ -111,7 +111,7 @@ fun InfoCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Launch,
-                            contentDescription = stringResource(R.string.launch)
+                            contentDescription = stringResource(R.string.action_launch)
                         )
                     }
                 }

@@ -32,7 +32,7 @@ enum class HomeDestination(
     val unselectedIcon: @RawValue ImageVector,
     @StringRes val label: Int
 ) : Destination {
-    HOME(Icons.Default.Home, Icons.Outlined.Home, R.string.home),
-    PLUGINS(Icons.Default.Extension, Icons.Outlined.Extension, R.string.plugins),
-    SETTINGS(Icons.Default.Settings, Icons.Outlined.Settings, R.string.settings)
+    HOME(Icons.Default.Home, Icons.Outlined.Home, R.string.navigation_home),
+    PLUGINS(Icons.Default.Extension, Icons.Outlined.Extension, R.string.plugins_title),
+    SETTINGS(Icons.Default.Settings, Icons.Outlined.Settings, R.string.navigation_settings)
 }

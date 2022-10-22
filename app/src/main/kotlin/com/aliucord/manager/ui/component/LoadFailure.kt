@@ -22,7 +22,7 @@ fun LoadFailure(onRetry: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(R.string.load_fail),
+            text = stringResource(R.string.network_load_fail),
             style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp),
             color = MaterialTheme.colorScheme.error
         )
@@ -30,7 +30,7 @@ fun LoadFailure(onRetry: () -> Unit) {
             onClick = onRetry,
             shape = MaterialTheme.shapes.extraLarge
         ) {
-            Text(text = stringResource(R.string.retry))
+            Text(text = stringResource(R.string.action_retry))
         }
     }
 }
