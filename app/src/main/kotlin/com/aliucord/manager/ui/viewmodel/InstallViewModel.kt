@@ -1,29 +1,27 @@
 package com.aliucord.manager.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.app.PendingIntent
-import android.content.Intent
-import android.content.pm.PackageInstaller
 import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
-import com.aliucord.manager.installer.service.InstallService
-import com.aliucord.manager.installer.util.ManifestPatcher
-import com.aliucord.manager.installer.util.Signer
+import com.aliucord.manager.installer.util.*
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.screen.InstallData
 import com.github.diamondminer88.zip.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import java.io.File
 import java.time.Instant
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
 
 class InstallViewModel(
     private val application: Application,
@@ -33,45 +31,64 @@ class InstallViewModel(
     private val installData: InstallData
 ) : ViewModel() {
     private val externalCacheDir = application.externalCacheDir!!
-    private val filesDir = application.filesDir!!
-    private val packageInstaller = application.packageManager.packageInstaller
 
-    private val dexRegex = Regex("classes(\\d)?\\.dex")
+    private val installationRunning = AtomicBoolean(false)
+    private var installStep = InstallStep.NONE
+    private var elapsedTime = 0f
 
     private val _returnToHome = MutableSharedFlow<Boolean>()
     val returnToHome = _returnToHome.asSharedFlow()
-
-    private var installationRunning: Boolean = false
 
     var log by mutableStateOf("")
         private set
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            startInstallation()
+            if (installationRunning.getAndSet(true)) {
+                return@launch
+            }
+
+            log += "Aliucord Manager ${BuildConfig.VERSION_NAME}\n"
+            log += "Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH}\n"
+            if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) {
+                log += "Local commits or changes are present!\n"
+            }
+            log += "Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}\n"
+            log += "Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}\n\n"
+            log += "Installing ${installData.discordType} with the ${installData.downloadMethod} apk method\n"
+
+            withContext(Dispatchers.IO) {
+                try {
+                    when (installData.discordType) {
+                        DiscordType.REACT_NATIVE -> installReactNative()
+                        DiscordType.KOTLIN -> {}
+                    }
+                    _returnToHome.emit(true)
+                } catch (t: Throwable) {
+                    Log.e(
+                        BuildConfig.TAG,
+                        "Failed to patch ${installData.discordType.name} during ${installStep.name}: ${Log.getStackTraceString(t)}"
+                    )
+                }
+
+                installationRunning.set(false)
+            }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun startInstallation() {
-        if (installationRunning) return
+    private suspend fun installReactNative() {
+        externalCacheDir.resolve("patched").runCatching { deleteRecursively() }
 
-        withContext(Dispatchers.IO) {
-            installationRunning = true
+        val arch = Build.SUPPORTED_ABIS.first()
+        val supportedVersion = preferences.version
 
-            externalCacheDir.resolve("patched").runCatching { deleteRecursively() }
-
-            val arch = Build.SUPPORTED_ABIS.first()
-            val supportedVersion = preferences.version
-
-            // Download base.apk
-            val baseApkFile = externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
+        // Download base.apk
+        val baseApkFile = step(InstallStep.DL_BASE_APK) {
+            externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
-                    log += "Using cached base APK\n"
+                    log += "cached... "
                 } else {
-                    log += "Downloading Discord APK... "
                     downloadManager.downloadDiscordApk(supportedVersion)
-                    log += "Done\n"
                 }
 
                 file.copyTo(
@@ -81,19 +98,19 @@ class InstallViewModel(
                     true
                 )
             }
+        }
 
-            // Download the native libraries split
+        // Download the native libraries split
+        val libsApkFile = step(InstallStep.DL_LIBS_APK) {
             val libArch = arch.replace("-v", "_v")
-            val libsApkFile = externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
+            externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
-                    log += "Using cached libs APK\n"
+                    log += "cached... "
                 } else {
-                    log += "Downloading libs APK... "
                     downloadManager.downloadSplit(
                         version = supportedVersion,
                         split = "config.$libArch"
                     )
-                    log += "Done\n"
                 }
 
                 file.copyTo(
@@ -103,18 +120,18 @@ class InstallViewModel(
                     true
                 )
             }
+        }
 
-            // Download the locale split
-            val localeApkFile = externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+        // Download the locale split
+        val localeApkFile = step(InstallStep.DL_LOCALES_APKS) {
+            externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
-                    log += "Using cached locale APK\n"
+                    log += "cached... "
                 } else {
-                    log += "Downloading locale APK... "
                     downloadManager.downloadSplit(
                         version = supportedVersion,
                         split = "config.en"
                     )
-                    log += "Done\n"
                 }
 
                 file.copyTo(
@@ -124,18 +141,19 @@ class InstallViewModel(
                     true
                 )
             }
+        }
 
-            // Download the drawables split
-            val xxhdpiApkFile = externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+        // Download the drawables split
+        val resApkFile = step(InstallStep.DL_RES_APKS) {
+            // TODO: download the appropriate dpi res apk
+            externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
-                    log += "Using cached drawables APK\n"
+                    log += "cached... "
                 } else {
-                    log += "Downloading drawables APK... "
                     downloadManager.downloadSplit(
                         version = supportedVersion,
                         split = "config.xxhdpi"
                     )
-                    log += "Done\n"
                 }
 
                 file.copyTo(
@@ -145,7 +163,10 @@ class InstallViewModel(
                     true
                 )
             }
+        }
 
+        // Download hermes & cppruntime lib
+        val (hermesLibrary, cppRuntimeLibrary) = step(InstallStep.DL_HERMES) {
             // Fetch gh releases for Aliucord/Hermes
             val latestHermesRelease = githubRepository.getHermesReleases().fold(
                 success = { releases ->
@@ -155,29 +176,36 @@ class InstallViewModel(
             )
 
             // Download the hermes-release.aar file to replace in the apk
-            val hermesLibrary = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
-                if (file.exists()) return@also run { log += "Using cached patched hermes library\n" }
+            val hermes = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                    return@also
+                }
 
-                log += "Downloading patched hermes library... "
                 downloadManager.download(
                     url = latestHermesRelease.assets.find { it.name == "hermes-release.aar" }!!.browserDownloadUrl,
                     fileName = "hermes-release-${latestHermesRelease.tagName}.aar"
                 )
-                log += "Done\n"
             }
 
             // Download the hermes-cppruntime-release.aar file to replace in the apk
-            val cppRuntimeLibrary = externalCacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
-                if (file.exists()) return@also run { log += "Using cached patched c++ runtime library\n" }
+            val cppruntime = externalCacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                    return@also
+                }
 
-                log += "Downloading patched c++ runtime library... "
                 downloadManager.download(
                     url = latestHermesRelease.assets.find { it.name == "hermes-cppruntime-release.aar" }!!.browserDownloadUrl,
                     fileName = "hermes-cppruntime-release-${latestHermesRelease.tagName}.aar"
                 )
-                log += "Done\n"
             }
 
+            Pair(hermes, cppruntime)
+        }
+
+        // Download Aliucord Native lib
+        val aliucordDexFile = step(InstallStep.DL_ALIUNATIVE) {
             // Fetch the gh releases for Aliucord/AliucordNative
             val latestAliucordNativeRelease = githubRepository.getAliucordNativeReleases().fold(
                 success = { releases ->
@@ -187,10 +215,12 @@ class InstallViewModel(
             )
 
             // Download the Aliucord classes.dex file to add to the apk
-            val aliucordDexFile = externalCacheDir.resolve("classes-${latestAliucordNativeRelease.tagName}.dex").also { file ->
-                if (file.exists()) return@also run { log += "Using cached Aliucord dex file\n" }
+            externalCacheDir.resolve("classes-${latestAliucordNativeRelease.tagName}.dex").also { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                    return@also
+                }
 
-                log += "Downloading Aliucord dex file... "
                 downloadManager.download(
                     url = latestAliucordNativeRelease.assets.find { it.name == "classes.dex" }!!.browserDownloadUrl,
                     fileName = "classes-${latestAliucordNativeRelease.tagName}.dex"
@@ -201,14 +231,15 @@ class InstallViewModel(
                             .resolve(this.name),
                         true
                     )
-                }.also { log += "Done\n" }
+                }
             }
+        }
 
-            val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, xxhdpiApkFile)
+        val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, resApkFile)
 
-            if (preferences.replaceIcon) {
-                log += "Replacing App Icons... "
-
+        // Replace app icons
+        if (preferences.replaceIcon) {
+            step(InstallStep.APP_ICONS) {
                 ZipWriter(baseApkFile, true).use { baseApk ->
                     val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
                     val icons = arrayOf("ic_logo_foreground.png", "ic_logo_square.png", "ic_logo_foreground.png")
@@ -224,43 +255,36 @@ class InstallViewModel(
                         }
                     }
                 }
-
-                log += "Done\n"
             }
+        }
 
-            log += "Patching manifests... "
-            try {
-                apks.forEach { apk ->
-                    val manifest = ZipReader(apk)
-                        .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
-                        ?: throw IllegalStateException("No manifest in ${apk.name}")
+        // Patch manifests
+        step(InstallStep.MANIFESTS) {
+            apks.forEach { apk ->
+                val manifest = ZipReader(apk)
+                    .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
+                    ?: throw IllegalStateException("No manifest in ${apk.name}")
 
-                    ZipWriter(apk, true).use { zip ->
-                        val patchedManifestBytes = if (apk == baseApkFile) {
-                            ManifestPatcher.patchManifest(
-                                manifestBytes = manifest,
-                                packageName = preferences.packageName,
-                                appName = preferences.appName,
-                                debuggable = preferences.debuggable,
-                            )
-                        } else {
-                            ManifestPatcher.renamePackage(manifest, preferences.packageName)
-                        }
-
-                        zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile) // Preserve alignment in libs apk
-                        zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
+                ZipWriter(apk, true).use { zip ->
+                    val patchedManifestBytes = if (apk == baseApkFile) {
+                        ManifestPatcher.patchManifest(
+                            manifestBytes = manifest,
+                            packageName = preferences.packageName,
+                            appName = preferences.appName,
+                            debuggable = preferences.debuggable,
+                        )
+                    } else {
+                        ManifestPatcher.renamePackage(manifest, preferences.packageName)
                     }
+
+                    zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile) // Preserve alignment in libs apk
+                    zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
                 }
-            } catch (e: Exception) {
-                log += "An error has occurred: ${e.message}\n"
-                e.printStackTrace()
-
-                return@withContext
             }
-            log += "Done\n"
+        }
 
-            log += "Patching java classes... "
-
+        // Re-order dex files
+        step(InstallStep.DEX) {
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
@@ -280,10 +304,10 @@ class InstallViewModel(
                 // Add Aliucord's .dex and make it load first by being the first .dex
                 zip.writeEntry("classes.dex", aliucordDexFile.readBytes())
             }
-            log += "Done\n"
+        }
 
-            log += "Patching libraries... "
-
+        // Replace libs
+        step(InstallStep.REPLACE_LIBS) {
             ZipWriter(libsApkFile, true).use { libsApk ->
                 // Process the hermes and cpp runtime library
                 for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
@@ -307,44 +331,63 @@ class InstallViewModel(
                     libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
                 }
             }
+        }
 
-            log += "Done\n"
-            log += "Signing APKs... "
-
+        step(InstallStep.SIGNING) {
             apks.forEach(Signer::signApk)
+        }
 
-            log += "Done\n"
+        step(InstallStep.INSTALLING) {
+            application.packageManager.packageInstaller
+                .installApks(application, *apks)
+        }
 
-            installApks(*apks)
+        log += "\nCompleted in %.2f seconds".format(elapsedTime)
+    }
 
-            _returnToHome.emit(true)
-            installationRunning = false
+    @OptIn(ExperimentalTime::class)
+    private inline fun <T> step(step: InstallStep, block: () -> T): T {
+        log += "${step.log}... "
+        installStep = step
+
+        try {
+            val value = measureTimedValue(block)
+            val time = value.duration.inWholeMilliseconds.div(1000f)
+
+            elapsedTime += time
+            log += "Done in %.2fs\n".format(time)
+
+            return value.value
+        } catch (t: Throwable) {
+            val stacktrace = Log.getStackTraceString(t)
+
+            log += "\n$stacktrace"
+            log += "\nFailed to install Aliucord ${installData.discordType.name} during the ${installStep.name} step!"
+
+            throw t
         }
     }
 
-    private fun installApks(vararg apks: File) {
-        val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
-        val sessionId = packageInstaller.createSession(params)
-        val session = packageInstaller.openSession(sessionId)
+    private enum class InstallStep(val log: String) {
+        // Shared install steps
+        NONE(""),
+        APP_ICONS("Patching app icons"),
+        MANIFESTS("Patching apk manifests"),
+        DEX("Adding aliu dex into apk"),
+        REPLACE_LIBS("Replacing libraries"),
+        SIGNING("Signing apks"),
+        INSTALLING("Installing apks"),
 
-        apks.forEach { apk ->
-            session.openWrite(apk.name, 0, apk.length()).use {
-                it.write(apk.readBytes())
+        // Kotlin exclusive install steps
+        // DL_KT_APK("Downloading Discord apk"),
+        // DL_ALIUHOOK("Downloading Aliuhook library"),
 
-                session.fsync(it)
-            }
-        }
-
-        val callbackIntent = Intent(application, InstallService::class.java)
-
-        @SuppressLint("UnspecifiedImmutableFlag")
-        val contentIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getService(application, 0, callbackIntent, PendingIntent.FLAG_MUTABLE)
-        } else {
-            PendingIntent.getService(application, 0, callbackIntent, 0)
-        }
-
-        session.commit(contentIntent.intentSender)
-        session.close()
+        // AliuRN exclusive install steps
+        DL_BASE_APK("Downloading base apk"),
+        DL_LIBS_APK("Downloading libraries apk"),
+        DL_LOCALES_APKS("Downloading locale apks"),
+        DL_RES_APKS("Downloading resource apk"),
+        DL_HERMES("Downloading patched hermes & c++ runtime library"),
+        DL_ALIUNATIVE("Downloading AliucordNative library"),
     }
 }
