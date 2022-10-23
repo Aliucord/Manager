@@ -31,16 +31,16 @@ fun InstallerDialog(
         icon = {
             Icon(
                 imageVector = Icons.Default.Download,
-                contentDescription = stringResource(R.string.download_method)
+                contentDescription = stringResource(R.string.selector_download_method)
             )
         },
         title = {
-            Text(stringResource(R.string.download_method))
+            Text(stringResource(R.string.selector_download_method))
         },
         text = {
             Column {
                 mapOf(
-                    DownloadMethod.DOWNLOAD to stringResource(R.string.download_apk),
+                    DownloadMethod.DOWNLOAD to stringResource(R.string.selector_download_apk),
                     // DownloadMethod.SELECT to stringResource(R.string.select_apk)
                 ).forEach { (method, name) ->
                     Column {
@@ -75,7 +75,7 @@ fun InstallerDialog(
                     onDismissRequest()
                 }
             ) {
-                Text(stringResource(R.string.confirm))
+                Text(stringResource(R.string.action_confirm))
             }
         },
         dismissButton = {
@@ -86,7 +86,7 @@ fun InstallerDialog(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )
             ) {
-                Text(stringResource(R.string.dismiss))
+                Text(stringResource(R.string.action_dismiss))
             }
         },
         onDismissRequest = onDismissRequest

@@ -40,14 +40,14 @@ fun PluginsScreen(
             icon = {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.uninstall)
+                    contentDescription = stringResource(R.string.action_uninstall)
                 )
             },
             title = {
-                Text("${stringResource(R.string.uninstall)} ${plugin.manifest.name}")
+                Text("${stringResource(R.string.action_uninstall)} ${plugin.manifest.name}")
             },
             text = {
-                Text(stringResource(R.string.delete_plugin_body))
+                Text(stringResource(R.string.plugins_delete_plugin_body))
             },
             confirmButton = {
                 Button(
@@ -98,19 +98,19 @@ fun PluginsScreen(
                 onValueChange = viewModel::search,
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
-                label = { Text(stringResource(R.string.search)) },
+                label = { Text(stringResource(R.string.action_search)) },
                 trailingIcon = {
                     if (viewModel.search.isNotBlank()) {
                         IconButton(onClick = viewModel::clearSearch) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.clear)
+                                contentDescription = stringResource(R.string.action_clear)
                             )
                         }
                     } else {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(R.string.search_plugins)
+                            contentDescription = stringResource(R.string.plugins_search)
                         )
                     }
                 },
@@ -150,7 +150,7 @@ fun PluginsScreen(
                         imageVector = Icons.Default.Extension,
                         contentDescription = null
                     )
-                    Text(stringResource(R.string.no_plugins_installed))
+                    Text(stringResource(R.string.plugins_none_installed))
                 }
             }
         }

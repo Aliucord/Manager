@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.ui.component.LoadFailure
+import com.aliucord.manager.ui.util.annotatingStringResource
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -137,36 +138,27 @@ fun CommitItem(
                 model = "https://github.com/${commit.author.name}.png",
                 contentDescription = commit.author.name
             )
+
             Text(
-                buildAnnotatedString {
-                    withStyle(
-                        SpanStyle(
+                annotatingStringResource(
+                    R.string.contributors_commit_title,
+                    commit.author.name,
+                    commit.sha.take(8)
+                ) {
+                    when (it) {
+                        "name" -> SpanStyle(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                    ) {
-                        append(commit.author.name)
-                    }
-
-                    withStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.onSurface.copy(
-                                alpha = 0.6f
-                            )
+                        "middle" -> SpanStyle(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )
-                    ) {
-                        append(" authored ")
-                    }
-
-                    withStyle(
-                        SpanStyle(
+                        "commit" -> SpanStyle(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
                         )
-                    ) {
-                        append(commit.sha.substring(0, 7))
+                        else -> null
                     }
-
                 },
                 style = MaterialTheme.typography.bodySmall
             )

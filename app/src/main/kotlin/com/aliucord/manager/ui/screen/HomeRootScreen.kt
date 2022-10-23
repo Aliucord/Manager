@@ -45,7 +45,7 @@ fun MainRootScreen(
                     IconButton(onClick = onAboutClick) {
                         Icon(
                             imageVector = Icons.Default.Info,
-                            contentDescription = stringResource(R.string.about)
+                            contentDescription = stringResource(R.string.navigation_about)
                         )
                     }
                 }

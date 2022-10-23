@@ -45,12 +45,12 @@ fun InstallerScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Installer") },
+                title = { Text(stringResource(R.string.installer)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Default.NavigateBefore,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = stringResource(R.string.navigation_back)
                         )
                     }
                 }

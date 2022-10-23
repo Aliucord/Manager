@@ -79,7 +79,7 @@ fun ContributorEntry(user: GithubUser) {
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = stringResource(R.string.contributions, user.contributions),
+                text = stringResource(R.string.contributors_contributions, user.contributions),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
