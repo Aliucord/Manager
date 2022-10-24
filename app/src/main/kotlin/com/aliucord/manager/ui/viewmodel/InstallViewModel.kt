@@ -507,7 +507,7 @@ class InstallViewModel(
                 .installApks(application, baseApkFile)
         }
 
-        // patchedDir.deleteRecursively()
+        patchedDir.deleteRecursively()
 
         log += "\nCompleted in %.2f seconds".format(elapsedTime)
     }
