@@ -2,10 +2,7 @@ package com.aliucord.manager.domain.manager
 
 import android.app.Application
 import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
@@ -40,6 +37,10 @@ class DownloadManager(
 
     suspend fun downloadAliuhook(version: String, out: File): File {
         return download(AliucordMavenRepository.getAliuhookUrl(version), out)
+    }
+
+    suspend fun downloadKotlinDex(out: File): File {
+        return download(GithubService.KOTLIN_DEX_URL, out)
     }
 
     // Generic downloading

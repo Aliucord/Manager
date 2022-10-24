@@ -54,6 +54,7 @@ class GithubService(
 
         private const val DATA_URL = "https://raw.githubusercontent.com/$ORG/$REPO/builds/data.json"
         const val KT_INJECTOR_URL = "https://raw.githubusercontent.com/$ORG/$REPO/builds/Injector.dex"
+        const val KOTLIN_DEX_URL = "https://raw.githubusercontent.com/$ORG/$REPO/main/installer/android/app/src/main/assets/kotlin/classes.dex"
 
         private const val HERMES_RELEASES_URL = "https://api.github.com/repos/$ORG/$HERMES_REPO/releases"
         private const val ALIUCORD_NATIVE_RELEASES_URL = "https://api.github.com/repos/$ORG/$NATIVE_REPO/releases"

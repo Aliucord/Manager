@@ -409,8 +409,7 @@ class InstallViewModel(
                     return@also
                 }
 
-                val url = "https://github.com/Aliucord/Aliucord/blob/main/installer/android/app/src/main/assets/kotlin/classes.dex"
-                downloadManager.download(url, file)
+                downloadManager.downloadKotlinDex(file)
             }
         }
 
@@ -460,32 +459,26 @@ class InstallViewModel(
 
         // Re-order dex files
         step(InstallStep.DEX) {
-            val (dexCount, copiedDexFiles) = ZipReader(baseApkFile).use { zip ->
-                val dexFiles = mutableListOf<ByteArray>()
+            val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
+                Pair(
+                    // Find the amount of .dex files in apk
+                    zip.entryNames.count { it.endsWith(".dex") },
 
-                for (i in 0..2) {
-                    println(i)
-                    val name = "classes${if (i == 0) "" else i + 1}.dex"
-                    dexFiles += zip.openEntry(name)?.read()
-                        ?: throw IllegalStateException("No $name in base apk")
-                }
-
-                // Find the amount of .dex files in apk
-                zip.entryNames.count { it.endsWith(".dex") } to dexFiles
+                    // Get the first dex
+                    zip.openEntry("classes.dex")?.read()
+                        ?: throw IllegalStateException("No classes.dex in base apk")
+                )
             }
 
             ZipWriter(baseApkFile, true).use { zip ->
-                // Remove copied dex's
-                zip.deleteEntries("classes.dex", "classes2.dex", "classes3.dex")
-
-                // Move offset dex's to the end of the dex file list
-                copiedDexFiles.forEachIndexed { i, bytes ->
-                    zip.writeEntry("classes${dexCount + i + 1}.dex", bytes)
-                }
+                // Move copied dex to end of dex list
+                zip.deleteEntry("classes.dex")
+                zip.writeEntry("classes${dexCount + 1}.dex", firstDexBytes)
 
                 // Add Kotlin & Aliucord's dex
                 zip.writeEntry("classes.dex", injectorFile.readBytes())
-                zip.writeEntry("classes3.dex", kotlinFile.readBytes())
+                zip.writeEntry("classes${dexCount + 2}.dex", kotlinFile.readBytes())
+                zip.writeEntry("classes${dexCount + 3}.dex", application.assets.open("aliuhook.dex").use { it.readBytes() })
             }
         }
 
@@ -501,8 +494,7 @@ class InstallViewModel(
                     }
                 }
 
-                // Add aliuhook's dex file
-                baseApk.writeEntry("classes2.dex", application.assets.open("aliuhook.dex").use { it.readBytes() })
+                // TODO: Add aliuhook's dex file
             }
         }
 
