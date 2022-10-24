@@ -71,7 +71,7 @@ fun InstallerDialog(
                     onConfirm(
                         InstallData(
                             selectedMethod,
-                            DiscordType.REACT_NATIVE
+                            DiscordType.KOTLIN
                         )
                     )
                     onDismissRequest()

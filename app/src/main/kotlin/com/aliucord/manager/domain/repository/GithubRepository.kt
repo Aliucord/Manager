@@ -12,7 +12,7 @@ class GithubRepository(
     suspend fun getContributors() = service.getContributors()
         .transform { it.sortedByDescending(GithubUser::contributions) }
 
-    suspend fun getVersion() = service.getVersion()
+    suspend fun getDiscordKtVersion() = service.getVersion()
 
     suspend fun getHermesReleases() = service.getHermesReleases()
 

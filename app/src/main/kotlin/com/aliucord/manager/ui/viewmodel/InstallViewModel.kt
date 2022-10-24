@@ -9,9 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
+import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.*
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.screen.InstallData
 import com.github.diamondminer88.zip.*
@@ -28,6 +30,7 @@ class InstallViewModel(
     private val downloadManager: DownloadManager,
     private val preferences: PreferencesManager,
     private val githubRepository: GithubRepository,
+    private val aliucordMaven: AliucordMavenRepository,
     private val installData: InstallData
 ) : ViewModel() {
     private val externalCacheDir = application.externalCacheDir!!
@@ -61,7 +64,7 @@ class InstallViewModel(
                 try {
                     when (installData.discordType) {
                         DiscordType.REACT_NATIVE -> installReactNative()
-                        DiscordType.KOTLIN -> {}
+                        DiscordType.KOTLIN -> installKotlin()
                     }
                     _returnToHome.emit(true)
                 } catch (t: Throwable) {
@@ -345,6 +348,178 @@ class InstallViewModel(
         log += "\nCompleted in %.2f seconds".format(elapsedTime)
     }
 
+    private suspend fun installKotlin() {
+        val dataJson = step(InstallStep.KT_FETCH_VERSION) {
+            githubRepository.getDiscordKtVersion().getOrThrow()
+        }
+
+        val arch = Build.SUPPORTED_ABIS.first()
+        val cacheDir = externalCacheDir
+        val discordCacheDir = externalCacheDir.resolve(dataJson.versionCode)
+        val patchedDir = discordCacheDir.resolve("patched").also { it.deleteRecursively() }
+
+        // Download base.apk
+        val baseApkFile = step(InstallStep.DL_KT_APK) {
+            discordCacheDir.resolve("base.apk").let { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                } else {
+                    downloadManager.downloadDiscordApk(dataJson.versionCode, file)
+                }
+
+                file.copyTo(
+                    patchedDir.resolve(file.name),
+                    true
+                )
+            }
+        }
+
+        // Download Aliuhook aar
+        val aliuhookAarFile = step(InstallStep.DL_ALIUHOOK) {
+            // Fetch aliuhook version
+            val aliuhookVersion = aliucordMaven.getAliuhookVersion().getOrThrow()
+
+            // Download aliuhook aar
+            cacheDir.resolve("aliuhook-${aliuhookVersion}.aar").also { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                    return@also
+                }
+
+                downloadManager.downloadAliuhook(aliuhookVersion, file)
+            }
+        }
+
+        // Download the injector dex
+        val injectorFile = step(InstallStep.DL_INJECTOR) {
+            cacheDir.resolve("injector-${dataJson.aliucordHash}.dex").also { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                    return@also
+                }
+
+                downloadManager.downloadKtInjector(file)
+            }
+        }
+
+        val kotlinFile = step(InstallStep.DL_KOTLIN) {
+            cacheDir.resolve("kotlin.dex").also { file ->
+                if (file.exists()) {
+                    log += "cached... "
+                    return@also
+                }
+
+                val url = "https://github.com/Aliucord/Aliucord/blob/main/installer/android/app/src/main/assets/kotlin/classes.dex"
+                downloadManager.download(url, file)
+            }
+        }
+
+        // Replace app icons
+        if (preferences.replaceIcon) {
+            step(InstallStep.APP_ICONS) {
+                ZipWriter(baseApkFile, true).use { baseApk ->
+                    val foregroundIcon = application.assets.open("icons/ic_logo_foreground.png")
+                        .use { it.readBytes() }
+                    val squareIcon = application.assets.open("icons/ic_logo_square.png")
+                        .use { it.readBytes() }
+
+                    val replacements = mapOf(
+                        arrayOf("MbV.png", "kbF.png", "_eu.png", "EtS.png") to foregroundIcon,
+                        arrayOf("_h_.png", "9MB.png", "Dy7.png", "kC0.png", "oEH.png", "RG0.png", "ud_.png", "W_3.png") to squareIcon
+                    )
+
+                    for ((files, replacement) in replacements) {
+                        for (file in files) {
+                            val path = "res/$file"
+                            baseApk.deleteEntry(path)
+                            baseApk.writeEntry(path, replacement)
+                        }
+                    }
+                }
+            }
+        }
+
+        // Patch manifests
+        step(InstallStep.MANIFESTS) {
+            val manifest = ZipReader(baseApkFile)
+                .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
+                ?: throw IllegalStateException("No manifest in base apk")
+
+            ZipWriter(baseApkFile, true).use { zip ->
+                val patchedManifestBytes = ManifestPatcher.patchManifest(
+                    manifestBytes = manifest,
+                    packageName = preferences.packageName,
+                    appName = preferences.appName,
+                    debuggable = preferences.debuggable,
+                )
+
+                zip.deleteEntry("AndroidManifest.xml")
+                zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
+            }
+        }
+
+        // Re-order dex files
+        step(InstallStep.DEX) {
+            val (dexCount, copiedDexFiles) = ZipReader(baseApkFile).use { zip ->
+                val dexFiles = mutableListOf<ByteArray>()
+
+                for (i in 0..2) {
+                    println(i)
+                    val name = "classes${if (i == 0) "" else i + 1}.dex"
+                    dexFiles += zip.openEntry(name)?.read()
+                        ?: throw IllegalStateException("No $name in base apk")
+                }
+
+                // Find the amount of .dex files in apk
+                zip.entryNames.count { it.endsWith(".dex") } to dexFiles
+            }
+
+            ZipWriter(baseApkFile, true).use { zip ->
+                // Remove copied dex's
+                zip.deleteEntries("classes.dex", "classes2.dex", "classes3.dex")
+
+                // Move offset dex's to the end of the dex file list
+                copiedDexFiles.forEachIndexed { i, bytes ->
+                    zip.writeEntry("classes${dexCount + i + 1}.dex", bytes)
+                }
+
+                // Add Kotlin & Aliucord's dex
+                zip.writeEntry("classes.dex", injectorFile.readBytes())
+                zip.writeEntry("classes3.dex", kotlinFile.readBytes())
+            }
+        }
+
+        // Replace libs
+        step(InstallStep.REPLACE_LIBS) {
+            ZipWriter(baseApkFile, true).use { baseApk ->
+                ZipReader(aliuhookAarFile).use { aliuhookAar ->
+                    for (libFile in arrayOf("libaliuhook.so", "libc++_shared.so", "liblsplant.so")) {
+                        val bytes = aliuhookAar.openEntry("jni/$arch/$libFile")?.read()
+                            ?: throw IllegalStateException("Failed to read $libFile from aliuhook aar")
+
+                        baseApk.writeEntry("lib/$arch/$libFile", bytes)
+                    }
+                }
+
+                // Add aliuhook's dex file
+                baseApk.writeEntry("classes2.dex", application.assets.open("aliuhook.dex").use { it.readBytes() })
+            }
+        }
+
+        step(InstallStep.SIGNING) {
+            Signer.signApk(baseApkFile)
+        }
+
+        step(InstallStep.INSTALLING) {
+            application.packageManager.packageInstaller
+                .installApks(application, baseApkFile)
+        }
+
+        // patchedDir.deleteRecursively()
+
+        log += "\nCompleted in %.2f seconds".format(elapsedTime)
+    }
+
     @OptIn(ExperimentalTime::class)
     private inline fun <T> step(step: InstallStep, block: () -> T): T {
         log += "${step.log}... "
@@ -373,14 +548,17 @@ class InstallViewModel(
         NONE(""),
         APP_ICONS("Patching app icons"),
         MANIFESTS("Patching apk manifests"),
-        DEX("Adding aliu dex into apk"),
+        DEX("Adding Aliucord dex into apk"),
         REPLACE_LIBS("Replacing libraries"),
         SIGNING("Signing apks"),
         INSTALLING("Installing apks"),
 
         // Kotlin exclusive install steps
-        // DL_KT_APK("Downloading Discord apk"),
-        // DL_ALIUHOOK("Downloading Aliuhook library"),
+        KT_FETCH_VERSION("Fetching supported version"),
+        DL_KT_APK("Downloading Discord apk"),
+        DL_KOTLIN("Downloading Kotlin dex"),
+        DL_INJECTOR("Downloading Aliucord injector"),
+        DL_ALIUHOOK("Downloading Aliuhook library"),
 
         // AliuRN exclusive install steps
         DL_BASE_APK("Downloading base apk"),

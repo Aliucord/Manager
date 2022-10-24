@@ -73,7 +73,7 @@ class HomeViewModel(
     }
 
     private suspend fun _fetchSupportedVersion() {
-        val version = githubRepository.getVersion()
+        val version = githubRepository.getDiscordKtVersion()
 
         version.fold(
             success = {

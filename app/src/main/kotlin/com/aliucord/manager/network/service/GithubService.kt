@@ -53,6 +53,7 @@ class GithubService(
         private const val CONTRIBUTORS_URL = "https://api.github.com/repos/$ORG/$REPO/contributors"
 
         private const val DATA_URL = "https://raw.githubusercontent.com/$ORG/$REPO/builds/data.json"
+        const val KT_INJECTOR_URL = "https://raw.githubusercontent.com/$ORG/$REPO/builds/Injector.dex"
 
         private const val HERMES_RELEASES_URL = "https://api.github.com/repos/$ORG/$HERMES_REPO/releases"
         private const val ALIUCORD_NATIVE_RELEASES_URL = "https://api.github.com/repos/$ORG/$NATIVE_REPO/releases"

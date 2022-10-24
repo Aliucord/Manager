@@ -46,3 +46,30 @@ inline fun <T, R> ApiResponse<T>.transform(block: (T) -> R): ApiResponse<R> {
         ApiResponse.Success(block(data))
     }
 }
+
+inline fun <T> ApiResponse<T>.getOrThrow(): T {
+    return fold(
+        success = { it },
+        fail = { throw it }
+    )
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <T, R> ApiResponse<T>.chain(block: (T) -> ApiResponse<R>): ApiResponse<R> {
+    return if (this !is ApiResponse.Success) {
+        // Error and Failure do not use the generic value
+        this as ApiResponse<R>
+    } else {
+        block(data)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <T, R> ApiResponse<T>.chain(secondary: ApiResponse<R>): ApiResponse<R> {
+    return if (secondary is ApiResponse.Success) {
+        secondary
+    } else {
+        // Error and Failure do not use the generic value
+        this as ApiResponse<R>
+    }
+}
