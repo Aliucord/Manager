@@ -458,7 +458,7 @@ class InstallViewModel(
         }
 
         // Re-order dex files
-        step(InstallStep.DEX) {
+        val dexCount = step(InstallStep.DEX) {
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
@@ -478,8 +478,9 @@ class InstallViewModel(
                 // Add Kotlin & Aliucord's dex
                 zip.writeEntry("classes.dex", injectorFile.readBytes())
                 zip.writeEntry("classes${dexCount + 2}.dex", kotlinFile.readBytes())
-                zip.writeEntry("classes${dexCount + 3}.dex", application.assets.open("aliuhook.dex").use { it.readBytes() })
             }
+
+            dexCount
         }
 
         // Replace libs
@@ -492,9 +493,13 @@ class InstallViewModel(
 
                         baseApk.writeEntry("lib/$arch/$libFile", bytes)
                     }
-                }
 
-                // TODO: Add aliuhook's dex file
+                    // Add Aliuhook's dex file
+                    val aliuhookDex = aliuhookAar.openEntry("classes.dex")?.read()
+                        ?: throw IllegalStateException("No classes.dex in aliuhook aar")
+
+                    baseApk.writeEntry("classes${dexCount + 3}.dex", aliuhookDex)
+                }
             }
         }
 
