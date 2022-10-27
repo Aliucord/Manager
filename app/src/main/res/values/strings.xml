@@ -13,7 +13,7 @@
   <string name="action_retry">Retry</string>
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>
-  <string name="action_dismiss">Dismiss</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_install">Install</string>
   <string name="action_reinstall">Reinstall</string>
   <string name="action_update">Update</string>
@@ -73,8 +73,8 @@
   <string name="contributors_commit_title">§name§%1$s§ §middle§authored§ §commit§%2$s§</string>
 
   <string name="selector_download_apk">Download APK</string>
-  <string name="selector_select_apk">Select APK</string>
-  <string name="selector_download_method">Download Method</string>
+  <string name="selector_discord_type">Discord Type</string>
+  <string name="selector_discord_type_body">Aliucord supports both the old and new versions of Discord (named Kotlin and React Native accordingly). Which type would you like to install?</string>
 
   <string name="network_load_fail">Failed to load</string>
 
