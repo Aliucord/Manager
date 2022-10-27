@@ -8,22 +8,31 @@ package com.aliucord.manager.ui.screen
 import android.os.Parcelable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.component.installer.*
 import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.dialog.DownloadMethod
+import com.aliucord.manager.util.copyText
+import com.aliucord.manager.util.saveFile
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @Parcelize
 data class InstallData(
@@ -41,6 +50,7 @@ fun InstallerScreen(
     viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) })
 ) {
     val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
+    val context = LocalContext.current
 
     if (navigateMain) onBackClick()
 
@@ -60,26 +70,88 @@ fun InstallerScreen(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            LinearProgressIndicator(
+            if(viewModel.currentStep?.status == Status.ONGOING) LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
                     .padding(bottom = 4.dp)
             )
 
-            LazyColumn(
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
+                    .verticalScroll(rememberScrollState())
                     .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
+                    .padding(16.dp)
             ) {
-                item {
-                    Text(
-                        text = viewModel.log,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
-                        fontSize = 16.sp,
-                        lineHeight = 22.sp
+                InstallStep(
+                    name = "Download APKs",
+                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.APK_DL,
+                    subSteps = listOf(
+                        viewModel.baseApkDl,
+                        viewModel.librariesApkDl,
+                        viewModel.localeApkDl,
+                        viewModel.resourceApkDl
                     )
+                )
+                InstallStep(
+                    name = "Download Libraries",
+                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.LIB_DL,
+                    subSteps = listOf(
+                        viewModel.hermesDl,
+                        viewModel.aliuNativeDl
+                    )
+                )
+                InstallStep(
+                    name = "Patch APKs",
+                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.PATCHING,
+                    subSteps = if(viewModel.preferences.replaceIcon) listOf(
+                        viewModel.appIconPatch,
+                        viewModel.manifestPatch,
+                        viewModel.dexPatch,
+                        viewModel.libPatch
+                    ) else listOf(viewModel.manifestPatch, viewModel.dexPatch, viewModel.libPatch)
+                )
+                InstallStep(
+                    name = "Install",
+                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.INSTALLING,
+                    subSteps = listOf(
+                        viewModel.signApk,
+                        viewModel.installingApk
+                    )
+                )
+
+                if(viewModel.stacktrace.isNotEmpty()) {
+                    SelectionContainer {
+                        Text(
+                            text = viewModel.stacktrace,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = FontFamily.Monospace,
+                            softWrap = false,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(MaterialTheme.colorScheme.surfaceColorAtElevation(10.dp))
+                                .padding(10.dp)
+                                .horizontalScroll(rememberScrollState())
+                        )
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedButton(onClick = {
+                            context.saveFile("Error ${SimpleDateFormat("hh-mm-s a MM-dd-YYYY").format(Date())}.log", "${viewModel.debugInfo}\n\n${viewModel.stacktrace}")
+                        }) {
+                            Text(text = stringResource(id = R.string.installer_save_file))
+                        }
+
+                        FilledTonalButton(onClick = { context.copyText(viewModel.stacktrace) }) {
+                            Text(text = stringResource(id = R.string.installer_copy_text))
+                        }
+                    }
                 }
+
             }
         }
     }

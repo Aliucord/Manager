@@ -85,4 +85,8 @@
   <string name="version_alpha">Alpha</string>
   <string name="version_unknown" translatable="false" />
   <string name="version_load_fail">Failed to retrieve version</string>
+
+  <string name="installer_completed">Completed!</string>
+  <string name="installer_copy_text">Copy</string>
+  <string name="installer_save_file">Save to file</string>
 </resources>
