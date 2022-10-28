@@ -30,7 +30,8 @@ enum class Status {
 data class Step(
     var text: String,
     var status: Status,
-    var duration: Float = 0f
+    var duration: Float = 0f,
+    var cached: Boolean = false
 )
 
 @Composable
@@ -114,8 +115,8 @@ fun InstallStep(
 
                         if(it.status != Status.ONGOING && it.status != Status.QUEUED) {
                             Spacer(modifier = Modifier.weight(1f))
-
-                            Text(text = "%.2fs".format(it.duration), style = MaterialTheme.typography.labelSmall)
+                            if(it.cached) Text(stringResource(R.string.installer_cached), style = MaterialTheme.typography.labelSmall)
+                            Text(text = " %.2fs".format(it.duration), style = MaterialTheme.typography.labelSmall)
                         }
                     }
                 }

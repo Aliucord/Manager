@@ -89,4 +89,7 @@
   <string name="installer_completed">Completed!</string>
   <string name="installer_copy_text">Copy</string>
   <string name="installer_save_file">Save to file</string>
+  <string name="installer_file_save_success">Saved %s</string>
+  <string name="installer_file_save_failed">Failed to save %s</string>
+  <string name="installer_cached">(Cached)</string>
 </resources>

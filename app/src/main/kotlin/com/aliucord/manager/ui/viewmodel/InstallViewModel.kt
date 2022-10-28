@@ -51,7 +51,7 @@ class InstallViewModel(
 
             Installing ${installData.discordType} with the ${installData.downloadMethod} apk method
 
-            Failed on: ${currentStep?.text}
+            Failed on: ${currentStep?.name}
         """.trimIndent()
 
     init {
@@ -70,7 +70,7 @@ class InstallViewModel(
                 } catch (t: Throwable) {
                     Log.e(
                         BuildConfig.TAG,
-                        "Failed to patch ${installData.discordType.name} during ${currentStep?.text}: ${Log.getStackTraceString(t)}"
+                        "$debugInfo\n\n${Log.getStackTraceString(t)}"
                     )
                 }
 
@@ -86,10 +86,11 @@ class InstallViewModel(
         val supportedVersion = preferences.version
 
         // Download base.apk
-        val baseApkFile = step(baseApkDl, StepCategory.APK_DL) {
+        val baseApkFile = step(Steps.DL_BASE_APK, StepCategory.APK_DL) {
             externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
-                if (!file.exists())
-                    downloadManager.downloadDiscordApk(supportedVersion)
+                if (file.exists()) {
+                    steps[Steps.DL_BASE_APK] = steps[Steps.DL_BASE_APK]!!.copy(cached = true)
+                } else downloadManager.downloadDiscordApk(supportedVersion)
 
                 file.copyTo(
                     externalCacheDir
@@ -101,14 +102,15 @@ class InstallViewModel(
         }
 
         // Download the native libraries split
-        val libsApkFile = step(librariesApkDl, StepCategory.APK_DL) {
+        val libsApkFile = step(Steps.DL_LIBS_APK, StepCategory.APK_DL) {
             val libArch = arch.replace("-v", "_v")
             externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
-                if (!file.exists())
-                    downloadManager.downloadSplit(
-                        version = supportedVersion,
-                        split = "config.$libArch"
-                    )
+                if (file.exists()){
+                    steps[Steps.DL_LIBS_APK] = steps[Steps.DL_LIBS_APK]!!.copy(cached = true)
+                } else downloadManager.downloadSplit(
+                    version = supportedVersion,
+                    split = "config.$libArch"
+                )
 
                 file.copyTo(
                     externalCacheDir
@@ -120,13 +122,14 @@ class InstallViewModel(
         }
 
         // Download the locale split
-        val localeApkFile = step(localeApkDl, StepCategory.APK_DL) {
+        val localeApkFile = step(Steps.DL_LANG_APK, StepCategory.APK_DL) {
             externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
-                if (!file.exists())
-                    downloadManager.downloadSplit(
-                        version = supportedVersion,
-                        split = "config.en"
-                    )
+                if (file.exists()) {
+                    steps[Steps.DL_LANG_APK] = steps[Steps.DL_LANG_APK]!!.copy(cached = true)
+                } else downloadManager.downloadSplit(
+                    version = supportedVersion,
+                    split = "config.en"
+                )
 
                 file.copyTo(
                     externalCacheDir
@@ -138,14 +141,15 @@ class InstallViewModel(
         }
 
         // Download the drawables split
-        val resApkFile = step(resourceApkDl, StepCategory.APK_DL) {
+        val resApkFile = step(Steps.DL_RESC_APK, StepCategory.APK_DL) {
             // TODO: download the appropriate dpi res apk
             externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
-                if (!file.exists())
-                    downloadManager.downloadSplit(
-                        version = supportedVersion,
-                        split = "config.xxhdpi"
-                    )
+                if (file.exists()) {
+                    steps[Steps.DL_RESC_APK] = steps[Steps.DL_RESC_APK]!!.copy(cached = true)
+                } else downloadManager.downloadSplit(
+                    version = supportedVersion,
+                    split = "config.xxhdpi"
+                )
 
                 file.copyTo(
                     externalCacheDir
@@ -157,7 +161,7 @@ class InstallViewModel(
         }
 
         // Download hermes & cppruntime lib
-        val (hermesLibrary, cppRuntimeLibrary) = step(hermesDl, StepCategory.LIB_DL) {
+        val (hermesLibrary, cppRuntimeLibrary) = step(Steps.DL_HERMES, StepCategory.LIB_DL) {
             // Fetch gh releases for Aliucord/Hermes
             val latestHermesRelease = githubRepository.getHermesReleases().fold(
                 success = { releases ->
@@ -190,7 +194,7 @@ class InstallViewModel(
         }
 
         // Download Aliucord Native lib
-        val aliucordDexFile = step(aliuNativeDl, StepCategory.LIB_DL) {
+        val aliucordDexFile = step(Steps.DL_ALIUNATIVE, StepCategory.LIB_DL) {
             // Fetch the gh releases for Aliucord/AliucordNative
             val latestAliucordNativeRelease = githubRepository.getAliucordNativeReleases().fold(
                 success = { releases ->
@@ -221,7 +225,7 @@ class InstallViewModel(
 
         // Replace app icons
         if (preferences.replaceIcon) {
-            step(appIconPatch, StepCategory.PATCHING) {
+            step(Steps.PATCH_APP_ICON, StepCategory.PATCHING) {
                 ZipWriter(baseApkFile, true).use { baseApk ->
                     val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
                     val icons = arrayOf("ic_logo_foreground.png", "ic_logo_square.png", "ic_logo_foreground.png")
@@ -241,7 +245,7 @@ class InstallViewModel(
         }
 
         // Patch manifests
-        step(manifestPatch, StepCategory.PATCHING) {
+        step(Steps.PATCH_MANIFEST, StepCategory.PATCHING) {
             apks.forEach { apk ->
                 val manifest = ZipReader(apk)
                     .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
@@ -266,7 +270,7 @@ class InstallViewModel(
         }
 
         // Re-order dex files
-        step(dexPatch, StepCategory.PATCHING) {
+        step(Steps.PATCH_DEX, StepCategory.PATCHING) {
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
@@ -289,7 +293,7 @@ class InstallViewModel(
         }
 
         // Replace libs
-        step(libPatch, StepCategory.PATCHING) {
+        step(Steps.PATCH_LIBS, StepCategory.PATCHING) {
             ZipWriter(libsApkFile, true).use { libsApk ->
                 // Process the hermes and cpp runtime library
                 for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
@@ -315,19 +319,20 @@ class InstallViewModel(
             }
         }
 
-        step(signApk, StepCategory.INSTALLING) {
+        step(Steps.SIGN_APK, StepCategory.INSTALLING) {
             apks.forEach(Signer::signApk)
         }
 
-        step(installingApk, StepCategory.INSTALLING) {
+        step(Steps.INSTALL_APK, StepCategory.INSTALLING) {
             application.packageManager.packageInstaller
                 .installApks(application, *apks)
         }
     }
 
     @OptIn(ExperimentalTime::class)
-    private inline fun <T> step(step: Step, category: StepCategory, block: () -> T): T {
-        step.status = Status.ONGOING
+    private inline fun <T> step(step: Steps, category: StepCategory, block: () -> T): T {
+        steps[step] = steps[step]!!.copy(status = Status.ONGOING)
+
         currentCategory = category
         currentStep = step
 
@@ -335,13 +340,15 @@ class InstallViewModel(
             val value = measureTimedValue(block)
             val time = value.duration.inWholeMilliseconds.div(1000f)
 
-            step.duration = time
-            step.status = Status.SUCCESSFUL
+            steps[step] = steps[step]!!.copy(
+                duration = time,
+                status = Status.SUCCESSFUL
+            )
 
             currentStep = step
             return value.value
         } catch (t: Throwable) {
-            step.status = Status.UNSUCCESSFUL
+            steps[step] = steps[step]!!.copy(status = Status.UNSUCCESSFUL)
             stacktrace = Log.getStackTraceString(t).trim()
 
             currentCategory = null
@@ -350,69 +357,22 @@ class InstallViewModel(
         }
     }
 
-    var currentCategory: StepCategory? by mutableStateOf(StepCategory.APK_DL)
+    enum class Steps {
+        PATCH_APP_ICON,
+        PATCH_MANIFEST,
+        PATCH_DEX,
+        PATCH_LIBS,
+        SIGN_APK,
+        INSTALL_APK,
 
-    // Shared steps
-    val appIconPatch by mutableStateOf(Step(
-        "Patching app icons",
-        Status.QUEUED
-    ))
+        DL_BASE_APK,
+        DL_LIBS_APK,
+        DL_LANG_APK,
+        DL_RESC_APK,
 
-    val manifestPatch by mutableStateOf(Step(
-        "Patching apk manifests",
-        Status.QUEUED
-    ))
-
-    val dexPatch by mutableStateOf(Step(
-        "Adding aliu dex into apk",
-        Status.QUEUED
-    ))
-
-    val libPatch by mutableStateOf(Step(
-        "Replacing libraries",
-        Status.QUEUED
-    ))
-
-    val signApk by mutableStateOf(Step(
-        "Signing apks",
-        Status.QUEUED
-    ))
-
-    val installingApk by mutableStateOf(Step(
-        "Installing apks",
-        Status.QUEUED
-    ))
-
-    // RN steps
-    val baseApkDl by mutableStateOf(Step(
-        "Downloading base apk",
-        Status.QUEUED
-    ))
-
-    val librariesApkDl by mutableStateOf(Step(
-        "Downloading libraries apk",
-        Status.QUEUED
-    ))
-
-    val localeApkDl by mutableStateOf(Step(
-        "Downloading locale apk",
-        Status.QUEUED
-    ))
-
-    val resourceApkDl by mutableStateOf(Step(
-        "Downloading resource apk",
-        Status.QUEUED
-    ))
-
-    val hermesDl by mutableStateOf(Step(
-        "Downloading hermes & c++ runtime library",
-        Status.QUEUED
-    ))
-
-    val aliuNativeDl by mutableStateOf(Step(
-        "Downloading AliucordNative library",
-        Status.QUEUED
-    ))
+        DL_HERMES,
+        DL_ALIUNATIVE
+    }
 
     enum class StepCategory {
         APK_DL,
@@ -421,5 +381,70 @@ class InstallViewModel(
         INSTALLING
     }
 
-    var currentStep: Step? by mutableStateOf(null)
+    var currentCategory: StepCategory? by mutableStateOf(StepCategory.APK_DL)
+    var currentStep: Steps? by mutableStateOf(null)
+
+    val steps = mutableStateMapOf(
+        // Shared
+        Steps.PATCH_APP_ICON to Step(
+            "Patching app icons",
+            Status.QUEUED
+        ),
+
+        Steps.PATCH_MANIFEST to Step(
+            "Patching apk manifests",
+            Status.QUEUED
+        ),
+
+        Steps.PATCH_DEX to Step(
+            "Adding aliu dex into apk",
+            Status.QUEUED
+        ),
+
+        Steps.PATCH_LIBS to Step(
+            "Replacing libraries",
+            Status.QUEUED
+        ),
+
+        Steps.SIGN_APK to Step(
+            "Signing apks",
+            Status.QUEUED
+        ),
+
+        Steps.INSTALL_APK to Step(
+            "Installing apks",
+            Status.QUEUED
+        ),
+
+        // React Native
+        Steps.DL_BASE_APK to Step(
+            "Downloading base apk",
+            Status.QUEUED
+        ),
+
+        Steps.DL_LIBS_APK to Step(
+            "Downloading libraries apk",
+            Status.QUEUED
+        ),
+
+        Steps.DL_LANG_APK to Step(
+            "Downloading locale apk",
+            Status.QUEUED
+        ),
+
+        Steps.DL_RESC_APK to Step(
+            "Downloading resource apk",
+            Status.QUEUED
+        ),
+
+        Steps.DL_HERMES to Step(
+            "Downloading hermes & c++ runtime library",
+            Status.QUEUED
+        ),
+
+        Steps.DL_ALIUNATIVE to Step(
+            "Downloading AliucordNative library",
+            Status.QUEUED
+        )
+    )
 }

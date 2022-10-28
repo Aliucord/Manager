@@ -1,6 +1,5 @@
 package com.aliucord.manager.ui.util
 
-import android.content.*
 import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource

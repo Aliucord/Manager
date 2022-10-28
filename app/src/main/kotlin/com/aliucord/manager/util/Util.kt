@@ -4,6 +4,7 @@ import android.content.*
 import android.os.Environment
 import android.widget.Toast
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.R
 import java.io.File
 
 fun Context.copyText(text: String) {
@@ -17,10 +18,10 @@ fun Context.saveFile(name: String, text: String): File? {
 
     return try {
         file.writeText(text)
-        Toast.makeText(this, "Saved ${file.absolutePath}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, getString(R.string.installer_file_save_success, file.absolutePath), Toast.LENGTH_SHORT)
         file
     } catch (e: Throwable) {
-        Toast.makeText(this, "Failed to save ${file.absolutePath}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, getString(R.string.installer_file_save_failed, file.absolutePath), Toast.LENGTH_SHORT)
         null
     }
 }

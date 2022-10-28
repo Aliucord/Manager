@@ -70,7 +70,8 @@ fun InstallerScreen(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            if(viewModel.currentStep?.status == Status.ONGOING) LinearProgressIndicator(
+            if(
+                viewModel.steps[viewModel.currentStep]?.status == Status.ONGOING) LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
@@ -88,36 +89,40 @@ fun InstallerScreen(
                     name = "Download APKs",
                     isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.APK_DL,
                     subSteps = listOf(
-                        viewModel.baseApkDl,
-                        viewModel.librariesApkDl,
-                        viewModel.localeApkDl,
-                        viewModel.resourceApkDl
+                        viewModel.steps[InstallViewModel.Steps.DL_BASE_APK]!!,
+                        viewModel.steps[InstallViewModel.Steps.DL_LIBS_APK]!!,
+                        viewModel.steps[InstallViewModel.Steps.DL_LANG_APK]!!,
+                        viewModel.steps[InstallViewModel.Steps.DL_RESC_APK]!!
                     )
                 )
                 InstallStep(
                     name = "Download Libraries",
                     isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.LIB_DL,
                     subSteps = listOf(
-                        viewModel.hermesDl,
-                        viewModel.aliuNativeDl
+                        viewModel.steps[InstallViewModel.Steps.DL_HERMES]!!,
+                        viewModel.steps[InstallViewModel.Steps.DL_ALIUNATIVE]!!
                     )
                 )
                 InstallStep(
                     name = "Patch APKs",
                     isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.PATCHING,
                     subSteps = if(viewModel.preferences.replaceIcon) listOf(
-                        viewModel.appIconPatch,
-                        viewModel.manifestPatch,
-                        viewModel.dexPatch,
-                        viewModel.libPatch
-                    ) else listOf(viewModel.manifestPatch, viewModel.dexPatch, viewModel.libPatch)
+                        viewModel.steps[InstallViewModel.Steps.PATCH_APP_ICON]!!,
+                        viewModel.steps[InstallViewModel.Steps.PATCH_MANIFEST]!!,
+                        viewModel.steps[InstallViewModel.Steps.PATCH_DEX]!!,
+                        viewModel.steps[InstallViewModel.Steps.PATCH_LIBS]!!
+                    ) else listOf(
+                        viewModel.steps[InstallViewModel.Steps.PATCH_MANIFEST]!!,
+                        viewModel.steps[InstallViewModel.Steps.PATCH_DEX]!!,
+                        viewModel.steps[InstallViewModel.Steps.PATCH_LIBS]!!
+                    )
                 )
                 InstallStep(
                     name = "Install",
                     isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.INSTALLING,
                     subSteps = listOf(
-                        viewModel.signApk,
-                        viewModel.installingApk
+                        viewModel.steps[InstallViewModel.Steps.SIGN_APK]!!,
+                        viewModel.steps[InstallViewModel.Steps.INSTALL_APK]!!
                     )
                 )
 
