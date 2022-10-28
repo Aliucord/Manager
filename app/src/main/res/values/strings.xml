@@ -74,7 +74,9 @@
 
   <string name="selector_download_apk">Download APK</string>
   <string name="selector_discord_type">Discord Type</string>
-  <string name="selector_discord_type_body">Aliucord supports both the old and new versions of Discord (named Kotlin and React Native accordingly). Which type would you like to install?</string>
+  <string name="selector_discord_type_body">Aliucord supports both the old (Kotlin) and new (React Native) versions of Discord. Which type would you like to install? Note that these versions have different plugins!</string>
+  <string name="selector_discord_type_kotlin">New (Recommended)</string>
+  <string name="selector_discord_type_old">Old</string>
 
   <string name="network_load_fail">Failed to load</string>
 

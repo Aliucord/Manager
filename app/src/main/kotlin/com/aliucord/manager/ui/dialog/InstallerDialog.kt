@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -95,31 +96,33 @@ fun InstallerDialog(
 
                 // Buttons
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(5.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.clip(MaterialTheme.shapes.large)
                 ) {
                     ProvideTextStyle(MaterialTheme.typography.labelMedium) {
                         Button(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            shape = MaterialTheme.shapes.small,
-                            onClick = {
-                                discordType = DiscordType.KOTLIN
-                                triggerConfirm()
-                            }
-                        ) {
-                            Text("Old (Kotlin)")
-                        }
-                        Button(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            shape = MaterialTheme.shapes.small,
+                            shape = MaterialTheme.shapes.extraSmall,
                             onClick = {
                                 discordType = DiscordType.REACT_NATIVE
                                 triggerConfirm()
-                            }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
                         ) {
-                            Text("New (React Native)")
+                            Text(stringResource(R.string.selector_discord_type_kotlin))
+                        }
+                        Button(
+                            shape = MaterialTheme.shapes.extraSmall,
+                            onClick = {
+                                discordType = DiscordType.KOTLIN
+                                triggerConfirm()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Text(stringResource(R.string.selector_discord_type_old))
                         }
                     }
                 }

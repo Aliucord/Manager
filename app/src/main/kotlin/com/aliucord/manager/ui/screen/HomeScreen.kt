@@ -28,7 +28,7 @@ fun HomeScreen(
             onDismiss = { showInstallerDialog = false },
             onConfirm = { data ->
                 showInstallerDialog = false
-                // onClickInstall(data)
+                onClickInstall(data)
             }
         )
     }
