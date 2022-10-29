@@ -46,7 +46,8 @@ class InstallViewModel(
 
     var stacktrace by mutableStateOf("")
         private set
-    val debugInfo: String
+
+    private val debugInfo: String
         get() = """
             Aliucord Manager ${BuildConfig.VERSION_NAME}
             Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} ${if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""}
@@ -130,8 +131,10 @@ class InstallViewModel(
         val baseApkFile = step(InstallStep.DL_BASE_APK) {
             externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
-                    steps[InstallStep.DL_BASE_APK] = steps[InstallStep.DL_BASE_APK]!!.copy(cached = true)
-                } else downloadManager.downloadDiscordApk(supportedVersion)
+                    cached = true
+                } else {
+                    downloadManager.downloadDiscordApk(supportedVersion)
+                }
 
                 file.copyTo(
                     externalCacheDir
@@ -147,7 +150,7 @@ class InstallViewModel(
             val libArch = arch.replace("-v", "_v")
             externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
-                    steps[InstallStep.DL_LIBS_APK] = steps[InstallStep.DL_LIBS_APK]!!.copy(cached = true)
+                    cached = true
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
                     split = "config.$libArch"
@@ -166,7 +169,7 @@ class InstallViewModel(
         val localeApkFile = step(InstallStep.DL_LANG_APK) {
             externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
-                    steps[InstallStep.DL_LANG_APK] = steps[InstallStep.DL_LANG_APK]!!.copy(cached = true)
+                    cached = true
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
                     split = "config.en"
@@ -186,7 +189,7 @@ class InstallViewModel(
             // TODO: download the appropriate dpi res apk
             externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
-                    steps[InstallStep.DL_RESC_APK] = steps[InstallStep.DL_RESC_APK]!!.copy(cached = true)
+                    cached = true
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
                     split = "config.xxhdpi"
@@ -371,18 +374,18 @@ class InstallViewModel(
     }
 
     @OptIn(ExperimentalTime::class)
-    private inline fun <T> step(step: InstallStep, block: () -> T): T {
+    private inline fun <T> step(step: InstallStep, block: InstallStepData.() -> T): T {
         steps[step] = steps[step]!!.copy(status = InstallStatus.ONGOING)
 
         currentStep = step
 
         try {
-            val value = measureTimedValue(block)
+            val value = measureTimedValue { block.invoke(steps[step]!!) }
             val millis = value.duration.inWholeMilliseconds
 
             // Add delay for human psychology + groups are switched too fast
-            if (!preferences.devMode && millis < 1500) {
-                Thread.sleep(1500 - millis)
+            if (!preferences.devMode && millis < 1000) {
+                Thread.sleep(1000 - millis)
             }
 
             steps[step] = steps[step]!!.copy(
@@ -394,7 +397,7 @@ class InstallViewModel(
             return value.value
         } catch (t: Throwable) {
             steps[step] = steps[step]!!.copy(status = InstallStatus.UNSUCCESSFUL)
-            stacktrace = Log.getStackTraceString(t).trim()
+            stacktrace = Log.getStackTraceString(t)
 
             currentStep = step
             throw t
