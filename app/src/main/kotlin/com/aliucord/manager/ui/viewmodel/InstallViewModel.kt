@@ -3,24 +3,29 @@ package com.aliucord.manager.ui.viewmodel
 import android.app.Application
 import android.os.Build
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.R
 import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.*
 import com.aliucord.manager.network.utils.fold
-import com.aliucord.manager.ui.component.installer.Status
-import com.aliucord.manager.ui.component.installer.Step
+import com.aliucord.manager.ui.component.installer.InstallStatus
+import com.aliucord.manager.ui.component.installer.InstallStepData
 import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.screen.InstallData
+import com.aliucord.manager.util.*
 import com.github.diamondminer88.zip.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import java.text.SimpleDateFormat
 import java.time.Instant
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
@@ -28,7 +33,7 @@ import kotlin.time.measureTimedValue
 class InstallViewModel(
     private val application: Application,
     private val downloadManager: DownloadManager,
-    val preferences: PreferencesManager,
+    private val preferences: PreferencesManager,
     private val githubRepository: GithubRepository,
     private val installData: InstallData
 ) : ViewModel() {
@@ -44,7 +49,7 @@ class InstallViewModel(
     val debugInfo: String
         get() = """
             Aliucord Manager ${BuildConfig.VERSION_NAME}
-            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} ${if(BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""}
+            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} ${if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""}
 
             Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
@@ -53,6 +58,25 @@ class InstallViewModel(
 
             Failed on: ${currentStep?.name}
         """.trimIndent()
+
+    fun copyDebugToClipboard() {
+        val text = "$debugInfo\n\n$stacktrace"
+            .replace("(\\\\*~_)".toRegex(), "\\$1")
+
+        application.copyToClipboard(text)
+        application.showToast(R.string.action_copied)
+    }
+
+    private var debugLogPath by mutableStateOf<String?>(null)
+    fun saveDebugToFile() {
+        val name = if (debugLogPath != null) {
+            debugLogPath!!
+        } else {
+            "Aliucord Manager ${SimpleDateFormat("YYYY-MM-dd hh-mm-s a").format(Date())}.log"
+        }
+
+        application.saveFile(name, "$debugInfo\n\n$stacktrace")
+    }
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
@@ -80,16 +104,33 @@ class InstallViewModel(
     }
 
     private suspend fun installReactNative() {
+        steps += listOfNotNull(
+            InstallStep.DL_BASE_APK,
+            InstallStep.DL_LIBS_APK,
+            InstallStep.DL_LANG_APK,
+            InstallStep.DL_RESC_APK,
+            InstallStep.DL_HERMES,
+            InstallStep.DL_ALIUNATIVE,
+            if (preferences.replaceIcon) InstallStep.PATCH_APP_ICON else null,
+            InstallStep.PATCH_MANIFEST,
+            InstallStep.PATCH_DEX,
+            InstallStep.PATCH_LIBS,
+            InstallStep.SIGN_APK,
+            InstallStep.INSTALL_APK,
+        ).map {
+            it to InstallStepData(it.nameResId, InstallStatus.QUEUED)
+        }
+
         externalCacheDir.resolve("patched").runCatching { deleteRecursively() }
 
         val arch = Build.SUPPORTED_ABIS.first()
         val supportedVersion = preferences.version
 
         // Download base.apk
-        val baseApkFile = step(Steps.DL_BASE_APK, StepCategory.APK_DL) {
+        val baseApkFile = step(InstallStep.DL_BASE_APK) {
             externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
-                    steps[Steps.DL_BASE_APK] = steps[Steps.DL_BASE_APK]!!.copy(cached = true)
+                    steps[InstallStep.DL_BASE_APK] = steps[InstallStep.DL_BASE_APK]!!.copy(cached = true)
                 } else downloadManager.downloadDiscordApk(supportedVersion)
 
                 file.copyTo(
@@ -102,11 +143,11 @@ class InstallViewModel(
         }
 
         // Download the native libraries split
-        val libsApkFile = step(Steps.DL_LIBS_APK, StepCategory.APK_DL) {
+        val libsApkFile = step(InstallStep.DL_LIBS_APK) {
             val libArch = arch.replace("-v", "_v")
             externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
-                if (file.exists()){
-                    steps[Steps.DL_LIBS_APK] = steps[Steps.DL_LIBS_APK]!!.copy(cached = true)
+                if (file.exists()) {
+                    steps[InstallStep.DL_LIBS_APK] = steps[InstallStep.DL_LIBS_APK]!!.copy(cached = true)
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
                     split = "config.$libArch"
@@ -122,10 +163,10 @@ class InstallViewModel(
         }
 
         // Download the locale split
-        val localeApkFile = step(Steps.DL_LANG_APK, StepCategory.APK_DL) {
+        val localeApkFile = step(InstallStep.DL_LANG_APK) {
             externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
-                    steps[Steps.DL_LANG_APK] = steps[Steps.DL_LANG_APK]!!.copy(cached = true)
+                    steps[InstallStep.DL_LANG_APK] = steps[InstallStep.DL_LANG_APK]!!.copy(cached = true)
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
                     split = "config.en"
@@ -141,11 +182,11 @@ class InstallViewModel(
         }
 
         // Download the drawables split
-        val resApkFile = step(Steps.DL_RESC_APK, StepCategory.APK_DL) {
+        val resApkFile = step(InstallStep.DL_RESC_APK) {
             // TODO: download the appropriate dpi res apk
             externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
-                    steps[Steps.DL_RESC_APK] = steps[Steps.DL_RESC_APK]!!.copy(cached = true)
+                    steps[InstallStep.DL_RESC_APK] = steps[InstallStep.DL_RESC_APK]!!.copy(cached = true)
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
                     split = "config.xxhdpi"
@@ -161,7 +202,7 @@ class InstallViewModel(
         }
 
         // Download hermes & cppruntime lib
-        val (hermesLibrary, cppRuntimeLibrary) = step(Steps.DL_HERMES, StepCategory.LIB_DL) {
+        val (hermesLibrary, cppRuntimeLibrary) = step(InstallStep.DL_HERMES) {
             // Fetch gh releases for Aliucord/Hermes
             val latestHermesRelease = githubRepository.getHermesReleases().fold(
                 success = { releases ->
@@ -194,7 +235,7 @@ class InstallViewModel(
         }
 
         // Download Aliucord Native lib
-        val aliucordDexFile = step(Steps.DL_ALIUNATIVE, StepCategory.LIB_DL) {
+        val aliucordDexFile = step(InstallStep.DL_ALIUNATIVE) {
             // Fetch the gh releases for Aliucord/AliucordNative
             val latestAliucordNativeRelease = githubRepository.getAliucordNativeReleases().fold(
                 success = { releases ->
@@ -225,7 +266,7 @@ class InstallViewModel(
 
         // Replace app icons
         if (preferences.replaceIcon) {
-            step(Steps.PATCH_APP_ICON, StepCategory.PATCHING) {
+            step(InstallStep.PATCH_APP_ICON) {
                 ZipWriter(baseApkFile, true).use { baseApk ->
                     val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
                     val icons = arrayOf("ic_logo_foreground.png", "ic_logo_square.png", "ic_logo_foreground.png")
@@ -245,7 +286,7 @@ class InstallViewModel(
         }
 
         // Patch manifests
-        step(Steps.PATCH_MANIFEST, StepCategory.PATCHING) {
+        step(InstallStep.PATCH_MANIFEST) {
             apks.forEach { apk ->
                 val manifest = ZipReader(apk)
                     .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
@@ -270,7 +311,7 @@ class InstallViewModel(
         }
 
         // Re-order dex files
-        step(Steps.PATCH_DEX, StepCategory.PATCHING) {
+        step(InstallStep.PATCH_DEX) {
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
@@ -293,7 +334,7 @@ class InstallViewModel(
         }
 
         // Replace libs
-        step(Steps.PATCH_LIBS, StepCategory.PATCHING) {
+        step(InstallStep.PATCH_LIBS) {
             ZipWriter(libsApkFile, true).use { libsApk ->
                 // Process the hermes and cpp runtime library
                 for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
@@ -319,132 +360,86 @@ class InstallViewModel(
             }
         }
 
-        step(Steps.SIGN_APK, StepCategory.INSTALLING) {
+        step(InstallStep.SIGN_APK) {
             apks.forEach(Signer::signApk)
         }
 
-        step(Steps.INSTALL_APK, StepCategory.INSTALLING) {
+        step(InstallStep.INSTALL_APK) {
             application.packageManager.packageInstaller
                 .installApks(application, *apks)
         }
     }
 
     @OptIn(ExperimentalTime::class)
-    private inline fun <T> step(step: Steps, category: StepCategory, block: () -> T): T {
-        steps[step] = steps[step]!!.copy(status = Status.ONGOING)
+    private inline fun <T> step(step: InstallStep, block: () -> T): T {
+        steps[step] = steps[step]!!.copy(status = InstallStatus.ONGOING)
 
-        currentCategory = category
         currentStep = step
 
         try {
             val value = measureTimedValue(block)
-            val time = value.duration.inWholeMilliseconds.div(1000f)
+            val millis = value.duration.inWholeMilliseconds
+
+            // Add delay for human psychology + groups are switched too fast
+            if (!preferences.devMode && millis < 1500) {
+                Thread.sleep(1500 - millis)
+            }
 
             steps[step] = steps[step]!!.copy(
-                duration = time,
-                status = Status.SUCCESSFUL
+                duration = millis.div(1000f),
+                status = InstallStatus.SUCCESSFUL
             )
 
             currentStep = step
             return value.value
         } catch (t: Throwable) {
-            steps[step] = steps[step]!!.copy(status = Status.UNSUCCESSFUL)
+            steps[step] = steps[step]!!.copy(status = InstallStatus.UNSUCCESSFUL)
             stacktrace = Log.getStackTraceString(t).trim()
 
-            currentCategory = null
             currentStep = step
             throw t
         }
     }
 
-    enum class Steps {
-        PATCH_APP_ICON,
-        PATCH_MANIFEST,
-        PATCH_DEX,
-        PATCH_LIBS,
-        SIGN_APK,
-        INSTALL_APK,
-
-        DL_BASE_APK,
-        DL_LIBS_APK,
-        DL_LANG_APK,
-        DL_RESC_APK,
-
-        DL_HERMES,
-        DL_ALIUNATIVE
+    enum class InstallStepGroup(
+        @StringRes
+        val nameResId: Int
+    ) {
+        APK_DL(R.string.install_group_apk_dl),
+        LIB_DL(R.string.install_group_lib_dl),
+        PATCHING(R.string.install_group_patch),
+        INSTALLING(R.string.install_group_install)
     }
 
-    enum class StepCategory {
-        APK_DL,
-        LIB_DL,
-        PATCHING,
-        INSTALLING
+    enum class InstallStep(
+        val group: InstallStepGroup,
+
+        @StringRes
+        val nameResId: Int
+    ) {
+        DL_BASE_APK(InstallStepGroup.APK_DL, R.string.install_step_dl_apk_base),
+        DL_LIBS_APK(InstallStepGroup.APK_DL, R.string.install_step_dl_apk_lib),
+        DL_LANG_APK(InstallStepGroup.APK_DL, R.string.install_step_dl_apk_locale),
+        DL_RESC_APK(InstallStepGroup.APK_DL, R.string.install_step_dl_apk_resource),
+
+        DL_HERMES(InstallStepGroup.LIB_DL, R.string.install_step_dl_lib_hermes),
+        DL_ALIUNATIVE(InstallStepGroup.LIB_DL, R.string.install_step_dl_lib_aliunative),
+
+        PATCH_APP_ICON(InstallStepGroup.PATCHING, R.string.install_step_patch_icons),
+        PATCH_MANIFEST(InstallStepGroup.PATCHING, R.string.install_step_patch_manifests),
+        PATCH_DEX(InstallStepGroup.PATCHING, R.string.install_step_patch_dex),
+        PATCH_LIBS(InstallStepGroup.PATCHING, R.string.install_step_patch_libs),
+        SIGN_APK(InstallStepGroup.INSTALLING, R.string.install_step_signing),
+        INSTALL_APK(InstallStepGroup.INSTALLING, R.string.install_step_installing);
     }
 
-    var currentCategory: StepCategory? by mutableStateOf(StepCategory.APK_DL)
-    var currentStep: Steps? by mutableStateOf(null)
+    var currentStep: InstallStep? by mutableStateOf(null)
+    val steps = mutableStateMapOf<InstallStep, InstallStepData>()
 
-    val steps = mutableStateMapOf(
-        // Shared
-        Steps.PATCH_APP_ICON to Step(
-            "Patching app icons",
-            Status.QUEUED
-        ),
-
-        Steps.PATCH_MANIFEST to Step(
-            "Patching apk manifests",
-            Status.QUEUED
-        ),
-
-        Steps.PATCH_DEX to Step(
-            "Adding aliu dex into apk",
-            Status.QUEUED
-        ),
-
-        Steps.PATCH_LIBS to Step(
-            "Replacing libraries",
-            Status.QUEUED
-        ),
-
-        Steps.SIGN_APK to Step(
-            "Signing apks",
-            Status.QUEUED
-        ),
-
-        Steps.INSTALL_APK to Step(
-            "Installing apks",
-            Status.QUEUED
-        ),
-
-        // React Native
-        Steps.DL_BASE_APK to Step(
-            "Downloading base apk",
-            Status.QUEUED
-        ),
-
-        Steps.DL_LIBS_APK to Step(
-            "Downloading libraries apk",
-            Status.QUEUED
-        ),
-
-        Steps.DL_LANG_APK to Step(
-            "Downloading locale apk",
-            Status.QUEUED
-        ),
-
-        Steps.DL_RESC_APK to Step(
-            "Downloading resource apk",
-            Status.QUEUED
-        ),
-
-        Steps.DL_HERMES to Step(
-            "Downloading hermes & c++ runtime library",
-            Status.QUEUED
-        ),
-
-        Steps.DL_ALIUNATIVE to Step(
-            "Downloading AliucordNative library",
-            Status.QUEUED
-        )
-    )
+    fun getSteps(group: InstallStepGroup): List<InstallStepData> {
+        return steps
+            .filterKeys { it.group == group }.entries
+            .sortedBy { it.key.ordinal }
+            .map { it.value }
+    }
 }

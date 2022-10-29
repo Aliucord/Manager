@@ -25,14 +25,15 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.component.installer.*
 import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.dialog.DownloadMethod
-import com.aliucord.manager.util.copyText
-import com.aliucord.manager.util.saveFile
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
+import com.aliucord.manager.ui.viewmodel.InstallViewModel.InstallStepGroup
+import com.aliucord.manager.util.copyToClipboard
+import com.aliucord.manager.util.saveFile
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 @Parcelize
 data class InstallData(
@@ -42,7 +43,7 @@ data class InstallData(
     var splits: List<String>? = null
 ) : Parcelable
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstallerScreen(
     installData: InstallData,
@@ -50,9 +51,12 @@ fun InstallerScreen(
     viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) })
 ) {
     val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
-    val context = LocalContext.current
-
     if (navigateMain) onBackClick()
+
+    var expandedGroup by mutableStateOf<InstallStepGroup?>(null)
+    LaunchedEffect(viewModel.currentStep) {
+        expandedGroup = viewModel.currentStep?.group
+    }
 
     Scaffold(
         topBar = {
@@ -70,13 +74,14 @@ fun InstallerScreen(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            if(
-                viewModel.steps[viewModel.currentStep]?.status == Status.ONGOING) LinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .padding(bottom = 4.dp)
-            )
+            if (viewModel.steps[viewModel.currentStep]?.status == InstallStatus.ONGOING) {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .padding(bottom = 4.dp)
+                )
+            }
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -85,48 +90,16 @@ fun InstallerScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                InstallStep(
-                    name = "Download APKs",
-                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.APK_DL,
-                    subSteps = listOf(
-                        viewModel.steps[InstallViewModel.Steps.DL_BASE_APK]!!,
-                        viewModel.steps[InstallViewModel.Steps.DL_LIBS_APK]!!,
-                        viewModel.steps[InstallViewModel.Steps.DL_LANG_APK]!!,
-                        viewModel.steps[InstallViewModel.Steps.DL_RESC_APK]!!
+                for (group in InstallStepGroup.values()) {
+                    InstallGroup(
+                        name = stringResource(group.nameResId),
+                        isCurrent = expandedGroup == group,
+                        onClick = { expandedGroup = group },
+                        subSteps = viewModel.getSteps(group)
                     )
-                )
-                InstallStep(
-                    name = "Download Libraries",
-                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.LIB_DL,
-                    subSteps = listOf(
-                        viewModel.steps[InstallViewModel.Steps.DL_HERMES]!!,
-                        viewModel.steps[InstallViewModel.Steps.DL_ALIUNATIVE]!!
-                    )
-                )
-                InstallStep(
-                    name = "Patch APKs",
-                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.PATCHING,
-                    subSteps = if(viewModel.preferences.replaceIcon) listOf(
-                        viewModel.steps[InstallViewModel.Steps.PATCH_APP_ICON]!!,
-                        viewModel.steps[InstallViewModel.Steps.PATCH_MANIFEST]!!,
-                        viewModel.steps[InstallViewModel.Steps.PATCH_DEX]!!,
-                        viewModel.steps[InstallViewModel.Steps.PATCH_LIBS]!!
-                    ) else listOf(
-                        viewModel.steps[InstallViewModel.Steps.PATCH_MANIFEST]!!,
-                        viewModel.steps[InstallViewModel.Steps.PATCH_DEX]!!,
-                        viewModel.steps[InstallViewModel.Steps.PATCH_LIBS]!!
-                    )
-                )
-                InstallStep(
-                    name = "Install",
-                    isCurrent = viewModel.currentCategory == InstallViewModel.StepCategory.INSTALLING,
-                    subSteps = listOf(
-                        viewModel.steps[InstallViewModel.Steps.SIGN_APK]!!,
-                        viewModel.steps[InstallViewModel.Steps.INSTALL_APK]!!
-                    )
-                )
+                }
 
-                if(viewModel.stacktrace.isNotEmpty()) {
+                if (viewModel.stacktrace.isNotEmpty()) {
                     SelectionContainer {
                         Text(
                             text = viewModel.stacktrace,
@@ -145,18 +118,15 @@ fun InstallerScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        OutlinedButton(onClick = {
-                            context.saveFile("Error ${SimpleDateFormat("hh-mm-s a MM-dd-YYYY").format(Date())}.log", "${viewModel.debugInfo}\n\n${viewModel.stacktrace}")
-                        }) {
-                            Text(text = stringResource(id = R.string.installer_save_file))
+                        OutlinedButton(onClick = viewModel::saveDebugToFile) {
+                            Text(stringResource(R.string.installer_save_file))
                         }
 
-                        FilledTonalButton(onClick = { context.copyText(viewModel.stacktrace) }) {
-                            Text(text = stringResource(id = R.string.installer_copy_text))
+                        FilledTonalButton(onClick = viewModel::copyDebugToClipboard) {
+                            Text(stringResource(R.string.action_copy))
                         }
                     }
                 }
-
             }
         }
     }

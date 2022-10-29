@@ -13,6 +13,7 @@ import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -103,7 +104,7 @@ class HomeViewModel(
         if (launchIntent != null) {
             application.startActivity(launchIntent)
         } else {
-            Toast.makeText(application, R.string.launch_aliucord_fail, Toast.LENGTH_LONG).show()
+            application.showToast(R.string.launch_aliucord_fail)
         }
     }
 
