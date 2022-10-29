@@ -74,6 +74,7 @@ class InstallViewModel(
             debugLogPath!!
         } else {
             "Aliucord Manager ${SimpleDateFormat("YYYY-MM-dd hh-mm-s a").format(Date())}.log"
+                .also { debugLogPath = it }
         }
 
         application.saveFile(name, "$debugInfo\n\n$stacktrace")
