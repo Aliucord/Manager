@@ -12,7 +12,7 @@
   <string name="action_retry">다시 시도</string>
   <string name="action_apply">적용</string>
   <string name="action_confirm">확인</string>
-  <string name="action_dismiss">닫기</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_install">설치</string>
   <string name="action_reinstall">다시 설치</string>
   <string name="action_update">업데이트</string>
@@ -65,8 +65,10 @@
   <string name="contributors_contributor">기여자</string>
   <string name="contributors_commit_title">§name§%1$s§ §middle§제작자§ §commit§%2$s§</string>
   <string name="selector_download_apk">APK 다운로드</string>
-  <string name="selector_select_apk">APK 선택</string>
-  <string name="selector_download_method">다운로드 방법</string>
+  <string name="selector_discord_type">Discord Type</string>
+  <string name="selector_discord_type_body">Aliucord supports both the old (Kotlin) and new (React Native) versions of Discord. Which type would you like to install? Note that these versions have different plugins!</string>
+  <string name="selector_discord_type_kotlin">New (Recommended)</string>
+  <string name="selector_discord_type_old">Old</string>
   <string name="network_load_fail">불러오지 못했어요</string>
   <string name="version_supported">지원하는 버전:</string>
   <string name="version_installed">설치된 버전:</string>
@@ -97,6 +99,11 @@
   <string name="install_step_dl_apk_resource">Downloading resource apk</string>
   <string name="install_step_dl_lib_hermes">Downloading hermes library</string>
   <string name="install_step_dl_lib_aliunative">Downloading AliucordNative library</string>
+  <string name="install_step_fetch_kt_version">Fetching target Discord version</string>
+  <string name="install_step_dl_kt_apk">Downloading Discord APK</string>
+  <string name="install_step_dl_kotlin">Downloading Kotlin library</string>
+  <string name="install_step_dl_injector">Downloading injector</string>
+  <string name="install_step_dl_aliuhook">Downloading Aliuhook library</string>
   <string name="status_success">Success</string>
   <string name="status_ongoing">Ongoing</string>
   <string name="status_failed">Failed</string>
