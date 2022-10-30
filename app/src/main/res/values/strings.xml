@@ -115,6 +115,11 @@
   <string name="install_step_dl_apk_resource">Downloading resource apk</string>
   <string name="install_step_dl_lib_hermes">Downloading hermes library</string>
   <string name="install_step_dl_lib_aliunative">Downloading AliucordNative library</string>
+  <string name="install_step_fetch_kt_version">Fetching target Discord version</string>
+  <string name="install_step_dl_kt_apk">Downloading Discord APK</string>
+  <string name="install_step_dl_kotlin">Downloading Kotlin library</string>
+  <string name="install_step_dl_injector">Downloading injector</string>
+  <string name="install_step_dl_aliuhook">Downloading Aliuhook library</string>
 
   <string name="status_success">Success</string>
   <string name="status_ongoing">Ongoing</string>

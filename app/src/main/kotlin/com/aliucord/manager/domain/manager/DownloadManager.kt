@@ -3,9 +3,11 @@ package com.aliucord.manager.domain.manager
 import android.app.Application
 import android.app.DownloadManager
 import android.content.*
+import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.network.service.GithubService
 import java.io.File
@@ -15,17 +17,13 @@ class DownloadManager(
     private val application: Application
 ) {
     private val downloadManager = application.getSystemService<DownloadManager>()!!
-    private val externalCacheDir = application.externalCacheDir!!
 
     // Discord APK downloading
     suspend fun downloadDiscordApk(version: String, out: File): File =
         download("$BACKEND_HOST/download/discord?v=$version", out)
 
-    suspend fun downloadDiscordApk(version: String): File =
-        download("$BACKEND_HOST/download/discord?v=$version", "base-$version.apk")
-
-    suspend fun downloadSplit(version: String, split: String): File =
-        download("$BACKEND_HOST/download/discord?v=$version&split=$split", "$split-$version.apk")
+    suspend fun downloadSplit(version: String, split: String, out: File): File =
+        download("$BACKEND_HOST/download/discord?v=$version&split=$split", out)
 
     // Aliucord Kotlin downloads
     suspend fun downloadKtInjector(out: File): File =
@@ -36,11 +34,6 @@ class DownloadManager(
 
     suspend fun downloadKotlinDex(out: File): File =
         download(GithubService.KOTLIN_DEX_URL, out)
-
-    // Generic downloading
-    @Deprecated("remove this and use the one with file once wing has finished his pr")
-    suspend fun download(url: String, fileName: String): File =
-        download(url, externalCacheDir.resolve(fileName))
 
     suspend fun download(url: String, out: File): File {
         return suspendCoroutine { continuation ->

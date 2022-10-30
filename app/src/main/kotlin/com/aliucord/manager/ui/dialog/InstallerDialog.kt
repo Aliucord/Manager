@@ -96,7 +96,7 @@ fun InstallerDialog(
 
                 // Buttons
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier.clip(MaterialTheme.shapes.large)
                 ) {
                     ProvideTextStyle(MaterialTheme.typography.labelMedium) {
