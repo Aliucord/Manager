@@ -2,9 +2,7 @@ package com.aliucord.manager.network.service
 
 import android.util.Log
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.network.utils.ApiError
-import com.aliucord.manager.network.utils.ApiFailure
-import com.aliucord.manager.network.utils.ApiResponse
+import com.aliucord.manager.network.utils.*
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -24,6 +22,10 @@ class HttpService(
 
             if (response.status.isSuccess()) {
                 body = response.bodyAsText()
+
+                if (T::class == String::class) {
+                    return ApiResponse.Success(body as T)
+                }
 
                 ApiResponse.Success(json.decodeFromString<T>(body))
             } else {

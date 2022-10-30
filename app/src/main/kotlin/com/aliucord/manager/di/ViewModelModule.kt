@@ -9,6 +9,6 @@ val viewModelModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::PluginsViewModel)
     viewModelOf(::AboutViewModel)
-    viewModel { params -> InstallViewModel(get(), get(), get(), get(), params.get()) }
+    viewModelOf(::InstallViewModel)
     viewModelOf(::SettingsViewModel)
 }

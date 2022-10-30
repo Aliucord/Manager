@@ -1,5 +1,6 @@
 package com.aliucord.manager.di
 
+import android.app.Application
 import android.content.Context
 import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
@@ -11,7 +12,7 @@ val managerModule = module {
         return PreferencesManager(context.getSharedPreferences("preferences", Context.MODE_PRIVATE))
     }
 
-    fun provideDownloadManager(context: Context) = DownloadManager(context)
+    fun provideDownloadManager(application: Application) = DownloadManager(application)
 
     singleOf(::providePreferences)
     singleOf(::provideDownloadManager)
