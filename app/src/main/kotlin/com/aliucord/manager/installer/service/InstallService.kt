@@ -13,7 +13,8 @@ class InstallService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         when (val statusCode = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)) {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
-                val confirmationIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)!!
+                @Suppress("DEPRECATION") // No.
+                val confirmationIntent = intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)!!
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
                 startActivity(confirmationIntent)
@@ -29,7 +30,6 @@ class InstallService : Service() {
         }
 
         stopSelf()
-
         return START_NOT_STICKY
     }
 
