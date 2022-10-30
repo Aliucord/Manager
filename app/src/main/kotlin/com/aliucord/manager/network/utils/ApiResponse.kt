@@ -54,6 +54,13 @@ inline fun <T> ApiResponse<T>.getOrThrow(): T {
     )
 }
 
+inline fun <T> ApiResponse<T>.getOrNull(): T? {
+    return fold(
+        success = { it },
+        fail = { null }
+    )
+}
+
 @Suppress("UNCHECKED_CAST")
 inline fun <T, R> ApiResponse<T>.chain(block: (T) -> ApiResponse<R>): ApiResponse<R> {
     return if (this !is ApiResponse.Success) {

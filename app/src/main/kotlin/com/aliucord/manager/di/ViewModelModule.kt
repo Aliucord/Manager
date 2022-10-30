@@ -11,4 +11,5 @@ val viewModelModule = module {
     viewModelOf(::AboutViewModel)
     viewModelOf(::InstallViewModel)
     viewModelOf(::SettingsViewModel)
+    viewModelOf(::UpdaterViewModel)
 }
