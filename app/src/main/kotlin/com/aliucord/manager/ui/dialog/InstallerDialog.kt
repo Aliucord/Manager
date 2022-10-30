@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screen.InstallData
 
@@ -102,6 +103,7 @@ fun InstallerDialog(
                     ProvideTextStyle(MaterialTheme.typography.labelMedium) {
                         Button(
                             shape = MaterialTheme.shapes.extraSmall,
+                            enabled = BuildConfig.RN_ENABLED,
                             onClick = {
                                 discordType = DiscordType.REACT_NATIVE
                                 triggerConfirm()
