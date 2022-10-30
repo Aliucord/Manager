@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">Android Discord 앱의 개조판</string>
   <string name="aliucord">Aliucord</string>
@@ -23,11 +23,12 @@
   <string name="action_open_settings">설정 열기</string>
   <string name="action_search">검색</string>
   <string name="action_loading_trailing">불러오는 중...</string>
+  <string name="action_copy">Copy</string>
+  <string name="action_collapse">Collapse</string>
+  <string name="action_expand">Expand</string>
+  <string name="action_copied">Copied!</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, manager가 작동하려면 권한이 필요해요.</string>
-  <string name="install_success">Aliucord 설치 완료</string>
-  <string name="install_aborted">Aliucord 설치 중단</string>
-  <string name="install_failed">오류로 인한 설치 실패: %o</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
   <string name="settings_theme">테마</string>
   <string name="settings_advanced">고급 설정</string>
@@ -73,4 +74,31 @@
   <string name="version_beta">베타</string>
   <string name="version_alpha">알파</string>
   <string name="version_load_fail">버전을 가져오지 못했어요</string>
+  <string name="installer_save_file">Save to file</string>
+  <string name="installer_file_save_success">Saved to %s</string>
+  <string name="installer_file_save_failed">Failed to save %s</string>
+  <string name="installer_cached">(Cached)</string>
+  <string name="installer_success">Successfully installed Aliucord</string>
+  <string name="installer_aborted">Aborted Aliucord installation</string>
+  <string name="installer_failed">Installation failed with error %o</string>
+  <string name="install_group_apk_dl">Download APKs</string>
+  <string name="install_group_lib_dl">Download Libraries</string>
+  <string name="install_group_patch">Patch APKs</string>
+  <string name="install_group_install">Install</string>
+  <string name="install_step_patch_icons">Patching app icons</string>
+  <string name="install_step_patch_manifests">Patching apk manifests</string>
+  <string name="install_step_patch_dex">Adding aliucord dex into apk</string>
+  <string name="install_step_patch_libs">Replacing libraries</string>
+  <string name="install_step_signing">Signing APKs</string>
+  <string name="install_step_installing">Installing APKs</string>
+  <string name="install_step_dl_apk_base">Downloading base apk</string>
+  <string name="install_step_dl_apk_lib">Downloading libraries apk</string>
+  <string name="install_step_dl_apk_locale">Downloading locale apk</string>
+  <string name="install_step_dl_apk_resource">Downloading resource apk</string>
+  <string name="install_step_dl_lib_hermes">Downloading hermes library</string>
+  <string name="install_step_dl_lib_aliunative">Downloading AliucordNative library</string>
+  <string name="status_success">Success</string>
+  <string name="status_ongoing">Ongoing</string>
+  <string name="status_failed">Failed</string>
+  <string name="status_queued">Queued</string>
 </resources>
