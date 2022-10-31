@@ -13,6 +13,7 @@
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>
   <string name="action_cancel">Cancel</string>
+  <string name="action_dismiss">Dismiss</string>
   <string name="action_install">Install</string>
   <string name="action_reinstall">Reinstall</string>
   <string name="action_update">Update</string>
@@ -108,4 +109,6 @@
   <string name="status_ongoing">Ongoing</string>
   <string name="status_failed">Failed</string>
   <string name="status_queued">Queued</string>
+  <string name="updater_body">A new update has been released for Aliucord Manager! It may be required in order to function properly. Would you like to update?</string>
+  <string name="updater_title">Update to %1$s</string>
 </resources>
