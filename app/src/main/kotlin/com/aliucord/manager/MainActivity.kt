@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.ui.dialog.StoragePermissionsDialog
+import com.aliucord.manager.ui.dialog.UpdaterDialog
 import com.aliucord.manager.ui.navigation.AppDestination
 import com.aliucord.manager.ui.navigation.HomeDestination
 import com.aliucord.manager.ui.screen.*
@@ -53,6 +54,15 @@ class MainActivity : ComponentActivity() {
                 }
 
                 StoragePermissionsDialog()
+
+                @Suppress("KotlinConstantConditions")
+                if (
+                    BuildConfig.GIT_BRANCH == "release" &&
+                    !BuildConfig.GIT_LOCAL_CHANGES &&
+                    !BuildConfig.GIT_LOCAL_COMMITS
+                ) {
+                    UpdaterDialog()
+                }
 
                 Taxi(
                     modifier = Modifier.fillMaxSize(),

@@ -1,9 +1,6 @@
 package com.aliucord.manager.network.service
 
-import com.aliucord.manager.network.dto.Commit
-import com.aliucord.manager.network.dto.GithubRelease
-import com.aliucord.manager.network.dto.GithubUser
-import com.aliucord.manager.network.dto.Version
+import com.aliucord.manager.network.dto.*
 import com.aliucord.manager.network.utils.ApiResponse
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
@@ -43,11 +40,18 @@ class GithubService(
         }
     }
 
+    suspend fun getManagerReleases(): ApiResponse<List<GithubRelease>> = withContext(Dispatchers.IO) {
+        http.request {
+            url(MANAGER_RELEASES_URL)
+        }
+    }
+
     companion object {
         private const val ORG = "Aliucord"
         private const val REPO = "Aliucord"
         private const val HERMES_REPO = "Hermes"
         private const val NATIVE_REPO = "AliucordNative"
+        private const val MANAGER_REPO = "AliucordManager"
 
         private const val COMMITS_URL = "https://api.github.com/repos/$ORG/$REPO/commits"
         private const val CONTRIBUTORS_URL = "https://api.github.com/repos/$ORG/$REPO/contributors"
@@ -58,5 +62,7 @@ class GithubService(
 
         private const val HERMES_RELEASES_URL = "https://api.github.com/repos/$ORG/$HERMES_REPO/releases"
         private const val ALIUCORD_NATIVE_RELEASES_URL = "https://api.github.com/repos/$ORG/$NATIVE_REPO/releases"
+
+        const val MANAGER_RELEASES_URL = "https://api.github.com/repos/$ORG/$MANAGER_REPO/releases"
     }
 }

@@ -3,11 +3,9 @@ package com.aliucord.manager.domain.manager
 import android.app.Application
 import android.app.DownloadManager
 import android.content.*
-import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.network.service.GithubService
 import java.io.File

@@ -15,6 +15,6 @@ class GithubRepository(
     suspend fun getDiscordKtVersion() = service.getVersion()
 
     suspend fun getHermesReleases() = service.getHermesReleases()
-
     suspend fun getAliucordNativeReleases() = service.getAliucordNativeReleases()
+    suspend fun getManagerReleases() = service.getManagerReleases()
 }

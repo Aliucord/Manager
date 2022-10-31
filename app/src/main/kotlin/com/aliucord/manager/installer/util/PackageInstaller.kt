@@ -9,6 +9,9 @@ import android.os.Build
 import com.aliucord.manager.installer.service.InstallService
 import java.io.File
 
+fun Application.installApks(vararg apks: File) =
+    packageManager.packageInstaller.installApks(this, *apks)
+
 fun PackageInstaller.installApks(application: Application, vararg apks: File) {
     val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
     val sessionId = createSession(params)
