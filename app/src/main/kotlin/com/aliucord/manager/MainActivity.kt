@@ -54,7 +54,15 @@ class MainActivity : ComponentActivity() {
                 }
 
                 StoragePermissionsDialog()
-                UpdaterDialog()
+
+                @Suppress("KotlinConstantConditions")
+                if (
+                    BuildConfig.GIT_BRANCH == "release" &&
+                    !BuildConfig.GIT_LOCAL_CHANGES &&
+                    !BuildConfig.GIT_LOCAL_COMMITS
+                ) {
+                    UpdaterDialog()
+                }
 
                 Taxi(
                     modifier = Modifier.fillMaxSize(),

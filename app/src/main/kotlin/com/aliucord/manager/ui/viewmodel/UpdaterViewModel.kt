@@ -46,11 +46,9 @@ class UpdaterViewModel(
 
                 downloadManager.download(url, this)
                 application.installApks(this)
-
-                delay(2000)
-                showDialog = false
-
                 delay(10000)
+
+                showDialog = false
                 delete()
             }
 
