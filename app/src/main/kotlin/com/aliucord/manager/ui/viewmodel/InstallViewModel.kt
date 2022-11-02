@@ -25,8 +25,8 @@ import com.github.diamondminer88.zip.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.ExperimentalTime
@@ -212,12 +212,12 @@ class InstallViewModel(
             }
         }
 
-        // Download hermes & cppruntime lib
+        // Download hermes & c++ runtime lib
         val (hermesLibrary, cppRuntimeLibrary) = step(InstallStep.DL_HERMES) {
             // Fetch gh releases for Aliucord/Hermes
             val latestHermesRelease = githubRepository.getHermesReleases().fold(
                 success = { releases ->
-                    releases.maxBy { Instant.parse(it.createdAt) }
+                    releases.maxBy { DateFormat.getDateTimeInstance().parse(it.createdAt) }
                 },
                 fail = { throw it }
             )
@@ -248,7 +248,7 @@ class InstallViewModel(
             // Fetch the gh releases for Aliucord/AliucordNative
             val latestAliucordNativeRelease = githubRepository.getAliucordNativeReleases().fold(
                 success = { releases ->
-                    releases.maxBy { Instant.parse(it.createdAt) }
+                    releases.maxBy { DateFormat.getDateTimeInstance().parse(it.createdAt) }
                 },
                 fail = { throw it }
             )
