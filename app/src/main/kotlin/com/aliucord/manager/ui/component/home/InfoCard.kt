@@ -1,8 +1,6 @@
 package com.aliucord.manager.ui.component.home
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,13 +13,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.viewmodel.HomeViewModel.VersionType
 
 @Composable
 fun InfoCard(
     packageName: String,
     supportedVersion: String,
-    @StringRes supportedVersionType: Int,
+    supportedVersionType: VersionType,
     currentVersion: String,
+    currentVersionType: VersionType,
     onDownloadClick: () -> Unit,
     onUninstallClick: () -> Unit,
     onLaunchClick: () -> Unit
@@ -44,16 +44,22 @@ fun InfoCard(
                     append(stringResource(R.string.version_supported))
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(" ")
-                        append(supportedVersion)
-                        append(" - ")
-                        append(stringResource(supportedVersionType))
+                        if (supportedVersion.isNotEmpty()) {
+                            append(supportedVersion)
+                            append(" - ")
+                        }
+                        append(supportedVersionType.toDisplayName())
                     }
 
                     append('\n')
                     append(stringResource(R.string.version_installed))
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(" ")
-                        append(currentVersion)
+                        if (currentVersion.isNotEmpty()) {
+                            append(currentVersion)
+                            append(" - ")
+                        }
+                        append(currentVersionType.toDisplayName())
                     }
                 },
                 style = MaterialTheme.typography.bodyMedium
@@ -65,9 +71,8 @@ fun InfoCard(
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
                 val (icon, description) = when (currentVersion) {
-                    "-" -> Icons.Default.Download to R.string.action_install
+                    "" -> Icons.Default.Download to R.string.action_install
                     supportedVersion -> Icons.Default.Refresh to R.string.action_reinstall
                     else -> Icons.Default.Update to R.string.action_update
                 }
@@ -77,7 +82,8 @@ fun InfoCard(
                         .weight(1f)
                         .heightIn(min = 50.dp),
                     onClick = onDownloadClick,
-                    shape = ShapeDefaults.Large
+                    shape = ShapeDefaults.Large,
+                    enabled = supportedVersionType != VersionType.ERROR
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -87,14 +93,16 @@ fun InfoCard(
                             imageVector = icon,
                             contentDescription = stringResource(description)
                         )
-                        if (currentVersion == "-") Text(
-                            stringResource(description),
-                            style = MaterialTheme.typography.labelLarge
-                        )
+                        if (!currentVersionType.isVersion()) {
+                            Text(
+                                stringResource(description),
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                        }
                     }
                 }
 
-                if (currentVersion != "-") {
+                if (currentVersionType.isVersion()) {
                     FilledTonalIconButton(
                         modifier = Modifier
                             .weight(1f)

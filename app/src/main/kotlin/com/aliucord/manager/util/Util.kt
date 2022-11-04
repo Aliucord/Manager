@@ -1,8 +1,6 @@
 package com.aliucord.manager.util
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.*
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
@@ -36,4 +34,13 @@ fun Context.saveFile(name: String, text: String): File? {
 
 fun Context.showToast(@StringRes text: Int, vararg args: Any, length: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, this.getString(text, *args), length).show()
+}
+
+/**
+ * @return (versionName, versionCode)
+ */
+fun Context.getPackageVersionCode(pkg: String): Pair<String, Int> {
+    @Suppress("DEPRECATION")
+    return packageManager.getPackageInfo(pkg, 0)
+        .let { it.versionName to it.versionCode }
 }

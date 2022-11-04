@@ -3,34 +3,37 @@ package com.aliucord.manager.ui.viewmodel
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
+import android.util.Log
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.util.getPackageVersionCode
 import com.aliucord.manager.util.showToast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class HomeViewModel(
     private val application: Application,
     private val githubRepository: GithubRepository,
     val preferences: PreferencesManager
 ) : ViewModel() {
-    private val packageManager = application.packageManager
-
     var supportedVersion by mutableStateOf("")
         private set
 
-    var supportedVersionType by mutableStateOf(R.string.version_unknown)
+    var supportedVersionType by mutableStateOf(VersionType.NONE)
         private set
 
     var installedVersion by mutableStateOf("")
+        private set
+
+    var installedVersionType by mutableStateOf(VersionType.NONE)
         private set
 
     val commits = Pager(PagingConfig(pageSize = 30)) {
@@ -61,14 +64,24 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            _fetchInstalledVersion()
             _fetchSupportedVersion()
+        }
+    }
 
-            installedVersion = try {
-                @Suppress("DEPRECATION")
-                packageManager.getPackageInfo(preferences.packageName, 0).versionName
-            } catch (th: Throwable) {
-                // TODO: translated error message
-                "-"
+    private suspend fun _fetchInstalledVersion() {
+        try {
+            val (versionName, versionCode) = application.getPackageVersionCode(preferences.packageName)
+
+            withContext(Dispatchers.Main) {
+                installedVersion = versionName.split("-")[0].trim()
+                installedVersionType = VersionType.parseVersionCode(versionCode)
+            }
+        } catch (t: Throwable) {
+            Log.e(BuildConfig.TAG, Log.getStackTraceString(t))
+
+            withContext(Dispatchers.Main) {
+                installedVersionType = VersionType.ERROR
             }
         }
     }
@@ -76,20 +89,17 @@ class HomeViewModel(
     private suspend fun _fetchSupportedVersion() {
         val version = githubRepository.getDiscordKtVersion()
 
-        version.fold(
-            success = {
-                supportedVersion = it.versionName
-                supportedVersionType = when (it.versionCode[3]) {
-                    '0' -> R.string.version_stable
-                    '1' -> R.string.version_beta
-                    '2' -> R.string.version_alpha
-                    else -> R.string.version_unknown
+        withContext(Dispatchers.Main) {
+            version.fold(
+                success = {
+                    supportedVersion = it.versionName
+                    supportedVersionType = VersionType.parseVersionCode(it.versionCode.toIntOrNull())
+                },
+                fail = {
+                    supportedVersionType = VersionType.ERROR
                 }
-            },
-            fail = {
-                supportedVersionType = R.string.version_load_fail
-            }
-        )
+            )
+        }
     }
 
     fun fetchSupportedVersion() {
@@ -99,7 +109,8 @@ class HomeViewModel(
     }
 
     fun launchAliucord() {
-        val launchIntent = packageManager.getLaunchIntentForPackage(preferences.packageName)
+        val launchIntent = application.packageManager
+            .getLaunchIntentForPackage(preferences.packageName)
 
         if (launchIntent != null) {
             application.startActivity(launchIntent)
@@ -115,5 +126,42 @@ class HomeViewModel(
         }
 
         application.startActivity(uninstallIntent)
+    }
+
+    enum class VersionType {
+        STABLE,
+        BETA,
+        ALPHA,
+        UNKNOWN,
+        NONE,
+        ERROR;
+
+        fun isVersion(): Boolean = when (this) {
+            STABLE -> true
+            BETA -> true
+            ALPHA -> true
+            else -> false
+        }
+
+        @Composable
+        fun toDisplayName() = when (this) {
+            UNKNOWN -> stringResource(R.string.version_unknown)
+            STABLE -> stringResource(R.string.version_stable)
+            BETA -> stringResource(R.string.version_beta)
+            ALPHA -> stringResource(R.string.version_alpha)
+            ERROR -> stringResource(R.string.version_load_fail)
+            NONE -> stringResource(R.string.version_unknown)
+        }
+
+        companion object {
+            fun parseVersionCode(versionCode: Int?): VersionType {
+                return when (versionCode?.toString()?.get(3)) {
+                    '0' -> STABLE
+                    '1' -> BETA
+                    '2' -> ALPHA
+                    else -> UNKNOWN
+                }
+            }
+        }
     }
 }
