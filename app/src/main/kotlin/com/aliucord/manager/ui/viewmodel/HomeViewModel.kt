@@ -155,10 +155,10 @@ class HomeViewModel(
 
         companion object {
             fun parseVersionCode(versionCode: Int?): VersionType {
-                return when (versionCode?.toString()?.get(3)) {
-                    '0' -> STABLE
-                    '1' -> BETA
-                    '2' -> ALPHA
+                return when (versionCode?.div(100)?.mod(10)) {
+                    0 -> STABLE
+                    1 -> BETA
+                    2 -> ALPHA
                     else -> UNKNOWN
                 }
             }
