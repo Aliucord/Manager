@@ -21,7 +21,7 @@ import kotlinx.coroutines.*
 
 class HomeViewModel(
     private val application: Application,
-    private val githubRepository: GithubRepository,
+    private val github: GithubRepository,
     val preferences: PreferencesManager
 ) : ViewModel() {
     var supportedVersion by mutableStateOf("")
@@ -41,7 +41,7 @@ class HomeViewModel(
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Commit> {
                 val page = params.key ?: 0
 
-                return githubRepository.getCommits(page).fold(
+                return github.getCommits(page).fold(
                     success = { commits ->
                         val prevKey = if (page > 0) page - 1 else null
                         val nextKey = if (commits.isNotEmpty()) page + 1 else null
@@ -87,7 +87,7 @@ class HomeViewModel(
     }
 
     private suspend fun _fetchSupportedVersion() {
-        val version = githubRepository.getDiscordKtVersion()
+        val version = github.getDataJson()
 
         withContext(Dispatchers.Main) {
             version.fold(
