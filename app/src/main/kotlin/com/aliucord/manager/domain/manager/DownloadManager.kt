@@ -7,7 +7,7 @@ import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.network.service.GithubService
+import com.aliucord.manager.network.service.AliucordGithubService
 import java.io.File
 import kotlin.coroutines.*
 
@@ -25,13 +25,13 @@ class DownloadManager(
 
     // Aliucord Kotlin downloads
     suspend fun downloadKtInjector(out: File): File =
-        download(GithubService.KT_INJECTOR_URL, out)
+        download(AliucordGithubService.KT_INJECTOR_URL, out)
 
     suspend fun downloadAliuhook(version: String, out: File): File =
         download(AliucordMavenRepository.getAliuhookUrl(version), out)
 
     suspend fun downloadKotlinDex(out: File): File =
-        download(GithubService.KOTLIN_DEX_URL, out)
+        download(AliucordGithubService.KOTLIN_DEX_URL, out)
 
     suspend fun download(url: String, out: File): File {
         return suspendCoroutine { continuation ->

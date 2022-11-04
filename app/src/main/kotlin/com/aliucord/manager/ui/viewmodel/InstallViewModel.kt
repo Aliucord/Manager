@@ -215,12 +215,7 @@ class InstallViewModel(
         // Download hermes & c++ runtime lib
         val (hermesLibrary, cppRuntimeLibrary) = step(InstallStep.DL_HERMES) {
             // Fetch gh releases for Aliucord/Hermes
-            val latestHermesRelease = githubRepository.getHermesReleases().fold(
-                success = { releases ->
-                    releases.maxBy { DateFormat.getDateTimeInstance().parse(it.createdAt) }
-                },
-                fail = { throw it }
-            )
+            val latestHermesRelease = githubRepository.getHermesRelease().getOrThrow()
 
             // Download the hermes-release.aar file to replace in the apk
             val hermes = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
@@ -246,12 +241,7 @@ class InstallViewModel(
         // Download Aliucord Native lib
         val aliucordDexFile = step(InstallStep.DL_ALIUNATIVE) {
             // Fetch the gh releases for Aliucord/AliucordNative
-            val latestAliucordNativeRelease = githubRepository.getAliucordNativeReleases().fold(
-                success = { releases ->
-                    releases.maxBy { DateFormat.getDateTimeInstance().parse(it.createdAt) }
-                },
-                fail = { throw it }
-            )
+            val latestAliucordNativeRelease = githubRepository.getAliucordNativeRelease().getOrThrow()
 
             // Download the Aliucord classes.dex file to add to the apk
             externalCacheDir.resolve("aliucord-${latestAliucordNativeRelease.tagName}.dex").also { file ->
@@ -389,7 +379,7 @@ class InstallViewModel(
         }
 
         val dataJson = step(InstallStep.FETCH_KT_VERSION) {
-            githubRepository.getDiscordKtVersion().getOrThrow()
+            githubRepository.getDataJson().getOrThrow()
         }
 
         val arch = Build.SUPPORTED_ABIS.first()
