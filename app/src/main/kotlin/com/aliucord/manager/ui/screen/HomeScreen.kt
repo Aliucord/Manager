@@ -44,6 +44,7 @@ fun HomeScreen(
             supportedVersion = viewModel.supportedVersion,
             supportedVersionType = viewModel.supportedVersionType,
             currentVersion = viewModel.installedVersion,
+            currentVersionType = viewModel.installedVersionType,
             onDownloadClick = { showInstallerDialog = true },
             onLaunchClick = viewModel::launchAliucord,
             onUninstallClick = viewModel::uninstallAliucord
