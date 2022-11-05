@@ -41,6 +41,9 @@ class InstallViewModel(
 
     var returnToHome by mutableStateOf(false)
 
+    var isFinished by mutableStateOf(false)
+        private set
+
     var stacktrace by mutableStateOf("")
         private set
 
@@ -77,6 +80,11 @@ class InstallViewModel(
         application.saveFile(name, "$debugInfo\n\n$stacktrace")
     }
 
+    fun clearCache() {
+        externalCacheDir.deleteRecursively()
+        application.showToast(R.string.action_cleared_cache)
+    }
+
     private val installJob = viewModelScope.launch(Dispatchers.Main) {
         if (installationRunning.getAndSet(true)) {
             return@launch
@@ -89,6 +97,7 @@ class InstallViewModel(
                     DiscordType.KOTLIN -> installKotlin()
                 }
 
+                isFinished = true
                 delay(20000)
                 returnToHome = true
             } catch (t: Throwable) {

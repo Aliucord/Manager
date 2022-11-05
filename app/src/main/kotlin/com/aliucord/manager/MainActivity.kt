@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                             when (dest) {
                                 is AppDestination.Home -> HomeScreen(
                                     onClickInstall = { data ->
-                                        navController.replaceAll(AppDestination.Install(data))
+                                        navController.navigate(AppDestination.Install(data))
                                     }
                                 )
                                 is AppDestination.Plugins -> PluginsScreen()

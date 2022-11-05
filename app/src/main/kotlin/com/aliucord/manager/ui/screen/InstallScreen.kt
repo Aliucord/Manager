@@ -17,7 +17,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -27,12 +26,9 @@ import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.dialog.DownloadMethod
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
 import com.aliucord.manager.ui.viewmodel.InstallViewModel.InstallStepGroup
-import com.aliucord.manager.util.copyToClipboard
-import com.aliucord.manager.util.saveFile
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
-import java.text.SimpleDateFormat
 import java.util.*
 
 @Parcelize
@@ -99,6 +95,17 @@ fun InstallerScreen(
                     )
                 }
 
+                if (viewModel.isFinished && viewModel.stacktrace.isEmpty()) {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        FilledTonalButton(onClick = viewModel::clearCache) {
+                            Text(stringResource(R.string.setting_clear_cache))
+                        }
+                    }
+                }
+
                 if (viewModel.stacktrace.isNotEmpty()) {
                     SelectionContainer {
                         Text(
@@ -118,6 +125,12 @@ fun InstallerScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        FilledTonalButton(onClick = viewModel::clearCache) {
+                            Text(stringResource(R.string.setting_clear_cache))
+                        }
+
+                        Spacer(Modifier.weight(1f, true))
+
                         OutlinedButton(onClick = viewModel::saveDebugToFile) {
                             Text(stringResource(R.string.installer_save_file))
                         }
