@@ -206,13 +206,12 @@ class InstallViewModel(
 
         // Download the drawables split
         val resApkFile = step(InstallStep.DL_RESC_APK) {
-            // TODO: download the appropriate dpi res apk
             discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
                     version = supportedVersion,
-                    split = "config.xxhdpi",
+                    split = "config.${DisplayUtils.getDpiName(application)}",
                     out = file
                 )
 
