@@ -72,7 +72,7 @@ fun Changelog(
         icon = {
             Icon(
                 imageVector = Icons.Default.History,
-                contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
+                contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name)
             )
         },
         title = { Text(plugin.manifest.name) },
@@ -85,7 +85,7 @@ fun Changelog(
                             .heightIn(max = 90.dp)
                             .clip(RoundedCornerShape(14.dp)),
                         model = mediaUrl,
-                        contentDescription = stringResource(R.string.changelog_media)
+                        contentDescription = stringResource(R.string.plugins_changelog_media)
                     )
                 }
 
@@ -156,7 +156,7 @@ fun Changelog(
         },
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text(stringResource(R.string.close))
+                Text(stringResource(R.string.action_close))
             }
         }
     )

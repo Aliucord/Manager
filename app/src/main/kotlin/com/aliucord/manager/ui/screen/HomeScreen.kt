@@ -6,15 +6,12 @@
 
 package com.aliucord.manager.ui.screen
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.ui.component.home.CommitList
 import com.aliucord.manager.ui.component.home.InfoCard
-import com.aliucord.manager.ui.dialog.DownloadMethod
 import com.aliucord.manager.ui.dialog.InstallerDialog
 import com.aliucord.manager.ui.viewmodel.HomeViewModel
 import org.koin.androidx.compose.getViewModel
@@ -24,26 +21,14 @@ fun HomeScreen(
     viewModel: HomeViewModel = getViewModel(),
     onClickInstall: (InstallData) -> Unit
 ) {
-    var showOptionsDialog by remember { mutableStateOf(false) }
+    var showInstallerDialog by remember { mutableStateOf(false) }
 
-    if (showOptionsDialog) {
-        val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            if (uri == null) return@rememberLauncherForActivityResult
-
-            onClickInstall(
-                InstallData(
-                    DownloadMethod.SELECT,
-                )
-            )
-        }
-
+    if (showInstallerDialog) {
         InstallerDialog(
-            onDismissRequest = { showOptionsDialog = false },
+            onDismiss = { showInstallerDialog = false },
             onConfirm = { data ->
-                when (data.downloadMethod) {
-                    DownloadMethod.SELECT -> filePicker.launch(arrayOf("application/octet-stream"))
-                    DownloadMethod.DOWNLOAD -> onClickInstall(data)
-                }
+                showInstallerDialog = false
+                onClickInstall(data)
             }
         )
     }
@@ -57,24 +42,17 @@ fun HomeScreen(
         InfoCard(
             packageName = viewModel.preferences.packageName,
             supportedVersion = viewModel.supportedVersion,
+            supportedVersionType = viewModel.supportedVersionType,
             currentVersion = viewModel.installedVersion,
-            onDownloadClick = {
-                if (viewModel.preferences.devMode) {
-                    showOptionsDialog = true
-                } else {
-                    onClickInstall(
-                        InstallData(
-                            DownloadMethod.DOWNLOAD,
-                        )
-                    )
-                }
-            },
+            currentVersionType = viewModel.installedVersionType,
+            onDownloadClick = { showInstallerDialog = true },
             onLaunchClick = viewModel::launchAliucord,
             onUninstallClick = viewModel::uninstallAliucord
         )
 
         CommitList(
-            commits = viewModel.commits
+            commits = viewModel.commits,
+            onRetry = { viewModel.fetchSupportedVersion() }
         )
     }
 }

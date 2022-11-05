@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.model.Plugin
+import com.aliucord.manager.ui.util.annotatingStringResource
 import com.aliucord.manager.ui.util.joinToAnnotatedString
 
 @Composable
@@ -48,15 +49,19 @@ fun PluginCard(
             Column {
                 // Name
                 Text(
-                    buildAnnotatedString {
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(plugin.manifest.name)
+                    annotatingStringResource(
+                        R.string.plugins_plugin_title,
+                        plugin.manifest.name,
+                        plugin.manifest.version
+                    ) {
+                        when (it) {
+                            "plugin" -> SpanStyle(fontWeight = FontWeight.Bold)
+                            else -> null
                         }
-
-                        append(" v${plugin.manifest.version}")
                     }
                 )
 
+                // TODO: make this translatable
                 // Authors
                 val authors = buildAnnotatedString {
                     withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
@@ -139,7 +144,7 @@ fun PluginCard(
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             imageVector = Icons.Default.History,
-                            contentDescription = stringResource(R.string.view_plugin_changelog, plugin.manifest.name)
+                            contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name)
                         )
                     }
                 }
@@ -150,7 +155,7 @@ fun PluginCard(
                     Icon(
                         modifier = Modifier.fillMaxSize(),
                         imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.uninstall),
+                        contentDescription = stringResource(R.string.action_uninstall),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }

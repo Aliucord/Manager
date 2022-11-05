@@ -5,8 +5,9 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.R
+import com.aliucord.manager.util.showToast
 
 class InstallService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -19,26 +20,16 @@ class InstallService : Service() {
                 startActivity(confirmationIntent)
             }
 
-            PackageInstaller.STATUS_SUCCESS -> Toast.makeText(
-                this,
-                "Successfully installed Aliucord!",
-                Toast.LENGTH_LONG
-            ).show()
-
-            PackageInstaller.STATUS_FAILURE_ABORTED -> Toast.makeText(
-                this,
-                "Aborted installation",
-                Toast.LENGTH_LONG
-            ).show()
+            PackageInstaller.STATUS_SUCCESS -> showToast(R.string.installer_success)
+            PackageInstaller.STATUS_FAILURE_ABORTED -> showToast(R.string.installer_aborted)
 
             else -> {
-                Log.i(BuildConfig.TAG, "Installation failed: error code $statusCode")
-                Toast.makeText(this, "Failed: Error $statusCode", Toast.LENGTH_LONG).show()
+                Log.i(BuildConfig.TAG, "Install failed with error code $statusCode")
+                showToast(R.string.installer_failed, statusCode)
             }
         }
 
         stopSelf()
-
         return START_NOT_STICKY
     }
 

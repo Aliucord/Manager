@@ -42,31 +42,31 @@ fun SettingsScreen(
             )
         }
 
-        SettingsHeader(stringResource(R.string.appearance))
+        SettingsHeader(stringResource(R.string.settings_appearance))
 
         SettingsItem(
             modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
             icon = { Icon(Icons.Default.Style, null) },
-            text = { Text(stringResource(R.string.theme)) }
+            text = { Text(stringResource(R.string.settings_theme)) }
         ) {
             FilledTonalButton(onClick = viewModel::showThemeDialog) {
-                Text(preferences.theme.displayName)
+                Text(preferences.theme.toDisplayName())
             }
         }
 
         SettingsSwitch(
-            label = stringResource(R.string.dynamic_color),
+            label = stringResource(R.string.setting_dynamic_color),
             pref = preferences.dynamicColor,
             icon = { Icon(Icons.Default.Palette, null) }
         ) {
             preferences.dynamicColor = it
         }
 
-        SettingsHeader(stringResource(R.string.advanced))
+        SettingsHeader(stringResource(R.string.settings_advanced))
 
         SettingsSwitch(
-            label = stringResource(R.string.replace_bg),
-            secondaryLabel = stringResource(R.string.replace_bg_description),
+            label = stringResource(R.string.setting_replace_icon),
+            secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
             pref = preferences.replaceIcon,
             icon = { Icon(Icons.Default.AppShortcut, null) }
         ) {
@@ -76,13 +76,13 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         SettingsTextField(
-            label = stringResource(R.string.app_name_setting),
+            label = stringResource(R.string.setting_app_name),
             pref = preferences.appName,
             onPrefChange = viewModel::setAppName
         )
 
         SettingsSwitch(
-            label = stringResource(R.string.developer_options),
+            label = stringResource(R.string.settings_developer_options),
             pref = preferences.devMode,
             icon = { Icon(Icons.Default.Code, null) }
         ) {
@@ -98,21 +98,21 @@ fun SettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 SettingsTextField(
-                    label = stringResource(R.string.package_name),
+                    label = stringResource(R.string.setting_package_name),
                     pref = preferences.packageName,
                     onPrefChange = viewModel::setPackageName,
                     error = viewModel.packageNameError
                 )
 
                 SettingsTextField(
-                    label = stringResource(R.string.version),
+                    label = stringResource(R.string.setting_target_version),
                     pref = preferences.version,
                     onPrefChange = viewModel::setVersion
                 )
 
                 SettingsSwitch(
-                    label = stringResource(R.string.debuggable),
-                    secondaryLabel = stringResource(R.string.debuggable_description),
+                    label = stringResource(R.string.setting_debuggable),
+                    secondaryLabel = stringResource(R.string.setting_debuggable_desc),
                     pref = preferences.debuggable,
                     icon = { Icon(Icons.Default.BugReport, null) }
                 ) {
@@ -129,7 +129,7 @@ fun SettingsScreen(
             onClick = viewModel::clearCacheDir
         ) {
             Text(
-                text = stringResource(R.string.clear_cache),
+                text = stringResource(R.string.setting_clear_cache),
                 textAlign = TextAlign.Center
             )
         }
@@ -149,10 +149,10 @@ fun ThemeDialog(
         icon = {
             Icon(
                 imageVector = Icons.Default.Style,
-                contentDescription = stringResource(R.string.theme)
+                contentDescription = stringResource(R.string.settings_theme)
             )
         },
-        title = { Text(stringResource(R.string.theme)) },
+        title = { Text(stringResource(R.string.settings_theme)) },
         text = {
             Column {
                 Theme.values().forEach { theme ->
@@ -163,7 +163,7 @@ fun ThemeDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = theme.displayName,
+                            text = theme.toDisplayName(),
                             style = MaterialTheme.typography.labelLarge
                         )
 
@@ -184,7 +184,7 @@ fun ThemeDialog(
                     onDismissRequest()
                 }
             ) {
-                Text(stringResource(R.string.apply))
+                Text(stringResource(R.string.action_apply))
             }
         }
     )

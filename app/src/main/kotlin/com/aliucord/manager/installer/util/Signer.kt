@@ -83,9 +83,9 @@ object Signer {
         val outputApk = aliucordDir.resolve(apkFile.name)
 
         ApkSigner.Builder(listOf(signerConfig))
-            .setV1SigningEnabled(false)
+            .setV1SigningEnabled(false) // TODO: enable so api <24 devices can work, however zip-alignment breaks
             .setV2SigningEnabled(true)
-            .setV3SigningEnabled(false)
+            .setV3SigningEnabled(true)
             .setInputApk(apkFile)
             .setOutputApk(outputApk)
             .build()

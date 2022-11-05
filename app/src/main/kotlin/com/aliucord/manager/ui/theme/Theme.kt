@@ -11,6 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.aliucord.manager.R
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -42,8 +44,15 @@ fun ManagerTheme(
     )
 }
 
-enum class Theme(val displayName: String) {
-    SYSTEM("System"),
-    LIGHT("Light"),
-    DARK("Dark")
+enum class Theme {
+    SYSTEM,
+    LIGHT,
+    DARK;
+
+    @Composable
+    fun toDisplayName() = when (this) {
+        SYSTEM -> stringResource(R.string.theme_system)
+        LIGHT -> stringResource(R.string.theme_light)
+        DARK -> stringResource(R.string.theme_dark)
+    }
 }

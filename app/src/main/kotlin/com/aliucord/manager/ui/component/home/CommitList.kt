@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,11 +22,14 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.network.dto.Commit
+import com.aliucord.manager.ui.component.LoadFailure
+import com.aliucord.manager.ui.util.annotatingStringResource
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun CommitList(
-    commits: Flow<PagingData<Commit>>
+    commits: Flow<PagingData<Commit>>,
+    onRetry: () -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier.padding(bottom = 16.dp)
@@ -48,27 +51,42 @@ fun CommitList(
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(bottom = 12.dp)
             ) {
-                if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
-                    item {
-                        Text(
+                when (lazyPagingItems.loadState.refresh) {
+                    LoadState.Loading -> item {
+                        CircularProgressIndicator(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .wrapContentWidth(Alignment.CenterHorizontally),
-                            text = stringResource(R.string.paging_initial_load)
+                                .padding(vertical = 16.dp)
+                                .wrapContentWidth(Alignment.CenterHorizontally)
                         )
+                    }
+                    is LoadState.Error -> item {
+                        Box(
+                            modifier = Modifier
+                                .fillParentMaxSize()
+                                .padding(bottom = 50.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadFailure(onRetry = {
+                                lazyPagingItems.retry()
+                                onRetry()
+                            })
+                        }
+                    }
+                    is LoadState.NotLoading -> {
+                        items(lazyPagingItems) { commit ->
+                            if (commit != null) {
+                                CommitItem(commit)
+                            }
+                        }
                     }
                 }
 
-                items(lazyPagingItems) { commitData ->
-                    if (commitData == null) return@items
-
-                    CommitItem(commitData)
-                }
-
-                if (lazyPagingItems.loadState.append == LoadState.Loading) {
-                    item {
+                when (lazyPagingItems.loadState.append) {
+                    LoadState.Loading -> item {
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -76,6 +94,12 @@ fun CommitList(
                                 .wrapContentWidth(Alignment.CenterHorizontally)
                         )
                     }
+                    is LoadState.Error -> item {
+                        LoadFailure(onRetry = {
+                            lazyPagingItems.retry()
+                        })
+                    }
+                    else -> {}
                 }
             }
         }
@@ -114,36 +138,27 @@ fun CommitItem(
                 model = "https://github.com/${commit.author.name}.png",
                 contentDescription = commit.author.name
             )
+
             Text(
-                buildAnnotatedString {
-                    withStyle(
-                        SpanStyle(
+                annotatingStringResource(
+                    R.string.contributors_commit_title,
+                    commit.author.name,
+                    commit.sha.take(8)
+                ) {
+                    when (it) {
+                        "name" -> SpanStyle(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                    ) {
-                        append(commit.author.name)
-                    }
-
-                    withStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.onSurface.copy(
-                                alpha = 0.6f
-                            )
+                        "middle" -> SpanStyle(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )
-                    ) {
-                        append(" authored ")
-                    }
-
-                    withStyle(
-                        SpanStyle(
+                        "commit" -> SpanStyle(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
                         )
-                    ) {
-                        append(commit.sha.substring(0, 7))
+                        else -> null
                     }
-
                 },
                 style = MaterialTheme.typography.bodySmall
             )
