@@ -111,6 +111,14 @@ class InstallViewModel(
         }
     }
 
+    private fun clearOldCache(targetVersion: Int) {
+        externalCacheDir.listFiles { f -> f.isDirectory }
+            ?.map { it.name.toIntOrNull() to it }
+            ?.filter { it.first != null }
+            ?.filter { it.first!! in (126021 + 1) until targetVersion }
+            ?.forEach { it.second.deleteRecursively() }
+    }
+
     override fun onCleared() {
         if (installationRunning.getAndSet(false)) {
             installJob.cancel("ViewModel cleared")
@@ -140,6 +148,8 @@ class InstallViewModel(
         val cacheDir = externalCacheDir
         val discordCacheDir = externalCacheDir.resolve(supportedVersion)
         val patchedDir = discordCacheDir.resolve("patched").also { it.deleteRecursively() }
+
+        clearOldCache(supportedVersion.toInt())
 
         // Download base.apk
         val baseApkFile = step(InstallStep.DL_BASE_APK) {
