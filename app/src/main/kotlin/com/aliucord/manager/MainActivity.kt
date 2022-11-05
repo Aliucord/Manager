@@ -11,18 +11,17 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.ui.dialog.StoragePermissionsDialog
 import com.aliucord.manager.ui.dialog.UpdaterDialog
-import com.aliucord.manager.ui.navigation.AppDestination
-import com.aliucord.manager.ui.navigation.HomeDestination
+import com.aliucord.manager.ui.navigation.*
 import com.aliucord.manager.ui.screen.*
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.theme.Theme
-import com.xinto.taxi.*
+import dev.olshevski.navigation.reimagined.*
 import org.koin.android.ext.android.inject
 
 val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
@@ -41,16 +40,10 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme = preferences.theme == Theme.DARK || preferences.theme == Theme.SYSTEM && isSystemInDarkTheme(),
                 isDynamicColor = preferences.dynamicColor
             ) {
-                val navigator = rememberBackstackNavigator<AppDestination>(AppDestination.Home)
-                val homeRootNavigator = rememberNavigator(HomeDestination.HOME)
+                val navController = rememberNavController<AppDestination>(AppDestination.Home)
 
                 BackHandler {
-                    if (!navigator.pop()) {
-                        if (homeRootNavigator.currentDestination == HomeDestination.HOME)
-                            finish()
-                        else
-                            homeRootNavigator.replace(HomeDestination.HOME)
-                    }
+                    navController.back()
                 }
 
                 StoragePermissionsDialog()
@@ -64,28 +57,36 @@ class MainActivity : ComponentActivity() {
                     UpdaterDialog()
                 }
 
-                Taxi(
-                    modifier = Modifier.fillMaxSize(),
-                    navigator = navigator,
-                    transitionSpec = { fadeIn() with fadeOut() }
-                ) { destination ->
-                    when (destination) {
-                        is AppDestination.Home -> MainRootScreen(
-                            mainRootNavigator = homeRootNavigator,
-                            onInstallClick = { navigator.push(AppDestination.Install(it)) },
-                            onAboutClick = { navigator.push(AppDestination.About) }
-                        )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AnimatedNavHost(
+                        controller = navController,
+                        transitionSpec = { _, _, _ -> fadeIn() with fadeOut() }
+                    ) {
+                        when (val dest = this.currentHostEntry.destination) {
+                            is BaseScreenDestination -> BaseScreen(
+                                currentNavItem = dest,
+                                bottomNavItems = listOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
+                                onNavChanged = { navController.navigate(it) }
+                            ) {
+                                when (dest) {
+                                    is AppDestination.Home -> HomeScreen(
+                                        onClickInstall = { data ->
+                                            navController.replaceAll(AppDestination.Install(data))
+                                        }
+                                    )
+                                    is AppDestination.Plugins -> PluginsScreen()
+                                    is AppDestination.Settings -> SettingsScreen()
+                                }
+                            }
+                            is AppDestination.Install -> InstallerScreen(
+                                installData = dest.installData,
+                                onBackClick = { navController.back() }
+                            )
 
-                        is AppDestination.Install -> InstallerScreen(
-                            installData = destination.installData,
-                            onBackClick = navigator::pop
-                        )
-
-                        is AppDestination.About -> AboutScreen(
-                            onBackClick = navigator::pop
-                        )
-
-                        else -> {}
+                            is AppDestination.About -> AboutScreen(
+                                onBackClick = { navController.back() }
+                            )
+                        }
                     }
                 }
             }
