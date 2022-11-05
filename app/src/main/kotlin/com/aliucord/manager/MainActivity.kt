@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                         is BaseScreenDestination -> BaseScreen(
                             currentNavItem = dest,
                             bottomNavItems = listOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
-                            onNavChanged = { navController.navigate(it) }
+                            onNavChanged = { navController.replaceLast(it) }
                         ) {
                             when (dest) {
                                 is AppDestination.Home -> HomeScreen(
