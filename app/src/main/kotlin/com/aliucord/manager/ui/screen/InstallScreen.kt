@@ -50,10 +50,10 @@ fun InstallerScreen(
     onBackClick: () -> Unit,
     viewModel: InstallViewModel = getViewModel(parameters = { parametersOf(installData) })
 ) {
-    val navigateMain by viewModel.returnToHome.collectAsState(initial = false)
-    if (navigateMain) onBackClick()
+    if (viewModel.returnToHome) onBackClick()
 
     var expandedGroup by mutableStateOf<InstallStepGroup?>(null)
+
     LaunchedEffect(viewModel.currentStep) {
         expandedGroup = viewModel.currentStep?.group
     }

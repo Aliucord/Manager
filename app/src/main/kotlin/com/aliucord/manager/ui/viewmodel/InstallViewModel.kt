@@ -14,7 +14,6 @@ import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.*
-import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.ui.component.installer.InstallStatus
 import com.aliucord.manager.ui.component.installer.InstallStepData
@@ -23,9 +22,6 @@ import com.aliucord.manager.ui.screen.InstallData
 import com.aliucord.manager.util.*
 import com.github.diamondminer88.zip.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -41,11 +37,9 @@ class InstallViewModel(
     private val installData: InstallData
 ) : ViewModel() {
     private val externalCacheDir = application.externalCacheDir!!
-
     private val installationRunning = AtomicBoolean(false)
 
-    private val _returnToHome = MutableSharedFlow<Boolean>()
-    val returnToHome = _returnToHome.asSharedFlow()
+    var returnToHome by mutableStateOf(false)
 
     var stacktrace by mutableStateOf("")
         private set
@@ -83,29 +77,34 @@ class InstallViewModel(
         application.saveFile(name, "$debugInfo\n\n$stacktrace")
     }
 
-    init {
-        viewModelScope.launch(Dispatchers.Main) {
-            if (installationRunning.getAndSet(true)) {
-                return@launch
-            }
+    private val installJob = viewModelScope.launch(Dispatchers.Main) {
+        if (installationRunning.getAndSet(true)) {
+            return@launch
+        }
 
-            withContext(Dispatchers.IO) {
-                try {
-                    when (installData.discordType) {
-                        DiscordType.REACT_NATIVE -> installReactNative()
-                        DiscordType.KOTLIN -> installKotlin()
-                    }
-                    delay(5000)
-                    _returnToHome.emit(true)
-                } catch (t: Throwable) {
-                    Log.e(
-                        BuildConfig.TAG,
-                        "$debugInfo\n\n${Log.getStackTraceString(t)}"
-                    )
+        withContext(Dispatchers.IO) {
+            try {
+                when (installData.discordType) {
+                    DiscordType.REACT_NATIVE -> installReactNative()
+                    DiscordType.KOTLIN -> installKotlin()
                 }
 
-                installationRunning.set(false)
+                delay(20000)
+                returnToHome = true
+            } catch (t: Throwable) {
+                Log.e(
+                    BuildConfig.TAG,
+                    "$debugInfo\n\n${Log.getStackTraceString(t)}"
+                )
             }
+
+            installationRunning.set(false)
+        }
+    }
+
+    override fun onCleared() {
+        if (installationRunning.getAndSet(false)) {
+            installJob.cancel("ViewModel cleared")
         }
     }
 
