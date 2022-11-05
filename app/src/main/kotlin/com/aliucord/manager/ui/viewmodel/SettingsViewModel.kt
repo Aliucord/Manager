@@ -50,7 +50,8 @@ class SettingsViewModel(
     }
 
     fun clearCacheDir() {
-        application.cacheDir.deleteRecursively()
+        application.externalCacheDir?.deleteRecursively()
+        application.showToast(R.string.action_cleared_cache)
     }
 
     init {
