@@ -47,6 +47,7 @@
   <string name="setting_package_name">Paket İsmi</string>
   <string name="setting_target_version">İndirme sürümü</string>
   <string name="setting_dynamic_color">Dinamik renk</string>
+  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Koyu</string>
   <string name="theme_light">Açık</string>

@@ -47,6 +47,7 @@
   <string name="setting_package_name">パッケージ名</string>
   <string name="setting_target_version">バージョンをダウンロード</string>
   <string name="setting_dynamic_color">ダイナミックカラー</string>
+  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>
   <string name="theme_light">ライト</string>

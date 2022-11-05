@@ -47,6 +47,7 @@
   <string name="setting_package_name">Nombre del Paquete</string>
   <string name="setting_target_version">Versión a descargar</string>
   <string name="setting_dynamic_color">Colores dinámicos</string>
+  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Oscuro</string>
   <string name="theme_light">Claro</string>

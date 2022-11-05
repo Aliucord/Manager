@@ -47,6 +47,7 @@
   <string name="setting_package_name">Имя Пакета</string>
   <string name="setting_target_version">Версия загрузки</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
+  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
   <string name="theme_light">Светлая</string>

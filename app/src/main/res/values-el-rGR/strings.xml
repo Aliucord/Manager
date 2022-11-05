@@ -47,6 +47,7 @@
   <string name="setting_package_name">Όνομα Πακέτου</string>
   <string name="setting_target_version">Λήψη έκδοσης</string>
   <string name="setting_dynamic_color">Δυναμικό χρώμα</string>
+  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
   <string name="theme_system">Σύστημα</string>
   <string name="theme_dark">Σκοτεινό</string>
   <string name="theme_light">Φωτεινό</string>
