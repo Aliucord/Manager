@@ -23,6 +23,10 @@ fun HomeScreen(
 ) {
     var showInstallerDialog by remember { mutableStateOf(false) }
 
+    LaunchedEffect(viewModel.preferences.packageName) {
+        viewModel.fetchInstalledVersion()
+    }
+
     if (showInstallerDialog) {
         InstallerDialog(
             onDismiss = { showInstallerDialog = false },

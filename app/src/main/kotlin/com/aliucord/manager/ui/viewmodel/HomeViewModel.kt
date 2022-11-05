@@ -102,6 +102,12 @@ class HomeViewModel(
         }
     }
 
+    fun fetchInstalledVersion() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _fetchInstalledVersion()
+        }
+    }
+
     fun fetchSupportedVersion() {
         viewModelScope.launch(Dispatchers.IO) {
             _fetchSupportedVersion()
