@@ -28,6 +28,7 @@
   <string name="action_collapse">折りたたむ</string>
   <string name="action_expand">展開</string>
   <string name="action_copied">コピーしました！</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">権限を許可</string>
   <string name="permissions_grant_body">Aliucord Managerが正しく動作するには、ファイルのアクセスを許可する必要があります。 ~/Aliucord に共有データが保存されているため、管理者が機能するためにはパーミッションが必要です。</string>
   <string name="launch_aliucord_fail">Aliucord の起動に失敗しました</string>

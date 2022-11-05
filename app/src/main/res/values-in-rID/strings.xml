@@ -28,6 +28,7 @@
   <string name="action_collapse">Collapse</string>
   <string name="action_expand">Expand</string>
   <string name="action_copied">Copied!</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">Berikan izin</string>
   <string name="permissions_grant_body">Untuk Manajer Aliucord berfungsi dengan baik, Anda perlu memberikan izin untuk mengakses file. Karena datanya disimpan di ~/Aliucord, perizinan diperlukan agar Manajer berfungsi.</string>
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>

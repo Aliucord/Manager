@@ -28,6 +28,7 @@
   <string name="action_collapse">Colapsar</string>
   <string name="action_expand">Expandir</string>
   <string name="action_copied">¡Copiado!</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">Dar permisos</string>
   <string name="permissions_grant_body">Para que Aliucord Manager funcione correctamente, necesitas darle permisos de almacenamiento. Pues, por el hecho de que los datos compartidos se guardan en ~/Aliucord, se necesitan estos permisos para que Aliucord Manager funcione.</string>
   <string name="launch_aliucord_fail">Error al abrir Aliucord</string>

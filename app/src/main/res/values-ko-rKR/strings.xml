@@ -28,6 +28,7 @@
   <string name="action_collapse">Collapse</string>
   <string name="action_expand">Expand</string>
   <string name="action_copied">Copied!</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, manager가 작동하려면 권한이 필요해요.</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>

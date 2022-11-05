@@ -28,6 +28,7 @@
   <string name="action_collapse">Свернуть</string>
   <string name="action_expand">Развернуть</string>
   <string name="action_copied">Скопировано!</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">Предоставление Разрешений</string>
   <string name="permissions_grant_body">Чтобы Aliucord работал правильно ему необходимо предоставить разрешения на доступ к файлам. С того момента как данные хранятся в ~/Aliucord, разрешения необходимы для того чтобы менеджер мог выполнять свои функции.</string>
   <string name="launch_aliucord_fail">Не удалось запустить Алиюкорд</string>

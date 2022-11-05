@@ -28,6 +28,7 @@
   <string name="action_collapse">Collapse</string>
   <string name="action_expand">Expand</string>
   <string name="action_copied">Copied!</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>

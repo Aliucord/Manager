@@ -28,6 +28,7 @@
   <string name="action_collapse">Απόκρυψη</string>
   <string name="action_expand">Επέκταση</string>
   <string name="action_copied">Αντιγράφηκε!</string>
+  <string name="action_cleared_cache">Cleared cache!</string>
   <string name="permissions_grant_title">Εκχώρηση αδειών</string>
   <string name="permissions_grant_body">Για να λειτουργήσει σωστά ο Aliucord Manager, πρέπει να εκχωρήσετε δικαιώματα αρχείου. Δεδομένου ότι τα κοινόχρηστα δεδομένα αποθηκεύονται στο ~/Aliucord, απαιτούνται δικαιώματα για να λειτουργήσει ο Manager.</string>
   <string name="launch_aliucord_fail">Αποτυχία εκκίνησης του Aliucord</string>
