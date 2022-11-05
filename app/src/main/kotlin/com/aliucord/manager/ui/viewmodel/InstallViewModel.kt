@@ -126,14 +126,15 @@ class InstallViewModel(
             it to InstallStepData(it.nameResId, InstallStatus.QUEUED)
         }
 
-        externalCacheDir.resolve("patched").runCatching { deleteRecursively() }
-
-        val arch = Build.SUPPORTED_ABIS.first()
         val supportedVersion = preferences.version
+        val arch = Build.SUPPORTED_ABIS.first()
+        val cacheDir = externalCacheDir
+        val discordCacheDir = externalCacheDir.resolve(supportedVersion)
+        val patchedDir = discordCacheDir.resolve("patched").also { it.deleteRecursively() }
 
         // Download base.apk
         val baseApkFile = step(InstallStep.DL_BASE_APK) {
-            externalCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
+            discordCacheDir.resolve("base-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else {
@@ -141,9 +142,7 @@ class InstallViewModel(
                 }
 
                 file.copyTo(
-                    externalCacheDir
-                        .resolve("patched")
-                        .resolve(file.name),
+                    patchedDir.resolve(file.name),
                     true
                 )
             }
@@ -152,7 +151,7 @@ class InstallViewModel(
         // Download the native libraries split
         val libsApkFile = step(InstallStep.DL_LIBS_APK) {
             val libArch = arch.replace("-v", "_v")
-            externalCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
+            discordCacheDir.resolve("config.$libArch-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -162,9 +161,7 @@ class InstallViewModel(
                 )
 
                 file.copyTo(
-                    externalCacheDir
-                        .resolve("patched")
-                        .resolve(file.name),
+                    patchedDir.resolve(file.name),
                     true
                 )
             }
@@ -172,7 +169,7 @@ class InstallViewModel(
 
         // Download the locale split
         val localeApkFile = step(InstallStep.DL_LANG_APK) {
-            externalCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -182,9 +179,7 @@ class InstallViewModel(
                 )
 
                 file.copyTo(
-                    externalCacheDir
-                        .resolve("patched")
-                        .resolve(file.name),
+                    patchedDir.resolve(file.name),
                     true
                 )
             }
@@ -193,7 +188,7 @@ class InstallViewModel(
         // Download the drawables split
         val resApkFile = step(InstallStep.DL_RESC_APK) {
             // TODO: download the appropriate dpi res apk
-            externalCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -203,9 +198,7 @@ class InstallViewModel(
                 )
 
                 file.copyTo(
-                    externalCacheDir
-                        .resolve("patched")
-                        .resolve(file.name),
+                    patchedDir.resolve(file.name),
                     true
                 )
             }
@@ -217,7 +210,7 @@ class InstallViewModel(
             val latestHermesRelease = githubRepository.getHermesRelease().getOrThrow()
 
             // Download the hermes-release.aar file to replace in the apk
-            val hermes = externalCacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
+            val hermes = cacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
                 if (file.exists()) return@also
 
                 latestHermesRelease.assets
@@ -226,7 +219,7 @@ class InstallViewModel(
             }
 
             // Download the hermes-cppruntime-release.aar file to replace in the apk
-            val cppRuntime = externalCacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
+            val cppRuntime = cacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
                 if (file.exists()) return@also
 
                 latestHermesRelease.assets
@@ -234,7 +227,7 @@ class InstallViewModel(
                     .also { downloadManager.download(it, file) }
             }
 
-            Pair(hermes, cppRuntime)
+            hermes to cppRuntime
         }
 
         // Download Aliucord Native lib
@@ -243,7 +236,7 @@ class InstallViewModel(
             val latestAliucordNativeRelease = githubRepository.getAliucordNativeRelease().getOrThrow()
 
             // Download the Aliucord classes.dex file to add to the apk
-            externalCacheDir.resolve("aliucord-${latestAliucordNativeRelease.tagName}.dex").also { file ->
+            cacheDir.resolve("aliucord-${latestAliucordNativeRelease.tagName}.dex").also { file ->
                 if (file.exists()) return@also
 
                 latestAliucordNativeRelease.assets
@@ -358,6 +351,8 @@ class InstallViewModel(
             application.packageManager.packageInstaller
                 .installApks(application, *apks)
         }
+
+        patchedDir.deleteRecursively()
     }
 
     private suspend fun installKotlin() {
