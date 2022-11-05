@@ -12,7 +12,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.ui.dialog.StoragePermissionsDialog
@@ -57,36 +56,34 @@ class MainActivity : ComponentActivity() {
                     UpdaterDialog()
                 }
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    AnimatedNavHost(
-                        controller = navController,
-                        transitionSpec = { _, _, _ -> fadeIn() with fadeOut() }
-                    ) {
-                        when (val dest = this.currentHostEntry.destination) {
-                            is BaseScreenDestination -> BaseScreen(
-                                currentNavItem = dest,
-                                bottomNavItems = listOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
-                                onNavChanged = { navController.navigate(it) }
-                            ) {
-                                when (dest) {
-                                    is AppDestination.Home -> HomeScreen(
-                                        onClickInstall = { data ->
-                                            navController.replaceAll(AppDestination.Install(data))
-                                        }
-                                    )
-                                    is AppDestination.Plugins -> PluginsScreen()
-                                    is AppDestination.Settings -> SettingsScreen()
-                                }
+                AnimatedNavHost(
+                    controller = navController,
+                    transitionSpec = { _, _, _ -> fadeIn() with fadeOut() }
+                ) {
+                    when (val dest = this.currentHostEntry.destination) {
+                        is BaseScreenDestination -> BaseScreen(
+                            currentNavItem = dest,
+                            bottomNavItems = listOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
+                            onNavChanged = { navController.navigate(it) }
+                        ) {
+                            when (dest) {
+                                is AppDestination.Home -> HomeScreen(
+                                    onClickInstall = { data ->
+                                        navController.replaceAll(AppDestination.Install(data))
+                                    }
+                                )
+                                is AppDestination.Plugins -> PluginsScreen()
+                                is AppDestination.Settings -> SettingsScreen()
                             }
-                            is AppDestination.Install -> InstallerScreen(
-                                installData = dest.installData,
-                                onBackClick = { navController.back() }
-                            )
-
-                            is AppDestination.About -> AboutScreen(
-                                onBackClick = { navController.back() }
-                            )
                         }
+                        is AppDestination.Install -> InstallerScreen(
+                            installData = dest.installData,
+                            onBackClick = { navController.back() }
+                        )
+
+                        is AppDestination.About -> AboutScreen(
+                            onBackClick = { navController.back() }
+                        )
                     }
                 }
             }
