@@ -86,6 +86,7 @@
   <string name="installer_success">Successfully installed Aliucord</string>
   <string name="installer_aborted">Aborted Aliucord installation</string>
   <string name="installer_failed">Installation failed with error %o</string>
+  <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
   <string name="install_group_apk_dl">Download APKs</string>
   <string name="install_group_lib_dl">Download Libraries</string>
   <string name="install_group_patch">Patch APKs</string>

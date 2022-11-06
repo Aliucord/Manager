@@ -28,7 +28,7 @@
   <string name="action_collapse">折りたたむ</string>
   <string name="action_expand">展開</string>
   <string name="action_copied">コピーしました！</string>
-  <string name="action_cleared_cache">Cleared cache!</string>
+  <string name="action_cleared_cache">キャッシュを消去しました！</string>
   <string name="permissions_grant_title">権限を許可</string>
   <string name="permissions_grant_body">Aliucord Managerが正しく動作するには、ファイルのアクセスを許可する必要があります。 ~/Aliucord に共有データが保存されているため、管理者が機能するためにはパーミッションが必要です。</string>
   <string name="launch_aliucord_fail">Aliucord の起動に失敗しました</string>
@@ -48,7 +48,7 @@
   <string name="setting_package_name">パッケージ名</string>
   <string name="setting_target_version">バージョンをダウンロード</string>
   <string name="setting_dynamic_color">ダイナミックカラー</string>
-  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
+  <string name="settings_invalid_package_name">無効なパッケージ名です。com.aliucord にリセットしてください</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>
   <string name="theme_light">ライト</string>
@@ -86,6 +86,7 @@
   <string name="installer_success">Aliucord を正常にインストールしました</string>
   <string name="installer_aborted">Aliucordのインストールを中止しました</string>
   <string name="installer_failed">インストールに失敗しました。エラー %o</string>
+  <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
   <string name="install_group_apk_dl">APKをダウンロード</string>
   <string name="install_group_lib_dl">ライブラリをダウンロード</string>
   <string name="install_group_patch">パッチAPK</string>
