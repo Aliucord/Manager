@@ -1,8 +1,6 @@
 package com.aliucord.manager.ui.viewmodel
 
 import android.app.Application
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
@@ -13,9 +11,10 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
+import com.aliucord.manager.installer.util.uninstallApk
 import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.network.utils.fold
-import com.aliucord.manager.util.getPackageVersionCode
+import com.aliucord.manager.util.getPackageVersion
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.*
 
@@ -71,7 +70,7 @@ class HomeViewModel(
 
     private suspend fun _fetchInstalledVersion() {
         try {
-            val (versionName, versionCode) = application.getPackageVersionCode(preferences.packageName)
+            val (versionName, versionCode) = application.getPackageVersion(preferences.packageName)
 
             withContext(Dispatchers.Main) {
                 installedVersion = versionName.split("-")[0].trim()
@@ -126,12 +125,7 @@ class HomeViewModel(
     }
 
     fun uninstallAliucord() {
-        val packageURI = Uri.parse("package:${preferences.packageName}")
-        val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-
-        application.startActivity(uninstallIntent)
+        application.uninstallApk(preferences.packageName)
     }
 
     enum class VersionType {

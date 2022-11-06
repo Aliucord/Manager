@@ -101,6 +101,8 @@ class InstallViewModel(
                 delay(20000)
                 returnToHome = true
             } catch (t: Throwable) {
+                stacktrace = Log.getStackTraceString(t)
+
                 Log.e(
                     BuildConfig.TAG,
                     "$debugInfo\n\n${Log.getStackTraceString(t)}"
@@ -117,6 +119,24 @@ class InstallViewModel(
             ?.filter { it.first != null }
             ?.filter { it.first!! in (126021 + 1) until targetVersion }
             ?.forEach { it.second.deleteRecursively() }
+    }
+
+    private suspend fun uninstallNewAliucord(targetVersion: Int) {
+        val (_, versionCode) = try {
+            application.getPackageVersion(preferences.packageName)
+        } catch (t: Throwable) {
+            return
+        }
+
+        if (targetVersion < versionCode) {
+            application.uninstallApk(preferences.packageName)
+
+            withContext(Dispatchers.Main) {
+                application.showToast(R.string.installer_uninstall_new)
+            }
+
+            throw Error("Pleaser uninstall newer Aliucord prior to installing")
+        }
     }
 
     override fun onCleared() {
@@ -150,6 +170,7 @@ class InstallViewModel(
         val patchedDir = discordCacheDir.resolve("patched").also { it.deleteRecursively() }
 
         clearOldCache(supportedVersion.toInt())
+        uninstallNewAliucord(supportedVersion.toInt())
 
         // Download base.apk
         val baseApkFile = step(InstallStep.DL_BASE_APK) {
@@ -400,6 +421,11 @@ class InstallViewModel(
         val discordCacheDir = externalCacheDir.resolve(dataJson.versionCode)
         val patchedDir = discordCacheDir.resolve("patched").also { it.deleteRecursively() }
 
+        dataJson.versionCode.toInt().also {
+            clearOldCache(it)
+            uninstallNewAliucord(it)
+        }
+
         // Download base.apk
         val baseApkFile = step(InstallStep.DL_KT_APK) {
             discordCacheDir.resolve("base.apk").let { file ->
@@ -579,7 +605,6 @@ class InstallViewModel(
             return value.value
         } catch (t: Throwable) {
             steps[step] = steps[step]!!.copy(status = InstallStatus.UNSUCCESSFUL)
-            stacktrace = Log.getStackTraceString(t)
 
             currentStep = step
             throw t

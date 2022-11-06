@@ -3,8 +3,10 @@ package com.aliucord.manager.installer.util
 import android.annotation.SuppressLint
 import android.app.Application
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
+import android.net.Uri
 import android.os.Build
 import com.aliucord.manager.installer.service.InstallService
 import java.io.File
@@ -35,4 +37,13 @@ fun PackageInstaller.installApks(application: Application, vararg apks: File) {
 
     session.commit(contentIntent.intentSender)
     session.close()
+}
+
+fun Context.uninstallApk(packageName: String) {
+    val packageURI = Uri.parse("package:$packageName")
+    val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+
+    startActivity(uninstallIntent)
 }
