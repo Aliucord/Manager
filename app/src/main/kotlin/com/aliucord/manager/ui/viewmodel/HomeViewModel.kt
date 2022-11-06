@@ -80,6 +80,7 @@ class HomeViewModel(
             Log.e(BuildConfig.TAG, Log.getStackTraceString(t))
 
             withContext(Dispatchers.Main) {
+                installedVersion = ""
                 installedVersionType = VersionType.ERROR
             }
         }
@@ -95,6 +96,7 @@ class HomeViewModel(
                     supportedVersionType = VersionType.parseVersionCode(it.versionCode.toIntOrNull())
                 },
                 fail = {
+                    supportedVersion = ""
                     supportedVersionType = VersionType.ERROR
                 }
             )
