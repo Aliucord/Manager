@@ -34,6 +34,7 @@ class InstallViewModel(
     private val preferences: PreferencesManager,
     private val githubRepository: GithubRepository,
     private val aliucordMaven: AliucordMavenRepository,
+    private val iconPatcher: IconPatcher,
     private val installData: InstallData
 ) : ViewModel() {
     private val externalCacheDir = application.externalCacheDir!!
@@ -290,21 +291,7 @@ class InstallViewModel(
         // Replace app icons
         if (preferences.replaceIcon) {
             step(InstallStep.PATCH_APP_ICON) {
-                ZipWriter(baseApkFile, true).use { baseApk ->
-                    val mipmaps = arrayOf("mipmap-xhdpi-v4", "mipmap-xxhdpi-v4", "mipmap-xxxhdpi-v4")
-                    val icons = arrayOf("ic_logo_foreground.png", "ic_logo_square.png", "ic_logo_foreground.png")
-
-                    for (icon in icons) {
-                        val newIcon = application.assets.open("icons/$icon")
-                            .use { it.readBytes() }
-
-                        for (mipmap in mipmaps) {
-                            val path = "res/$mipmap/$icon"
-                            baseApk.deleteEntry(path)
-                            baseApk.writeEntry(path, newIcon)
-                        }
-                    }
-                }
+                iconPatcher.patchIcons(baseApkFile)
             }
         }
 
