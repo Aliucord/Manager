@@ -5,7 +5,7 @@
   <string name="aliucord">Aliucord</string>
   <string name="github">GitHub</string>
   <string name="support_server">Servidor de Soporte</string>
-  <string name="commits">Comprometidos</string>
+  <string name="commits">Cambios</string>
   <string name="team">Equipo</string>
   <string name="website">Sitio web</string>
   <string name="installer">Instalador</string>
@@ -28,7 +28,7 @@
   <string name="action_collapse">Colapsar</string>
   <string name="action_expand">Expandir</string>
   <string name="action_copied">¡Copiado!</string>
-  <string name="action_cleared_cache">Cleared cache!</string>
+  <string name="action_cleared_cache">Caché borrado!</string>
   <string name="permissions_grant_title">Dar permisos</string>
   <string name="permissions_grant_body">Para que Aliucord Manager funcione correctamente, necesitas darle permisos de almacenamiento. Pues, por el hecho de que los datos compartidos se guardan en ~/Aliucord, se necesitan estos permisos para que Aliucord Manager funcione.</string>
   <string name="launch_aliucord_fail">Error al abrir Aliucord</string>
@@ -48,7 +48,7 @@
   <string name="setting_package_name">Nombre del Paquete</string>
   <string name="setting_target_version">Versión a descargar</string>
   <string name="setting_dynamic_color">Colores dinámicos</string>
-  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
+  <string name="settings_invalid_package_name">Nombre de paquete inválido, restablezca a com.aliucord</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Oscuro</string>
   <string name="theme_light">Claro</string>
@@ -62,7 +62,7 @@
   <string name="navigation_back">Volver</string>
   <string name="navigation_home">Inicio</string>
   <string name="navigation_about">Sobre</string>
-  <string name="navigation_settings">Configuraciones</string>
+  <string name="navigation_settings">Ajustes</string>
   <string name="contributors">Colaboradores</string>
   <string name="contributors_contributions">%o contribuciones</string>
   <string name="contributors_contributor">Colaborador</string>
@@ -73,7 +73,7 @@
   <string name="selector_discord_type_kotlin">Nuevo (Recomendado)</string>
   <string name="selector_discord_type_old">Antiguo</string>
   <string name="network_load_fail">Fallo al cargar</string>
-  <string name="version_supported">Versiones compatibles:</string>
+  <string name="version_supported">Versión soportada:</string>
   <string name="version_installed">Versión instalada:</string>
   <string name="version_stable">Estable</string>
   <string name="version_beta">Beta</string>
@@ -86,7 +86,7 @@
   <string name="installer_success">Aliucord instalado con éxito</string>
   <string name="installer_aborted">Se abortó la instalación de Aliucord</string>
   <string name="installer_failed">La instalación falló con el error %o</string>
-  <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
+  <string name="installer_uninstall_new">¡Por favor, desinstala tu versión actual de Aliucord para continuar!</string>
   <string name="install_group_apk_dl">Descargar APKs</string>
   <string name="install_group_lib_dl">Descargar librerías</string>
   <string name="install_group_patch">Parchar APKs</string>
@@ -96,7 +96,7 @@
   <string name="install_step_patch_dex">Añadiendo dex de Aliucord en APK</string>
   <string name="install_step_patch_libs">Reemplazando librerías</string>
   <string name="install_step_signing">Firmando APK...</string>
-  <string name="install_step_installing">Instalar APK</string>
+  <string name="install_step_installing">Instalando APKs</string>
   <string name="install_step_dl_apk_base">Descargando APK base</string>
   <string name="install_step_dl_apk_lib">Descargando APK de liberarías</string>
   <string name="install_step_dl_apk_locale">Descargando APK de localización</string>
