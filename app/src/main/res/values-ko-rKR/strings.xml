@@ -85,7 +85,7 @@
   <string name="installer_cached">(캐시됨)</string>
   <string name="installer_success">Aliucord 설치를 완료했어요</string>
   <string name="installer_aborted">Aliucord 설치를 중단했어요</string>
-  <string name="installer_failed">Installation failed with error %o</string>
+  <string name="installer_failed">오류로 인한 설치 실패: %o</string>
   <string name="installer_uninstall_new">계속하려면 Aliucord의 현재 버전을 설치 삭제해 주세요!</string>
   <string name="install_group_apk_dl">APK 다운로드</string>
   <string name="install_group_lib_dl">라이브러리 다운로드</string>
@@ -106,8 +106,8 @@
   <string name="install_step_fetch_kt_version">대상 Discord 버전 가져오는 중</string>
   <string name="install_step_dl_kt_apk">Discord APK 다운로드 중</string>
   <string name="install_step_dl_kotlin">Kotlin 라이브러리 다운로드 중</string>
-  <string name="install_step_dl_injector">Downloading injector</string>
-  <string name="install_step_dl_aliuhook">Downloading Aliuhook library</string>
+  <string name="install_step_dl_injector">인젝터 다운로드 중</string>
+  <string name="install_step_dl_aliuhook">Aliuhook 라이브러리 다운로드 중</string>
   <string name="status_success">성공</string>
   <string name="status_ongoing">진행 중</string>
   <string name="status_failed">실패</string>
