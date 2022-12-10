@@ -107,7 +107,7 @@
   <string name="install_step_dl_kt_apk">Скачивание APK Discord</string>
   <string name="install_step_dl_kotlin">Скачивание библиотеки Kotlin</string>
   <string name="install_step_dl_injector">Скачивание инжектора</string>
-  <string name="install_step_dl_aliuhook">Скачивание библиотеки Aliuhook</string>
+  <string name="install_step_dl_aliuhook">Загрузка библиотеки Aliuhook</string>
   <string name="status_success">Успешно</string>
   <string name="status_ongoing">Текущая</string>
   <string name="status_failed">Ошибка</string>
