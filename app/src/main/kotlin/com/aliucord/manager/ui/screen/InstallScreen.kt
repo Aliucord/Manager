@@ -26,11 +26,13 @@ import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.dialog.DownloadMethod
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
 import com.aliucord.manager.ui.viewmodel.InstallViewModel.InstallStepGroup
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
+@Immutable // this isn't *really* stable, but this never gets modified after being passed to a composable, so...
 @Parcelize
 data class InstallData(
     val downloadMethod: DownloadMethod,
@@ -91,7 +93,7 @@ fun InstallerScreen(
                         name = stringResource(group.nameResId),
                         isCurrent = expandedGroup == group,
                         onClick = { expandedGroup = group },
-                        subSteps = viewModel.getSteps(group)
+                        subSteps = viewModel.getSteps(group).toImmutableList(),
                     )
                 }
 

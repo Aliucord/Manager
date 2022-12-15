@@ -15,11 +15,12 @@ import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screen.*
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun BaseScreen(
     currentNavItem: BaseScreenDestination,
-    bottomNavItems: List<BaseScreenDestination>,
+    bottomNavItems: ImmutableList<BaseScreenDestination>,
     onNavChanged: (AppDestination) -> Unit,
     content: @Composable () -> Unit
 ) {

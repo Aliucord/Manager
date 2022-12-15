@@ -19,7 +19,9 @@ android {
         versionCode = 1
         versionName = "0.0.1"
 
-        vectorDrawables.useSupportLibrary = true
+        vectorDrawables {
+            useSupportLibrary = true
+        }
 
         buildConfigField("String", "TAG", "\"AliucordManager\"")
         buildConfigField("String", "SUPPORT_SERVER", "\"EsNDvBaHVU\"")
@@ -68,11 +70,20 @@ android {
 
     kotlinOptions {
         jvmTarget = "11"
-        freeCompilerArgs += "-Xcontext-receivers"
+        freeCompilerArgs += listOf(
+            "-Xcontext-receivers",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${buildDir.resolve("report").absolutePath}",
+        )
     }
 
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = "1.3.1"
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.1"
+    }
 }
 
 dependencies {
@@ -114,6 +125,7 @@ dependencies {
     implementation("com.aliucord:axml:1.0.1")
     implementation("com.android.tools.build:apksig:7.4.0-beta04")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 }
 
 fun getCurrentBranch(): String? =

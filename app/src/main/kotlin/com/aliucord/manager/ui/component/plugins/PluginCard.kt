@@ -28,6 +28,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.domain.model.Plugin
 import com.aliucord.manager.ui.util.annotatingStringResource
 import com.aliucord.manager.ui.util.joinToAnnotatedString
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun PluginCard(
@@ -51,8 +52,10 @@ fun PluginCard(
                 Text(
                     annotatingStringResource(
                         R.string.plugins_plugin_title,
-                        plugin.manifest.name,
-                        plugin.manifest.version
+                        persistentListOf(
+                            plugin.manifest.name,
+                            plugin.manifest.version,
+                        )
                     ) {
                         when (it) {
                             "plugin" -> SpanStyle(fontWeight = FontWeight.Bold)

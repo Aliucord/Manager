@@ -583,8 +583,7 @@ class InstallViewModel(
 
     @OptIn(ExperimentalTime::class)
     private inline fun <T> step(step: InstallStep, block: InstallStepData.() -> T): T {
-        steps[step] = steps[step]!!.copy(status = InstallStatus.ONGOING)
-
+        steps[step]!!.status = InstallStatus.ONGOING
         currentStep = step
 
         try {
@@ -596,15 +595,15 @@ class InstallViewModel(
                 Thread.sleep(1000 - millis)
             }
 
-            steps[step] = steps[step]!!.copy(
-                duration = millis.div(1000f),
+            steps[step]!!.apply {
+                duration = millis.div(1000f)
                 status = InstallStatus.SUCCESSFUL
-            )
+            }
 
             currentStep = step
             return value.value
         } catch (t: Throwable) {
-            steps[step] = steps[step]!!.copy(status = InstallStatus.UNSUCCESSFUL)
+            steps[step]!!.status = InstallStatus.UNSUCCESSFUL
 
             currentStep = step
             throw t
@@ -656,6 +655,7 @@ class InstallViewModel(
     var currentStep: InstallStep? by mutableStateOf(null)
     val steps = mutableStateMapOf<InstallStep, InstallStepData>()
 
+    // TODO: cache this instead
     fun getSteps(group: InstallStepGroup): List<InstallStepData> {
         return steps
             .filterKeys { it.group == group }.entries

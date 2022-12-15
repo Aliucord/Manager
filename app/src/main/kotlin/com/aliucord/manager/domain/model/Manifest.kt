@@ -5,9 +5,10 @@
 
 package com.aliucord.manager.domain.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
 
+@Immutable
 @Serializable
 data class Manifest(
     val name: String,
@@ -17,7 +18,6 @@ data class Manifest(
     val updateUrl: String,
     val changelog: String?,
     val changelogMedia: String?,
-    val links: JsonObject
 ) {
     val repositoryUrl = updateUrl
         .replace("raw.githubusercontent.com", "github.com")

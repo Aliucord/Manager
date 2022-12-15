@@ -21,6 +21,7 @@ import com.aliucord.manager.ui.screen.*
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.theme.Theme
 import dev.olshevski.navigation.reimagined.*
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.android.ext.android.inject
 
 val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     when (val dest = this.currentHostEntry.destination) {
                         is BaseScreenDestination -> BaseScreen(
                             currentNavItem = dest,
-                            bottomNavItems = listOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
+                            bottomNavItems = persistentListOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
                             onNavChanged = { navController.replaceLast(it) }
                         ) {
                             when (dest) {

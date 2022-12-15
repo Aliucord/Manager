@@ -24,6 +24,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.ui.component.LoadFailure
 import com.aliucord.manager.ui.util.annotatingStringResource
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -142,8 +143,10 @@ fun CommitItem(
             Text(
                 annotatingStringResource(
                     R.string.contributors_commit_title,
-                    commit.author.name,
-                    commit.sha.take(8)
+                    persistentListOf(
+                        commit.author.name,
+                        commit.sha.take(8),
+                    )
                 ) {
                     when (it) {
                         "name" -> SpanStyle(

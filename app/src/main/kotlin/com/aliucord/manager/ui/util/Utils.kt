@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
+import kotlinx.collections.immutable.ImmutableList
 
 context(AnnotatedString.Builder)
     inline fun <T> Iterable<T>.joinToAnnotatedString(
@@ -35,12 +36,11 @@ context(AnnotatedString.Builder)
 @Composable
 inline fun annotatingStringResource(
     @StringRes id: Int,
-    vararg args: Any,
-    crossinline annotationHandler: @Composable (annotationName: String) -> SpanStyle?
+    args: ImmutableList<Any>,
+    crossinline annotationHandler: @Composable (annotationName: String) -> SpanStyle?,
 ): AnnotatedString {
-    val string = stringResource(id, *args)
+    val string = stringResource(id, *args.toTypedArray())
 
-    // TODO: figure out a way to put this in remember {} while still having @Composable annotationHandler
     val markerIndexes = string
         .mapIndexedNotNull { index, elem -> index.takeIf { elem == '§' } }
         .takeIf { it.isNotEmpty() && it.size % 3 == 0 }

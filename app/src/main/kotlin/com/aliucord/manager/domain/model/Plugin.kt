@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.domain.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -17,6 +18,7 @@ private val json = Json {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
+@Immutable
 data class Plugin(val file: File) {
     val manifest: Manifest
 

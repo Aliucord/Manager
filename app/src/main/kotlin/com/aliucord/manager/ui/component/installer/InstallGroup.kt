@@ -9,7 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.*
 import com.aliucord.manager.R
+import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.floor
 
 enum class InstallStatus {
@@ -30,18 +31,23 @@ enum class InstallStatus {
     QUEUED
 }
 
-data class InstallStepData(
-    var nameResId: Int,
-    var status: InstallStatus,
-    var duration: Float = 0f,
-    var cached: Boolean = false
-)
+@Stable
+class InstallStepData(
+    val nameResId: Int,
+    status: InstallStatus,
+    duration: Float = 0f,
+    cached: Boolean = false
+) {
+    var status by mutableStateOf(status)
+    var duration by mutableStateOf(duration)
+    var cached by mutableStateOf(cached)
+}
 
 @Composable
 fun InstallGroup(
     name: String,
     isCurrent: Boolean,
-    subSteps: List<InstallStepData>,
+    subSteps: ImmutableList<InstallStepData>,
     onClick: () -> Unit
 ) {
     val status = when {
