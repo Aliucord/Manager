@@ -34,6 +34,8 @@ class DownloadManager(
         download(AliucordGithubService.KOTLIN_DEX_URL, out)
 
     suspend fun download(url: String, out: File): File {
+        out.parentFile?.mkdirs()
+
         return suspendCoroutine { continuation ->
             val receiver = object : BroadcastReceiver() {
                 var downloadId = 0L

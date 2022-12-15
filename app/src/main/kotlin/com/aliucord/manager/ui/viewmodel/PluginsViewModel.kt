@@ -1,13 +1,18 @@
 package com.aliucord.manager.ui.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.aliucordDir
 import com.aliucord.manager.domain.model.Plugin
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PluginsViewModel : ViewModel() {
     var showChangelogDialog by mutableStateOf(false)
@@ -70,16 +75,17 @@ class PluginsViewModel : ViewModel() {
         }
 
         val files = pluginsDir.listFiles { file -> file.extension == "zip" } ?: return@withContext
+        val loadedPlugins = files.mapNotNull { file ->
+            try {
+                Plugin(file)
+            } catch (e: Exception) {
+                Log.e(BuildConfig.TAG, "Failed to load plugin ${file.nameWithoutExtension}", e)
+                null
+            }
+        }.sortedBy { it.manifest.name }
 
-        plugins.addAll(
-            files.mapNotNull { file ->
-                try {
-                    Plugin(file)
-                } catch (e: Exception) {
-                    Log.e(BuildConfig.TAG, "Failed to load plugin ${file.nameWithoutExtension}", e)
-                    null
-                }
-            }.sortedBy { it.manifest.name }
-        )
+        withContext(Dispatchers.Main) {
+            plugins.addAll(loadedPlugins)
+        }
     }
 }
