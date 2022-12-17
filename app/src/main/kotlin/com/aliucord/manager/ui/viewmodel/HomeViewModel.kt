@@ -1,9 +1,9 @@
 package com.aliucord.manager.ui.viewmodel
 
 import android.app.Application
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.runtime.*
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
@@ -14,6 +14,7 @@ import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.uninstallApk
 import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.util.getPackageVersion
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.*
@@ -23,16 +24,10 @@ class HomeViewModel(
     private val github: GithubRepository,
     val preferences: PreferencesManager
 ) : ViewModel() {
-    var supportedVersion by mutableStateOf("")
+    var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
-    var supportedVersionType by mutableStateOf(VersionType.NONE)
-        private set
-
-    var installedVersion by mutableStateOf("")
-        private set
-
-    var installedVersionType by mutableStateOf(VersionType.NONE)
+    var installedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
     val commits = Pager(PagingConfig(pageSize = 30)) {
@@ -73,15 +68,21 @@ class HomeViewModel(
             val (versionName, versionCode) = application.getPackageVersion(preferences.packageName)
 
             withContext(Dispatchers.Main) {
-                installedVersion = versionName.split("-")[0].trim()
-                installedVersionType = VersionType.parseVersionCode(versionCode)
+                installedVersion = DiscordVersion.Existing(
+                    type = DiscordVersion.parseVersionType(versionCode),
+                    name = versionName.split("-")[0].trim(),
+                    code = versionCode,
+                )
+            }
+        } catch (t: PackageManager.NameNotFoundException) {
+            withContext(Dispatchers.Main) {
+                installedVersion = DiscordVersion.None
             }
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, Log.getStackTraceString(t))
 
             withContext(Dispatchers.Main) {
-                installedVersion = ""
-                installedVersionType = VersionType.ERROR
+                installedVersion = DiscordVersion.Error
             }
         }
     }
@@ -92,12 +93,17 @@ class HomeViewModel(
         withContext(Dispatchers.Main) {
             version.fold(
                 success = {
-                    supportedVersion = it.versionName
-                    supportedVersionType = VersionType.parseVersionCode(it.versionCode.toIntOrNull())
+                    val versionCode = it.versionCode.toIntOrNull() ?: return@fold
+
+                    supportedVersion = DiscordVersion.Existing(
+                        type = DiscordVersion.parseVersionType(versionCode),
+                        name = it.versionName.split("-")[0].trim(),
+                        code = versionCode,
+                    )
                 },
                 fail = {
-                    supportedVersion = ""
-                    supportedVersionType = VersionType.ERROR
+                    Log.e(BuildConfig.TAG, Log.getStackTraceString(it))
+                    supportedVersion = DiscordVersion.Error
                 }
             )
         }
@@ -128,42 +134,5 @@ class HomeViewModel(
 
     fun uninstallAliucord() {
         application.uninstallApk(preferences.packageName)
-    }
-
-    enum class VersionType {
-        STABLE,
-        BETA,
-        ALPHA,
-        UNKNOWN,
-        NONE,
-        ERROR;
-
-        fun isVersion(): Boolean = when (this) {
-            STABLE -> true
-            BETA -> true
-            ALPHA -> true
-            else -> false
-        }
-
-        @Composable
-        fun toDisplayName() = when (this) {
-            UNKNOWN -> stringResource(R.string.version_unknown)
-            STABLE -> stringResource(R.string.version_stable)
-            BETA -> stringResource(R.string.version_beta)
-            ALPHA -> stringResource(R.string.version_alpha)
-            ERROR -> stringResource(R.string.version_load_fail)
-            NONE -> stringResource(R.string.version_unknown)
-        }
-
-        companion object {
-            fun parseVersionCode(versionCode: Int?): VersionType {
-                return when (versionCode?.div(100)?.mod(10)) {
-                    0 -> STABLE
-                    1 -> BETA
-                    2 -> ALPHA
-                    else -> UNKNOWN
-                }
-            }
-        }
     }
 }

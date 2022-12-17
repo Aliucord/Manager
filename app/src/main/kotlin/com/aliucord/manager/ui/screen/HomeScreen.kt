@@ -6,7 +6,9 @@
 
 package com.aliucord.manager.ui.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -46,9 +48,7 @@ fun HomeScreen(
         InfoCard(
             packageName = viewModel.preferences.packageName,
             supportedVersion = viewModel.supportedVersion,
-            supportedVersionType = viewModel.supportedVersionType,
             currentVersion = viewModel.installedVersion,
-            currentVersionType = viewModel.installedVersionType,
             onDownloadClick = { showInstallerDialog = true },
             onLaunchClick = viewModel::launchAliucord,
             onUninstallClick = viewModel::uninstallAliucord

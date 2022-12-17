@@ -13,15 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.viewmodel.HomeViewModel.VersionType
+import com.aliucord.manager.ui.util.DiscordVersion
 
 @Composable
 fun InfoCard(
     packageName: String,
-    supportedVersion: String,
-    supportedVersionType: VersionType,
-    currentVersion: String,
-    currentVersionType: VersionType,
+    supportedVersion: DiscordVersion,
+    currentVersion: DiscordVersion,
     onDownloadClick: () -> Unit,
     onUninstallClick: () -> Unit,
     onLaunchClick: () -> Unit
@@ -44,22 +42,22 @@ fun InfoCard(
                     append(stringResource(R.string.version_supported))
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(" ")
-                        if (supportedVersion.isNotEmpty()) {
-                            append(supportedVersion)
+                        if (supportedVersion is DiscordVersion.Existing) {
+                            append(supportedVersion.name)
                             append(" - ")
                         }
-                        append(supportedVersionType.toDisplayName())
+                        append(supportedVersion.toDisplayName())
                     }
 
                     append('\n')
                     append(stringResource(R.string.version_installed))
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(" ")
-                        if (currentVersion.isNotEmpty()) {
-                            append(currentVersion)
+                        if (currentVersion is DiscordVersion.Existing) {
+                            append(currentVersion.name)
                             append(" - ")
                         }
-                        append(currentVersionType.toDisplayName())
+                        append(currentVersion.toDisplayName())
                     }
                 },
                 style = MaterialTheme.typography.bodyMedium
@@ -71,10 +69,13 @@ fun InfoCard(
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val (icon, description) = when (currentVersion) {
-                    "" -> Icons.Default.Download to R.string.action_install
-                    supportedVersion -> Icons.Default.Refresh to R.string.action_reinstall
-                    else -> Icons.Default.Update to R.string.action_update
+                val (icon, description) = when {
+                    currentVersion !is DiscordVersion.Existing ->
+                        Icons.Default.Download to R.string.action_install
+                    currentVersion < supportedVersion ->
+                        Icons.Default.Refresh to R.string.action_reinstall
+                    else ->
+                        Icons.Default.Update to R.string.action_update
                 }
 
                 FilledTonalIconButton(
@@ -83,7 +84,7 @@ fun InfoCard(
                         .heightIn(min = 50.dp),
                     onClick = onDownloadClick,
                     shape = ShapeDefaults.Large,
-                    enabled = supportedVersionType != VersionType.ERROR
+                    enabled = supportedVersion !is DiscordVersion.Error
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -93,7 +94,7 @@ fun InfoCard(
                             imageVector = icon,
                             contentDescription = stringResource(description)
                         )
-                        if (!currentVersionType.isVersion()) {
+                        if (currentVersion is DiscordVersion.None) {
                             Text(
                                 stringResource(description),
                                 style = MaterialTheme.typography.labelLarge
@@ -102,7 +103,7 @@ fun InfoCard(
                     }
                 }
 
-                if (currentVersionType.isVersion()) {
+                if (currentVersion is DiscordVersion.Existing) {
                     FilledTonalIconButton(
                         modifier = Modifier
                             .weight(1f)
