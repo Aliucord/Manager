@@ -9,7 +9,7 @@
   <string name="team">チーム</string>
   <string name="website">ウェブサイト</string>
   <string name="installer">インストーラー</string>
-  <string name="action_retry">リトライ</string>
+  <string name="action_retry">再試行</string>
   <string name="action_apply">適用</string>
   <string name="action_confirm">確定</string>
   <string name="action_cancel">キャンセル</string>
@@ -76,9 +76,11 @@
   <string name="network_load_fail">読み込みに失敗しました</string>
   <string name="version_supported">サポートされているバージョン:</string>
   <string name="version_installed">インストール済みのバージョン:</string>
+  <string name="version_none">None</string>
   <string name="version_stable">安定版</string>
   <string name="version_beta">ベータ版</string>
   <string name="version_alpha">アルファ版</string>
+  <string name="version_unknown">Unknown</string>
   <string name="version_load_fail">バージョンの取得に失敗しました</string>
   <string name="installer_save_file">ファイルに保存</string>
   <string name="installer_file_save_success">%sに保存しました</string>

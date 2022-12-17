@@ -75,9 +75,11 @@
   <string name="network_load_fail">Gagal dimuat</string>
   <string name="version_supported">Versi yang didukung:</string>
   <string name="version_installed">Versi yang terpasang:</string>
+  <string name="version_none">None</string>
   <string name="version_stable">Stabil</string>
   <string name="version_beta">Beta</string>
   <string name="version_alpha">Alpha</string>
+  <string name="version_unknown">Unknown</string>
   <string name="version_load_fail">Gagal untuk mendapatkan versi</string>
   <string name="installer_save_file">Save to file</string>
   <string name="installer_file_save_success">Saved to %s</string>

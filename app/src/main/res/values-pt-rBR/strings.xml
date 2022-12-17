@@ -75,9 +75,11 @@
   <string name="network_load_fail">Falha ao carregar</string>
   <string name="version_supported">Versões suportadas:</string>
   <string name="version_installed">Versão instalada:</string>
+  <string name="version_none">None</string>
   <string name="version_stable">Estável</string>
   <string name="version_beta">Beta</string>
   <string name="version_alpha">Alfa</string>
+  <string name="version_unknown">Unknown</string>
   <string name="version_load_fail">Falha ao obter versão</string>
   <string name="installer_save_file">Salvar em um arquivo</string>
   <string name="installer_file_save_success">Salvo em %s</string>

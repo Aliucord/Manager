@@ -75,9 +75,11 @@
   <string name="network_load_fail">Αποτυχία φόρτωσης</string>
   <string name="version_supported">Υποστηριζόμενη έκδοση:</string>
   <string name="version_installed">Εγκατεστημένη έκδοση:</string>
+  <string name="version_none">None</string>
   <string name="version_stable">Σταθερή</string>
   <string name="version_beta">Δοκιμαστική</string>
   <string name="version_alpha">Alpha</string>
+  <string name="version_unknown">Unknown</string>
   <string name="version_load_fail">Αποτυχία ανάκτησης έκδοσης</string>
   <string name="installer_save_file">Αποθήκευση σε αρχείο</string>
   <string name="installer_file_save_success">Αποθηκεύτηκε στο %s</string>
