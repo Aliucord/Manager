@@ -75,11 +75,11 @@
   <string name="network_load_fail">Tải thất bại</string>
   <string name="version_supported">Phiên bản được hỗ trợ:</string>
   <string name="version_installed">Phiên bản đã cài đặt:</string>
-  <string name="version_none">None</string>
+  <string name="version_none">Không</string>
   <string name="version_stable">Ổn định</string>
   <string name="version_beta">Thử nghiệm</string>
   <string name="version_alpha">Không ổn định</string>
-  <string name="version_unknown">Unknown</string>
+  <string name="version_unknown">Không rõ</string>
   <string name="version_load_fail">Không truy xuất được phiên bản</string>
   <string name="installer_save_file">Lưu vào tệp</string>
   <string name="installer_file_save_success">Đã lưu vào %s</string>
