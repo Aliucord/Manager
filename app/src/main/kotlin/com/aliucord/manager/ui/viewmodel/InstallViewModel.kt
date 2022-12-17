@@ -251,7 +251,10 @@ class InstallViewModel(
 
             // Download the hermes-release.aar file to replace in the apk
             val hermes = cacheDir.resolve("hermes-release-${latestHermesRelease.tagName}.aar").also { file ->
-                if (file.exists()) return@also
+                if (file.exists()) {
+                    cached = true
+                    return@also
+                }
 
                 latestHermesRelease.assets
                     .find { it.name == "hermes-release.aar" }!!.browserDownloadUrl
@@ -261,6 +264,7 @@ class InstallViewModel(
             // Download the hermes-cppruntime-release.aar file to replace in the apk
             val cppRuntime = cacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
                 if (file.exists()) return@also
+                cached = false
 
                 latestHermesRelease.assets
                     .find { it.name == "hermes-cppruntime-release.aar" }!!.browserDownloadUrl
@@ -277,7 +281,10 @@ class InstallViewModel(
 
             // Download the Aliucord classes.dex file to add to the apk
             cacheDir.resolve("aliucord-${latestAliucordNativeRelease.tagName}.dex").also { file ->
-                if (file.exists()) return@also
+                if (file.exists()) {
+                    cached = true
+                    return@also
+                }
 
                 latestAliucordNativeRelease.assets
                     .find { it.name == "classes.dex" }!!.browserDownloadUrl
