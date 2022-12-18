@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.aliucord.manager.R
 import kotlinx.collections.immutable.ImmutableList
@@ -121,21 +122,33 @@ fun InstallGroup(
                     ) {
                         StepIcon(it.status, size = 18.dp)
 
-                        Text(stringResource(it.nameResId), style = MaterialTheme.typography.labelLarge)
+                        Text(
+                            text = stringResource(it.nameResId),
+                            style = MaterialTheme.typography.labelLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, true),
+                        )
 
                         if (it.status != InstallStatus.ONGOING && it.status != InstallStatus.QUEUED) {
-                            Spacer(modifier = Modifier.weight(1f))
-
                             if (it.cached) {
                                 val style = MaterialTheme.typography.labelSmall.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                                     fontStyle = FontStyle.Italic,
                                     fontSize = 11.sp
                                 )
-                                Text(stringResource(R.string.installer_cached), style = style)
+                                Text(
+                                    text = stringResource(R.string.installer_cached),
+                                    style = style,
+                                    maxLines = 1,
+                                )
                             }
 
-                            Text("%.2fs".format(it.duration), style = MaterialTheme.typography.labelSmall)
+                            Text(
+                                text = "%.2fs".format(it.duration),
+                                style = MaterialTheme.typography.labelSmall,
+                                maxLines = 1,
+                            )
                         }
                     }
                 }
