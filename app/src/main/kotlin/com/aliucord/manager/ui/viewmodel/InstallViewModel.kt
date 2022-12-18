@@ -188,6 +188,11 @@ class InstallViewModel(
             }
         }
 
+        // step(InstallStep.SIGN_APK) {
+        //     Signer.signApk(baseApkFile)
+        // }
+        // return
+
         // Download the native libraries split
         val libsApkFile = step(InstallStep.DL_LIBS_APK) {
             val libArch = arch.replace("-v", "_v")
@@ -345,7 +350,7 @@ class InstallViewModel(
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
-                    zip.entryNames.count { it.endsWith(".dex") },
+                    zip.countDexFiles(),
 
                     // Get the first classes.dex bytes
                     zip.openEntry("classes.dex")?.read()
@@ -535,7 +540,7 @@ class InstallViewModel(
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
-                    zip.entryNames.count { it.endsWith(".dex") },
+                    zip.countDexFiles(),
 
                     // Get the first dex
                     zip.openEntry("classes.dex")?.read()

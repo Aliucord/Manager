@@ -5,8 +5,10 @@
 
 package com.aliucord.manager.installer.util
 
+import android.os.Build
 import com.aliucord.manager.aliucordDir
 import com.android.apksig.ApkSigner
+import net.fornwall.apksigner.ZipSigner
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.cert.X509v3CertificateBuilder
@@ -81,15 +83,26 @@ object Signer {
 
     fun signApk(apkFile: File) {
         val outputApk = aliucordDir.resolve(apkFile.name)
+        val isAndroid7 = Build.VERSION.SDK_INT >= 24
 
-        ApkSigner.Builder(listOf(signerConfig))
-            .setV1SigningEnabled(false) // TODO: enable so api <24 devices can work, however zip-alignment breaks
-            .setV2SigningEnabled(true)
-            .setV3SigningEnabled(true)
-            .setInputApk(apkFile)
-            .setOutputApk(outputApk)
-            .build()
-            .sign()
+        if (isAndroid7) {
+            ApkSigner.Builder(listOf(signerConfig))
+                .setV1SigningEnabled(false)
+                .setV2SigningEnabled(true)
+                .setV3SigningEnabled(true)
+                .setInputApk(apkFile)
+                .setOutputApk(outputApk)
+                .build()
+                .sign()
+        } else {
+            ZipSigner.signZip(
+                signerConfig.certificates.single(), // publicKey
+                signerConfig.privateKey, // privateKey
+                "SHA1withRSA", // signatureAlgorithm
+                apkFile.absolutePath, // inputZipFilename
+                outputApk.absolutePath, // outputZipFilename
+            )
+        }
 
         outputApk.renameTo(apkFile)
     }

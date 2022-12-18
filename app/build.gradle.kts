@@ -14,7 +14,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 21
         targetSdk = 33
         versionCode = 1
         versionName = "0.0.1"
@@ -64,12 +64,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        // Polyfills for apksig
+//        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
         freeCompilerArgs += listOf(
             "-Xcontext-receivers",
             "-P",
@@ -123,9 +126,14 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("io.github.diamondminer88:zip-android:2.1.0@aar")
     implementation("com.aliucord:axml:1.0.1")
-    implementation("com.android.tools.build:apksig:7.4.0-beta04")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+
+    // APK signing
+    // https://developer.android.com/studio/write/java8-support#library-desugaring-versions
+//    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
+    implementation("com.android.tools.build:apksig:7.3.1")
+    implementation("com.github.fornwall:apksigner:v0.7")
 }
 
 fun getCurrentBranch(): String? =
