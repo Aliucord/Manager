@@ -2,14 +2,19 @@ package com.aliucord.manager.domain.manager
 
 import android.app.Application
 import android.app.DownloadManager
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.network.service.AliucordGithubService
 import java.io.File
-import kotlin.coroutines.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class DownloadManager(
     private val application: Application
@@ -51,12 +56,22 @@ class DownloadManager(
                         val cursor = downloadManager.query(this)
                             .apply { moveToFirst() }
 
-                        val status = cursor.run { getInt(getColumnIndex(DownloadManager.COLUMN_STATUS)) }
-                        val reason = cursor.run { getInt(getColumnIndex(DownloadManager.COLUMN_REASON)) }
-                        status to reason
+                        // Notification's "cancel" was clicked
+                        if (cursor.count == 0) {
+                            -1 to -1
+                        } else {
+                            val status = cursor.run { getInt(getColumnIndex(DownloadManager.COLUMN_STATUS)) }
+                            val reason = cursor.run { getInt(getColumnIndex(DownloadManager.COLUMN_REASON)) }
+                            status to reason
+                        }
                     }
 
                     when (status) {
+                        // Cancelled
+                        -1 -> {
+                            context.unregisterReceiver(this)
+                            continuation.resumeWithException(Error("Download was cancelled manually"))
+                        }
                         DownloadManager.STATUS_SUCCESSFUL -> {
                             context.unregisterReceiver(this)
                             continuation.resume(out)
