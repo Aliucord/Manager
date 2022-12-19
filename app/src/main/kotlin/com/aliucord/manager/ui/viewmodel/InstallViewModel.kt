@@ -163,6 +163,7 @@ class InstallViewModel(
             it to InstallStepData(it.nameResId, InstallStatus.QUEUED)
         }
 
+        val isAndroid7 = Build.VERSION.SDK_INT >= 24
         val supportedVersion = preferences.version
         val arch = Build.SUPPORTED_ABIS.first()
         val cacheDir = externalCacheDir
@@ -370,6 +371,13 @@ class InstallViewModel(
 
         // Replace libs
         step(InstallStep.PATCH_LIBS) {
+            ZipReader(libsApkFile).use {
+                it.entries.forEach {
+                    if (it.name.endsWith(".so")) {
+                        println("${it.name} ${it.size} ${it.compressedSize}")
+                    }
+                }
+            }
             ZipWriter(libsApkFile, true).use { libsApk ->
                 // Process the hermes and cpp runtime library
                 for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
@@ -389,14 +397,39 @@ class InstallViewModel(
                     }
 
                     // Delete the old binary and add the new one instead
-                    libsApk.deleteEntry("lib/$arch/$binaryName", true)
-                    libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
+                    libsApk.deleteEntry("lib/$arch/$binaryName", isAndroid7) // true & false makes corrupted zip???
+                    libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE)
                 }
             }
         }
 
         step(InstallStep.SIGN_APK) {
-            apks.forEach(Signer::signApk)
+            // apks.forEach(Signer::signApk)
+
+            // Zip-align all binaries
+            if (!isAndroid7 && false) {
+                val tmpFile = libsApkFile.copyTo(
+                    target = libsApkFile.resolveSibling("${libsApkFile.name}.tmp"),
+                    overwrite = true,
+                )
+
+                ZipReader(tmpFile).use { src ->
+                    ZipWriter(libsApkFile, true).use { dst ->
+                        src.entries.forEach { entry ->
+                            println("here4 ${entry.name}")
+                            if (entry.name.endsWith(".so")) {
+                                val bytes = src.openEntry(entry.name)!!.read()
+                                dst.deleteEntry(entry.name, false)
+                                println("here5")
+                                dst.writeEntry(entry.name, bytes, ZipCompression.NONE, 4096)
+                                println("here6")
+                            }
+                        }
+                    }
+                }
+
+                tmpFile.delete()
+            }
         }
 
         step(InstallStep.INSTALL_APK) {
@@ -404,7 +437,7 @@ class InstallViewModel(
                 .installApks(application, *apks)
         }
 
-        patchedDir.deleteRecursively()
+        // patchedDir.deleteRecursively()
     }
 
     private suspend fun installKotlin() {

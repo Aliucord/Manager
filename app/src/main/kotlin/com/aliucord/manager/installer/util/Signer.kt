@@ -8,7 +8,6 @@ package com.aliucord.manager.installer.util
 import android.os.Build
 import com.aliucord.manager.aliucordDir
 import com.android.apksig.ApkSigner
-import net.fornwall.apksigner.ZipSigner
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.cert.X509v3CertificateBuilder
@@ -24,39 +23,41 @@ import java.util.*
 object Signer {
     private val password = "password".toCharArray()
 
-    private val signerConfig: ApkSigner.SignerConfig by lazy {
+    class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
+
+    private val keySet: KeySet by lazy {
         val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
 
         aliucordDir.resolve("ks.keystore").also {
             if (!it.exists()) {
                 aliucordDir.mkdir()
-                newKeystore(it)
+                createKeyStore(it)
             }
         }.inputStream().use { stream ->
             keyStore.load(stream, null)
         }
 
         val alias = keyStore.aliases().nextElement()
-        val certificate = keyStore.getCertificate(alias) as X509Certificate
 
-        ApkSigner.SignerConfig.Builder(
-            "Aliucord Manager signer",
-            keyStore.getKey(alias, password) as PrivateKey,
-            listOf(certificate)
-        ).build()
+        KeySet(
+            publicKey = keyStore.getCertificate(alias) as X509Certificate,
+            privateKey = keyStore.getKey(alias, password) as PrivateKey,
+        )
     }
 
-    private fun newKeystore(out: File?) {
-        val key = createKey()
+    private fun createKeyStore(out: File) {
+        out.parentFile?.mkdirs()
+        out.delete()
 
+        val key = createKeySet()
         with(KeyStore.getInstance(KeyStore.getDefaultType())) {
             load(null, password)
             setKeyEntry("alias", key.privateKey, password, arrayOf<Certificate>(key.publicKey))
-            store(out?.outputStream(), password)
+            store(out.outputStream(), password)
         }
     }
 
-    private fun createKey(): KeySet {
+    private fun createKeySet(): KeySet {
         var serialNumber: BigInteger
 
         do serialNumber = SecureRandom().nextInt().toBigInteger()
@@ -68,44 +69,46 @@ object Signer {
             generateKeyPair()
         }
         val builder = X509v3CertificateBuilder(
-            /* issuer = */ x500Name,
-            /* serial = */ serialNumber,
-            /* notBefore = */ Date(System.currentTimeMillis() - 1000L * 60L * 60L * 24L * 30L),
-            /* notAfter = */ Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 366L * 30L),
-            /* dateLocale = */ Locale.ENGLISH,
-            /* subject = */ x500Name,
-            /* publicKeyInfo = */ SubjectPublicKeyInfo.getInstance(pair.public.encoded)
+            x500Name, // issuer
+            serialNumber, // serial
+            Date(System.currentTimeMillis() - 1000L * 60L * 60L * 24L * 30L), // notBefore
+            Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 366L * 30L), // notAfter
+            Locale.ENGLISH, // dateLocale
+            x500Name, // subject
+            SubjectPublicKeyInfo.getInstance(pair.public.encoded), // publicKeyInfo
         )
         val signer = JcaContentSignerBuilder("SHA1withRSA").build(pair.private)
 
-        return KeySet(JcaX509CertificateConverter().getCertificate(builder.build(signer)), pair.private)
+        return KeySet(
+            publicKey = JcaX509CertificateConverter()
+                .getCertificate(builder.build(signer)),
+            privateKey = pair.private
+        )
     }
 
     fun signApk(apkFile: File) {
-        val outputApk = aliucordDir.resolve(apkFile.name)
         val isAndroid7 = Build.VERSION.SDK_INT >= 24
 
         if (isAndroid7) {
-            ApkSigner.Builder(listOf(signerConfig))
+            val config = ApkSigner.SignerConfig.Builder(
+                "Aliucord Manager",
+                keySet.privateKey,
+                listOf(keySet.publicKey)
+            ).build()
+
+            val tmpFile = aliucordDir.resolve(apkFile.name)
+            ApkSigner.Builder(listOf(config))
                 .setV1SigningEnabled(false)
                 .setV2SigningEnabled(true)
                 .setV3SigningEnabled(true)
                 .setInputApk(apkFile)
-                .setOutputApk(outputApk)
+                .setOutputApk(tmpFile)
                 .build()
                 .sign()
+
+            tmpFile.renameTo(apkFile)
         } else {
-            ZipSigner.signZip(
-                signerConfig.certificates.single(), // publicKey
-                signerConfig.privateKey, // privateKey
-                "SHA1withRSA", // signatureAlgorithm
-                apkFile.absolutePath, // inputZipFilename
-                outputApk.absolutePath, // outputZipFilename
-            )
+            V1Signer.signApkWithV1(apkFile, keySet)
         }
-
-        outputApk.renameTo(apkFile)
     }
-
-    private class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
 }
