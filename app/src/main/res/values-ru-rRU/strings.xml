@@ -42,7 +42,7 @@
   <string name="settings_appearance">Внешний вид</string>
   <string name="settings_developer_options">Настройки для разработчиков</string>
   <string name="setting_clear_cache">Очистить кеш</string>
-  <string name="setting_dex_location">Местоположение Dex</string>
+  <string name="setting_dex_location">Расположение Dex</string>
   <string name="setting_use_dex_from_storage">Использовать Injector.dex из памяти</string>
   <string name="setting_replace_icon">Заменить иконку приложения</string>
   <string name="setting_replace_icon_desc">Использовать вариант Aliucord вместо Discord</string>
@@ -53,7 +53,7 @@
   <string name="setting_package_name">Название пакета</string>
   <string name="setting_target_version">Загружаемая версия</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
-  <string name="settings_invalid_package_name">Неправильное имя пакета, сброс на com.aliucord</string>
+  <string name="settings_invalid_package_name">Неправильное название пакета, сброс на com.aliucord</string>
   
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
