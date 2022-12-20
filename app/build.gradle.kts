@@ -33,10 +33,25 @@ android {
         buildConfigField("boolean", "GIT_LOCAL_CHANGES", "${gitHasLocalChanges()}")
     }
 
+    signingConfigs {
+        create("release") {
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+            enableV4Signing = true
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+            storeFile = System.getenv("SIGNING_STORE_FILE")?.let { File(it) }
+            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isCrunchPngs = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
