@@ -13,6 +13,7 @@ import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
+import com.aliucord.manager.installer.signing.Signer
 import com.aliucord.manager.installer.util.*
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.ui.component.installer.InstallStatus
@@ -163,6 +164,7 @@ class InstallViewModel(
             it to InstallStepData(it.nameResId, InstallStatus.QUEUED)
         }
 
+        val isAndroid7 = Build.VERSION.SDK_INT >= 24
         val supportedVersion = preferences.version
         val arch = Build.SUPPORTED_ABIS.first()
         val cacheDir = externalCacheDir
@@ -209,7 +211,7 @@ class InstallViewModel(
 
         // Download the locale split
         val localeApkFile = step(InstallStep.DL_LANG_APK) {
-            discordCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.en-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -228,7 +230,7 @@ class InstallViewModel(
         // Download the drawables split
         val resApkFile = step(InstallStep.DL_RESC_APK) {
             // TODO: download the appropriate dpi res apk
-            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -334,7 +336,8 @@ class InstallViewModel(
                         ManifestPatcher.renamePackage(manifest, preferences.packageName)
                     }
 
-                    zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile) // Preserve alignment in libs apk
+                    // TODO: undo android check once preserving alignment
+                    zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile && isAndroid7) // Preserve alignment in libs apk
                     zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
                 }
             }
@@ -345,7 +348,7 @@ class InstallViewModel(
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
-                    zip.entryNames.count { it.endsWith(".dex") },
+                    zip.countDexFiles(),
 
                     // Get the first classes.dex bytes
                     zip.openEntry("classes.dex")?.read()
@@ -384,14 +387,42 @@ class InstallViewModel(
                     }
 
                     // Delete the old binary and add the new one instead
-                    libsApk.deleteEntry("lib/$arch/$binaryName", true)
-                    libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
+                    libsApk.deleteEntry("lib/$arch/$binaryName", isAndroid7)
+                    if (isAndroid7) {
+                        libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
+                    } else {
+                        // FIXME: For some reason, no compression makes corrupted zip on old android GUH
+                        libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.DEFLATE)
+                    }
                 }
             }
         }
 
         step(InstallStep.SIGN_APK) {
             apks.forEach(Signer::signApk)
+
+            // TODO: enable zipaligning
+            // Zip-align all binaries
+            // if (!isAndroid7) {
+            //     val tmpFile = libsApkFile.copyTo(
+            //         target = libsApkFile.resolveSibling("${libsApkFile.name}.tmp"),
+            //         overwrite = true,
+            //     )
+            //
+            //     ZipReader(tmpFile).use { src ->
+            //         ZipWriter(libsApkFile, true).use { dst ->
+            //             src.entries.forEach { entry ->
+            //                 if (entry.name.endsWith(".so")) {
+            //                     val bytes = src.openEntry(entry.name)!!.read()
+            //                     dst.deleteEntry(entry.name, false)
+            //                     dst.writeEntry(entry.name, bytes, ZipCompression.NONE, 4096)
+            //                 }
+            //             }
+            //         }
+            //     }
+            //
+            //     tmpFile.delete()
+            // }
         }
 
         step(InstallStep.INSTALL_APK) {
@@ -399,7 +430,7 @@ class InstallViewModel(
                 .installApks(application, *apks)
         }
 
-        patchedDir.deleteRecursively()
+        // patchedDir.deleteRecursively()
     }
 
     private suspend fun installKotlin() {
@@ -535,7 +566,7 @@ class InstallViewModel(
             val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
                 Pair(
                     // Find the amount of .dex files in apk
-                    zip.entryNames.count { it.endsWith(".dex") },
+                    zip.countDexFiles(),
 
                     // Get the first dex
                     zip.openEntry("classes.dex")?.read()
