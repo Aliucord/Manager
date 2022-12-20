@@ -30,7 +30,7 @@
   <string name="action_collapse">Свернуть</string>
   <string name="action_expand">Развернуть</string>
   <string name="action_copied">Скопировано!</string>
-  <string name="action_cleared_cache">Кэш очищен!</string>
+  <string name="action_cleared_cache">Кеш очищен!</string>
 
   <string name="permissions_grant_title">Предоставление Разрешений</string>
   <string name="permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
@@ -45,12 +45,12 @@
   <string name="setting_dex_location">Местоположение Dex</string>
   <string name="setting_use_dex_from_storage">Использовать Injector.dex из памяти</string>
   <string name="setting_replace_icon">Заменить иконку приложения</string>
-  <string name="setting_replace_icon_desc">Использовать вариант Aliucord вместо иконки Discord</string>
+  <string name="setting_replace_icon_desc">Использовать вариант Aliucord вместо Discord</string>
   <string name="setting_debuggable">Отладка</string>
   <string name="setting_debuggable_desc">Включение флага для откладки</string>
   <string name="setting_theme_desc">Внешний вид менеджера</string>
-  <string name="setting_app_name">Имя Приложения</string>
-  <string name="setting_package_name">Имя пакета</string>
+  <string name="setting_app_name">Название приложения</string>
+  <string name="setting_package_name">Название пакета</string>
   <string name="setting_target_version">Загружаемая версия</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
   <string name="settings_invalid_package_name">Неправильное имя пакета, сброс на com.aliucord</string>
@@ -62,7 +62,7 @@
   <string name="plugins_title">Плагины</string>
   <string name="plugins_view_changelog">Открыть список изменений для %1$s</string>
   <string name="plugins_delete_plugin_body">Вы действительно хотите удалить этот плагин?</string>
-  <string name="plugins_search">Поиск Плагинов</string>
+  <string name="plugins_search">Поиск плагинов</string>
   <string name="plugins_none_installed">Плагины не установлены!</string>
   <string name="plugins_changelog_media">Список изменений</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
