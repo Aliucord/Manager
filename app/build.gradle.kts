@@ -37,6 +37,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isCrunchPngs = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -66,9 +67,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-
-        // Polyfills for apksig
-//        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -130,10 +128,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
     // APK signing
-    // https://developer.android.com/studio/write/java8-support#library-desugaring-versions
-//    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
     implementation("com.android.tools.build:apksig:7.3.1")
-    implementation("com.github.fornwall:apksigner:v0.7")
 }
 
 fun getCurrentBranch(): String? =

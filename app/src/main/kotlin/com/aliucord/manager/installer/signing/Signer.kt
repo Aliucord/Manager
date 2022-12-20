@@ -3,7 +3,7 @@
  * Licensed under the Open Software License version 3.0
  */
 
-package com.aliucord.manager.installer.util
+package com.aliucord.manager.installer.signing
 
 import android.os.Build
 import com.aliucord.manager.aliucordDir
@@ -22,8 +22,6 @@ import java.util.*
 
 object Signer {
     private val password = "password".toCharArray()
-
-    class KeySet(val publicKey: X509Certificate, val privateKey: PrivateKey)
 
     private val keySet: KeySet by lazy {
         val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
@@ -108,7 +106,7 @@ object Signer {
 
             tmpFile.renameTo(apkFile)
         } else {
-            V1Signer.signApkWithV1(apkFile, keySet)
+            V1Signer.signApk(apkFile, keySet)
         }
     }
 }

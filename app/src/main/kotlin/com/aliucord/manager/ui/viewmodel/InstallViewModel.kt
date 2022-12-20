@@ -13,6 +13,7 @@ import com.aliucord.manager.domain.manager.DownloadManager
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
+import com.aliucord.manager.installer.signing.Signer
 import com.aliucord.manager.installer.util.*
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.ui.component.installer.InstallStatus
@@ -189,11 +190,6 @@ class InstallViewModel(
             }
         }
 
-        // step(InstallStep.SIGN_APK) {
-        //     Signer.signApk(baseApkFile)
-        // }
-        // return
-
         // Download the native libraries split
         val libsApkFile = step(InstallStep.DL_LIBS_APK) {
             val libArch = arch.replace("-v", "_v")
@@ -215,7 +211,7 @@ class InstallViewModel(
 
         // Download the locale split
         val localeApkFile = step(InstallStep.DL_LANG_APK) {
-            discordCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.en-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -234,7 +230,7 @@ class InstallViewModel(
         // Download the drawables split
         val resApkFile = step(InstallStep.DL_RESC_APK) {
             // TODO: download the appropriate dpi res apk
-            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -340,7 +336,8 @@ class InstallViewModel(
                         ManifestPatcher.renamePackage(manifest, preferences.packageName)
                     }
 
-                    zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile) // Preserve alignment in libs apk
+                    // TODO: undo android check once preserving alignment
+                    zip.deleteEntry("AndroidManifest.xml", apk == libsApkFile && isAndroid7) // Preserve alignment in libs apk
                     zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
                 }
             }
@@ -371,13 +368,6 @@ class InstallViewModel(
 
         // Replace libs
         step(InstallStep.PATCH_LIBS) {
-            ZipReader(libsApkFile).use {
-                it.entries.forEach {
-                    if (it.name.endsWith(".so")) {
-                        println("${it.name} ${it.size} ${it.compressedSize}")
-                    }
-                }
-            }
             ZipWriter(libsApkFile, true).use { libsApk ->
                 // Process the hermes and cpp runtime library
                 for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
@@ -397,39 +387,42 @@ class InstallViewModel(
                     }
 
                     // Delete the old binary and add the new one instead
-                    libsApk.deleteEntry("lib/$arch/$binaryName", isAndroid7) // true & false makes corrupted zip???
-                    libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE)
+                    libsApk.deleteEntry("lib/$arch/$binaryName", isAndroid7)
+                    if (isAndroid7) {
+                        libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.NONE, 4096)
+                    } else {
+                        // FIXME: For some reason, no compression makes corrupted zip on old android GUH
+                        libsApk.writeEntry("lib/$arch/$binaryName", libBytes, ZipCompression.DEFLATE)
+                    }
                 }
             }
         }
 
         step(InstallStep.SIGN_APK) {
-            // apks.forEach(Signer::signApk)
+            apks.forEach(Signer::signApk)
 
+            // TODO: enable zipaligning
             // Zip-align all binaries
-            if (!isAndroid7 && false) {
-                val tmpFile = libsApkFile.copyTo(
-                    target = libsApkFile.resolveSibling("${libsApkFile.name}.tmp"),
-                    overwrite = true,
-                )
-
-                ZipReader(tmpFile).use { src ->
-                    ZipWriter(libsApkFile, true).use { dst ->
-                        src.entries.forEach { entry ->
-                            println("here4 ${entry.name}")
-                            if (entry.name.endsWith(".so")) {
-                                val bytes = src.openEntry(entry.name)!!.read()
-                                dst.deleteEntry(entry.name, false)
-                                println("here5")
-                                dst.writeEntry(entry.name, bytes, ZipCompression.NONE, 4096)
-                                println("here6")
-                            }
-                        }
-                    }
-                }
-
-                tmpFile.delete()
-            }
+            // if (!isAndroid7) {
+            //     val tmpFile = libsApkFile.copyTo(
+            //         target = libsApkFile.resolveSibling("${libsApkFile.name}.tmp"),
+            //         overwrite = true,
+            //     )
+            //
+            //     ZipReader(tmpFile).use { src ->
+            //         ZipWriter(libsApkFile, true).use { dst ->
+            //             src.entries.forEach { entry ->
+            //                 if (entry.name.endsWith(".so")) {
+            //                     val bytes = src.openEntry(entry.name)!!.read()
+            //                     dst.deleteEntry(entry.name, false)
+            //                     dst.writeEntry(entry.name, bytes, ZipCompression.NONE, 4096)
+            //                 }
+            //             }
+            //         }
+            //     }
+            //
+            //     tmpFile.delete()
+            // }
         }
 
         step(InstallStep.INSTALL_APK) {

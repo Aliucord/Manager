@@ -1,4 +1,4 @@
-package com.aliucord.manager.installer.util
+package com.aliucord.manager.installer.signing
 
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
@@ -26,14 +26,14 @@ import java.util.jar.Manifest
 object V1Signer {
     private val v1StripPattern = "^META-INF/(.*)[.](MF|SF|RSA|DSA)$".toRegex()
 
-    fun signApkWithV1(apkFile: File, keySet: Signer.KeySet) {
+    fun signApk(apkFile: File, keySet: KeySet) {
         val fileDigests = LinkedHashMap<String, String>()
         val sectionDigests = LinkedHashMap<String, String>()
         val toRemove = LinkedList<String>()
 
         ZipReader(apkFile).use { zip ->
             zip.entries.forEach {
-                if (v1StripPattern.matches(it.name)) {
+                if (v1StripPattern.matches(it.name) || it.name == "stamp-cert-sha256") {
                     toRemove.add(it.name)
                 } else {
                     fileDigests[it.name] = it.read().sha1DigestBase64()
@@ -113,7 +113,7 @@ object V1Signer {
             .sha1DigestBase64()
     }
 
-    private fun signSigFile(keySet: Signer.KeySet, content: ByteArray): ByteArray {
+    private fun signSigFile(keySet: KeySet, content: ByteArray): ByteArray {
         val msg: CMSTypedData = CMSProcessableByteArray(content)
         val certs = JcaCertStore(listOf<Any>(keySet.publicKey))
 

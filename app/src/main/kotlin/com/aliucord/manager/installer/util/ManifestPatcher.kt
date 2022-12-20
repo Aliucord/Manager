@@ -6,6 +6,7 @@
 package com.aliucord.manager.installer.util
 
 import android.Manifest
+import android.os.Build
 import pxb.android.axml.*
 
 object ManifestPatcher {
@@ -26,6 +27,7 @@ object ManifestPatcher {
     ): ByteArray {
         val reader = AxmlReader(manifestBytes)
         val writer = AxmlWriter()
+        val isAndroid7 = Build.VERSION.SDK_INT >= 24
 
         reader.accept(object : AxmlVisitor(writer) {
             override fun child(ns: String?, name: String?) =
@@ -66,10 +68,11 @@ object ManifestPatcher {
 
                             "uses-sdk" -> object : NodeVisitor(nv) {
                                 override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
-                                    if (name != "targetSdkVersion")
+                                    if (name == "targetSdkVersion") {
+                                        super.attr(ns, name, resourceId, type, 28)
+                                    } else {
                                         super.attr(ns, name, resourceId, type, value)
-
-                                    super.attr(ns, name, resourceId, type, 28)
+                                    }
                                 }
                             }
 
@@ -87,8 +90,14 @@ object ManifestPatcher {
                                 private var addUseClearTextTraffic = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
-                                    super.attr(ns, name, resourceId, type, value)
-                                    if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false;
+                                    if (name == "extractNativeLibs" && !isAndroid7) {
+                                        // TODO: bring back no extracting once we have zipaligning
+                                        super.attr(ns, name, resourceId, type, true)
+                                    } else {
+                                        super.attr(ns, name, resourceId, type, value)
+                                    }
+
+                                    if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
                                     if (name == DEBUGGABLE) addDebuggable = false
                                     if (name == USES_CLEARTEXT_TRAFFIC) addUseClearTextTraffic = false
                                 }
