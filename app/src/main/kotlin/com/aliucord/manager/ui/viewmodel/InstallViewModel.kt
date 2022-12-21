@@ -413,7 +413,8 @@ class InstallViewModel(
         }
 
         step(InstallStep.INSTALL_APK) {
-            application.installApks(silent = !preferences.devMode, *apks)
+            application.packageManager.packageInstaller
+                .installApks(application, *apks)
         }
 
         patchedDir.deleteRecursively()
@@ -598,7 +599,8 @@ class InstallViewModel(
         }
 
         step(InstallStep.INSTALL_APK) {
-            application.installApks(silent = !preferences.devMode, baseApkFile)
+            application.packageManager.packageInstaller
+                .installApks(application, baseApkFile)
         }
 
         patchedDir.deleteRecursively()
