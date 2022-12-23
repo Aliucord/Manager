@@ -1,5 +1,6 @@
 package com.aliucord.manager.network.service
 
+import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.network.dto.Version
 import com.aliucord.manager.network.utils.ApiResponse
 import io.ktor.client.request.*
@@ -7,13 +8,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AliucordGithubService(
-    val github: GithubService,
-    val http: HttpService
+    private val github: GithubService,
+    private val http: HttpService,
+    private val preferences: PreferencesManager,
 ) {
     suspend fun getDataJson(): ApiResponse<Version> {
         return withContext(Dispatchers.IO) {
             http.request {
-                url("https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/data.json")
+                url(getDataJsonUrl())
             }
         }
     }
@@ -24,14 +26,21 @@ class AliucordGithubService(
     suspend fun getManagerReleases() = github.getReleases(ORG, MANAGER_REPO)
     suspend fun getContributors() = github.getContributors(ORG, MAIN_REPO)
 
+    private fun getBaseRawUrl() = if (preferences.httpOnly) {
+        "http://raw.githubusercontent.com"
+    } else {
+        "https://raw.githubusercontent.com"
+    }
+
+    private fun getDataJsonUrl() = "${getBaseRawUrl()}/$ORG/$MAIN_REPO/builds/data.json"
+    fun getKtInjectorUrl() = "${getBaseRawUrl()}/$ORG/$MAIN_REPO/builds/Injector.dex"
+    fun getKtDexUrl() = "${getBaseRawUrl()}/$ORG/$MAIN_REPO/main/installer/android/app/src/main/assets/kotlin/classes.dex"
+
     companion object {
         private const val ORG = "Aliucord"
         private const val MAIN_REPO = "Aliucord"
         private const val HERMES_REPO = "Hermes"
         private const val ALIUNATIVE_REPO = "AliucordNative"
         private const val MANAGER_REPO = "AliucordManager"
-
-        const val KT_INJECTOR_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/Injector.dex"
-        const val KOTLIN_DEX_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/main/installer/android/app/src/main/assets/kotlin/classes.dex"
     }
 }

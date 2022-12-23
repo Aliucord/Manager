@@ -1,7 +1,10 @@
 package com.aliucord.manager.ui.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.*
+import android.content.Intent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.R
@@ -9,6 +12,8 @@ import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.ui.theme.Theme
 import com.aliucord.manager.util.showToast
 import com.aliucord.manager.util.throttle
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val application: Application,
@@ -52,6 +57,17 @@ class SettingsViewModel(
     fun clearCacheDir() {
         application.externalCacheDir?.deleteRecursively()
         application.showToast(R.string.action_cleared_cache)
+    }
+
+    fun restartApp() {
+        viewModelScope.launch {
+            delay(1000)
+
+            application.packageManager
+                .getLaunchIntentForPackage(application.packageName)
+                ?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                ?.let { application.startActivity(it) }
+        }
     }
 
     init {

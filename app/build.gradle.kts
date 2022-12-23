@@ -26,6 +26,8 @@ android {
         buildConfigField("String", "TAG", "\"AliucordManager\"")
         buildConfigField("String", "SUPPORT_SERVER", "\"EsNDvBaHVU\"")
         buildConfigField("boolean", "RN_ENABLED", "true")
+        buildConfigField("String", "BACKEND_URL", "\"https://aliucord.com\"")
+        buildConfigField("String", "MAVEN_REPO_URL", "\"https://maven.aliucord.com/snapshots\"")
 
         buildConfigField("String", "GIT_BRANCH", "\"${getCurrentBranch()}\"")
         buildConfigField("String", "GIT_COMMIT", "\"${getLatestCommit()}\"")

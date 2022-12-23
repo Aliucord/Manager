@@ -1,9 +1,14 @@
 package com.aliucord.manager.di
 
+import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.network.service.HttpService
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import okhttp3.Dns
@@ -17,9 +22,13 @@ val httpModule = module {
         ignoreUnknownKeys = true
     }
 
-    fun provideHttpClient(json: Json) = HttpClient(OkHttp) {
+    fun provideHttpClient(json: Json, preferences: PreferencesManager) = HttpClient(OkHttp) {
+        defaultRequest {
+            header(HttpHeaders.UserAgent, "Aliucord Manager/${BuildConfig.VERSION_NAME}")
+        }
         engine {
             config {
+                followSslRedirects(!preferences.httpOnly)
                 dns(object : Dns {
                     override fun lookup(hostname: String): List<InetAddress> {
                         val addresses = Dns.SYSTEM.lookup(hostname)

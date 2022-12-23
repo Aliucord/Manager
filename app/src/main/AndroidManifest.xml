@@ -29,6 +29,7 @@
       android:requestLegacyExternalStorage="true"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
+      android:usesCleartextTraffic="true"
       tools:ignore="AllowBackup">
     <service android:name=".installer.service.InstallService" />
     <provider

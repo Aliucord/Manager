@@ -114,10 +114,20 @@ fun SettingsScreen(
                     label = stringResource(R.string.setting_debuggable),
                     secondaryLabel = stringResource(R.string.setting_debuggable_desc),
                     pref = preferences.debuggable,
+                    onPrefChange = { preferences.debuggable = it },
                     icon = { Icon(Icons.Default.BugReport, null) }
-                ) {
-                    preferences.debuggable = it
-                }
+                )
+
+                SettingsSwitch(
+                    label = "HTTP Only",
+                    secondaryLabel = "Disable HTTPS in Manager. This is primarily to get around SSL issues on an emulator.",
+                    pref = preferences.httpOnly,
+                    onPrefChange = {
+                        preferences.httpOnly = it
+                        viewModel.restartApp()
+                    },
+                    icon = { Icon(Icons.Default.KeyOff, null) },
+                )
             }
         }
 

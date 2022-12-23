@@ -1,5 +1,7 @@
 package com.aliucord.manager.domain.repository
 
+import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.network.service.MavenService
 import com.aliucord.manager.network.utils.ApiError
 import com.aliucord.manager.network.utils.ApiResponse
@@ -7,10 +9,17 @@ import com.aliucord.manager.network.utils.transform
 import io.ktor.http.*
 
 class AliucordMavenRepository(
-    private val maven: MavenService
+    private val maven: MavenService,
+    private val preferences: PreferencesManager,
 ) {
+    private fun getBaseUrl() = if (preferences.httpOnly) {
+        BuildConfig.MAVEN_REPO_URL.replace("https", "http")
+    } else {
+        BuildConfig.MAVEN_REPO_URL
+    }
+
     suspend fun getAliuhookVersion(): ApiResponse<String> {
-        return maven.getArtifactMetadata(BASE_URL, ALIUHOOK).transform {
+        return maven.getArtifactMetadata(getBaseUrl(), ALIUHOOK).transform {
             "<release>(.+?)</release>".toRegex()
                 .find(it)
                 ?.groupValues?.get(1)
@@ -18,12 +27,11 @@ class AliucordMavenRepository(
         }
     }
 
-    companion object {
-        private const val BASE_URL = "https://maven.aliucord.com/snapshots"
-        private const val ALIUHOOK = "com.aliucord:Aliuhook"
+    fun getAliuhookUrl(version: String): String {
+        return MavenService.getAARUrl(getBaseUrl(), "$ALIUHOOK:$version")
+    }
 
-        fun getAliuhookUrl(version: String): String {
-            return MavenService.getAARUrl(BASE_URL, "$ALIUHOOK:$version")
-        }
+    companion object {
+        private const val ALIUHOOK = "com.aliucord:Aliuhook"
     }
 }
