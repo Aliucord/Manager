@@ -209,7 +209,7 @@ class InstallViewModel(
 
         // Download the locale split
         val localeApkFile = step(InstallStep.DL_LANG_APK) {
-            discordCacheDir.resolve("config.en-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.en-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
@@ -228,7 +228,7 @@ class InstallViewModel(
         // Download the drawables split
         val resApkFile = step(InstallStep.DL_RESC_APK) {
             // TODO: download the appropriate dpi res apk
-            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").also { file ->
+            discordCacheDir.resolve("config.xxhdpi-${supportedVersion}.apk").let { file ->
                 if (file.exists()) {
                     cached = true
                 } else downloadManager.downloadSplit(
