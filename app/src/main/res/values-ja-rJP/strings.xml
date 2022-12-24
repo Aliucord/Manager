@@ -76,11 +76,11 @@
   <string name="network_load_fail">読み込みに失敗しました</string>
   <string name="version_supported">サポートされているバージョン:</string>
   <string name="version_installed">インストール済みのバージョン:</string>
-  <string name="version_none">None</string>
+  <string name="version_none">なし</string>
   <string name="version_stable">安定版</string>
   <string name="version_beta">ベータ版</string>
   <string name="version_alpha">アルファ版</string>
-  <string name="version_unknown">Unknown</string>
+  <string name="version_unknown">不明</string>
   <string name="version_load_fail">バージョンの取得に失敗しました</string>
   <string name="installer_save_file">ファイルに保存</string>
   <string name="installer_file_save_success">%sに保存しました</string>
@@ -103,7 +103,7 @@
   <string name="install_step_dl_apk_base">ベースAPKをダウンロード中</string>
   <string name="install_step_dl_apk_lib">ライブラリAPKをダウンロード中</string>
   <string name="install_step_dl_apk_locale">ロケールAPKをダウンロード中</string>
-  <string name="install_step_dl_apk_resource">リソースAPKをダウンロードしています</string>
+  <string name="install_step_dl_apk_resource">リソースAPKをダウンロード中</string>
   <string name="install_step_dl_lib_hermes">Hermesライブラリをダウンロード中</string>
   <string name="install_step_dl_lib_aliunative">AliucordNativeライブラリをダウンロード中</string>
   <string name="install_step_fetch_kt_version">ターゲットのDiscordバージョンを取得中</string>
