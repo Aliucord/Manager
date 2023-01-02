@@ -38,6 +38,9 @@ class DownloadManager(
     suspend fun downloadKotlinDex(out: File): File =
         download(AliucordGithubService.KOTLIN_DEX_URL, out)
 
+    suspend fun downloadBootstrap(out: File): File =
+        download(AliucordGithubService.BOOTSTRAP_URL, out)
+
     suspend fun download(url: String, out: File): File {
         out.parentFile?.mkdirs()
 
