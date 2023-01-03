@@ -105,6 +105,7 @@
   <string name="install_step_dl_apk_resource">Đang tải xuống tài nguyên apk</string>
   <string name="install_step_dl_lib_hermes">Đang tải xuống thư viện hermes</string>
   <string name="install_step_dl_lib_aliunative">Đang tải xuống thư viện AliucordNative</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Đang tìm kiếm phiên bản Discord</string>
   <string name="install_step_dl_kt_apk">Đang tải xuống Discord APK</string>
   <string name="install_step_dl_kotlin">Tải xuống thư viện Kotlin</string>

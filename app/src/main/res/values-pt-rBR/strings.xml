@@ -105,6 +105,7 @@
   <string name="install_step_dl_apk_resource">Baixando recursos de apk</string>
   <string name="install_step_dl_lib_hermes">Baixando biblioteca hermes</string>
   <string name="install_step_dl_lib_aliunative">Baixando biblioteca AliucordNative</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Buscando versão do Discord</string>
   <string name="install_step_dl_kt_apk">Baixando o APK do Discord</string>
   <string name="install_step_dl_kotlin">Baixando biblioteca Kotlin</string>

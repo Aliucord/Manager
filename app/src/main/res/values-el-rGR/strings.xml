@@ -105,6 +105,7 @@
   <string name="install_step_dl_apk_resource">Λήψη APK πόρων</string>
   <string name="install_step_dl_lib_hermes">Λήψη βιβλιοθήκης hermes</string>
   <string name="install_step_dl_lib_aliunative">Λήψη βιβλιοθήκης AliucordNative</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Λήψη επιλεγμένης έκδοσης του Discord</string>
   <string name="install_step_dl_kt_apk">Λήψη Discord APK</string>
   <string name="install_step_dl_kotlin">Λήψη βιβλιοθήκης Kotlin</string>

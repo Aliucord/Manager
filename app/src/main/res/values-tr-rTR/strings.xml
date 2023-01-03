@@ -106,6 +106,7 @@ lütfen silin!</string>
   <string name="install_step_dl_apk_resource">Kaynak apkları indiriliyor</string>
   <string name="install_step_dl_lib_hermes">Hermes kütüphanesi indiriliyor</string>
   <string name="install_step_dl_lib_aliunative">AliucordNative kütüphanesi indiriliyor</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Hedef Discord sürümü alınıyor</string>
   <string name="install_step_dl_kt_apk">Discord APK\'sı indiriliyor</string>
   <string name="install_step_dl_kotlin">Kotlin kütüphanesi indiriliyor</string>

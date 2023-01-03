@@ -105,6 +105,7 @@
   <string name="install_step_dl_apk_resource">리소스 APK 다운로드 중</string>
   <string name="install_step_dl_lib_hermes">Hermes 라이브러리 다운로드 중</string>
   <string name="install_step_dl_lib_aliunative">AliucordNative 라이브러리 다운로드 중</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">대상 Discord 버전 가져오는 중</string>
   <string name="install_step_dl_kt_apk">Discord APK 다운로드 중</string>
   <string name="install_step_dl_kotlin">Kotlin 라이브러리 다운로드 중</string>
