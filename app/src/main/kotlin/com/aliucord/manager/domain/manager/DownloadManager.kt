@@ -30,7 +30,7 @@ class DownloadManager(
             }
         }
         defaultRequest {
-            // header(HttpHeaders.UserAgent, "Aliucord Manager/${BuildConfig.VERSION_NAME}")
+            header(HttpHeaders.UserAgent, "Aliucord Manager/${BuildConfig.VERSION_NAME}")
         }
     }
 
@@ -94,10 +94,7 @@ class DownloadManager(
                 throw Error("Reached max limit of redirects while downloading")
             }
 
-            httpClient.prepareGet {
-                url(newUrl)
-                header(HttpHeaders.UserAgent, "Aliucord Manager/${BuildConfig.VERSION_NAME}")
-            }.execute {
+            httpClient.prepareGet(newUrl).execute {
                 val channel = it.bodyAsChannel()
                 val total = it.contentLength() ?: 0
                 var retrieved = 0L
