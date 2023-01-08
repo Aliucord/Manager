@@ -412,7 +412,6 @@ class InstallViewModel(
             // Align resources.arsc due to targeting api 30 for silent install
             if (Build.VERSION.SDK_INT >= 31) {
                 for (file in apks) {
-                    println(file.name)
                     val bytes = ZipReader(file).use {
                         if (it.entryNames.contains("resources.arsc")) {
                             it.openEntry("resources.arsc")?.read()
@@ -613,6 +612,22 @@ class InstallViewModel(
         }
 
         step(InstallStep.SIGN_APK) {
+            // Align resources.arsc due to targeting api 30 for silent install
+            if (Build.VERSION.SDK_INT >= 31) {
+                val bytes = ZipReader(baseApkFile).use {
+                    if (it.entryNames.contains("resources.arsc")) {
+                        it.openEntry("resources.arsc")?.read()
+                    } else {
+                        null
+                    }
+                }
+
+                ZipWriter(baseApkFile, true).use {
+                    it.deleteEntry("resources.arsc", true)
+                    it.writeEntry("resources.arsc", bytes, ZipCompression.NONE, 4096)
+                }
+            }
+
             Signer.signApk(baseApkFile)
         }
 
