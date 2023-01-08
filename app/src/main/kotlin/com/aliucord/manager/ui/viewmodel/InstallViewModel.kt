@@ -153,6 +153,7 @@ class InstallViewModel(
             InstallStep.DL_RESC_APK,
             InstallStep.DL_HERMES,
             InstallStep.DL_ALIUNATIVE,
+            InstallStep.DL_BOOTSTRAP,
             if (preferences.replaceIcon) InstallStep.PATCH_APP_ICON else null,
             InstallStep.PATCH_MANIFEST,
             InstallStep.PATCH_DEX,
@@ -292,6 +293,20 @@ class InstallViewModel(
             }
         }
 
+        // Download AliucordRN bootstrap
+        val aliucordBootstrap = step(InstallStep.DL_BOOTSTRAP) {
+            // Fetch latest commit for bootstrap.js
+            val commit = githubRepository.getLatestBootstrapCommit().getOrThrow()
+            cacheDir.resolve("bootstrap-$commit.js").also {
+                if (it.exists()) {
+                    cached = true
+                    return@also
+                }
+
+                downloadManager.downloadBootstrap(it)
+            }
+        }
+
         val apks = arrayOf(baseApkFile, libsApkFile, localeApkFile, resApkFile)
 
         // Replace app icons
@@ -360,6 +375,9 @@ class InstallViewModel(
 
                 // Add Aliucord's .dex and make it load first by being the first .dex
                 zip.writeEntry("classes.dex", aliucordDexFile.readBytes())
+
+                // Add bootstrap
+                zip.writeEntry("bootstrap.js", aliucordBootstrap.readBytes(), ZipCompression.NONE)
             }
         }
 
@@ -659,6 +677,7 @@ class InstallViewModel(
 
         DL_HERMES(InstallStepGroup.LIB_DL, R.string.install_step_dl_lib_hermes),
         DL_ALIUNATIVE(InstallStepGroup.LIB_DL, R.string.install_step_dl_lib_aliunative),
+        DL_BOOTSTRAP(InstallStepGroup.LIB_DL, R.string.install_step_dl_bootstrap),
 
         // Kotlin
         FETCH_KT_VERSION(InstallStepGroup.APK_DL, R.string.install_step_fetch_kt_version),

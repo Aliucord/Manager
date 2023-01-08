@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">No plugins installed!</string>
   <string name="plugins_changelog_media">Changelog Media</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Indietro</string>
   <string name="navigation_home">Home</string>
   <string name="navigation_about">About</string>
@@ -105,6 +106,7 @@
   <string name="install_step_dl_apk_resource">Downloading resource apk</string>
   <string name="install_step_dl_lib_hermes">Downloading hermes library</string>
   <string name="install_step_dl_lib_aliunative">Downloading AliucordNative library</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Fetching target Discord version</string>
   <string name="install_step_dl_kt_apk">Downloading Discord APK</string>
   <string name="install_step_dl_kotlin">Downloading Kotlin library</string>

@@ -12,8 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,17 +32,18 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun PluginCard(
     plugin: Plugin,
+    enabled: Boolean,
     onClickDelete: () -> Unit,
-    onClickShowChangelog: () -> Unit
+    onClickShowChangelog: () -> Unit,
+    onSetEnabled: (Boolean) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
-    var isEnabled by rememberSaveable { mutableStateOf(true) }
 
     ElevatedCard {
         // Header
         Row(
             modifier = Modifier
-                .clickable { isEnabled = !isEnabled }
+                .clickable { onSetEnabled(!enabled) }
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -103,14 +103,16 @@ fun PluginCard(
 
             // Toggle Switch
             Switch(
-                checked = isEnabled,
-                onCheckedChange = { isEnabled = it }
+                checked = enabled,
+                onCheckedChange = { onSetEnabled(!enabled) }
             )
         }
 
-        Divider(modifier = Modifier
-            .alpha(0.3f)
-            .padding(horizontal = 16.dp))
+        Divider(
+            modifier = Modifier
+                .alpha(0.3f)
+                .padding(horizontal = 16.dp)
+        )
 
         Column(
             modifier = Modifier

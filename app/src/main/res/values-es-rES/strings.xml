@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">¡No hay complementos instalados!</string>
   <string name="plugins_changelog_media">Media de cambios</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Volver</string>
   <string name="navigation_home">Inicio</string>
   <string name="navigation_about">Sobre</string>
@@ -105,6 +106,7 @@
   <string name="install_step_dl_apk_resource">Descargando APK de recursos</string>
   <string name="install_step_dl_lib_hermes">Descargando librería Hermes</string>
   <string name="install_step_dl_lib_aliunative">Descargando librería AliucordNative</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Obteniendo la versión de destino de Discord</string>
   <string name="install_step_dl_kt_apk">Descargando APK de Discord</string>
   <string name="install_step_dl_kotlin">Descargando librería Kotlin</string>

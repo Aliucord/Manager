@@ -14,6 +14,7 @@ object ManifestPatcher {
     private const val USES_CLEARTEXT_TRAFFIC = "usesCleartextTraffic"
     private const val DEBUGGABLE = "debuggable"
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
+    private const val NETWORK_SECURITY_CONFIG = "networkSecurityConfig"
     private const val LABEL = "label"
     private const val PACKAGE = "package"
     private const val COMPILE_SDK_VERSION = "compileSdkVersion"
@@ -90,6 +91,7 @@ object ManifestPatcher {
                                 private var addUseClearTextTraffic = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
+                                    if (name == NETWORK_SECURITY_CONFIG) return
                                     super.attr(ns, name, resourceId, type, value)
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false;
                                     if (name == DEBUGGABLE) addDebuggable = false

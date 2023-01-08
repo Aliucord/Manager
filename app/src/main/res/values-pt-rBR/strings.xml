@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
-  <string name="app_description">Uma modificação para o aplicativo Android do Discord</string>
+  <string name="app_description">Uma modificação do aplicativo do Discord para Android</string>
   <string name="aliucord">Aliucord</string>
   <string name="github">GitHub</string>
   <string name="support_server">Servidor de Suporte</string>
@@ -21,16 +21,16 @@
   <string name="action_launch">Iniciar</string>
   <string name="action_uninstall">Desinstalar</string>
   <string name="action_close">Fechar</string>
-  <string name="action_open_settings">Abrir configurações</string>
+  <string name="action_open_settings">Abrir as configurações</string>
   <string name="action_search">Buscar</string>
   <string name="action_loading_trailing">Carregando…</string>
   <string name="action_copy">Copiar</string>
   <string name="action_collapse">Recolher</string>
   <string name="action_expand">Expandir</string>
   <string name="action_copied">Copiado!</string>
-  <string name="action_cleared_cache">Cache limpo!</string>
+  <string name="action_cleared_cache">Cachê limpo!</string>
   <string name="permissions_grant_title">Conceder permissões</string>
-  <string name="permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa aceitar as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
+  <string name="permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Avançado</string>
@@ -40,10 +40,10 @@
   <string name="setting_dex_location">Localização do Dex</string>
   <string name="setting_use_dex_from_storage">Usar Injector.dex no armazenamento</string>
   <string name="setting_replace_icon">Mudar ícone do aplicativo</string>
-  <string name="setting_replace_icon_desc">Usa a logo Aliucord ao invés do próprio ícone do Discord</string>
+  <string name="setting_replace_icon_desc">Usa a logo do Aliucord ao invés do próprio ícone do Discord</string>
   <string name="setting_debuggable">Depurável</string>
-  <string name="setting_debuggable_desc">Ativar sinalizador depurável</string>
-  <string name="setting_theme_desc">Aparência do Manager</string>
+  <string name="setting_debuggable_desc">Habilitar sinal de depurável</string>
+  <string name="setting_theme_desc">Aparência do Aliucord Manager</string>
   <string name="setting_app_name">Nome do App</string>
   <string name="setting_package_name">Nome do pacote</string>
   <string name="setting_target_version">Versão para download</string>
@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">Nenhum plugin instalado!</string>
   <string name="plugins_changelog_media">Mídia de registro</string>
   <string name="plugins_plugin_title">§extensão§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Voltar</string>
   <string name="navigation_home">Página Inicial</string>
   <string name="navigation_about">Sobre</string>
@@ -105,6 +106,7 @@
   <string name="install_step_dl_apk_resource">Baixando recursos de apk</string>
   <string name="install_step_dl_lib_hermes">Baixando biblioteca hermes</string>
   <string name="install_step_dl_lib_aliunative">Baixando biblioteca AliucordNative</string>
+  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
   <string name="install_step_fetch_kt_version">Buscando versão do Discord</string>
   <string name="install_step_dl_kt_apk">Baixando o APK do Discord</string>
   <string name="install_step_dl_kotlin">Baixando biblioteca Kotlin</string>
