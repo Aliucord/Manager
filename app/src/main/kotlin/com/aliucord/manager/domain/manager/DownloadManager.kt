@@ -56,7 +56,7 @@ class DownloadManager(
         download(aliucordGithub.getKtDexUrl(), out)
 
     suspend fun downloadBootstrap(out: File): File =
-        download(AliucordGithubService.BOOTSTRAP_URL, out)
+        download(aliucordGithub.getBootstrapUrl(), out)
 
     suspend fun download(url: String, out: File): File {
         out.parentFile?.mkdirs()

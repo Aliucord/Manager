@@ -47,6 +47,7 @@ class AliucordGithubService(
     private fun getDataJsonUrl() = "${getBaseRawUrl()}/$ORG/$MAIN_REPO/builds/data.json"
     fun getKtInjectorUrl() = "${getBaseRawUrl()}/$ORG/$MAIN_REPO/builds/Injector.dex"
     fun getKtDexUrl() = "${getBaseRawUrl()}/$ORG/$MAIN_REPO/main/installer/android/app/src/main/assets/kotlin/classes.dex"
+    fun getBootstrapUrl() = "${getBaseRawUrl()}/$ORG/$RN_REPO/builds/bootstrap.js"
 
     companion object {
         private const val ORG = "Aliucord"
@@ -55,7 +56,5 @@ class AliucordGithubService(
         private const val HERMES_REPO = "Hermes"
         private const val ALIUNATIVE_REPO = "AliucordNative"
         private const val MANAGER_REPO = "AliucordManager"
-
-        const val BOOTSTRAP_URL = "https://raw.githubusercontent.com/$ORG/$RN_REPO/builds/bootstrap.js"
     }
 }
