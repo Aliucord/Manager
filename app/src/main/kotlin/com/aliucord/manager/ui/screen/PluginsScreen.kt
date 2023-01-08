@@ -86,38 +86,56 @@ fun PluginsScreen(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        val search = viewModel.search
+        val focusManager = LocalFocusManager.current
 
-        if (viewModel.plugins.isNotEmpty()) {
-            val focusManager = LocalFocusManager.current
-
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 1,
-                value = viewModel.search,
-                onValueChange = viewModel::search,
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                label = { Text(stringResource(R.string.action_search)) },
-                trailingIcon = {
-                    if (viewModel.search.isNotBlank()) {
-                        IconButton(onClick = viewModel::clearSearch) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.action_clear)
-                            )
-                        }
-                    } else {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            maxLines = 1,
+            value = viewModel.search,
+            onValueChange = viewModel::search,
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp),
+            label = { Text(stringResource(R.string.action_search)) },
+            trailingIcon = {
+                if (viewModel.search.isNotBlank()) {
+                    IconButton(onClick = viewModel::clearSearch) {
                         Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(R.string.plugins_search)
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.action_clear)
                         )
                     }
-                },
-                keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions { focusManager.clearFocus() }
-            )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(R.string.plugins_search)
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions { focusManager.clearFocus() }
+        )
 
+        if (viewModel.error) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error,
+                    )
+                    Text(
+                        text = stringResource(R.string.plugins_error),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        } else if (viewModel.plugins.isNotEmpty()) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 15.dp, top = 6.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -125,16 +143,18 @@ fun PluginsScreen(
                 items(
                     viewModel.plugins.filter { plugin ->
                         plugin.manifest.run {
-                            name.contains(search, true)
-                                || description.contains(search, true)
-                                || authors.any { (name) -> name.contains(search, true) }
+                            name.contains(viewModel.search, true)
+                                || description.contains(viewModel.search, true)
+                                || authors.any { (name) -> name.contains(viewModel.search, true) }
                         }
                     }
                 ) { plugin ->
                     PluginCard(
                         plugin = plugin,
+                        enabled = viewModel.enabled[plugin.manifest.name] ?: true,
                         onClickDelete = { viewModel.showUninstallDialog(plugin) },
-                        onClickShowChangelog = { viewModel.showChangelogDialog(plugin) }
+                        onClickShowChangelog = { viewModel.showChangelogDialog(plugin) },
+                        onSetEnabled = { viewModel.setPluginEnabled(plugin.manifest.name, it) }
                     )
                 }
             }
@@ -147,7 +167,7 @@ fun PluginsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Extension,
+                        imageVector = Icons.Default.ExtensionOff,
                         contentDescription = null
                     )
                     Text(stringResource(R.string.plugins_none_installed))

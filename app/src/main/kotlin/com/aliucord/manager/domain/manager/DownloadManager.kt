@@ -55,6 +55,9 @@ class DownloadManager(
     suspend fun downloadKotlinDex(out: File): File =
         download(aliucordGithub.getKtDexUrl(), out)
 
+    suspend fun downloadBootstrap(out: File): File =
+        download(AliucordGithubService.BOOTSTRAP_URL, out)
+
     suspend fun download(url: String, out: File): File {
         out.parentFile?.mkdirs()
         val tmpOut = out.resolveSibling("${out.name}.tmp")

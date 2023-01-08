@@ -16,4 +16,5 @@ class GithubRepository(
     suspend fun getHermesRelease() = service.getLatestHermesRelease()
     suspend fun getAliucordNativeRelease() = service.getLatestAliucordNativeRelease()
     suspend fun getManagerReleases() = service.getManagerReleases()
+    suspend fun getLatestBootstrapCommit() = service.getLatestBootstrapCommit()
 }
