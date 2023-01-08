@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <string name="app_name">Aliucord Yöneticisi</string>
+  <string name="app_name">Aliucord Yöneticisiymiş</string>
   <string name="app_description">Discord Android Uygulaması için bir modifikasyon</string>
   <string name="aliucord">Aliucord</string>
   <string name="github">GitHub</string>
@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">Yüklü eklenti yok!</string>
   <string name="plugins_changelog_media">Güncelleme Geçmişi Medyası</string>
   <string name="plugins_plugin_title">§eklenti§%1$s§ sürüm%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Geri</string>
   <string name="navigation_home">Ana Sayfa</string>
   <string name="navigation_about">Hakkında</string>
@@ -106,7 +107,7 @@ lütfen silin!</string>
   <string name="install_step_dl_apk_resource">Kaynak apkları indiriliyor</string>
   <string name="install_step_dl_lib_hermes">Hermes kütüphanesi indiriliyor</string>
   <string name="install_step_dl_lib_aliunative">AliucordNative kütüphanesi indiriliyor</string>
-  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
+  <string name="install_step_dl_bootstrap">Temel apk indiriliyor</string>
   <string name="install_step_fetch_kt_version">Hedef Discord sürümü alınıyor</string>
   <string name="install_step_dl_kt_apk">Discord APK\'sı indiriliyor</string>
   <string name="install_step_dl_kotlin">Kotlin kütüphanesi indiriliyor</string>

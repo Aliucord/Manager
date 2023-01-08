@@ -28,7 +28,7 @@
   <string name="action_collapse">Απόκρυψη</string>
   <string name="action_expand">Επέκταση</string>
   <string name="action_copied">Αντιγράφηκε!</string>
-  <string name="action_cleared_cache">Cleared cache!</string>
+  <string name="action_cleared_cache">Η Προσωρινή μνήμη καθαρίστηκε!</string>
   <string name="permissions_grant_title">Εκχώρηση αδειών</string>
   <string name="permissions_grant_body">Για να λειτουργήσει σωστά ο Aliucord Manager, πρέπει να εκχωρήσετε δικαιώματα αρχείου. Δεδομένου ότι τα κοινόχρηστα δεδομένα αποθηκεύονται στο ~/Aliucord, απαιτούνται δικαιώματα για να λειτουργήσει ο Manager.</string>
   <string name="launch_aliucord_fail">Αποτυχία εκκίνησης του Aliucord</string>
@@ -48,7 +48,7 @@
   <string name="setting_package_name">Όνομα Πακέτου</string>
   <string name="setting_target_version">Λήψη έκδοσης</string>
   <string name="setting_dynamic_color">Δυναμικό χρώμα</string>
-  <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
+  <string name="settings_invalid_package_name">Άκυρο όνομα πακέτου, επαναφορά σε com.aliucord</string>
   <string name="theme_system">Σύστημα</string>
   <string name="theme_dark">Σκοτεινό</string>
   <string name="theme_light">Φωτεινό</string>
@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">Δεν υπάρχουν εγκατεστημένα plugins!</string>
   <string name="plugins_changelog_media">Πολυμέσα Αλλαγών</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Πίσω</string>
   <string name="navigation_home">Αρχή</string>
   <string name="navigation_about">Σχετικά με</string>
@@ -75,11 +76,11 @@
   <string name="network_load_fail">Αποτυχία φόρτωσης</string>
   <string name="version_supported">Υποστηριζόμενη έκδοση:</string>
   <string name="version_installed">Εγκατεστημένη έκδοση:</string>
-  <string name="version_none">None</string>
+  <string name="version_none">Κανένα</string>
   <string name="version_stable">Σταθερή</string>
   <string name="version_beta">Δοκιμαστική</string>
   <string name="version_alpha">Alpha</string>
-  <string name="version_unknown">Unknown</string>
+  <string name="version_unknown">Άγνωστο</string>
   <string name="version_load_fail">Αποτυχία ανάκτησης έκδοσης</string>
   <string name="installer_save_file">Αποθήκευση σε αρχείο</string>
   <string name="installer_file_save_success">Αποθηκεύτηκε στο %s</string>
@@ -88,7 +89,7 @@
   <string name="installer_success">Επιτυχής εγκατάσταση του Aliucord</string>
   <string name="installer_aborted">Εγκατάλειψη εγκατάστασης Aliucord</string>
   <string name="installer_failed">Η εγκατάσταση απέτυχε με σφάλμα %o</string>
-  <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
+  <string name="installer_uninstall_new">Παρακαλώ απεγκαταστήστε την τρέχουσα έκδοση του Aliucord σας για να συνεχίσετε!</string>
   <string name="install_group_apk_dl">Λήψη APK</string>
   <string name="install_group_lib_dl">Λήψη Βιβλιοθηκών</string>
   <string name="install_group_patch">Ενημέρωση APKs</string>
@@ -105,7 +106,7 @@
   <string name="install_step_dl_apk_resource">Λήψη APK πόρων</string>
   <string name="install_step_dl_lib_hermes">Λήψη βιβλιοθήκης hermes</string>
   <string name="install_step_dl_lib_aliunative">Λήψη βιβλιοθήκης AliucordNative</string>
-  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
+  <string name="install_step_dl_bootstrap">Λήψη bootstrap</string>
   <string name="install_step_fetch_kt_version">Λήψη επιλεγμένης έκδοσης του Discord</string>
   <string name="install_step_dl_kt_apk">Λήψη Discord APK</string>
   <string name="install_step_dl_kotlin">Λήψη βιβλιοθήκης Kotlin</string>

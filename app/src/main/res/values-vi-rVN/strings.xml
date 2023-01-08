@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">Không có tiện ích nào được tải xuống!</string>
   <string name="plugins_changelog_media">Phương tiện nhật ký thay đổi</string>
   <string name="plugins_plugin_title">§Tiện ích§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Quay lại</string>
   <string name="navigation_home">Trang chủ</string>
   <string name="navigation_about">Giới thiệu</string>

@@ -60,6 +60,7 @@
   <string name="plugins_none_installed">プラグインがインストールされていません！</string>
   <string name="plugins_changelog_media">更新履歴のメディア</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">戻る</string>
   <string name="navigation_home">ホーム</string>
   <string name="navigation_about">概要</string>
@@ -106,7 +107,7 @@
   <string name="install_step_dl_apk_resource">リソースAPKをダウンロード中</string>
   <string name="install_step_dl_lib_hermes">Hermesライブラリをダウンロード中</string>
   <string name="install_step_dl_lib_aliunative">AliucordNativeライブラリをダウンロード中</string>
-  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
+  <string name="install_step_dl_bootstrap">ブートストラップをダウンロード中</string>
   <string name="install_step_fetch_kt_version">ターゲットのDiscordバージョンを取得中</string>
   <string name="install_step_dl_kt_apk">Discord APKをダウンロード中</string>
   <string name="install_step_dl_kotlin">Kotlinライブラリのダウンロード中</string>

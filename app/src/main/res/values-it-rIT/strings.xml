@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">No plugins installed!</string>
   <string name="plugins_changelog_media">Changelog Media</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Indietro</string>
   <string name="navigation_home">Home</string>
   <string name="navigation_about">About</string>

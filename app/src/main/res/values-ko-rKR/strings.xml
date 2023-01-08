@@ -59,6 +59,7 @@
   <string name="plugins_none_installed">설치된 플러그인이 없어요!</string>
   <string name="plugins_changelog_media">미디어 변경 사항</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
+  <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">돌아가기</string>
   <string name="navigation_home">홈</string>
   <string name="navigation_about">소개</string>
