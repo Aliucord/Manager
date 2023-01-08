@@ -6,6 +6,7 @@
 package com.aliucord.manager.installer.util
 
 import android.Manifest
+import android.os.Build
 import pxb.android.axml.*
 
 object ManifestPatcher {
@@ -67,10 +68,12 @@ object ManifestPatcher {
 
                             "uses-sdk" -> object : NodeVisitor(nv) {
                                 override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
-                                    if (name != "targetSdkVersion")
+                                    if (name == "targetSdkVersion") {
+                                        val version = if (Build.VERSION.SDK_INT >= 31) 30 else 28
+                                        super.attr(ns, name, resourceId, type, version)
+                                    } else {
                                         super.attr(ns, name, resourceId, type, value)
-
-                                    super.attr(ns, name, resourceId, type, 28)
+                                    }
                                 }
                             }
 

@@ -41,18 +41,14 @@ class UpdaterViewModel(
         viewModelScope.launch {
             isWorking = true
 
-            application.externalCacheDir!!.resolve("manager.apk").apply {
-                delete()
+            application.externalCacheDir!!.resolve("manager.apk").also {
+                it.delete()
 
-                downloadManager.download(url, this)
-                application.installApks(this)
-                delay(10000)
+                downloadManager.download(url, it)
+                application.installApks(silent = true, it)
 
-                showDialog = false
-                delete()
+                it.delete()
             }
-
-            isWorking = false
         }
     }
 

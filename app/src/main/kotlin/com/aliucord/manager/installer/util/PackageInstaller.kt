@@ -6,18 +6,28 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
+import android.content.pm.PackageInstaller.SessionParams
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import com.aliucord.manager.installer.service.InstallService
+import kotlinx.coroutines.delay
 import java.io.File
 
-fun Application.installApks(vararg apks: File) =
-    packageManager.packageInstaller.installApks(this, *apks)
+fun Application.installApks(silent: Boolean = false, vararg apks: File) {
+    val packageInstaller = packageManager.packageInstaller
+    val params = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
+        if (Build.VERSION.SDK_INT >= 31) {
+            setInstallScenario(PackageManager.INSTALL_SCENARIO_FAST)
 
-fun PackageInstaller.installApks(application: Application, vararg apks: File) {
-    val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
-    val sessionId = createSession(params)
-    val session = openSession(sessionId)
+            if (silent) {
+                setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+            }
+        }
+    }
+
+    val sessionId = packageInstaller.createSession(params)
+    val session = packageInstaller.openSession(sessionId)
 
     apks.forEach { apk ->
         session.openWrite(apk.name, 0, apk.length()).use {
@@ -26,13 +36,13 @@ fun PackageInstaller.installApks(application: Application, vararg apks: File) {
         }
     }
 
-    val callbackIntent = Intent(application, InstallService::class.java)
+    val callbackIntent = Intent(this, InstallService::class.java)
 
     @SuppressLint("UnspecifiedImmutableFlag")
     val contentIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        PendingIntent.getService(application, 0, callbackIntent, PendingIntent.FLAG_MUTABLE)
+        PendingIntent.getService(this, 0, callbackIntent, PendingIntent.FLAG_MUTABLE)
     } else {
-        PendingIntent.getService(application, 0, callbackIntent, 0)
+        PendingIntent.getService(this, 0, callbackIntent, 0)
     }
 
     session.commit(contentIntent.intentSender)
