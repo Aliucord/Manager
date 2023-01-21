@@ -59,7 +59,7 @@
   <string name="plugins_none_installed">Tidak ada plugin yang terpasang!</string>
   <string name="plugins_changelog_media">Log perubahan Media</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
-  <string name="plugins_error">An error occurred while processing plugins!</string>
+  <string name="plugins_error">Terjadi kesalahan saat memproses plugin!</string>
   <string name="navigation_back">Kembali</string>
   <string name="navigation_home">Beranda</string>
   <string name="navigation_about">Tentang</string>

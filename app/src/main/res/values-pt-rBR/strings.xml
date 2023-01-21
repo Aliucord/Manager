@@ -59,7 +59,7 @@
   <string name="plugins_none_installed">Nenhum plugin instalado!</string>
   <string name="plugins_changelog_media">Mídia de registro</string>
   <string name="plugins_plugin_title">§extensão§%1$s§ v%2$s</string>
-  <string name="plugins_error">An error occurred while processing plugins!</string>
+  <string name="plugins_error">Ocorreu um erro ao processar os plugins!</string>
   <string name="navigation_back">Voltar</string>
   <string name="navigation_home">Página Inicial</string>
   <string name="navigation_about">Sobre</string>
@@ -76,11 +76,11 @@
   <string name="network_load_fail">Falha ao carregar</string>
   <string name="version_supported">Versões suportadas:</string>
   <string name="version_installed">Versão instalada:</string>
-  <string name="version_none">None</string>
+  <string name="version_none">Nenhum</string>
   <string name="version_stable">Estável</string>
   <string name="version_beta">Beta</string>
   <string name="version_alpha">Alfa</string>
-  <string name="version_unknown">Unknown</string>
+  <string name="version_unknown">Desconhecido</string>
   <string name="version_load_fail">Falha ao obter versão</string>
   <string name="installer_save_file">Salvar em um arquivo</string>
   <string name="installer_file_save_success">Salvo em %s</string>
@@ -106,7 +106,7 @@
   <string name="install_step_dl_apk_resource">Baixando recursos de apk</string>
   <string name="install_step_dl_lib_hermes">Baixando biblioteca hermes</string>
   <string name="install_step_dl_lib_aliunative">Baixando biblioteca AliucordNative</string>
-  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
+  <string name="install_step_dl_bootstrap">Baixando bootstrap</string>
   <string name="install_step_fetch_kt_version">Buscando versão do Discord</string>
   <string name="install_step_dl_kt_apk">Baixando o APK do Discord</string>
   <string name="install_step_dl_kotlin">Baixando biblioteca Kotlin</string>
