@@ -8,10 +8,10 @@
   <string name="commits">Cam kết</string>
   <string name="team">Đội ngũ</string>
   <string name="website">Trang web</string>
-  <string name="installer">Cài đặt</string>
+  <string name="installer">Trình cài đặt</string>
   <string name="action_retry">Thử lại</string>
-  <string name="action_apply">Xác nhận</string>
-  <string name="action_confirm">Tiếp tục</string>
+  <string name="action_apply">Thiết lập</string>
+  <string name="action_confirm">Xác nhận</string>
   <string name="action_cancel">Hủy bỏ</string>
   <string name="action_dismiss">Bỏ qua</string>
   <string name="action_install">Tải xuống</string>
@@ -30,7 +30,7 @@
   <string name="action_copied">Đã sao chép!</string>
   <string name="action_cleared_cache">Đã xoá bộ nhớ đệm!</string>
   <string name="permissions_grant_title">Cấp phép truy cập</string>
-  <string name="permissions_grant_body">Để Aliucord Manager hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
+  <string name="permissions_grant_body">Để trình quản lý Aliucord hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
   <string name="settings_theme">Chủ đề</string>
   <string name="settings_advanced">Nâng cao</string>
@@ -59,7 +59,7 @@
   <string name="plugins_none_installed">Không có tiện ích nào được tải xuống!</string>
   <string name="plugins_changelog_media">Phương tiện nhật ký thay đổi</string>
   <string name="plugins_plugin_title">§Tiện ích§%1$s§ v%2$s</string>
-  <string name="plugins_error">An error occurred while processing plugins!</string>
+  <string name="plugins_error">Đã xảy ra lỗi khi xử lí tiện ích mở rộng!</string>
   <string name="navigation_back">Quay lại</string>
   <string name="navigation_home">Trang chủ</string>
   <string name="navigation_about">Giới thiệu</string>
@@ -70,7 +70,7 @@
   <string name="contributors_commit_title">§Tên§%1$s§ §giữa§tác giả§ §cam kết§%2$s§</string>
   <string name="selector_download_apk">Tải xuống Apk</string>
   <string name="selector_discord_type">Loại Discord</string>
-  <string name="selector_discord_type_body">Aliucord hỗ trợ cả phiên bản Discord cũ (Kotlin) và mới (React Native). Bạn muốn cài đặt loại nào? Lưu ý rằng các phiên bản này có các plugin khác nhau!</string>
+  <string name="selector_discord_type_body">Aliucord hỗ trợ cả phiên bản Discord cũ (Kotlin) và phiên bản mới (React Native). Bạn muốn cài đặt loại nào? Lưu ý rằng các phiên bản này có các plugin khác nhau!</string>
   <string name="selector_discord_type_kotlin">Mới (Khuyến nghị)</string>
   <string name="selector_discord_type_old">Cũ</string>
   <string name="network_load_fail">Tải thất bại</string>
@@ -106,7 +106,7 @@
   <string name="install_step_dl_apk_resource">Đang tải xuống tài nguyên apk</string>
   <string name="install_step_dl_lib_hermes">Đang tải xuống thư viện hermes</string>
   <string name="install_step_dl_lib_aliunative">Đang tải xuống thư viện AliucordNative</string>
-  <string name="install_step_dl_bootstrap">Downloading bootstrap</string>
+  <string name="install_step_dl_bootstrap">Đang tải xuống bootstrap</string>
   <string name="install_step_fetch_kt_version">Đang tìm kiếm phiên bản Discord</string>
   <string name="install_step_dl_kt_apk">Đang tải xuống Discord APK</string>
   <string name="install_step_dl_kotlin">Tải xuống thư viện Kotlin</string>
