@@ -114,10 +114,17 @@ fun SettingsScreen(
                     label = stringResource(R.string.setting_debuggable),
                     secondaryLabel = stringResource(R.string.setting_debuggable_desc),
                     pref = preferences.debuggable,
-                    icon = { Icon(Icons.Default.BugReport, null) }
-                ) {
-                    preferences.debuggable = it
-                }
+                    icon = { Icon(Icons.Default.BugReport, null) },
+                    onPrefChange = { preferences.debuggable = it },
+                )
+
+                SettingsSwitch(
+                    label = stringResource(R.string.setting_hermes_replace_libcpp),
+                    secondaryLabel = stringResource(R.string.setting_hermes_replace_libcpp_desc),
+                    icon = { Icon(Icons.Default.FileCopy, null) },
+                    pref = preferences.hermesReplaceLibCpp,
+                    onPrefChange = { preferences.hermesReplaceLibCpp = it },
+                )
             }
         }
 

@@ -263,13 +263,15 @@ class InstallViewModel(
             }
 
             // Download the hermes-cppruntime-release.aar file to replace in the apk
-            val cppRuntime = cacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
-                if (file.exists()) return@also
-                cached = false
+            val cppRuntime = if (!preferences.hermesReplaceLibCpp) null else {
+                cacheDir.resolve("hermes-cppruntime-release-${latestHermesRelease.tagName}.aar").also { file ->
+                    if (file.exists()) return@also
+                    cached = false
 
-                latestHermesRelease.assets
-                    .find { it.name == "hermes-cppruntime-release.aar" }!!.browserDownloadUrl
-                    .also { downloadManager.download(it, file) }
+                    latestHermesRelease.assets
+                        .find { it.name == "hermes-cppruntime-release.aar" }!!.browserDownloadUrl
+                        .also { downloadManager.download(it, file) }
+                }
             }
 
             hermes to cppRuntime
@@ -386,6 +388,8 @@ class InstallViewModel(
             ZipWriter(libsApkFile, true).use { libsApk ->
                 // Process the hermes and cpp runtime library
                 for (libFile in arrayOf(hermesLibrary, cppRuntimeLibrary)) {
+                    libFile ?: continue
+
                     // Map .aar to the embedded .so inside
                     val binaryName = with(libFile.name) {
                         when {
@@ -493,7 +497,6 @@ class InstallViewModel(
                 }
             }
         }
-
 
         // Download the injector dex
         val injectorFile = step(InstallStep.DL_INJECTOR) {

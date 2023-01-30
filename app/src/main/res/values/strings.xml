@@ -50,8 +50,10 @@
   <string name="setting_theme_desc">Manager appearance</string>
   <string name="setting_app_name">App Name</string>
   <string name="setting_package_name">Package Name</string>
-  <string name="setting_target_version">Download Version</string>
+  <string name="setting_target_version">Download Version (RN only)</string>
   <string name="setting_dynamic_color">Dynamic color</string>
+  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
   <string name="settings_invalid_package_name">Invalid package name, reset to com.aliucord</string>
 
   <string name="theme_system">System</string>
