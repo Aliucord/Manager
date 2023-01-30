@@ -48,6 +48,8 @@
   <string name="setting_package_name">Tên gói</string>
   <string name="setting_target_version">Tải xuống phiên bản</string>
   <string name="setting_dynamic_color">Màu động</string>
+  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
   <string name="settings_invalid_package_name">Tên gói không hợp lệ, đặt lại thành com.aliucord</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>

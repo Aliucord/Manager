@@ -48,6 +48,8 @@
   <string name="setting_package_name">Nombre del Paquete</string>
   <string name="setting_target_version">Versión a descargar</string>
   <string name="setting_dynamic_color">Colores dinámicos</string>
+  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
   <string name="settings_invalid_package_name">Nombre de paquete inválido, restablezca a com.aliucord</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Oscuro</string>

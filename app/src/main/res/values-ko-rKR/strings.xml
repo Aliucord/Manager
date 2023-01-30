@@ -48,6 +48,8 @@
   <string name="setting_package_name">패키지 이름</string>
   <string name="setting_target_version">다운로드 버전</string>
   <string name="setting_dynamic_color">다이나믹 색상</string>
+  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
   <string name="settings_invalid_package_name">잘못된 패키지 이름이에요. com.aliucord로 초기화할게요</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어두운 테마</string>
@@ -59,7 +61,7 @@
   <string name="plugins_none_installed">설치된 플러그인이 없어요!</string>
   <string name="plugins_changelog_media">미디어 변경 사항</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
-  <string name="plugins_error">An error occurred while processing plugins!</string>
+  <string name="plugins_error">플러그인을 처리하던 도중 오류가 발생했어요!</string>
   <string name="navigation_back">돌아가기</string>
   <string name="navigation_home">홈</string>
   <string name="navigation_about">소개</string>

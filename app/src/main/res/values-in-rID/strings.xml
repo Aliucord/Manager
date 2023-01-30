@@ -48,6 +48,8 @@
   <string name="setting_package_name">Nama Paket</string>
   <string name="setting_target_version">Unduh Versi</string>
   <string name="setting_dynamic_color">Warna dinamis</string>
+  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
   <string name="settings_invalid_package_name">Nama paket tidak valid, atur ulang ke com.aliucord</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Gelap</string>

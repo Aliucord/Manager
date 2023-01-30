@@ -48,6 +48,8 @@
   <string name="setting_package_name">Название пакета</string>
   <string name="setting_target_version">Загружаемая версия</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
+  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
   <string name="settings_invalid_package_name">Неправильное название пакета, сброс на com.aliucord</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
