@@ -436,9 +436,11 @@ class InstallViewModel(
 
         step(InstallStep.INSTALL_APK) {
             application.installApks(silent = !preferences.devMode, *apks)
-        }
 
-        patchedDir.deleteRecursively()
+            if (!preferences.keepPatchedApks) {
+                patchedDir.deleteRecursively()
+            }
+        }
     }
 
     private suspend fun installKotlin() {
@@ -636,9 +638,11 @@ class InstallViewModel(
 
         step(InstallStep.INSTALL_APK) {
             application.installApks(silent = !preferences.devMode, baseApkFile)
-        }
 
-        patchedDir.deleteRecursively()
+            if (!preferences.keepPatchedApks) {
+                patchedDir.deleteRecursively()
+            }
+        }
     }
 
     @OptIn(ExperimentalTime::class)

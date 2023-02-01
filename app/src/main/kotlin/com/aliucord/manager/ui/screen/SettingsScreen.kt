@@ -64,6 +64,13 @@ fun SettingsScreen(
 
         SettingsHeader(stringResource(R.string.settings_advanced))
 
+        SettingsTextField(
+            label = stringResource(R.string.setting_app_name),
+            pref = preferences.appName,
+            onPrefChange = viewModel::setAppName
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
         SettingsSwitch(
             label = stringResource(R.string.setting_replace_icon),
             secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
@@ -73,13 +80,15 @@ fun SettingsScreen(
             preferences.replaceIcon = it
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        SettingsTextField(
-            label = stringResource(R.string.setting_app_name),
-            pref = preferences.appName,
-            onPrefChange = viewModel::setAppName
+        SettingsSwitch(
+            label = stringResource(R.string.setting_keep_patched_apks),
+            secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
+            icon = { Icon(Icons.Default.DeleteForever, null) },
+            pref = preferences.keepPatchedApks,
+            onPrefChange = { preferences.keepPatchedApks = it },
         )
+
+        Spacer(modifier = Modifier.height(14.dp))
 
         SettingsSwitch(
             label = stringResource(R.string.settings_developer_options),
@@ -95,7 +104,7 @@ fun SettingsScreen(
             exit = shrinkVertically()
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 SettingsTextField(
                     label = stringResource(R.string.setting_package_name),

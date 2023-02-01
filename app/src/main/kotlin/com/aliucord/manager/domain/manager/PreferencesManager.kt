@@ -15,4 +15,5 @@ class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager
     var packageName by stringPreference("package_name", "com.aliucord")
     var version by stringPreference("version", "146108")
     var hermesReplaceLibCpp by booleanPreference("hermes_replace_libcpp", false)
+    var keepPatchedApks by booleanPreference("keep_patched_apks", false)
 }
