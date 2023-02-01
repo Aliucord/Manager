@@ -51,6 +51,8 @@
   <string name="setting_dynamic_color">ダイナミックカラー</string>
   <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
   <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
+  <string name="setting_keep_patched_apks">Keep patched APKs</string>
+  <string name="setting_keep_patched_apks_desc">Don\'t delete patched APKs after installing (for installing manually)</string>
   <string name="settings_invalid_package_name">無効なパッケージ名です。com.aliucordにリセットしてください。</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>

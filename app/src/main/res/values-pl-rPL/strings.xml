@@ -50,6 +50,8 @@
   <string name="setting_dynamic_color">Kolor dynamiczny</string>
   <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
   <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
+  <string name="setting_keep_patched_apks">Keep patched APKs</string>
+  <string name="setting_keep_patched_apks_desc">Don\'t delete patched APKs after installing (for installing manually)</string>
   <string name="settings_invalid_package_name">Nieprawidłowa nazwa pakietu, przywrócono do com.aliucord</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Ciemny</string>
