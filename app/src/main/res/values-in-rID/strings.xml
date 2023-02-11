@@ -48,10 +48,10 @@
   <string name="setting_package_name">Nama Paket</string>
   <string name="setting_target_version">Unduh Versi</string>
   <string name="setting_dynamic_color">Warna dinamis</string>
-  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
-  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
-  <string name="setting_keep_patched_apks">Keep patched APKs</string>
-  <string name="setting_keep_patched_apks_desc">Don\'t delete patched APKs after installing (for installing manually)</string>
+  <string name="setting_hermes_replace_libcpp">Gantikan libc++ (Untuk RN)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Unduh dan pakai libc++ dari hermes yang ditambal</string>
+  <string name="setting_keep_patched_apks">Simpan APK yang ditambal</string>
+  <string name="setting_keep_patched_apks_desc">Jangan hapus APK yang sudah ditambal setelah memasang (untuk memasang secara manual)</string>
   <string name="settings_invalid_package_name">Nama paket tidak valid, atur ulang ke com.aliucord</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Gelap</string>
