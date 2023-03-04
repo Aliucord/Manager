@@ -48,10 +48,10 @@
   <string name="setting_package_name">Название пакета</string>
   <string name="setting_target_version">Загружаемая версия</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
-  <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
-  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
-  <string name="setting_keep_patched_apks">Keep patched APKs</string>
-  <string name="setting_keep_patched_apks_desc">Don\'t delete patched APKs after installing (for installing manually)</string>
+  <string name="setting_hermes_replace_libcpp">Заменить libc++ (только RN)</string>
+  <string name="setting_hermes_replace_libcpp_desc">Скачивает и использует libc++ из пропатченного hermes</string>
+  <string name="setting_keep_patched_apks">Сохранять пропатченные пакеты</string>
+  <string name="setting_keep_patched_apks_desc">Не удалять пропатченные пакеты после установки (для ручной установки)</string>
   <string name="settings_invalid_package_name">Неправильное название пакета, сброс на com.aliucord</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>

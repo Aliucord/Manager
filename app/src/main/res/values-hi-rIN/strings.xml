@@ -4,11 +4,11 @@
   <string name="app_description">A modification for the Discord Android App</string>
   <string name="aliucord">Aliucord</string>
   <string name="github">GitHub</string>
-  <string name="support_server">Support Server</string>
-  <string name="commits">Commits</string>
-  <string name="team">Team</string>
-  <string name="website">Website</string>
-  <string name="installer">Installer</string>
+  <string name="support_server">समर्थन सर्वर</string>
+  <string name="commits">करता है</string>
+  <string name="team">टोली</string>
+  <string name="website">वेबसाइट</string>
+  <string name="installer">इंस्टालर</string>
   <string name="action_retry">Retry</string>
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>

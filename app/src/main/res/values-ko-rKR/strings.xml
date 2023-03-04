@@ -28,7 +28,7 @@
   <string name="action_collapse">접기</string>
   <string name="action_expand">펼치기</string>
   <string name="action_copied">복사했어요!</string>
-  <string name="action_cleared_cache">캐시를 지웠어요!</string>
+  <string name="action_cleared_cache">캐시 삭제 완료</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
@@ -46,7 +46,7 @@
   <string name="setting_theme_desc">Manager 외관</string>
   <string name="setting_app_name">앱 이름</string>
   <string name="setting_package_name">패키지 이름</string>
-  <string name="setting_target_version">다운로드 버전 (RN 전용)</string>
+  <string name="setting_target_version">다운로드 버전</string>
   <string name="setting_dynamic_color">동적 색상</string>
   <string name="setting_hermes_replace_libcpp">libc++ 대체 (RN 전용)</string>
   <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
