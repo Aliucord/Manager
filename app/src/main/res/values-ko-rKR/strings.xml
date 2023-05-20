@@ -28,7 +28,7 @@
   <string name="action_collapse">접기</string>
   <string name="action_expand">펼치기</string>
   <string name="action_copied">복사했어요!</string>
-  <string name="action_cleared_cache">캐시 삭제 완료</string>
+  <string name="action_cleared_cache">캐시를 비웠어요!</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
@@ -49,7 +49,7 @@
   <string name="setting_target_version">다운로드 버전</string>
   <string name="setting_dynamic_color">동적 색상</string>
   <string name="setting_hermes_replace_libcpp">libc++ 대체 (RN 전용)</string>
-  <string name="setting_hermes_replace_libcpp_desc">Downloads and uses libc++ from patched hermes</string>
+  <string name="setting_hermes_replace_libcpp_desc">패치한 Herms에서 libc++를 다운로드하고 사용해요</string>
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
   <string name="setting_keep_patched_apks_desc">설치 후 패치된 APK를 삭제하지 않아요 (수동 설치용)</string>
   <string name="settings_invalid_package_name">잘못된 패키지 이름이에요. com.aliucord로 초기화할게요</string>
@@ -58,7 +58,7 @@
   <string name="theme_light">밝은 테마</string>
   <string name="plugins_title">플러그인</string>
   <string name="plugins_view_changelog">%1$s의 변경 사항 보기</string>
-  <string name="plugins_delete_plugin_body">이 플러그인을 설치 삭제하시겠어요?</string>
+  <string name="plugins_delete_plugin_body">이 플러그인을 설치 삭제할까요?</string>
   <string name="plugins_search">플러그인 검색</string>
   <string name="plugins_none_installed">설치된 플러그인이 없어요!</string>
   <string name="plugins_changelog_media">미디어 변경 사항</string>
@@ -74,7 +74,7 @@
   <string name="contributors_commit_title">§name§%1$s§ §middle§제작자§ §commit§%2$s§</string>
   <string name="selector_download_apk">APK 다운로드</string>
   <string name="selector_discord_type">Discord 유형</string>
-  <string name="selector_discord_type_body">Aliucord는 이전(Kotlin) 버전과 신규(React Native) 버전을 모두 지원해요. 어떤 유형으로 설치하시겠어요? 각 버전마다 다른 플러그인이 있어요!</string>
+  <string name="selector_discord_type_body">Aliucord는 이전(Kotlin) 버전과 신규(React Native) 버전을 모두 지원해요. 어떤 유형으로 설치할까요? 각 버전마다 다른 플러그인이 있어요!</string>
   <string name="selector_discord_type_kotlin">신규 버전(권장)</string>
   <string name="selector_discord_type_old">이전 버전</string>
   <string name="network_load_fail">불러오지 못했어요</string>
@@ -120,6 +120,6 @@
   <string name="status_ongoing">진행 중</string>
   <string name="status_failed">실패</string>
   <string name="status_queued">대기 중</string>
-  <string name="updater_body">Aliucord Manager의 새로운 업데이트가 출시됐어요! 제대로 작동하려면 업데이트가 필요할지도 몰라요. 업데이트하시겠어요?</string>
+  <string name="updater_body">Aliucord Manager의 새로운 업데이트가 출시됐어요! 제대로 작동하려면 업데이트가 필요할지도 몰라요. 업데이트할까요?</string>
   <string name="updater_title">%1$s(으)로 업데이트했어요</string>
 </resources>
