@@ -9,13 +9,13 @@
   <string name="team">팀</string>
   <string name="website">웹 사이트</string>
   <string name="installer">설치 창</string>
-  <string name="action_retry">다시 시도</string>
+  <string name="action_retry">재시도</string>
   <string name="action_apply">적용</string>
   <string name="action_confirm">확인</string>
   <string name="action_cancel">취소</string>
   <string name="action_dismiss">닫기</string>
   <string name="action_install">설치</string>
-  <string name="action_reinstall">다시 설치</string>
+  <string name="action_reinstall">재설치</string>
   <string name="action_update">업데이트</string>
   <string name="action_clear">초기화</string>
   <string name="action_launch">실행</string>
@@ -48,7 +48,7 @@
   <string name="setting_package_name">패키지 이름</string>
   <string name="setting_target_version">다운로드 버전</string>
   <string name="setting_dynamic_color">동적 색상</string>
-  <string name="setting_hermes_replace_libcpp">libc++ 대체 (RN 전용)</string>
+  <string name="setting_hermes_replace_libcpp">libc++ 대체(RN 전용)</string>
   <string name="setting_hermes_replace_libcpp_desc">패치한 Herms에서 libc++를 다운로드하고 사용해요</string>
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
   <string name="setting_keep_patched_apks_desc">설치 후 패치된 APK를 삭제하지 않아요 (수동 설치용)</string>
