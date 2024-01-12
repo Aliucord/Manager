@@ -10,6 +10,16 @@ import com.aliucord.manager.R
 import com.aliucord.manager.util.showToast
 
 class InstallService : Service() {
+    private val errorMessages = mapOf(
+        PackageInstaller.STATUS_FAILURE to R.string.install_error_unknown,
+        PackageInstaller.STATUS_FAILURE_BLOCKED to R.string.install_error_blocked,
+        PackageInstaller.STATUS_FAILURE_INVALID to R.string.install_error_invalid,
+        PackageInstaller.STATUS_FAILURE_CONFLICT to R.string.install_error_conflict,
+        PackageInstaller.STATUS_FAILURE_STORAGE to R.string.install_error_storage,
+        PackageInstaller.STATUS_FAILURE_INCOMPATIBLE to R.string.install_error_incompatible,
+        PackageInstaller.STATUS_FAILURE_TIMEOUT to R.string.install_error_timeout
+    )
+
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         when (val statusCode = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)) {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
@@ -25,7 +35,12 @@ class InstallService : Service() {
 
             else -> {
                 Log.i(BuildConfig.TAG, "Install failed with error code $statusCode")
-                showToast(R.string.installer_failed, statusCode)
+
+                if (errorMessages[statusCode] != null) {
+                    showToast(errorMessages[statusCode]!!)
+                } else {
+                    showToast(R.string.install_error_code, statusCode)
+                }
             }
         }
 
