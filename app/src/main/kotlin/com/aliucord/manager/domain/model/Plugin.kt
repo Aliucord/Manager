@@ -6,28 +6,26 @@
 package com.aliucord.manager.domain.model
 
 import androidx.compose.runtime.Immutable
+import com.github.diamondminer88.zip.ZipReader
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import org.koin.core.context.GlobalContext
 import java.io.File
-import java.util.zip.ZipException
-import java.util.zip.ZipFile
 
-private val json = Json {
-    ignoreUnknownKeys = true
-}
+private val json: Json = GlobalContext.get().get()
 
-@OptIn(ExperimentalSerializationApi::class)
 @Immutable
 data class Plugin(val file: File) {
     val manifest: Manifest
 
     init {
-        ZipFile(file).use { zipFile ->
-            val entry = zipFile.getEntry("manifest.json")
-                ?: throw ZipException("Plugin ${file.nameWithoutExtension} has no manifest.")
+        ZipReader(file).use {
+            val manifest = it.openEntry("manifest.json")
+                ?: throw Exception("Plugin ${file.nameWithoutExtension} has no manifest.")
 
-            manifest = zipFile.getInputStream(entry).use { zis -> json.decodeFromStream(zis) }
+            @OptIn(ExperimentalSerializationApi::class)
+            this.manifest = json.decodeFromStream(manifest.read().inputStream())
         }
     }
 }
