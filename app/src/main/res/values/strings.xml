@@ -119,7 +119,7 @@
   <string name="install_group_apk_dl">Download APKs</string>
   <string name="install_group_lib_dl">Download Libraries</string>
   <string name="install_group_patch">Patch APKs</string>
-  <string name="install_group_install">Install</string>
+  <string name="install_group_install">Install APK</string>
 
   <string name="install_step_patch_icons">Patching app icons</string>
   <string name="install_step_patch_manifests">Patching apk manifests</string>

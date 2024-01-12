@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NavigateBefore
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.component.installer.*
-import com.aliucord.manager.ui.dialog.DiscordType
 import com.aliucord.manager.ui.dialog.DownloadMethod
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
 import com.aliucord.manager.ui.viewmodel.InstallViewModel.InstallStepGroup
@@ -30,13 +29,11 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
-import java.util.*
 
 @Immutable // this isn't *really* stable, but this never gets modified after being passed to a composable, so...
 @Parcelize
 data class InstallData(
     val downloadMethod: DownloadMethod,
-    val discordType: DiscordType,
     var baseApk: String? = null,
     var splits: List<String>? = null
 ) : Parcelable
@@ -50,7 +47,7 @@ fun InstallerScreen(
 ) {
     if (viewModel.returnToHome) onBackClick()
 
-    var expandedGroup by mutableStateOf<InstallStepGroup?>(null)
+    var expandedGroup by remember { mutableStateOf<InstallStepGroup?>(null) }
 
     LaunchedEffect(viewModel.currentStep) {
         expandedGroup = viewModel.currentStep?.group
@@ -63,7 +60,7 @@ fun InstallerScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.Default.NavigateBefore,
+                            imageVector = Icons.Default.ArrowBack,
                             contentDescription = stringResource(R.string.navigation_back)
                         )
                     }
@@ -88,7 +85,7 @@ fun InstallerScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                for (group in InstallStepGroup.values()) {
+                for (group in InstallStepGroup.entries) {
                     InstallGroup(
                         name = stringResource(group.nameResId),
                         isCurrent = expandedGroup == group,

@@ -25,9 +25,6 @@ class DownloadManager(
     suspend fun downloadDiscordApk(version: String, out: File): File =
         download("$BACKEND_HOST/download/discord?v=$version", out)
 
-    suspend fun downloadSplit(version: String, split: String, out: File): File =
-        download("$BACKEND_HOST/download/discord?v=$version&split=$split", out)
-
     // Aliucord Kotlin downloads
     suspend fun downloadKtInjector(out: File): File =
         download(AliucordGithubService.KT_INJECTOR_URL, out)
@@ -37,9 +34,6 @@ class DownloadManager(
 
     suspend fun downloadKotlinDex(out: File): File =
         download(AliucordGithubService.KOTLIN_DEX_URL, out)
-
-    suspend fun downloadBootstrap(out: File): File =
-        download(AliucordGithubService.BOOTSTRAP_URL, out)
 
     suspend fun download(url: String, out: File): File {
         out.parentFile?.mkdirs()
