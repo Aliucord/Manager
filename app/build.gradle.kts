@@ -3,19 +3,19 @@
 import java.io.ByteArrayOutputStream
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.7.10"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.aliucord.manager"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
 
@@ -68,7 +68,7 @@ android {
         }
     }
 
-    packagingOptions {
+    packaging {
         resources {
             // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
             excludes += "/**/*.kotlin_builtins"
@@ -84,63 +84,46 @@ android {
     }
 
     kotlinOptions {
+        val reportsDir = layout.buildDirectory.asFile.get()
+            .resolve("reports").absolutePath
+
         jvmTarget = "11"
         freeCompilerArgs += listOf(
             "-Xcontext-receivers",
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${buildDir.resolve("report").absolutePath}",
+            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
         )
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.1"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
 dependencies {
-    // AndroidX
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.paging:paging-compose:1.0.0-alpha17")
+    implementation(libs.bundles.accompanist)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.ktor)
 
-    // Compose
-    val composeVersion = "1.3.0-beta02"
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0")
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.runtime.tracing)
 
-    // accompanist dependencies
-    val accompanistVersion = "0.26.3-beta"
-    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.immutable)
 
-    // Ktor
-    val ktorVersion = "2.1.1"
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-
-    // Koin
-    val koinVersion = "3.2.0"
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
-
-    // Other
-    implementation("dev.olshevski.navigation:reimagined:1.3.0")
-    implementation("io.coil-kt:coil-compose:2.2.1")
-    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("io.github.diamondminer88:zip-android:2.1.0@aar")
-    implementation("com.aliucord:axml:1.0.1")
-    implementation("com.android.tools.build:apksig:7.4.0-beta04")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+    implementation(libs.apksig)
+    implementation(libs.axml)
+    implementation(libs.bouncycastle)
+    implementation(libs.coil)
+    implementation(libs.navigationReimagined)
+    implementation(variantOf(libs.zip) { artifactType("aar") })
 }
 
 fun getCurrentBranch(): String? =
