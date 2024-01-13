@@ -1,9 +1,6 @@
 package com.aliucord.manager.util
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * Constructs a function that executes [destinationFunction] only once per [skipMs].

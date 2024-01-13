@@ -1,7 +1,6 @@
 package com.aliucord.manager.domain.manager
 
 import android.content.SharedPreferences
-import com.aliucord.manager.aliucordDir
 import com.aliucord.manager.domain.manager.base.BasePreferenceManager
 import com.aliucord.manager.ui.theme.Theme
 

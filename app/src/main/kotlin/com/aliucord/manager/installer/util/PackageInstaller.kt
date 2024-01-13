@@ -5,13 +5,11 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInstaller
 import android.content.pm.PackageInstaller.SessionParams
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import com.aliucord.manager.installer.service.InstallService
-import kotlinx.coroutines.delay
 import java.io.File
 
 fun Application.installApks(silent: Boolean = false, vararg apks: File) {

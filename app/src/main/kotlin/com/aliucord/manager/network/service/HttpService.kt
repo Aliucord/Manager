@@ -3,11 +3,11 @@ package com.aliucord.manager.network.service
 import android.util.Log
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.network.utils.*
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import kotlinx.serialization.decodeFromString
+import io.ktor.client.HttpClient
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.request
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.isSuccess
 import kotlinx.serialization.json.Json
 
 class HttpService(

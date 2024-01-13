@@ -17,7 +17,8 @@ import java.math.BigInteger
 import java.security.*
 import java.security.cert.Certificate
 import java.security.cert.X509Certificate
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 object Signer {
     private val password = "password".toCharArray()

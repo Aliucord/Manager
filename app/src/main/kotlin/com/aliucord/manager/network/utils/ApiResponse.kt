@@ -2,7 +2,7 @@
 
 package com.aliucord.manager.network.utils
 
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 
 sealed interface ApiResponse<T> {
     data class Success<T>(val data: T) : ApiResponse<T>

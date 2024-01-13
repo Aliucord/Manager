@@ -1,7 +1,7 @@
 package com.aliucord.manager.network.service
 
 import com.aliucord.manager.network.utils.ApiResponse
-import io.ktor.client.request.*
+import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

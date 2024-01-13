@@ -21,7 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.component.installer.*
+import com.aliucord.manager.ui.component.installer.InstallGroup
+import com.aliucord.manager.ui.component.installer.InstallStatus
 import com.aliucord.manager.ui.dialog.DownloadMethod
 import com.aliucord.manager.ui.viewmodel.InstallViewModel
 import com.aliucord.manager.ui.viewmodel.InstallViewModel.InstallStepGroup

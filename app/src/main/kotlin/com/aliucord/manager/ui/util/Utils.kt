@@ -1,13 +1,13 @@
 package com.aliucord.manager.ui.util
 
 import androidx.annotation.StringRes
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import kotlinx.collections.immutable.ImmutableList
 
 context(AnnotatedString.Builder)
-    inline fun <T> Iterable<T>.joinToAnnotatedString(
+inline fun <T> Iterable<T>.joinToAnnotatedString(
     separator: AnnotatedString.Builder.() -> Unit = { append(", ") },
     prefix: AnnotatedString.Builder.() -> Unit = {},
     postfix: AnnotatedString.Builder.() -> Unit = {},

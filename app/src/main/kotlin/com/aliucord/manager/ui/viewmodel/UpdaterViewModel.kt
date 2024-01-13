@@ -1,9 +1,7 @@
 package com.aliucord.manager.ui.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
@@ -13,13 +11,12 @@ import com.aliucord.manager.installer.util.installApks
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrNull
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class UpdaterViewModel(
     private val github: GithubRepository,
     private val downloadManager: DownloadManager,
-    private val application: Application
+    private val application: Application,
 ) : ViewModel() {
     var showDialog by mutableStateOf(false)
         private set

@@ -4,15 +4,10 @@ import android.app.Activity
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screen.InstallData
 import dev.olshevski.navigation.reimagined.*
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 @Parcelize
 sealed class BaseScreenDestination(

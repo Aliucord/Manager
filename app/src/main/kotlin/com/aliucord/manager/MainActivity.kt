@@ -5,12 +5,12 @@
 
 package com.aliucord.manager
 
-import android.os.*
+import android.os.Bundle
+import android.os.Environment
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.ui.dialog.StoragePermissionsDialog
@@ -70,10 +70,12 @@ class MainActivity : ComponentActivity() {
                                         navController.navigate(AppDestination.Install(data))
                                     }
                                 )
+
                                 is AppDestination.Plugins -> PluginsScreen()
                                 is AppDestination.Settings -> SettingsScreen()
                             }
                         }
+
                         is AppDestination.Install -> InstallerScreen(
                             installData = dest.installData,
                             onBackClick = { navController.back() }

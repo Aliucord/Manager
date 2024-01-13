@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -108,7 +107,7 @@ fun PluginCard(
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .alpha(0.3f)
                 .padding(horizontal = 16.dp)
@@ -148,8 +147,8 @@ fun PluginCard(
                     IconButton(modifier = Modifier.size(25.dp), onClick = onClickShowChangelog) {
                         Icon(
                             painter = painterResource(R.drawable.ic_history),
+                            contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name),
                             modifier = Modifier.fillMaxSize(),
-                            contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name)
                         )
                     }
                 }

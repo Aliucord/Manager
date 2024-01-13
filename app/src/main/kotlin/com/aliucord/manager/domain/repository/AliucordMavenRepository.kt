@@ -1,10 +1,8 @@
 package com.aliucord.manager.domain.repository
 
 import com.aliucord.manager.network.service.MavenService
-import com.aliucord.manager.network.utils.ApiError
-import com.aliucord.manager.network.utils.ApiResponse
-import com.aliucord.manager.network.utils.transform
-import io.ktor.http.*
+import com.aliucord.manager.network.utils.*
+import io.ktor.http.HttpStatusCode
 
 class AliucordMavenRepository(
     private val maven: MavenService

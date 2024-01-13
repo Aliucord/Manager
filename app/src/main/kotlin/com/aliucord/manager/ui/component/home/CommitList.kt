@@ -64,6 +64,7 @@ fun CommitList(
                                 .wrapContentWidth(Alignment.CenterHorizontally)
                         )
                     }
+
                     is LoadState.Error -> item {
                         Box(
                             modifier = Modifier
@@ -77,6 +78,7 @@ fun CommitList(
                             })
                         }
                     }
+
                     is LoadState.NotLoading -> {
                         items(lazyPagingItems) { commit ->
                             if (commit != null) {
@@ -95,11 +97,13 @@ fun CommitList(
                                 .wrapContentWidth(Alignment.CenterHorizontally)
                         )
                     }
+
                     is LoadState.Error -> item {
                         LoadFailure(onRetry = {
                             lazyPagingItems.retry()
                         })
                     }
+
                     else -> {}
                 }
             }
@@ -153,13 +157,16 @@ fun CommitItem(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
+
                         "middle" -> SpanStyle(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )
+
                         "commit" -> SpanStyle(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
                         )
+
                         else -> null
                     }
                 },

@@ -2,19 +2,14 @@ package com.aliucord.manager.domain.manager
 
 import android.app.Application
 import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.network.service.AliucordGithubService
 import java.io.File
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.*
 
 class DownloadManager(
     private val application: Application
@@ -69,14 +64,17 @@ class DownloadManager(
                             context.unregisterReceiver(this)
                             continuation.resumeWithException(Error("Download was cancelled manually"))
                         }
+
                         DownloadManager.STATUS_SUCCESSFUL -> {
                             context.unregisterReceiver(this)
                             continuation.resume(out)
                         }
+
                         DownloadManager.STATUS_FAILED -> {
                             context.unregisterReceiver(this)
                             continuation.resumeWithException(Error("Failed to download $url because of: ${reasonToString(reason)}"))
                         }
+
                         else -> {}
                     }
                 }
