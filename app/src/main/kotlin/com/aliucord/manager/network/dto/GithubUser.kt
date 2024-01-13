@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 data class GithubUser(
     @SerialName("login")
     val name: String,
-    val contributions: Int
+    val contributions: Int,
 )

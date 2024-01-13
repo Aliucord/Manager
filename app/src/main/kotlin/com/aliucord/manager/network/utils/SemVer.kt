@@ -7,7 +7,7 @@ data class SemVer(
     val major: Int,
     val minor: Int,
     val patch: Int,
-    private val vPrefix: Boolean = false
+    private val vPrefix: Boolean = false,
 ) : Comparable<SemVer> {
     override fun compareTo(other: SemVer): Int {
         val pairs = arrayOf(

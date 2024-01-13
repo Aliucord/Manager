@@ -10,13 +10,12 @@ import com.github.diamondminer88.zip.ZipReader
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
-import org.koin.core.context.GlobalContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import java.io.File
 
-private val json: Json = GlobalContext.get().get()
-
 @Immutable
-data class Plugin(val file: File) {
+data class Plugin(val file: File) : KoinComponent {
     val manifest: Manifest
 
     init {
@@ -25,7 +24,7 @@ data class Plugin(val file: File) {
                 ?: throw Exception("Plugin ${file.nameWithoutExtension} has no manifest.")
 
             @OptIn(ExperimentalSerializationApi::class)
-            this.manifest = json.decodeFromStream(manifest.read().inputStream())
+            this.manifest = get<Json>().decodeFromStream(manifest.read().inputStream())
         }
     }
 }

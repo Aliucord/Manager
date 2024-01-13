@@ -16,7 +16,7 @@ inline fun <T> Iterable<T>.joinToAnnotatedString(
             is Char -> append(it)
             else -> append(it.toString())
         }
-    }
+    },
 ) {
     prefix(this@Builder)
     for ((count, element) in this@joinToAnnotatedString.withIndex()) {

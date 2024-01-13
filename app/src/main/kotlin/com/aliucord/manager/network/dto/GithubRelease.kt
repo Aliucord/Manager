@@ -9,12 +9,12 @@ data class GithubRelease(
     val createdAt: String,
     val assets: List<GithubReleaseAssets>,
     @SerialName("tag_name")
-    val tagName: String
+    val tagName: String,
 ) {
     @Serializable
     data class GithubReleaseAssets(
         val name: String,
         @SerialName("browser_download_url")
-        val browserDownloadUrl: String
+        val browserDownloadUrl: String,
     )
 }

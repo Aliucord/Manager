@@ -24,7 +24,7 @@ object ManifestPatcher {
         manifestBytes: ByteArray,
         packageName: String,
         appName: String,
-        debuggable: Boolean
+        debuggable: Boolean,
     ): ByteArray {
         val reader = AxmlReader(manifestBytes)
         val writer = AxmlWriter()
@@ -142,7 +142,7 @@ object ManifestPatcher {
 
     fun renamePackage(
         manifestBytes: ByteArray,
-        packageName: String
+        packageName: String,
     ): ByteArray {
         val reader = AxmlReader(manifestBytes)
         val writer = AxmlWriter()
@@ -160,7 +160,7 @@ object ManifestPatcher {
 
     private open class ReplaceAttrsVisitor(
         nv: NodeVisitor,
-        private val attrs: Map<String, Any>
+        private val attrs: Map<String, Any>,
     ) : NodeVisitor(nv) {
         override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
             val replace = attrs.containsKey(name)

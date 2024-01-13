@@ -12,7 +12,7 @@ import java.io.File
 import kotlin.coroutines.*
 
 class DownloadManager(
-    private val application: Application
+    private val application: Application,
 ) {
     private val downloadManager = application.getSystemService<DownloadManager>()!!
 

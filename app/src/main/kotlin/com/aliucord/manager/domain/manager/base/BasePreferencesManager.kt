@@ -6,7 +6,7 @@ import androidx.core.content.edit
 import kotlin.reflect.KProperty
 
 abstract class BasePreferenceManager(
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
 ) {
     protected fun getString(key: String, defaultValue: String) = prefs.getString(key, defaultValue) ?: defaultValue
     private fun getBoolean(key: String, defaultValue: Boolean) = prefs.getBoolean(key, defaultValue)
@@ -25,7 +25,7 @@ abstract class BasePreferenceManager(
         private val key: String,
         defaultValue: T,
         getter: (key: String, defaultValue: T) -> T,
-        private val setter: (key: String, newValue: T) -> Unit
+        private val setter: (key: String, newValue: T) -> Unit,
     ) {
         @Suppress("RedundantSetter")
         var value by mutableStateOf(getter(key, defaultValue))
@@ -40,7 +40,7 @@ abstract class BasePreferenceManager(
 
     protected fun stringPreference(
         key: String,
-        defaultValue: String
+        defaultValue: String,
     ) = Preference(
         key = key,
         defaultValue = defaultValue,
@@ -50,7 +50,7 @@ abstract class BasePreferenceManager(
 
     protected fun booleanPreference(
         key: String,
-        defaultValue: Boolean
+        defaultValue: Boolean,
     ) = Preference(
         key = key,
         defaultValue = defaultValue,
@@ -60,7 +60,7 @@ abstract class BasePreferenceManager(
 
     protected fun intPreference(
         key: String,
-        defaultValue: Int
+        defaultValue: Int,
     ) = Preference(
         key = key,
         defaultValue = defaultValue,
@@ -70,7 +70,7 @@ abstract class BasePreferenceManager(
 
     protected fun floatPreference(
         key: String,
-        defaultValue: Float
+        defaultValue: Float,
     ) = Preference(
         key = key,
         defaultValue = defaultValue,
@@ -80,7 +80,7 @@ abstract class BasePreferenceManager(
 
     protected inline fun <reified E : Enum<E>> enumPreference(
         key: String,
-        defaultValue: E
+        defaultValue: E,
     ) = Preference(
         key = key,
         defaultValue = defaultValue,

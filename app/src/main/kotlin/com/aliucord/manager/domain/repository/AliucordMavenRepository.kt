@@ -5,7 +5,7 @@ import com.aliucord.manager.network.utils.*
 import io.ktor.http.HttpStatusCode
 
 class AliucordMavenRepository(
-    private val maven: MavenService
+    private val maven: MavenService,
 ) {
     suspend fun getAliuhookVersion(): ApiResponse<String> {
         return maven.getArtifactMetadata(BASE_URL, ALIUHOOK).transform {

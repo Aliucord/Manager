@@ -12,17 +12,16 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.FadeTransition
 import com.aliucord.manager.domain.manager.PreferencesManager
-import com.aliucord.manager.ui.dialog.StoragePermissionsDialog
-import com.aliucord.manager.ui.dialog.UpdaterDialog
-import com.aliucord.manager.ui.navigation.*
-import com.aliucord.manager.ui.screen.*
-import com.aliucord.manager.ui.theme.ManagerTheme
-import com.aliucord.manager.ui.theme.Theme
-import dev.olshevski.navigation.reimagined.*
-import kotlinx.collections.immutable.persistentListOf
+import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
+import com.aliucord.manager.ui.screens.home.HomeScreen
+import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import org.koin.android.ext.android.inject
 
+// TODO: move to a path provider in DI
 val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
 
 class MainActivity : ComponentActivity() {
@@ -38,12 +37,6 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme = preferences.theme == Theme.DARK || preferences.theme == Theme.SYSTEM && isSystemInDarkTheme(),
                 isDynamicColor = preferences.dynamicColor
             ) {
-                val navController = rememberNavController<AppDestination>(AppDestination.Home)
-
-                BackHandler {
-                    navController.back()
-                }
-
                 StoragePermissionsDialog()
 
                 @Suppress("KotlinConstantConditions")
@@ -55,36 +48,15 @@ class MainActivity : ComponentActivity() {
                     UpdaterDialog()
                 }
 
-                NavHost(
-                    controller = navController,
-                ) {
-                    when (val dest = this.currentHostEntry.destination) {
-                        is BaseScreenDestination -> BaseScreen(
-                            currentNavItem = dest,
-                            bottomNavItems = persistentListOf(AppDestination.Home, AppDestination.Plugins, AppDestination.Settings),
-                            onNavChanged = { navController.replaceLast(it) }
-                        ) {
-                            when (dest) {
-                                is AppDestination.Home -> HomeScreen(
-                                    onClickInstall = { data ->
-                                        navController.navigate(AppDestination.Install(data))
-                                    }
-                                )
-
-                                is AppDestination.Plugins -> PluginsScreen()
-                                is AppDestination.Settings -> SettingsScreen()
-                            }
-                        }
-
-                        is AppDestination.Install -> InstallerScreen(
-                            installData = dest.installData,
-                            onBackClick = { navController.back() }
-                        )
-
-                        is AppDestination.About -> AboutScreen(
-                            onBackClick = { navController.back() }
-                        )
+                Navigator(
+                    screen = HomeScreen(),
+                    onBackPressed = null,
+                ) { navigator ->
+                    BackHandler {
+                        navigator.back(this@MainActivity)
                     }
+
+                    FadeTransition(navigator)
                 }
             }
         }

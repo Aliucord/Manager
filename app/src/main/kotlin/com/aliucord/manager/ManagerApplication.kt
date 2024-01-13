@@ -5,10 +5,16 @@ import com.aliucord.manager.di.*
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.service.*
-import com.aliucord.manager.ui.viewmodel.*
+import com.aliucord.manager.ui.screens.about.AboutModel
+import com.aliucord.manager.ui.screens.home.HomeModel
+import com.aliucord.manager.ui.screens.install.InstallModel
+import com.aliucord.manager.ui.screens.plugins.PluginsModel
+import com.aliucord.manager.ui.screens.settings.SettingsModel
+import com.aliucord.manager.ui.widgets.updater.UpdaterViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -39,13 +45,13 @@ class ManagerApplication : Application() {
                 singleOf(::AliucordMavenRepository)
             })
 
-            // ViewModels
+            // UI Models
             modules(module {
-                viewModelOf(::HomeViewModel)
-                viewModelOf(::PluginsViewModel)
-                viewModelOf(::AboutViewModel)
-                viewModelOf(::InstallViewModel)
-                viewModelOf(::SettingsViewModel)
+                factoryOf(::HomeModel)
+                factoryOf(::PluginsModel)
+                factoryOf(::AboutModel)
+                factoryOf(::InstallModel)
+                factoryOf(::SettingsModel)
                 viewModelOf(::UpdaterViewModel)
             })
 

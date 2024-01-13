@@ -90,7 +90,10 @@ android {
         jvmTarget = "11"
         freeCompilerArgs += listOf(
             "-Xcontext-receivers",
-            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+//            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
         )
     }
 
@@ -110,6 +113,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
+    implementation(libs.bundles.voyager)
 
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
@@ -122,7 +126,6 @@ dependencies {
     implementation(libs.axml)
     implementation(libs.bouncycastle)
     implementation(libs.coil)
-    implementation(libs.navigationReimagined)
     implementation(variantOf(libs.zip) { artifactType("aar") })
 }
 

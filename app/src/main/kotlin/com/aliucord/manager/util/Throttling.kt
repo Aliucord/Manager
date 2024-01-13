@@ -8,7 +8,7 @@ import kotlinx.coroutines.*
 inline fun throttle(
     skipMs: Long,
     coroutineScope: CoroutineScope,
-    crossinline destinationFunction: suspend () -> Unit
+    crossinline destinationFunction: suspend () -> Unit,
 ): () -> Unit {
     var throttleJob: Job? = null
     return {

@@ -17,7 +17,7 @@ class ApiFailure(error: Throwable, body: String?) : Error(body, error)
 inline fun <T, R> ApiResponse<T>.fold(
     success: (T) -> R,
     error: (ApiError) -> R,
-    failure: (ApiFailure) -> R
+    failure: (ApiFailure) -> R,
 ): R {
     return when (this) {
         is ApiResponse.Success -> success(this.data)

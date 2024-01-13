@@ -2,7 +2,7 @@ package com.aliucord.manager.domain.manager
 
 import android.content.SharedPreferences
 import com.aliucord.manager.domain.manager.base.BasePreferenceManager
-import com.aliucord.manager.ui.theme.Theme
+import com.aliucord.manager.ui.components.Theme
 
 class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager(preferences) {
     var theme by enumPreference("theme", Theme.SYSTEM)

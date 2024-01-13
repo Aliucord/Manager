@@ -11,5 +11,5 @@ import kotlinx.serialization.Serializable
 data class Version(
     val versionCode: String,
     val versionName: String,
-    val aliucordHash: String
+    val aliucordHash: String,
 )

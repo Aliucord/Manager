@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 class AliucordGithubService(
     val github: GithubService,
-    val http: HttpService
+    val http: HttpService,
 ) {
     suspend fun getDataJson(): ApiResponse<Version> {
         return withContext(Dispatchers.IO) {
