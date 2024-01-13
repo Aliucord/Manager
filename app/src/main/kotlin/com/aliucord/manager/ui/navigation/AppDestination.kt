@@ -2,6 +2,7 @@ package com.aliucord.manager.ui.navigation
 
 import android.app.Activity
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -15,8 +16,8 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 sealed class BaseScreenDestination(
-    val selectedIcon: @RawValue ImageVector,
-    val unselectedIcon: @RawValue ImageVector,
+    @DrawableRes val selectedIcon: Int,
+    @DrawableRes val unselectedIcon: Int,
     @StringRes val label: Int
 ) : AppDestination
 
@@ -24,22 +25,22 @@ sealed class BaseScreenDestination(
 sealed interface AppDestination : Parcelable {
     @Parcelize
     object Home : BaseScreenDestination(
-        Icons.Default.Home,
-        Icons.Outlined.Home,
+        R.drawable.ic_home,
+        R.drawable.ic_home, // TODO: get ic_home outline variant
         R.string.navigation_home
     )
 
     @Parcelize
     object Plugins : BaseScreenDestination(
-        Icons.Default.Extension,
-        Icons.Outlined.Extension,
+        R.drawable.ic_extension,
+        R.drawable.ic_extension_outlined,
         R.string.plugins_title
     )
 
     @Parcelize
     object Settings : BaseScreenDestination(
-        Icons.Default.Settings,
-        Icons.Outlined.Settings,
+        R.drawable.ic_settings,
+        R.drawable.ic_settings_outlined,
         R.string.navigation_settings
     )
 

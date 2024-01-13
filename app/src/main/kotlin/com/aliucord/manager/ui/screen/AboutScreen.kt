@@ -10,9 +10,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -47,7 +44,7 @@ fun AboutScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            painter = painterResource(R.drawable.ic_back),
                             contentDescription = stringResource(R.string.navigation_back)
                         )
                     }
@@ -101,7 +98,7 @@ fun AboutScreen(
 
                         TextButton(onClick = { uriHandler.openUri("https://aliucord.com") }) {
                             Icon(
-                                imageVector = Icons.Filled.Link,
+                                painter = painterResource(R.drawable.ic_link),
                                 contentDescription = stringResource(R.string.website)
                             )
                             Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))

@@ -2,7 +2,6 @@
 
 package com.aliucord.manager.ui.navigation
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -14,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.screen.*
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -58,10 +56,10 @@ fun BaseScreen(
                         selected = currentNavItem == navItem,
                         icon = {
                             Icon(
-                                imageVector = if (currentNavItem == navItem) {
-                                    navItem.selectedIcon
+                                painter = if (currentNavItem == navItem) {
+                                    painterResource(navItem.selectedIcon)
                                 } else {
-                                    navItem.unselectedIcon
+                                    painterResource(navItem.unselectedIcon)
                                 },
                                 contentDescription = null,
                             )

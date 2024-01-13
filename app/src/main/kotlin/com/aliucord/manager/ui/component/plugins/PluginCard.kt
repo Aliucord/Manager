@@ -147,8 +147,8 @@ fun PluginCard(
                 if (plugin.manifest.changelog != null) {
                     IconButton(modifier = Modifier.size(25.dp), onClick = onClickShowChangelog) {
                         Icon(
+                            painter = painterResource(R.drawable.ic_history),
                             modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.History,
                             contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name)
                         )
                     }

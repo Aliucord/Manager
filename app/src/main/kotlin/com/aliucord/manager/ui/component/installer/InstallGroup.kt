@@ -5,9 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -95,12 +93,12 @@ fun InstallGroup(
 
             if (isCurrent) {
                 Icon(
-                    imageVector = Icons.Filled.KeyboardArrowUp,
+                    painter = painterResource(R.drawable.ic_arrow_up_small),
                     contentDescription = stringResource(R.string.action_collapse)
                 )
             } else {
                 Icon(
-                    imageVector = Icons.Filled.KeyboardArrowDown,
+                    painter = painterResource(R.drawable.ic_arrow_down_small),
                     contentDescription = stringResource(R.string.action_expand)
                 )
             }
@@ -171,20 +169,23 @@ private fun StepIcon(status: InstallStatus, size: Dp) {
                     contentDescription = context.getString(R.string.status_ongoing)
                 }
         )
+
         InstallStatus.SUCCESSFUL -> Icon(
-            Icons.Filled.CheckCircle,
+            painter = painterResource(R.drawable.ic_check_circle),
             contentDescription = stringResource(R.string.status_success),
             tint = Color(0xFF59B463),
             modifier = Modifier.size(size)
         )
+
         InstallStatus.UNSUCCESSFUL -> Icon(
-            Icons.Filled.Cancel,
+            painter = painterResource(R.drawable.ic_canceled),
             contentDescription = stringResource(R.string.status_failed),
             tint = MaterialTheme.colorScheme.error,
             modifier = Modifier.size(size)
         )
+
         InstallStatus.QUEUED -> Icon(
-            Icons.Outlined.Circle,
+            painter = painterResource(R.drawable.ic_circle),
             contentDescription = stringResource(R.string.status_queued),
             tint = MaterialTheme.colorScheme.onSurface.copy(0.4f),
             modifier = Modifier.size(size)

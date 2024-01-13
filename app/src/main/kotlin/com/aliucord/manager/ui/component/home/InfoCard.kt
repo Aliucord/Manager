@@ -2,11 +2,12 @@ package com.aliucord.manager.ui.component.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
@@ -71,11 +72,13 @@ fun InfoCard(
             ) {
                 val (icon, description) = when {
                     currentVersion !is DiscordVersion.Existing ->
-                        Icons.Default.Download to R.string.action_install
+                        R.drawable.ic_download to R.string.action_install
+
                     currentVersion < supportedVersion ->
-                        Icons.Default.Refresh to R.string.action_reinstall
+                        R.drawable.ic_refresh to R.string.action_reinstall
+
                     else ->
-                        Icons.Default.Update to R.string.action_update
+                        R.drawable.ic_update to R.string.action_update
                 }
 
                 FilledTonalIconButton(
@@ -91,7 +94,7 @@ fun InfoCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = icon,
+                            painter = painterResource(icon),
                             contentDescription = stringResource(description)
                         )
                         if (currentVersion is DiscordVersion.None) {
@@ -125,7 +128,7 @@ fun InfoCard(
                         shape = ShapeDefaults.Large
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Launch,
+                            painter = painterResource(R.drawable.ic_launch),
                             contentDescription = stringResource(R.string.action_launch)
                         )
                     }

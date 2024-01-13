@@ -37,7 +37,6 @@ compose-foundation = { module = "androidx.compose.foundation:foundation", versio
 compose-animations = { module = "androidx.compose.animation:animation-graphics", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 
 # Compose debug tooling
@@ -82,7 +81,6 @@ compose = [
     "compose-runtime",
     "compose-ui",
     "compose-foundation",
-    "compose-icons",
     "compose-material3",
     "compose-animations",
 ]

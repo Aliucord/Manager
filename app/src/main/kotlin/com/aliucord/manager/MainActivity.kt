@@ -9,7 +9,6 @@ import android.os.*
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.animation.*
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -29,7 +28,6 @@ val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
 class MainActivity : ComponentActivity() {
     private val preferences: PreferencesManager by inject()
 
-    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -57,9 +55,8 @@ class MainActivity : ComponentActivity() {
                     UpdaterDialog()
                 }
 
-                AnimatedNavHost(
+                NavHost(
                     controller = navController,
-                    transitionSpec = { _, _, _ -> fadeIn() with fadeOut() }
                 ) {
                     when (val dest = this.currentHostEntry.destination) {
                         is BaseScreenDestination -> BaseScreen(

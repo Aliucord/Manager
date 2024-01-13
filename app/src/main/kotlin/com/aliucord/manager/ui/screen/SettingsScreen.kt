@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,7 @@ fun SettingsScreen(
 
         SettingsItem(
             modifier = Modifier.clickable(onClick = viewModel::showThemeDialog),
-            icon = { Icon(Icons.Default.Style, null) },
+            icon = { Icon(painterResource(R.drawable.ic_brush), null) },
             text = { Text(stringResource(R.string.settings_theme)) }
         ) {
             FilledTonalButton(onClick = viewModel::showThemeDialog) {
@@ -57,7 +58,7 @@ fun SettingsScreen(
         SettingsSwitch(
             label = stringResource(R.string.setting_dynamic_color),
             pref = preferences.dynamicColor,
-            icon = { Icon(Icons.Default.Palette, null) }
+            icon = { Icon(painterResource(R.drawable.ic_palette), null) }
         ) {
             preferences.dynamicColor = it
         }
@@ -75,7 +76,7 @@ fun SettingsScreen(
             label = stringResource(R.string.setting_replace_icon),
             secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
             pref = preferences.replaceIcon,
-            icon = { Icon(Icons.Default.AppShortcut, null) }
+            icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) }
         ) {
             preferences.replaceIcon = it
         }
@@ -83,7 +84,7 @@ fun SettingsScreen(
         SettingsSwitch(
             label = stringResource(R.string.setting_keep_patched_apks),
             secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
-            icon = { Icon(Icons.Default.DeleteForever, null) },
+            icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
             pref = preferences.keepPatchedApks,
             onPrefChange = { preferences.keepPatchedApks = it },
         )
@@ -93,7 +94,7 @@ fun SettingsScreen(
         SettingsSwitch(
             label = stringResource(R.string.settings_developer_options),
             pref = preferences.devMode,
-            icon = { Icon(Icons.Default.Code, null) }
+            icon = { Icon(painterResource(R.drawable.ic_code), null) }
         ) {
             preferences.devMode = it
         }
@@ -123,14 +124,14 @@ fun SettingsScreen(
                     label = stringResource(R.string.setting_debuggable),
                     secondaryLabel = stringResource(R.string.setting_debuggable_desc),
                     pref = preferences.debuggable,
-                    icon = { Icon(Icons.Default.BugReport, null) },
+                    icon = { Icon(painterResource(R.drawable.ic_bug), null) },
                     onPrefChange = { preferences.debuggable = it },
                 )
 
                 SettingsSwitch(
                     label = stringResource(R.string.setting_hermes_replace_libcpp),
                     secondaryLabel = stringResource(R.string.setting_hermes_replace_libcpp_desc),
-                    icon = { Icon(Icons.Default.FileCopy, null) },
+                    icon = { Icon(painterResource(R.drawable.ic_copy_file), null) },
                     pref = preferences.hermesReplaceLibCpp,
                     onPrefChange = { preferences.hermesReplaceLibCpp = it },
                 )
@@ -164,7 +165,7 @@ fun ThemeDialog(
         onDismissRequest = onDismissRequest,
         icon = {
             Icon(
-                imageVector = Icons.Default.Style,
+                painter = painterResource(R.drawable.ic_brush),
                 contentDescription = stringResource(R.string.settings_theme)
             )
         },
