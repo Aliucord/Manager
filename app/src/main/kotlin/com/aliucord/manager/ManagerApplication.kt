@@ -20,39 +20,40 @@ class ManagerApplication : Application() {
             androidContext(this@ManagerApplication)
 
             // HTTP
-            module {
-                singleOf(::provideJson)
-                singleOf(::provideHttpClient)
-            }
+            modules(module {
+                single { provideJson() }
+                single { provideHttpClient() }
+            })
 
             // Services
-            module {
+            modules(module {
+                singleOf(::HttpService)
                 singleOf(::GithubService)
                 singleOf(::MavenService)
                 singleOf(::AliucordGithubService)
-            }
+            })
 
             // Repositories
-            module {
+            modules(module {
                 singleOf(::GithubRepository)
                 singleOf(::AliucordMavenRepository)
-            }
+            })
 
             // ViewModels
-            module {
+            modules(module {
                 viewModelOf(::HomeViewModel)
                 viewModelOf(::PluginsViewModel)
                 viewModelOf(::AboutViewModel)
                 viewModelOf(::InstallViewModel)
                 viewModelOf(::SettingsViewModel)
                 viewModelOf(::UpdaterViewModel)
-            }
+            })
 
             // Managers
-            module {
-                singleOf(::providePreferences)
-                singleOf(::provideDownloadManager)
-            }
+            modules(module {
+                single { providePreferences() }
+                single { provideDownloadManager() }
+            })
         }
     }
 }

@@ -10,13 +10,12 @@ import org.koin.core.scope.Scope
 import java.net.Inet4Address
 import java.net.InetAddress
 
-context(Scope)
-fun provideJson() = Json {
+@Suppress("UnusedReceiverParameter")
+fun Scope.provideJson() = Json {
     ignoreUnknownKeys = true
 }
 
-context(Scope)
-fun provideHttpClient() = HttpClient(OkHttp) {
+fun Scope.provideHttpClient() = HttpClient(OkHttp) {
     val json: Json = get()
 
     engine {
