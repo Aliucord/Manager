@@ -6,13 +6,11 @@
   <string name="github">GitHub</string>
   <string name="support_server">Destek Sunucusu</string>
   <string name="commits">Commitler</string>
-  <string name="team">Takım</string>
   <string name="website">Websitesi</string>
   <string name="installer">Yükleyici</string>
   <string name="action_retry">Yeniden dene</string>
   <string name="action_apply">Uygula</string>
   <string name="action_confirm">Onayla</string>
-  <string name="action_cancel">İptal</string>
   <string name="action_dismiss">Yoksay</string>
   <string name="action_install">Yükle</string>
   <string name="action_reinstall">Yeniden yükle</string>
@@ -23,7 +21,6 @@
   <string name="action_close">Kapat</string>
   <string name="action_open_settings">Ayarları aç</string>
   <string name="action_search">Ara</string>
-  <string name="action_loading_trailing">Yükleniyor…</string>
   <string name="action_copy">Kopyala</string>
   <string name="action_collapse">Daralt</string>
   <string name="action_expand">Genişlet</string>
@@ -37,13 +34,10 @@
   <string name="settings_appearance">Görünüm</string>
   <string name="settings_developer_options">Geliştirici seçenekleri</string>
   <string name="setting_clear_cache">Önbelleği temizle</string>
-  <string name="setting_dex_location">Dex dosyası konumu</string>
-  <string name="setting_use_dex_from_storage">Cihazdaki Injector.dex\'i kullan</string>
   <string name="setting_replace_icon">Uygulama simgesini değiştir</string>
   <string name="setting_replace_icon_desc">Discord\'un simgesi yerine Aliucord varyant\'ını kullanır</string>
   <string name="setting_debuggable">Hata ayıklanabilir</string>
   <string name="setting_debuggable_desc">Hata ayıklanabilir seçeneğini etkinleştir</string>
-  <string name="setting_theme_desc">Yönetici görünümü</string>
   <string name="setting_app_name">Uygulama Adı</string>
   <string name="setting_package_name">Paket İsmi</string>
   <string name="setting_target_version">Sürümü İndir</string>
@@ -70,13 +64,7 @@
   <string name="navigation_settings">Ayarlar</string>
   <string name="contributors">Katkıda Bulunanlar</string>
   <string name="contributors_contributions">%o Katılımcı</string>
-  <string name="contributors_contributor">Katkıda Bulunan</string>
   <string name="contributors_commit_title">§isim§%1$s§ §orta§sundu§ §commit§%2$s§</string>
-  <string name="selector_download_apk">APK\'yı indir</string>
-  <string name="selector_discord_type">Discord Tipi</string>
-  <string name="selector_discord_type_body">Aliucord hem eski (Kotlin) hem de yeni (React Native) Discord sürümlerini destekliyor. Hangi tipi indirmek istersin? Bu sürümlerin birbirinden farklı eklentilere sahip olduğunu unutma!</string>
-  <string name="selector_discord_type_kotlin">Yeni (Önerilen)</string>
-  <string name="selector_discord_type_old">Eski</string>
   <string name="network_load_fail">Yükleme başarısız oldu</string>
   <string name="version_supported">Desteklenen sürüm:</string>
   <string name="version_installed">Yüklü sürüm:</string>
@@ -92,8 +80,7 @@
   <string name="installer_cached">(Önbellek\'te)</string>
   <string name="installer_success">Aliucord başarıyla indirildi</string>
   <string name="installer_aborted">Aliucord kurulumu iptal edildi</string>
-  <string name="installer_failed">%o hatası sebebiyle yükleme başarısız oldu</string>
-  <string name="installer_uninstall_new">Devam etmek için şimdiki Aliucord sürümünüzü 
+  <string name="installer_uninstall_new">Devam etmek için şimdiki Aliucord sürümünüzü
 lütfen silin!</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_code">Failed to install (error code %d)</string>
@@ -113,13 +100,6 @@ lütfen silin!</string>
   <string name="install_step_patch_libs">Kütüphaneler Değiştiriliyor</string>
   <string name="install_step_signing">APKlar İmzalanıyor</string>
   <string name="install_step_installing">APKlar Kuruluyor</string>
-  <string name="install_step_dl_apk_base">Temel apk indiriliyor</string>
-  <string name="install_step_dl_apk_lib">Kütüphane apkları indiriliyor</string>
-  <string name="install_step_dl_apk_locale">Yerel apk indiriliyor</string>
-  <string name="install_step_dl_apk_resource">Kaynak apkları indiriliyor</string>
-  <string name="install_step_dl_lib_hermes">Hermes kütüphanesi indiriliyor</string>
-  <string name="install_step_dl_lib_aliunative">AliucordNative kütüphanesi indiriliyor</string>
-  <string name="install_step_dl_bootstrap">Temel apk indiriliyor</string>
   <string name="install_step_fetch_kt_version">Hedef Discord sürümü alınıyor</string>
   <string name="install_step_dl_kt_apk">Discord APK\'sı indiriliyor</string>
   <string name="install_step_dl_kotlin">Kotlin kütüphanesi indiriliyor</string>
