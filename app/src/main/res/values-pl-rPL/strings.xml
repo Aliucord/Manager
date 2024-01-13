@@ -94,6 +94,14 @@
   <string name="installer_aborted">Przerwano instalację Aliucord</string>
   <string name="installer_failed">Instalacja nie powiodła się z błędem %o</string>
   <string name="installer_uninstall_new">Odinstaluj aktualną wersję Aliucorda, aby kontynuować!</string>
+  <string name="install_error_unknown">Failed to install (Unknown reason)</string>
+  <string name="install_error_code">Failed to install (error code %d)</string>
+  <string name="install_error_blocked">Installation was blocked</string>
+  <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
+  <string name="install_error_conflict">Conflicts with an existing app, usually due to mismatched signatures</string>
+  <string name="install_error_storage">Not enough available storage to install</string>
+  <string name="install_error_incompatible">Application is incompatible with this device</string>
+  <string name="install_error_timeout">Installation timed out</string>
   <string name="install_group_apk_dl">Pobieranie plików APK</string>
   <string name="install_group_lib_dl">Pobieranie bibliotek</string>
   <string name="install_group_patch">Patchowanie plików APK</string>

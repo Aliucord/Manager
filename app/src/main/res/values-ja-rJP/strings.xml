@@ -95,6 +95,14 @@
   <string name="installer_aborted">Aliucordのインストールが中断されました</string>
   <string name="installer_failed">インストールに失敗しました。エラー %o</string>
   <string name="installer_uninstall_new">続行するには現在のバージョンのAliucordをアンインストールしてください！</string>
+  <string name="install_error_unknown">Failed to install (Unknown reason)</string>
+  <string name="install_error_code">Failed to install (error code %d)</string>
+  <string name="install_error_blocked">Installation was blocked</string>
+  <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
+  <string name="install_error_conflict">Conflicts with an existing app, usually due to mismatched signatures</string>
+  <string name="install_error_storage">Not enough available storage to install</string>
+  <string name="install_error_incompatible">Application is incompatible with this device</string>
+  <string name="install_error_timeout">Installation timed out</string>
   <string name="install_group_apk_dl">APKをダウンロード</string>
   <string name="install_group_lib_dl">ライブラリをダウンロード</string>
   <string name="install_group_patch">APKにパッチを適用</string>
