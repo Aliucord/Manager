@@ -23,7 +23,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.dialogs.InstallerDialog
-import com.aliucord.manager.ui.components.home.CommitList
 import com.aliucord.manager.ui.components.home.InfoCard
 import com.aliucord.manager.ui.screens.about.AboutScreen
 import com.aliucord.manager.ui.screens.install.InstallScreen
@@ -72,11 +71,6 @@ class HomeScreen : Screen {
                     onDownloadClick = { showInstallerDialog = true },
                     onLaunchClick = model::launchAliucord,
                     onUninstallClick = model::uninstallAliucord
-                )
-
-                CommitList(
-                    commits = model.commits,
-                    onRetry = { model.fetchSupportedVersion() }
                 )
             }
         }

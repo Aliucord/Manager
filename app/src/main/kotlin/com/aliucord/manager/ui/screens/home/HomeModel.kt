@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.runtime.*
-import androidx.paging.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
@@ -12,7 +11,6 @@ import com.aliucord.manager.R
 import com.aliucord.manager.domain.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.uninstallApk
-import com.aliucord.manager.network.dto.Commit
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.util.getPackageVersion
@@ -29,32 +27,6 @@ class HomeModel(
 
     var installedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
-
-    val commits = Pager(PagingConfig(pageSize = 30)) {
-        object : PagingSource<Int, Commit>() {
-            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Commit> {
-                val page = params.key ?: 0
-
-                return github.getCommits(page).fold(
-                    success = { commits ->
-                        val prevKey = if (page > 0) page - 1 else null
-                        val nextKey = if (commits.isNotEmpty()) page + 1 else null
-
-                        LoadResult.Page(
-                            data = commits,
-                            prevKey = prevKey,
-                            nextKey = nextKey
-                        )
-                    },
-                    fail = { LoadResult.Error(it) }
-                )
-            }
-
-            override fun getRefreshKey(state: PagingState<Int, Commit>) = state.anchorPosition?.let {
-                state.closestPageToPosition(it)?.prevKey?.plus(1) ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
-            }
-        }
-    }.flow.cachedIn(screenModelScope)
 
     init {
         screenModelScope.launch(Dispatchers.IO) {

@@ -32,7 +32,6 @@ inline fun <T> Iterable<T>.joinToAnnotatedString(
  * (assuming `annotation_name` is not changed between translations),
  * when rendering [annotationHandler] will be called on each `annotation_name` and expected to return a target style on it.
  */
-@Suppress("NOTHING_TO_INLINE")
 @Composable
 inline fun annotatingStringResource(
     @StringRes id: Int,

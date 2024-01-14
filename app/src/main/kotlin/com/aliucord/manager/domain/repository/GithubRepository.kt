@@ -7,7 +7,6 @@ import com.aliucord.manager.network.utils.transform
 class GithubRepository(
     private val service: AliucordGithubService,
 ) {
-    suspend fun getCommits(page: Int = 0) = service.getCommits(page)
     suspend fun getContributors() = service.getContributors()
         .transform { it.sortedByDescending(GithubUser::contributions) }
 

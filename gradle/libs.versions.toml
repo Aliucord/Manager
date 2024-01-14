@@ -29,7 +29,6 @@ accompanist-systemUiController = { module = "com.google.accompanist:accompanist-
 androidx-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
-androidx-paging = "androidx.paging:paging-compose:1.0.0-alpha17" # TODO: remove paging
 
 # Compose
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
@@ -79,7 +78,6 @@ androidx = [
     "androidx-core",
     "androidx-activity",
     "androidx-splashscreen",
-    "androidx-paging",
 ]
 compose = [
     "compose-runtime",

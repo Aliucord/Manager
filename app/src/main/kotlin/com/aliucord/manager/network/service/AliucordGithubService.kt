@@ -18,7 +18,6 @@ class AliucordGithubService(
         }
     }
 
-    suspend fun getCommits(page: Int = 0) = github.getCommits(ORG, MAIN_REPO, page)
     suspend fun getManagerReleases() = github.getReleases(ORG, MANAGER_REPO)
     suspend fun getContributors() = github.getContributors(ORG, MAIN_REPO)
 
