@@ -10,8 +10,8 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.domain.manager.DownloadManager
-import com.aliucord.manager.domain.manager.PreferencesManager
+import com.aliucord.manager.manager.DownloadManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.*

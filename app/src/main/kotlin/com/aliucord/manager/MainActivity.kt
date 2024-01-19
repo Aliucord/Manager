@@ -14,7 +14,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.FadeTransition
-import com.aliucord.manager.domain.manager.PreferencesManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen

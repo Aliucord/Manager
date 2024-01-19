@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.R
-import com.aliucord.manager.domain.manager.PreferencesManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.util.showToast
 import com.aliucord.manager.util.throttle

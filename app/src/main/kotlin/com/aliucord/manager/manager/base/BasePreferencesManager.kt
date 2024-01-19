@@ -1,4 +1,4 @@
-package com.aliucord.manager.domain.manager.base
+package com.aliucord.manager.manager.base
 
 import android.content.SharedPreferences
 import androidx.compose.runtime.*
