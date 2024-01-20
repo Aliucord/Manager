@@ -110,4 +110,8 @@
   <string name="status_queued">대기 중</string>
   <string name="updater_body">Aliucord Manager의 새로운 업데이트가 출시됐어요! 제대로 작동하려면 업데이트가 필요할지도 몰라요. 업데이트할까요?</string>
   <string name="updater_title">%1$s(으)로 업데이트했어요</string>
+  <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_response">Download failed (Invalid response)</string>
+  <string name="downloader_err_file_exists">Download failed (File exists)</string>
+  <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
 </resources>

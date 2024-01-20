@@ -111,4 +111,8 @@
   <string name="status_queued">待機中</string>
   <string name="updater_body">Aliucord Managerの新しいアップデートがリリースされました！正常に機能するために必要な場合があります。アップデートしますか？</string>
   <string name="updater_title">%1$sへ更新</string>
+  <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_response">Download failed (Invalid response)</string>
+  <string name="downloader_err_file_exists">Download failed (File exists)</string>
+  <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
 </resources>
