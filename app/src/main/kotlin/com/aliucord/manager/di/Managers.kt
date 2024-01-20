@@ -2,8 +2,7 @@ package com.aliucord.manager.di
 
 import android.app.Application
 import android.content.Context
-import com.aliucord.manager.manager.DownloadManager
-import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.manager.*
 import org.koin.core.scope.Scope
 
 fun Scope.providePreferences(): PreferencesManager {
@@ -14,4 +13,9 @@ fun Scope.providePreferences(): PreferencesManager {
 fun Scope.provideDownloadManager(): DownloadManager {
     val application: Application = get()
     return DownloadManager(application)
+}
+
+fun Scope.providePathManager(): PathManager {
+    val ctx: Context = get()
+    return PathManager(ctx)
 }

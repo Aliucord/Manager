@@ -21,12 +21,9 @@ class AliucordGithubService(
     suspend fun getManagerReleases() = github.getReleases(ORG, MANAGER_REPO)
     suspend fun getContributors() = github.getContributors(ORG, MAIN_REPO)
 
-    companion object {
-        private const val ORG = "Aliucord"
-        private const val MAIN_REPO = "Aliucord"
-        private const val MANAGER_REPO = "Manager"
-
-        const val KT_INJECTOR_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/Injector.dex"
-        const val KOTLIN_DEX_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/main/installer/android/app/src/main/assets/kotlin/classes.dex"
+    private companion object {
+        const val ORG = "Aliucord"
+        const val MAIN_REPO = "Aliucord"
+        const val MANAGER_REPO = "Manager"
     }
 }

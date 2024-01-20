@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.ui.components.settings.*
 
@@ -30,126 +31,136 @@ class SettingsScreen : Screen {
     override fun Content() {
         val model = getScreenModel<SettingsModel>()
 
-        Column(
-            modifier = Modifier
-                .verticalScroll(state = rememberScrollState())
-        ) {
-            val preferences = model.preferences
-
-            if (model.showThemeDialog) {
-                ThemeDialog(
-                    currentTheme = preferences.theme,
-                    onDismissRequest = model::hideThemeDialog,
-                    onConfirm = model::setTheme
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.navigation_settings)) },
+                    navigationIcon = { BackButton() },
                 )
-            }
-
-            SettingsHeader(stringResource(R.string.settings_appearance))
-
-            SettingsItem(
-                modifier = Modifier.clickable(onClick = model::showThemeDialog),
-                icon = { Icon(painterResource(R.drawable.ic_brush), null) },
-                text = { Text(stringResource(R.string.settings_theme)) }
-            ) {
-                FilledTonalButton(onClick = model::showThemeDialog) {
-                    Text(preferences.theme.toDisplayName())
-                }
-            }
-
-            SettingsSwitch(
-                label = stringResource(R.string.setting_dynamic_color),
-                pref = preferences.dynamicColor,
-                icon = { Icon(painterResource(R.drawable.ic_palette), null) }
-            ) {
-                preferences.dynamicColor = it
-            }
-
-            SettingsHeader(stringResource(R.string.settings_advanced))
-
-            SettingsTextField(
-                label = stringResource(R.string.setting_app_name),
-                pref = preferences.appName,
-                onPrefChange = model::setAppName
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-
-            SettingsSwitch(
-                label = stringResource(R.string.setting_replace_icon),
-                secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
-                pref = preferences.replaceIcon,
-                icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) }
-            ) {
-                preferences.replaceIcon = it
-            }
-
-            SettingsSwitch(
-                label = stringResource(R.string.setting_keep_patched_apks),
-                secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
-                icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
-                pref = preferences.keepPatchedApks,
-                onPrefChange = { preferences.keepPatchedApks = it },
-            )
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            SettingsSwitch(
-                label = stringResource(R.string.settings_developer_options),
-                pref = preferences.devMode,
-                icon = { Icon(painterResource(R.drawable.ic_code), null) }
-            ) {
-                preferences.devMode = it
-            }
-
-            AnimatedVisibility(
-                visible = preferences.devMode,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    SettingsTextField(
-                        label = stringResource(R.string.setting_package_name),
-                        pref = preferences.packageName,
-                        onPrefChange = model::setPackageName,
-                        error = model.packageNameError
-                    )
-
-                    SettingsTextField(
-                        label = stringResource(R.string.setting_target_version),
-                        pref = preferences.version,
-                        onPrefChange = model::setVersion
-                    )
-
-                    SettingsSwitch(
-                        label = stringResource(R.string.setting_debuggable),
-                        secondaryLabel = stringResource(R.string.setting_debuggable_desc),
-                        pref = preferences.debuggable,
-                        icon = { Icon(painterResource(R.drawable.ic_bug), null) },
-                        onPrefChange = { preferences.debuggable = it },
-                    )
-
-                    SettingsSwitch(
-                        label = stringResource(R.string.setting_hermes_replace_libcpp),
-                        secondaryLabel = stringResource(R.string.setting_hermes_replace_libcpp_desc),
-                        icon = { Icon(painterResource(R.drawable.ic_copy_file), null) },
-                        pref = preferences.hermesReplaceLibCpp,
-                        onPrefChange = { preferences.hermesReplaceLibCpp = it },
-                    )
-                }
-            }
-
-            Button(
+            },
+        ) { paddingValues ->
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(18.dp),
-                shape = ShapeDefaults.Large,
-                onClick = model::clearCacheDir
+                    .padding(paddingValues)
+                    .verticalScroll(state = rememberScrollState())
             ) {
-                Text(
-                    text = stringResource(R.string.setting_clear_cache),
-                    textAlign = TextAlign.Center
+                val preferences = model.preferences
+
+                if (model.showThemeDialog) {
+                    ThemeDialog(
+                        currentTheme = preferences.theme,
+                        onDismissRequest = model::hideThemeDialog,
+                        onConfirm = model::setTheme
+                    )
+                }
+
+                SettingsHeader(stringResource(R.string.settings_appearance))
+
+                SettingsItem(
+                    modifier = Modifier.clickable(onClick = model::showThemeDialog),
+                    icon = { Icon(painterResource(R.drawable.ic_brush), null) },
+                    text = { Text(stringResource(R.string.settings_theme)) }
+                ) {
+                    FilledTonalButton(onClick = model::showThemeDialog) {
+                        Text(preferences.theme.toDisplayName())
+                    }
+                }
+
+                SettingsSwitch(
+                    label = stringResource(R.string.setting_dynamic_color),
+                    pref = preferences.dynamicColor,
+                    icon = { Icon(painterResource(R.drawable.ic_palette), null) }
+                ) {
+                    preferences.dynamicColor = it
+                }
+
+                SettingsHeader(stringResource(R.string.settings_advanced))
+
+                SettingsTextField(
+                    label = stringResource(R.string.setting_app_name),
+                    pref = preferences.appName,
+                    onPrefChange = model::setAppName
                 )
+                Spacer(modifier = Modifier.height(4.dp))
+
+                SettingsSwitch(
+                    label = stringResource(R.string.setting_replace_icon),
+                    secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
+                    pref = preferences.replaceIcon,
+                    icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) }
+                ) {
+                    preferences.replaceIcon = it
+                }
+
+                SettingsSwitch(
+                    label = stringResource(R.string.setting_keep_patched_apks),
+                    secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
+                    icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
+                    pref = preferences.keepPatchedApks,
+                    onPrefChange = { preferences.keepPatchedApks = it },
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                SettingsSwitch(
+                    label = stringResource(R.string.settings_developer_options),
+                    pref = preferences.devMode,
+                    icon = { Icon(painterResource(R.drawable.ic_code), null) }
+                ) {
+                    preferences.devMode = it
+                }
+
+                AnimatedVisibility(
+                    visible = preferences.devMode,
+                    enter = expandVertically(),
+                    exit = shrinkVertically()
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        SettingsTextField(
+                            label = stringResource(R.string.setting_package_name),
+                            pref = preferences.packageName,
+                            onPrefChange = model::setPackageName,
+                            error = model.packageNameError
+                        )
+
+                        SettingsTextField(
+                            label = stringResource(R.string.setting_target_version),
+                            pref = preferences.version,
+                            onPrefChange = model::setVersion
+                        )
+
+                        SettingsSwitch(
+                            label = stringResource(R.string.setting_debuggable),
+                            secondaryLabel = stringResource(R.string.setting_debuggable_desc),
+                            pref = preferences.debuggable,
+                            icon = { Icon(painterResource(R.drawable.ic_bug), null) },
+                            onPrefChange = { preferences.debuggable = it },
+                        )
+
+                        SettingsSwitch(
+                            label = stringResource(R.string.setting_hermes_replace_libcpp),
+                            secondaryLabel = stringResource(R.string.setting_hermes_replace_libcpp_desc),
+                            icon = { Icon(painterResource(R.drawable.ic_copy_file), null) },
+                            pref = preferences.hermesReplaceLibCpp,
+                            onPrefChange = { preferences.hermesReplaceLibCpp = it },
+                        )
+                    }
+                }
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(18.dp),
+                    shape = ShapeDefaults.Large,
+                    onClick = model::clearCacheDir
+                ) {
+                    Text(
+                        text = stringResource(R.string.setting_clear_cache),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }

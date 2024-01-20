@@ -161,7 +161,7 @@ private fun MainContributors(modifier: Modifier = Modifier) {
     ) {
         UserEntry("Vendicated", "the ven")
         UserEntry("Juby210", "Fox")
-        UserEntry("rushii", "explod", "DiamondMiner88")
+        UserEntry("rushii", "explod", "rushiiMachine")
     }
 }
 
