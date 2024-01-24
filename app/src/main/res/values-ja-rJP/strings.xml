@@ -8,6 +8,7 @@
   <string name="commits">コミット</string>
   <string name="website">ウェブサイト</string>
   <string name="installer">インストーラー</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">再試行</string>
   <string name="action_apply">適用</string>
   <string name="action_confirm">確定</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">開く</string>
   <string name="action_copied">コピーしました！</string>
   <string name="action_cleared_cache">キャッシュを消去しました！</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">権限を付与</string>
   <string name="permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
 ~/Aliucordに共有データが保存されるため、Managerを機能させるためには権限が必要です。</string>
@@ -109,6 +111,8 @@
   <string name="status_ongoing">進行中</string>
   <string name="status_failed">失敗</string>
   <string name="status_queued">待機中</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Aliucord Managerの新しいアップデートがリリースされました！正常に機能するために必要な場合があります。アップデートしますか？</string>
   <string name="updater_title">%1$sへ更新</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

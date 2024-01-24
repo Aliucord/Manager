@@ -8,6 +8,7 @@
   <string name="commits">Commitler</string>
   <string name="website">Websitesi</string>
   <string name="installer">Yükleyici</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Yeniden dene</string>
   <string name="action_apply">Uygula</string>
   <string name="action_confirm">Onayla</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Genişlet</string>
   <string name="action_copied">Kopyalandı!</string>
   <string name="action_cleared_cache">Önbellek temizlendi!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">İzinleri Ver</string>
   <string name="permissions_grant_body">Aliucord Yöneticisinin düzgün çalışması için, dosya izinleri vermeniz gerekli. Paylaşılan uygulama verileri ~/Aliucord\'ta depolandığı için, yöneticinin çalışması izin gerektirir.</string>
   <string name="launch_aliucord_fail">Aliucord başlatılamadı</string>
@@ -109,6 +111,8 @@ lütfen silin!</string>
   <string name="status_ongoing">Devam ediyor</string>
   <string name="status_failed">Başarısız</string>
   <string name="status_queued">Sırada</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Aliucord Yöneticisi için yeni bir güncelleme yayınlandı! Düzgün çalışması için gerekli olabilir. Güncellemek ister misin?</string>
   <string name="updater_title">%1$s\'a Güncelle</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>
