@@ -6,6 +6,7 @@
 package com.aliucord.manager.ui.screens.install
 
 import android.os.Parcelable
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -26,6 +28,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.DownloadMethod
+import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.components.installer.InstallGroup
 import com.aliucord.manager.ui.components.installer.InstallStatus
 import com.aliucord.manager.ui.screens.install.InstallModel.InstallStepGroup
@@ -58,13 +61,35 @@ class InstallScreen(val data: InstallData) : Screen {
             expandedGroup = model.currentStep?.group
         }
 
+        // Exit warning dialog
+        var showAbortWarning by remember { mutableStateOf(false) }
+        if (showAbortWarning) {
+            InstallerAbortDialog(
+                onDismiss = { showAbortWarning = false },
+                onConfirm = {
+                    navigator.back(currentActivity = null)
+                    model.clearCache()
+                },
+            )
+        } else {
+            BackHandler {
+                showAbortWarning = true
+            }
+        }
+
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text(stringResource(R.string.installer)) },
                     navigationIcon = {
-                        // TODO: add confirm to exit dialog to button as well as BackHandler
-                        BackButton()
+                        IconButton(
+                            onClick = { showAbortWarning = true },
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_back),
+                                contentDescription = stringResource(R.string.navigation_back),
+                            )
+                        }
                     }
                 )
             }
