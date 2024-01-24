@@ -53,4 +53,10 @@ class PathManager(context: Context) {
      */
     fun cachedKotlinDex() = externalCacheDir
         .resolve("kotlin.dex")
+
+    /**
+     * The temporary working directory of a currently executing patching process.
+     */
+    fun patchingWorkingDir() = externalCacheDir
+        .resolve("patched")
 }

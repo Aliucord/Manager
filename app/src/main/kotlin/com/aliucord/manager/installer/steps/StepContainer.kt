@@ -40,7 +40,6 @@ abstract class StepContainer : KoinComponent {
             if (!preferences.devMode && step.durationMs < 1000) {
                 delay(1000L - step.durationMs)
             }
-
         }
 
         return null
