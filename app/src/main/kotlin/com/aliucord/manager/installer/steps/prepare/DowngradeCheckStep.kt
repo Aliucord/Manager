@@ -29,8 +29,10 @@ class DowngradeCheckStep : Step(), KoinComponent {
     override suspend fun execute(container: StepContainer) {
         val (_, currentVersion) = try {
             context.getPackageVersion(prefs.packageName)
-        } catch (_: Throwable) {
-            // Package is not installed
+        }
+        // Package is not installed
+        catch (_: Throwable) {
+            state = StepState.Skipped
             return
         }
 
@@ -47,8 +49,6 @@ class DowngradeCheckStep : Step(), KoinComponent {
             }
 
             throw Error("Newer version of Aliucord must be uninstalled prior to installing an older version")
-        } else {
-            state = StepState.Skipped
         }
     }
 }
