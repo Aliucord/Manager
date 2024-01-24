@@ -8,6 +8,7 @@
   <string name="commits">Cam kết</string>
   <string name="website">Trang web</string>
   <string name="installer">Trình cài đặt</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Thử lại</string>
   <string name="action_apply">Thiết lập</string>
   <string name="action_confirm">Xác nhận</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Mở rộng</string>
   <string name="action_copied">Đã sao chép!</string>
   <string name="action_cleared_cache">Đã xoá bộ nhớ đệm!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Cấp phép truy cập</string>
   <string name="permissions_grant_body">Để trình quản lý Aliucord hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">Đang thực hiện</string>
   <string name="status_failed">Thất bại</string>
   <string name="status_queued">Đã xếp hàng đợi</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Một bản cập nhật mới đã được phát hành cho Aliucord Manager! Nó cần cập nhật để hoạt động đúng. Bạn có muốn cập nhật không?</string>
   <string name="updater_title">Cập nhật: %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

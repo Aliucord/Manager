@@ -8,6 +8,7 @@
   <string name="commits">Commits</string>
   <string name="website">Pagină web</string>
   <string name="installer">Instalator</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Reîncercați</string>
   <string name="action_apply">Aplicare</string>
   <string name="action_confirm">Confirmare</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Expand</string>
   <string name="action_copied">Copied!</string>
   <string name="action_cleared_cache">Cleared cache!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">Ongoing</string>
   <string name="status_failed">Failed</string>
   <string name="status_queued">Queued</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">A new update has been released for Aliucord Manager! It may be required in order to function properly. Would you like to update?</string>
   <string name="updater_title">Update to %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

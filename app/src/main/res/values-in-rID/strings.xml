@@ -8,6 +8,7 @@
   <string name="commits">Komit</string>
   <string name="website">Situs Web</string>
   <string name="installer">Pemasang</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Coba lagi</string>
   <string name="action_apply">Terapkan</string>
   <string name="action_confirm">Konfirmasi</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Luaskan</string>
   <string name="action_copied">Tersalin!</string>
   <string name="action_cleared_cache">Cache dihapus!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Berikan izin</string>
   <string name="permissions_grant_body">Untuk Manajer Aliucord berfungsi dengan baik, Anda perlu memberikan izin untuk mengakses file. Karena datanya disimpan di ~/Aliucord, perizinan diperlukan agar Manajer berfungsi.</string>
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">Sedang berlangsung</string>
   <string name="status_failed">Gagal</string>
   <string name="status_queued">Diantrekan</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Perbaruan baru sudah dirilis untuk Aliucord Manager! Itu mungkin diperlukan untuk berfungsi dengan baik. Apakah kamu ingin perbarui?</string>
   <string name="updater_title">Diperbarui ke %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

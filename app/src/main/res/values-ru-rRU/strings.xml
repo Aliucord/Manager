@@ -8,6 +8,7 @@
   <string name="commits">Фиксации</string>
   <string name="website">Сайт</string>
   <string name="installer">Установщик</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Повторить</string>
   <string name="action_apply">Применить</string>
   <string name="action_confirm">Подтвердить</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Развернуть</string>
   <string name="action_copied">Скопировано!</string>
   <string name="action_cleared_cache">Кеш очищен!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Предоставление разрешений</string>
   <string name="permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">В процессе</string>
   <string name="status_failed">Ошибка</string>
   <string name="status_queued">В очереди</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Вышло новое обновление для Aliucord Менеджера! Оно может быть обязательным для правильной работы. Желаете ли вы обновиться?</string>
   <string name="updater_title">Обновить до %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

@@ -8,6 +8,7 @@
   <string name="commits">Υποβολές</string>
   <string name="website">Ιστοσελίδα</string>
   <string name="installer">Εγκαταστάτης</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Επανάληψη</string>
   <string name="action_apply">Εφαρμογή</string>
   <string name="action_confirm">Επιβεβαίωση</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Επέκταση</string>
   <string name="action_copied">Αντιγράφηκε!</string>
   <string name="action_cleared_cache">Η Προσωρινή μνήμη καθαρίστηκε!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Εκχώρηση αδειών</string>
   <string name="permissions_grant_body">Για να λειτουργήσει σωστά ο Aliucord Manager, πρέπει να εκχωρήσετε δικαιώματα αρχείου. Δεδομένου ότι τα κοινόχρηστα δεδομένα αποθηκεύονται στο ~/Aliucord, απαιτούνται δικαιώματα για να λειτουργήσει ο Manager.</string>
   <string name="launch_aliucord_fail">Αποτυχία εκκίνησης του Aliucord</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">Σε εξέλιξη</string>
   <string name="status_failed">Αποτυχία</string>
   <string name="status_queued">Σε αναμονή</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Μια νέα ενημέρωση έχει κυκλοφορήσει για το Aliucord Manager! Μπορεί να απαιτείται για να λειτουργήσει σωστά. Θα θέλατε να ενημερώσετε;</string>
   <string name="updater_title">Ενημέρωση σε %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

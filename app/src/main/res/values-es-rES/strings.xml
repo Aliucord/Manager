@@ -8,6 +8,7 @@
   <string name="commits">Cambios</string>
   <string name="website">Sitio web</string>
   <string name="installer">Instalador</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Reintentar</string>
   <string name="action_apply">Aplicar</string>
   <string name="action_confirm">Confirmar</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Expandir</string>
   <string name="action_copied">¡Copiado!</string>
   <string name="action_cleared_cache">¡Caché borrado!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Dar permisos</string>
   <string name="permissions_grant_body">Para que Aliucord Manager funcione correctamente, necesitas darle permisos de almacenamiento. Pues, por el hecho de que los datos compartidos se guardan en ~/Aliucord, se necesitan estos permisos para que Aliucord Manager funcione.</string>
   <string name="launch_aliucord_fail">Error al abrir Aliucord</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">En curso</string>
   <string name="status_failed">Fallido</string>
   <string name="status_queued">En cola</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">¡Se ha publicado una nueva actualización para Aliucord Manager! Puede que sea necesaria para funcionar correctamente. ¿Quieres actualizar?</string>
   <string name="updater_title">Actualizada a %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

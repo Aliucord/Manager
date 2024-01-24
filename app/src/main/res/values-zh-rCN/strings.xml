@@ -8,6 +8,7 @@
   <string name="commits">提交</string>
   <string name="website">網站</string>
   <string name="installer">安裝程式</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">重試</string>
   <string name="action_apply">套用</string>
   <string name="action_confirm">確認</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">擴充</string>
   <string name="action_copied">已複製！</string>
   <string name="action_cleared_cache">已清除快取！</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">授予權限</string>
   <string name="permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
   <string name="launch_aliucord_fail">Aliucord 啟動失敗</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">進行中</string>
   <string name="status_failed">失敗</string>
   <string name="status_queued">排程中</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Aliucord Manager 已發布新更新！Aliucord Manager 可能需要它才能正常運行。您想更新嗎？</string>
   <string name="updater_title">更新到 %1$s</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

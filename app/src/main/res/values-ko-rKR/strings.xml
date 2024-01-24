@@ -8,6 +8,7 @@
   <string name="commits">커밋</string>
   <string name="website">웹 사이트</string>
   <string name="installer">설치 창</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">재시도</string>
   <string name="action_apply">적용</string>
   <string name="action_confirm">확인</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">펼치기</string>
   <string name="action_copied">복사했어요!</string>
   <string name="action_cleared_cache">캐시를 비웠어요!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
@@ -108,6 +110,8 @@
   <string name="status_ongoing">진행 중</string>
   <string name="status_failed">실패</string>
   <string name="status_queued">대기 중</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Aliucord Manager의 새로운 업데이트가 출시됐어요! 제대로 작동하려면 업데이트가 필요할지도 몰라요. 업데이트할까요?</string>
   <string name="updater_title">%1$s(으)로 업데이트했어요</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>

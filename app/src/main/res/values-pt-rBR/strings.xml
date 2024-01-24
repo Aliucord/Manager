@@ -8,6 +8,7 @@
   <string name="commits">Commits</string>
   <string name="website">Site</string>
   <string name="installer">Instalador</string>
+  <string name="action_cancel">Cancel</string>
   <string name="action_retry">Tente Novamente</string>
   <string name="action_apply">Aplicar</string>
   <string name="action_confirm">Confirmar</string>
@@ -26,6 +27,7 @@
   <string name="action_expand">Expandir</string>
   <string name="action_copied">Copiado!</string>
   <string name="action_cleared_cache">Cachê limpo!</string>
+  <string name="action_exit_anyways">Exit anyways</string>
   <string name="permissions_grant_title">Conceder permissões</string>
   <string name="permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
@@ -108,10 +110,12 @@
   <string name="status_ongoing">Em andamento</string>
   <string name="status_failed">Falhou</string>
   <string name="status_queued">Na fila</string>
+  <string name="installer_abort_title">Really exit?</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
   <string name="updater_title">Atualizado para %1$s</string>
-  <string name="downloader_err_unknown">Download failed (Unknown)</string>
-  <string name="downloader_err_response">Download failed (Invalid response)</string>
-  <string name="downloader_err_file_exists">Download failed (File exists)</string>
-  <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
+  <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
+  <string name="downloader_err_response">Download falhou (Resposta inválida)</string>
+  <string name="downloader_err_file_exists">Download falhou (Arquivo existente)</string>
+  <string name="downloader_err_storage_space">Download falhou (Espaço insuficiente)</string>
 </resources>
