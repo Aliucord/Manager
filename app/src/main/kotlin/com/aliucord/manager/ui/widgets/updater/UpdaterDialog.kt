@@ -8,11 +8,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.aliucord.manager.R
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun UpdaterDialog(
-    viewModel: UpdaterViewModel = getViewModel(),
+    viewModel: UpdaterViewModel = koinViewModel(),
 ) {
     if (!viewModel.showDialog) return
 

@@ -26,6 +26,8 @@ import com.aliucord.manager.ui.components.dialogs.InstallerDialog
 import com.aliucord.manager.ui.components.home.InfoCard
 import com.aliucord.manager.ui.screens.about.AboutScreen
 import com.aliucord.manager.ui.screens.install.InstallScreen
+import com.aliucord.manager.ui.screens.plugins.PluginsScreen
+import com.aliucord.manager.ui.screens.settings.SettingsScreen
 
 class HomeScreen : Screen {
     override val key = "Home"
@@ -50,8 +52,6 @@ class HomeScreen : Screen {
                 }
             )
         }
-
-        // TODO: add a way to open plugins and settings
 
         Scaffold(
             topBar = { HomeAppBar() },
@@ -100,6 +100,20 @@ private fun HomeAppBar() {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = stringResource(R.string.navigation_about)
+                )
+            }
+
+            IconButton(onClick = { navigator.push(PluginsScreen()) }) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_extension),
+                    contentDescription = stringResource(R.string.navigation_about)
+                )
+            }
+
+            IconButton(onClick = { navigator.push(SettingsScreen()) }) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_settings),
+                    contentDescription = stringResource(R.string.navigation_settings)
                 )
             }
         }

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.plugins.Changelog
 import com.aliucord.manager.ui.components.plugins.PluginCard
 
@@ -52,75 +53,85 @@ class PluginsScreen : Screen {
             )
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            PluginSearch(
-                currentFilter = model.search,
-                onFilterChange = model::search,
-                modifier = Modifier.fillMaxWidth(),
-            )
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.plugins_title)) },
+                    navigationIcon = { BackButton() },
+                )
+            }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                PluginSearch(
+                    currentFilter = model.search,
+                    onFilterChange = model::search,
+                    modifier = Modifier.fillMaxWidth(),
+                )
 
-            if (model.error) {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                if (model.error) {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Warning,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error,
-                        )
-                        Text(
-                            text = stringResource(R.string.plugins_error),
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                }
-            } else if (model.plugins.isNotEmpty()) {
-                LazyColumn(
-                    contentPadding = PaddingValues(bottom = 15.dp, top = 6.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp)
-                ) {
-                    items(
-                        // TODO: remember {} this
-                        model.plugins.filter { plugin ->
-                            plugin.manifest.run {
-                                name.contains(model.search, true)
-                                    || description.contains(model.search, true)
-                                    || authors.any { (name) -> name.contains(model.search, true) }
-                            }
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error,
+                            )
+                            Text(
+                                text = stringResource(R.string.plugins_error),
+                                color = MaterialTheme.colorScheme.error,
+                            )
                         }
-                    ) { plugin ->
-                        PluginCard(
-                            plugin = plugin,
-                            enabled = model.enabled[plugin.manifest.name] ?: true,
-                            onClickDelete = { model.showUninstallDialog(plugin) },
-                            onClickShowChangelog = { model.showChangelogDialog(plugin) },
-                            onSetEnabled = { model.setPluginEnabled(plugin.manifest.name, it) }
-                        )
                     }
-                }
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                } else if (model.plugins.isNotEmpty()) {
+                    LazyColumn(
+                        contentPadding = PaddingValues(bottom = 15.dp, top = 6.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_extension_off),
-                            contentDescription = null
-                        )
-                        Text(stringResource(R.string.plugins_none_installed))
+                        items(
+                            // TODO: remember {} this
+                            model.plugins.filter { plugin ->
+                                plugin.manifest.run {
+                                    name.contains(model.search, true)
+                                        || description.contains(model.search, true)
+                                        || authors.any { (name) -> name.contains(model.search, true) }
+                                }
+                            }
+                        ) { plugin ->
+                            PluginCard(
+                                plugin = plugin,
+                                enabled = model.enabled[plugin.manifest.name] ?: true,
+                                onClickDelete = { model.showUninstallDialog(plugin) },
+                                onClickShowChangelog = { model.showChangelogDialog(plugin) },
+                                onSetEnabled = { model.setPluginEnabled(plugin.manifest.name, it) }
+                            )
+                        }
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_extension_off),
+                                contentDescription = null
+                            )
+                            Text(stringResource(R.string.plugins_none_installed))
+                        }
                     }
                 }
             }
