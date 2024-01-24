@@ -2,8 +2,8 @@ package com.aliucord.manager.installer.steps.base
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.*
-import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepGroup
 import org.koin.core.time.measureTimedValue
 import kotlin.math.roundToInt
 

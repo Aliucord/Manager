@@ -5,9 +5,9 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.manager.DownloadManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.installApks
+import com.aliucord.manager.manager.DownloadManager
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrNull
 import kotlinx.coroutines.Dispatchers

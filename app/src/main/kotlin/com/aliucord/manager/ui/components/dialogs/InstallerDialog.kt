@@ -5,9 +5,8 @@
 
 package com.aliucord.manager.ui.components.dialogs
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import com.aliucord.manager.ui.screens.install.InstallData
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 
 @Composable
 fun InstallerDialog(
