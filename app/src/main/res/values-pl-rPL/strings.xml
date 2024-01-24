@@ -110,4 +110,8 @@
   <string name="status_queued">W kolejce</string>
   <string name="updater_body">Nowa aktualizacja dla Menadżera Aliucorda! Może być wymagana do prawidłowego działania. Czy chcesz zaktualizować?</string>
   <string name="updater_title">Aktualizowanie do %1$s</string>
+  <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_response">Download failed (Invalid response)</string>
+  <string name="downloader_err_file_exists">Download failed (File exists)</string>
+  <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
 </resources>

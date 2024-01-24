@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
 
 @Composable
-fun InstallAbortDialog(
+fun InstallerAbortDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -22,7 +22,7 @@ fun InstallAbortDialog(
                     contentColor = MaterialTheme.colorScheme.onError,
                 ),
             ) {
-                Text(stringResource(R.string.action_cancel))
+                Text(stringResource(R.string.action_exit_anyways))
             }
         },
         dismissButton = {
@@ -32,7 +32,7 @@ fun InstallAbortDialog(
                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                 ),
             ) {
-                Text(stringResource(R.string.action_exit_anyways))
+                Text(stringResource(R.string.action_cancel))
             }
         },
         title = {

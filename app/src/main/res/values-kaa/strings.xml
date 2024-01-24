@@ -110,4 +110,8 @@
   <string name="status_queued">Náwbette</string>
   <string name="updater_body">A new update has been released for Aliucord Manager! It may be required in order to function properly. Would you like to update?</string>
   <string name="updater_title">Update to %1$s</string>
+  <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_response">Download failed (Invalid response)</string>
+  <string name="downloader_err_file_exists">Download failed (File exists)</string>
+  <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
 </resources>

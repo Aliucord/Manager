@@ -25,7 +25,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.back
-import com.aliucord.manager.ui.components.dialogs.InstallAbortDialog
+import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.components.installer.InstallGroup
 import com.aliucord.manager.ui.components.installer.InstallStatus
 import com.aliucord.manager.ui.screens.install.InstallModel.InstallStepGroup
@@ -51,7 +51,7 @@ class InstallScreen : Screen {
         // Exit warning dialog
         var showAbortWarning by remember { mutableStateOf(false) }
         if (showAbortWarning) {
-            InstallAbortDialog(
+            InstallerAbortDialog(
                 onDismiss = { showAbortWarning = false },
                 onConfirm = {
                     navigator.back(currentActivity = null)

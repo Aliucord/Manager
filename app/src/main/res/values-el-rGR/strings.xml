@@ -110,4 +110,8 @@
   <string name="status_queued">Σε αναμονή</string>
   <string name="updater_body">Μια νέα ενημέρωση έχει κυκλοφορήσει για το Aliucord Manager! Μπορεί να απαιτείται για να λειτουργήσει σωστά. Θα θέλατε να ενημερώσετε;</string>
   <string name="updater_title">Ενημέρωση σε %1$s</string>
+  <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_response">Download failed (Invalid response)</string>
+  <string name="downloader_err_file_exists">Download failed (File exists)</string>
+  <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
 </resources>
