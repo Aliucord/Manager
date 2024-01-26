@@ -28,6 +28,8 @@ import cafe.adriel.voyager.koin.getScreenModel
 import coil.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
+import com.aliucord.manager.ui.util.paddings.exclude
 
 class AboutScreen : Screen {
     override val key = "About"
@@ -45,7 +47,11 @@ class AboutScreen : Screen {
             }
         ) { paddingValues ->
             LazyColumn(
-                modifier = Modifier.padding(paddingValues),
+                contentPadding = paddingValues
+                    .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
+                modifier = Modifier
+                    .padding(paddingValues.exclude(PaddingValuesSides.Bottom))
+                    .padding(horizontal = 16.dp),
             ) {
                 item(key = "PROJECT_HEADER") {
                     ProjectHeader()
@@ -62,7 +68,7 @@ class AboutScreen : Screen {
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                .padding(start = 16.dp, bottom = 16.dp)
+                                .padding(start = 16.dp, top = 12.dp, bottom = 16.dp)
                         )
                     }
 
@@ -168,6 +174,7 @@ private fun MainContributors(modifier: Modifier = Modifier) {
 @Composable
 private fun UserEntry(name: String, roles: String, username: String = name) {
     val uriHandler = LocalUriHandler.current
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),

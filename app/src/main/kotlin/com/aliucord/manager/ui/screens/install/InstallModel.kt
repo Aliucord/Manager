@@ -46,6 +46,7 @@ class InstallModel(
 
     fun copyDebugToClipboard() {
         val text = "$debugInfo\n\n$stacktrace"
+            // TODO: remove this useless replace
             .replace("(\\\\*~_)".toRegex(), "\\$1")
 
         application.copyToClipboard(text)
