@@ -1,4 +1,4 @@
-package com.aliucord.manager.ui.components.home
+package com.aliucord.manager.ui.screens.home.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
