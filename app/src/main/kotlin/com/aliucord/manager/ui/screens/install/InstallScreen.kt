@@ -25,7 +25,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.DownloadMethod
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog

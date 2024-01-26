@@ -86,77 +86,77 @@ class HomeScreen : Screen {
                     modifier = Modifier
                 ) {
 
-                AnimatedVisibility(
-                    enter = fadeIn() + slideInVertically { it * -2 },
-                    visible = model.installedVersion !is DiscordVersion.None,
-                ) {
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                                append(stringResource(R.string.version_supported))
-                            }
-                            append(" ")
-                            if (model.installedVersion is DiscordVersion.Existing) {
-                                append((model.installedVersion as DiscordVersion.Existing).name)
-                                append(" - ")
-                            }
-                            append(model.installedVersion.toDisplayName())
-                        },
-                        style = MaterialTheme.typography.labelLarge,
-                        color = LocalContentColor.current.copy(alpha = .5f),
+                    AnimatedVisibility(
+                        enter = fadeIn() + slideInVertically { it * -2 },
+                        visible = model.installedVersion !is DiscordVersion.None,
+                    ) {
+                        Text(
+                            text = buildAnnotatedString {
+                                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                                    append(stringResource(R.string.version_supported))
+                                }
+                                append(" ")
+                                if (model.installedVersion is DiscordVersion.Existing) {
+                                    append((model.installedVersion as DiscordVersion.Existing).name)
+                                    append(" - ")
+                                }
+                                append(model.installedVersion.toDisplayName())
+                            },
+                            style = MaterialTheme.typography.labelLarge,
+                            color = LocalContentColor.current.copy(alpha = .5f),
+                        )
+                    }
+
+                    FilledTonalIconButton(
+                        shape = MaterialTheme.shapes.large,
+                        enabled = true, // TODO: disable when installation is already present (no multi-install support yet)
+                        onClick = { showInstallerDialog = true },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_add),
+                                contentDescription = null,
+                            )
+                            Text(
+                                text = stringResource(R.string.action_add_install),
+                                style = MaterialTheme.typography.labelLarge,
+                            )
+                        }
+                    }
+
+                    val ctx = LocalContext.current
+                    val appIcon = remember {
+                        ctx.packageManager
+                            .getApplicationIcon("com.aliucord")
+                            .toBitmap()
+                            .asImageBitmap()
+                            .let(::BitmapPainter)
+                    }
+
+                    InstalledItemCard(
+                        appIcon = appIcon,
+                        appName = "Aliucord",
+                        packageName = "com.aliucord",
+                        discordVersion = model.installedVersion,
+                        onOpenApp = model::launchAliucord,
+                        onOpenInfo = {},
+                        onUninstall = model::uninstallAliucord,
+                    )
+
+                    InstalledItemCard(
+                        appIcon = appIcon,
+                        appName = "Aliucord test",
+                        packageName = "com.aliucord2",
+                        discordVersion = model.installedVersion,
+                        onOpenApp = model::launchAliucord,
+                        onOpenInfo = {},
+                        onUninstall = model::uninstallAliucord,
                     )
                 }
-
-                FilledTonalIconButton(
-                    shape = MaterialTheme.shapes.large,
-                    enabled = true, // TODO: disable when installation is already present (no multi-install support yet)
-                    onClick = { showInstallerDialog = true },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_add),
-                            contentDescription = null,
-                        )
-                        Text(
-                            text = stringResource(R.string.action_add_install),
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
-                }
-
-                val ctx = LocalContext.current
-                val appIcon = remember {
-                    ctx.packageManager
-                        .getApplicationIcon("com.aliucord")
-                        .toBitmap()
-                        .asImageBitmap()
-                        .let(::BitmapPainter)
-                }
-
-                InstalledItemCard(
-                    appIcon = appIcon,
-                    appName = "Aliucord",
-                    packageName = "com.aliucord",
-                    discordVersion = model.installedVersion,
-                    onOpenApp = model::launchAliucord,
-                    onOpenInfo = {},
-                    onUninstall = model::uninstallAliucord,
-                )
-
-                InstalledItemCard(
-                    appIcon = appIcon,
-                    appName = "Aliucord test",
-                    packageName = "com.aliucord2",
-                    discordVersion = model.installedVersion,
-                    onOpenApp = model::launchAliucord,
-                    onOpenInfo = {},
-                    onUninstall = model::uninstallAliucord,
-                )
-                    }
 
                 Spacer(Modifier.height(120.dp))
                 InfoCard(
