@@ -34,7 +34,7 @@ fun InstalledItemCard(
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.medium,
         modifier = modifier.shadow(
             elevation = 5.dp,
             shape = MaterialTheme.shapes.medium,

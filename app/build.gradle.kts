@@ -107,6 +107,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+
+    lint {
+        disable += "ModifierParameter"
+    }
 }
 
 dependencies {
