@@ -1,10 +1,10 @@
 package com.aliucord.manager.ui.screens.home.components
 
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.*
-import androidx.compose.ui.text.font.FontWeight
 import com.aliucord.manager.ui.util.DiscordVersion
 
 @Composable
@@ -16,11 +16,8 @@ fun VersionDisplay(
 ) {
     Text(
         text = buildAnnotatedString {
-            if (prefix != null) {
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                    prefix()
-                }
-            }
+            prefix?.invoke(this)
+
             if (version is DiscordVersion.Existing) {
                 append(version.name)
                 append(" - ")

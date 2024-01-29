@@ -46,6 +46,7 @@ class AboutScreen : Screen {
             }
         ) { paddingValues ->
             LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 contentPadding = paddingValues
                     .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
                 modifier = Modifier

@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 
 @Composable
@@ -48,19 +49,21 @@ fun ProjectHeader(modifier: Modifier = Modifier) {
             TextButton(onClick = { uriHandler.openUri("https://github.com/Aliucord") }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_account_github_white_24dp),
-                    contentDescription = stringResource(R.string.github)
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = ButtonDefaults.IconSpacing),
                 )
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(text = stringResource(R.string.github))
             }
 
-            TextButton(onClick = { uriHandler.openUri("https://aliucord.com") }) {
+            TextButton(onClick = { uriHandler.openUri("https://discord.gg/${BuildConfig.SUPPORT_SERVER}") }) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_link),
-                    contentDescription = stringResource(R.string.website)
+                    painter = painterResource(R.drawable.ic_discord),
+                    contentDescription = stringResource(R.string.support_server),
+                    modifier = Modifier
+                        .padding(end = ButtonDefaults.IconSpacing)
+                        .size(22.dp),
                 )
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(R.string.website))
+                Text(text = stringResource(R.string.discord))
             }
         }
     }

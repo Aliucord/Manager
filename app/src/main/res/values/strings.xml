@@ -3,6 +3,7 @@
   <string name="app_description">A modification for the Discord Android App</string>
 
   <string name="aliucord">Aliucord</string>
+  <string name="discord">Discord</string>
   <string name="github">GitHub</string>
   <string name="support_server">Support Server</string>
   <string name="commits">Commits</string>
@@ -82,7 +83,6 @@
 
   <string name="label_pkg_name">Package:</string>
   <string name="label_version_discord">Discord version:</string>
-  <string name="label_base_updated">Base updated:</string>
 
   <string name="version_supported">Supported version:</string>
   <string name="version_installed">Installed version:</string>

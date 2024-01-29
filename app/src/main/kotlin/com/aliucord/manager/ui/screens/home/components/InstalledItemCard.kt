@@ -1,106 +1,162 @@
 package com.aliucord.manager.ui.screens.home.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.draw.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.SegmentedButton
-import com.aliucord.manager.ui.util.DiscordVersion
+import com.aliucord.manager.ui.screens.home.InstallData
 
 @Composable
 fun InstalledItemCard(
-    appIcon: Painter,
-    appName: String,
-    packageName: String,
-    discordVersion: DiscordVersion,
+    data: InstallData,
+    onUpdate: () -> Unit,
     onOpenApp: () -> Unit,
     onOpenInfo: () -> Unit,
-    onUninstall: () -> Unit,
+    onOpenPlugins: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.shadow(
-            elevation = 5.dp,
-            shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 3.dp,
         ),
+        modifier = modifier
+            .width(IntrinsicSize.Max)
+            .shadow(
+                clip = false,
+                elevation = 2.dp,
+                shape = MaterialTheme.shapes.medium,
+            )
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            modifier = Modifier.padding(20.dp),
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Image(
-                    painter = appIcon,
+                    painter = data.icon,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(32.dp)
                         .clip(CircleShape),
                 )
 
                 Text(
-                    text = "\"$appName\"",
-                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .85f),
-                    fontStyle = FontStyle.Italic,
+                    text = "\"${data.name}\"",
+                    fontWeight = FontWeight.SemiBold,
+                    style = LocalTextStyle.current.copy(fontSize = 18.sp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .94f),
                 )
+
+                Spacer(Modifier.weight(1f, fill = true))
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.End,
+                    modifier = Modifier
+                        .alpha(.6f)
+                        .padding(end = 4.dp),
+                ) {
+                    VersionDisplay(
+                        version = data.version,
+                        prefix = { append("v") },
+                    )
+
+                    // TODO: display install core commit version
+                    // Text(
+                    //     text = data.commit,
+                    //     style = MaterialTheme.typography.labelLarge,
+                    // )
+                }
             }
 
-            Column {
-                CompositionLocalProvider(
-                    LocalTextStyle provides MaterialTheme.typography.bodyMedium,
-                    LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .9f),
+            FlowRow(
+                maxItemsInEachRow = 2,
+                // horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp),
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(buildAnnotatedString {
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("• ")
-                            append(stringResource(R.string.label_version_discord))
-                        }
-                        append(" ")
-                        if (discordVersion is DiscordVersion.Existing) {
-                            append(discordVersion.name)
-                            append(" - ")
-                        }
-                        append(discordVersion.toDisplayName())
-                    })
-
-                    Text(buildAnnotatedString {
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("• ")
-                            append(stringResource(R.string.label_pkg_name))
-                            append(" ")
-                        }
-                        append(packageName)
-                    })
-
-                    Text(buildAnnotatedString {
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("• ")
-                            append(stringResource(R.string.label_base_updated))
-                            append(": ")
-                        }
-                        append("Yes")
-                    })
+                    Text(
+                        text = "Account:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = "rushii",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.basicMarquee(),
+                    )
                 }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = "Plugins:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = "129",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.basicMarquee(),
+                    )
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = "Package name:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = data.packageName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.basicMarquee(),
+                    )
+                }
+                // LabelTextItem(
+                //     label = stringResource(R.string.label_pkg_name),
+                //     value = data.packageName,
+                //     modifier = Modifier.basicMarquee(),
+                // )
+                //
+                // LabelTextItem(
+                //     label = "Plugins:",
+                //     value = "Unknown",
+                // )
             }
 
             Row(
@@ -108,21 +164,55 @@ fun InstalledItemCard(
                 modifier = Modifier.clip(MaterialTheme.shapes.large),
             ) {
                 SegmentedButton(
-                    icon = painterResource(R.drawable.ic_delete_forever),
-                    text = stringResource(R.string.action_uninstall),
-                    onClick = onUninstall
+                    icon = painterResource(R.drawable.ic_extension),
+                    text = stringResource(R.string.plugins_title),
+                    onClick = onOpenPlugins,
                 )
                 SegmentedButton(
                     icon = painterResource(R.drawable.ic_info),
                     text = stringResource(R.string.action_open_info),
-                    onClick = onOpenInfo
+                    onClick = onOpenInfo,
                 )
-                SegmentedButton(
-                    icon = painterResource(R.drawable.ic_launch),
-                    text = stringResource(R.string.action_launch),
-                    onClick = onOpenApp
-                )
+
+                if (data.baseUpdated) {
+                    SegmentedButton(
+                        icon = painterResource(R.drawable.ic_launch),
+                        text = stringResource(R.string.action_launch),
+                        onClick = onOpenApp,
+                    )
+                } else {
+                    val warningColor = Color(0xFFFFBB33)
+
+                    SegmentedButton(
+                        icon = painterResource(R.drawable.ic_update),
+                        text = stringResource(R.string.action_update),
+                        iconColor = warningColor,
+                        textColor = warningColor,
+                        onClick = onUpdate,
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun LabelTextItem(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = buildAnnotatedString {
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                append("• ")
+                append(label)
+            }
+            append(" ")
+            append(value)
+        },
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .9f),
+        modifier = modifier,
+    )
 }

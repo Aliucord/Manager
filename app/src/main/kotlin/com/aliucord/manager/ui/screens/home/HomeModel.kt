@@ -1,19 +1,21 @@
 package com.aliucord.manager.ui.screens.home
 
 import android.app.Application
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.Settings
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.uninstallApk
-import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.util.launchBlock
@@ -23,26 +25,21 @@ import kotlinx.collections.immutable.toImmutableList
 class HomeModel(
     private val application: Application,
     private val github: GithubRepository,
-    private val preferences: PreferencesManager,
 ) : ScreenModel {
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
-    var installations by mutableStateOf<InstallsFetchState>(InstallsFetchState.Fetching)
+    var installations by mutableStateOf<InstallsState>(InstallsState.Fetching)
         private set
 
     init {
-        refresh()
-    }
-
-    fun refresh() {
         fetchInstallations()
         fetchSupportedVersion()
     }
 
-    fun launchAliucord() {
+    fun launchApp(packageName: String) {
         val launchIntent = application.packageManager
-            .getLaunchIntentForPackage(preferences.packageName)
+            .getLaunchIntentForPackage(packageName)
 
         if (launchIntent != null) {
             application.startActivity(launchIntent)
@@ -51,8 +48,12 @@ class HomeModel(
         }
     }
 
-    fun uninstallAliucord() {
-        application.uninstallApk(preferences.packageName)
+    fun openAppInfo(packageName: String) {
+        val launchIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .setData("package:$packageName".toUri())
+
+        application.startActivity(launchIntent)
     }
 
     private fun fetchInstallations() = screenModelScope.launchBlock {
@@ -64,8 +65,6 @@ class HomeModel(
                 .takeIf { it.isNotEmpty() }
                 ?: throw IllegalStateException("Failed to fetch installed packages (returned none)")
 
-            println(installedPackages)
-
             val aliucordPackages = installedPackages
                 .asSequence()
                 .filter {
@@ -74,7 +73,6 @@ class HomeModel(
                     isAliucordPkg || hasAliucordMeta
                 }
 
-            println(aliucordPackages)
             val aliucordInstallations = aliucordPackages
                 .map {
                     // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
@@ -84,7 +82,7 @@ class HomeModel(
                     val baseVersion = it.applicationInfo.metaData?.getInt("aliucordBaseVersion")
                     val isBaseUpdated = /* TODO: remote data json instead */ baseVersion == 0
 
-                    InstallsFetchState.Data(
+                    InstallData(
                         name = packageManager.getApplicationLabel(it.applicationInfo).toString(),
                         packageName = it.packageName,
                         baseUpdated = isBaseUpdated,
@@ -101,10 +99,10 @@ class HomeModel(
                     )
                 }
 
-            installations = InstallsFetchState.Fetched(data = aliucordInstallations.toImmutableList())
+            installations = InstallsState.Fetched(data = aliucordInstallations.toImmutableList())
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
-            installations = InstallsFetchState.Error
+            installations = InstallsState.Error
         }
     }
 
