@@ -2,8 +2,8 @@ package com.aliucord.manager.installer.steps.patch
 
 import android.os.Build
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.download.DownloadAliuhookStep
 import com.github.diamondminer88.zip.ZipReader

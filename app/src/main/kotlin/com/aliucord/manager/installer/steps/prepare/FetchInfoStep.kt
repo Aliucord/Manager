@@ -2,8 +2,8 @@ package com.aliucord.manager.installer.steps.prepare
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.network.dto.Version
 import com.aliucord.manager.network.service.AliucordGithubService

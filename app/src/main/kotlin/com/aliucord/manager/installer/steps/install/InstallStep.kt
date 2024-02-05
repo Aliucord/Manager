@@ -2,8 +2,8 @@ package com.aliucord.manager.installer.steps.install
 
 import android.app.Application
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.patch.CopyDependenciesStep
 import com.aliucord.manager.installer.util.installApks
