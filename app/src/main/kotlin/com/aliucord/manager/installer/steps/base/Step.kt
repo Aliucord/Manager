@@ -2,7 +2,7 @@ package com.aliucord.manager.installer.steps.base
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.*
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import org.koin.core.time.measureTimedValue
 import kotlin.math.roundToInt
@@ -27,7 +27,7 @@ abstract class Step {
      * Run the step's logic.
      * It can be assumed that this is executed in the correct order after other steps.
      */
-    protected abstract suspend fun execute(container: StepContainer)
+    protected abstract suspend fun execute(container: StepRunner)
 
     /**
      * The current state of this step in the installation process.
@@ -53,7 +53,7 @@ abstract class Step {
      * Thin wrapper over [execute] but handling errors.
      * @return An exception if the step failed to execute.
      */
-    suspend fun executeCatching(container: StepContainer): Throwable? {
+    suspend fun executeCatching(container: StepRunner): Throwable? {
         if (state != StepState.Pending)
             throw IllegalStateException("Cannot execute a step that has already started")
 

@@ -3,7 +3,7 @@ package com.aliucord.manager.installer.steps.download
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.DownloadStep
 import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.network.utils.getOrThrow
@@ -27,7 +27,7 @@ class DownloadAliuhookStep : DownloadStep(), KoinComponent {
     override val targetUrl get() = AliucordMavenRepository.getAliuhookUrl(targetVersion)
     override val targetFile get() = paths.cachedAliuhookAAR(targetVersion)
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         targetVersion = maven.getAliuhookVersion().getOrThrow()
 
         super.execute(container)

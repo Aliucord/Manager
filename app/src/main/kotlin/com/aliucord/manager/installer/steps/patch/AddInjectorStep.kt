@@ -1,7 +1,7 @@
 package com.aliucord.manager.installer.steps.patch
 
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.download.DownloadInjectorStep
@@ -17,10 +17,10 @@ class AddInjectorStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
     override val localizedName = R.string.install_step_add_injector
 
-    override suspend fun execute(container: StepContainer) {
-        val apk = container.getCompletedStep<CopyDependenciesStep>().patchedApk
-        val injector = container.getCompletedStep<DownloadInjectorStep>().targetFile
-        val kotlinStdlib = container.getCompletedStep<DownloadKotlinStep>().targetFile
+    override suspend fun execute(container: StepRunner) {
+        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val injector = container.getStep<DownloadInjectorStep>().targetFile
+        val kotlinStdlib = container.getStep<DownloadKotlinStep>().targetFile
 
         val (dexCount, firstDexBytes) = ZipReader(apk).use {
             Pair(

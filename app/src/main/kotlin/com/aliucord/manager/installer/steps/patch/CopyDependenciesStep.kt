@@ -1,7 +1,7 @@
 package com.aliucord.manager.installer.steps.patch
 
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.download.DownloadDiscordStep
@@ -25,14 +25,14 @@ class CopyDependenciesStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
     override val localizedName = R.string.install_step_copy
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         val dir = paths.patchingWorkingDir()
 
         // TODO: move this to a prepare step
         if (!dir.deleteRecursively())
             throw Error("Failed to clear existing patched dir")
 
-        val srcApk = container.getCompletedStep<DownloadDiscordStep>().targetFile
+        val srcApk = container.getStep<DownloadDiscordStep>().targetFile
 
         srcApk.copyTo(patchedApk)
     }

@@ -3,7 +3,7 @@ package com.aliucord.manager.installer.steps.base
 import android.content.Context
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.manager.DownloadManager
 import com.aliucord.manager.util.showToast
@@ -43,7 +43,7 @@ abstract class DownloadStep : Step(), KoinComponent {
 
     override val group = StepGroup.Download
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         if (targetFile.exists()) {
             if (targetFile.length() > 0) {
                 state = StepState.Skipped

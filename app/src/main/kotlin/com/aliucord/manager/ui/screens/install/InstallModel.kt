@@ -5,66 +5,53 @@ import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.*
-import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.KotlinInstallContainer
-import com.aliucord.manager.installer.util.*
-import com.aliucord.manager.manager.*
+import com.aliucord.manager.installer.steps.KotlinInstallRunner
+import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.installer.steps.base.Step
+import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.*
-import com.github.diamondminer88.zip.*
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.concurrent.atomic.AtomicBoolean
 
 class InstallModel(
     private val application: Application,
     private val paths: PathManager,
-) : ScreenModel {
-    private val installationRunning = AtomicBoolean(false)
+) : StateScreenModel<InstallScreenState>(InstallScreenState.Pending) {
+    private lateinit var startTime: Date
+    private var installJob: Job? = null
 
-    var returnToHome by mutableStateOf(false)
-
-    var isFinished by mutableStateOf(false)
+    var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set
 
-    var stacktrace by mutableStateOf("")
-        private set
-
-    private val debugInfo: String
-        get() = """
-            Aliucord Manager ${BuildConfig.VERSION_NAME}
-            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} ${if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""}
-
-            Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}
-            Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
-
-            Failed on: ${currentStep?.name}
-        """.trimIndent()
+    init {
+        restart()
+    }
 
     fun copyDebugToClipboard() {
-        val text = "$debugInfo\n\n$stacktrace"
-            // TODO: remove this useless replace
-            .replace("(\\\\*~_)".toRegex(), "\\$1")
+        val content = (state.value as? InstallScreenState.Failed)?.failureLog
+            ?: return
 
-        application.copyToClipboard(text)
+        application.copyToClipboard(content)
         application.showToast(R.string.action_copied)
     }
 
-    private var debugLogPath by mutableStateOf<String?>(null)
+    fun saveFailureLog() {
+        val failureLog = (state.value as? InstallScreenState.Failed)?.failureLog
+            ?: return
 
-    @SuppressLint("SimpleDateFormat")
-    fun saveDebugToFile() {
-        val name = if (debugLogPath != null) {
-            debugLogPath!!
-        } else {
-            "Aliucord Manager ${SimpleDateFormat("yyyy-MM-dd hh-mm-s a").format(Date())}.log"
-                .also { debugLogPath = it }
-        }
+        @SuppressLint("SimpleDateFormat")
+        val formattedDate = SimpleDateFormat("yyyy-MM-dd hh-mm-s a").format(startTime)
+        val fileName = "Aliucord Manager $formattedDate.log"
 
-        application.saveFile(name, "$debugInfo\n\n$stacktrace")
+        application.saveFile(fileName, failureLog)
     }
 
     fun clearCache() {
@@ -72,36 +59,72 @@ class InstallModel(
         application.showToast(R.string.action_cleared_cache)
     }
 
-    private val installJob = screenModelScope.launch(Dispatchers.Main) {
-        if (installationRunning.getAndSet(true)) {
-            return@launch
-        }
+    fun restart() {
+        installJob?.cancel("Manual cancellation")
+        installSteps = null
 
-        withContext(Dispatchers.IO) {
-            try {
-                installKotlin()
+        startTime = Date()
+        mutableState.value = InstallScreenState.Working
 
-                isFinished = true
-                delay(20000)
-                returnToHome = true
-            } catch (t: Throwable) {
-                stacktrace = Log.getStackTraceString(t)
+        val newInstallJob = screenModelScope.launch {
+            val runner = KotlinInstallRunner()
 
-                Log.e(
-                    BuildConfig.TAG,
-                    "$debugInfo\n\n${Log.getStackTraceString(t)}"
-                )
+            installSteps = runner.steps.groupBy { it.group }
+                .mapValues { it.value.toUnsafeImmutable() }
+                .toUnsafeImmutable()
+
+            // Execute all the steps and catch any errors
+            when (val error = runner.executeAll()) {
+                // Successfully installed
+                null -> {
+                    mutableState.value = InstallScreenState.Success
+
+                    // Wait 20s before returning to Home
+                    delay(20_000)
+                    mutableState.value = InstallScreenState.CloseScreen
+                }
+
+                else -> {
+                    Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
+
+                    mutableState.value = InstallScreenState.Failed(failureLog = getFailureInfo(error))
+                }
             }
-
-            installationRunning.set(false)
         }
+
+        newInstallJob.invokeOnCompletion { error ->
+            when (error) {
+                // Successfully executed, already handled above
+                null -> {}
+
+                // Job was cancelled before being able to finish setting state
+                is CancellationException -> {
+                    Log.w(BuildConfig.TAG, "Installation was cancelled before completing", error)
+                    mutableState.value = InstallScreenState.CloseScreen
+                }
+
+                // This should never happen, all install errors are caught
+                else -> throw error
+            }
+        }
+
+        installJob = newInstallJob
     }
 
-    private suspend fun installKotlin() {
-        val error = KotlinInstallContainer().executeAll()
+    private fun getFailureInfo(stacktrace: Throwable): String {
+        val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
+        val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unknown"
 
-        if (error != null) {
-            Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
-        }
+        return """
+            Aliucord Manager v${BuildConfig.VERSION_NAME}
+            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
+
+            Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}
+            Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
+            Device: ${Build.MANUFACTURER} - ${Build.MODEL} (${Build.DEVICE})
+            SOC: $soc
+
+            ${Log.getStackTraceString(stacktrace)}
+        """.trimIndent()
     }
 }

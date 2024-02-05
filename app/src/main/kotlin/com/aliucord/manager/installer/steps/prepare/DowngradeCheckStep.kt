@@ -2,7 +2,7 @@ package com.aliucord.manager.installer.steps.prepare
 
 import android.content.Context
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
@@ -26,7 +26,7 @@ class DowngradeCheckStep : Step(), KoinComponent {
     override val group = StepGroup.Prepare
     override val localizedName = R.string.install_step_downgrade_check
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         val (_, currentVersion) = try {
             context.getPackageVersion(prefs.packageName)
         }
@@ -37,7 +37,7 @@ class DowngradeCheckStep : Step(), KoinComponent {
         }
 
         val targetVersion = container
-            .getCompletedStep<FetchInfoStep>()
+            .getStep<FetchInfoStep>()
             .data.versionCode.toIntOrNull()
             ?: throw IllegalArgumentException("Invalid fetched Aliucord target Discord version")
 

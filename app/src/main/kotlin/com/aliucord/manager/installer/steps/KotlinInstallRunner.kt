@@ -11,7 +11,7 @@ import kotlinx.collections.immutable.persistentListOf
 /**
  * Used for installing the old Kotlin Discord app.
  */
-class KotlinInstallContainer : StepContainer() {
+class KotlinInstallRunner : StepRunner() {
     override val steps = persistentListOf<Step>(
         // Prepare
         FetchInfoStep(),

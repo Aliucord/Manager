@@ -1,7 +1,7 @@
 package com.aliucord.manager.installer.steps.patch
 
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.util.ManifestPatcher
@@ -20,8 +20,8 @@ class PatchManifestStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
     override val localizedName = R.string.install_step_patch_manifests
 
-    override suspend fun execute(container: StepContainer) {
-        val apk = container.getCompletedStep<CopyDependenciesStep>().patchedApk
+    override suspend fun execute(container: StepRunner) {
+        val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
         val manifest = ZipReader(apk)
             .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }

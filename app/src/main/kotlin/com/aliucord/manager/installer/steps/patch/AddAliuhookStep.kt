@@ -2,7 +2,7 @@ package com.aliucord.manager.installer.steps.patch
 
 import android.os.Build
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.download.DownloadAliuhookStep
@@ -19,9 +19,9 @@ class AddAliuhookStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
     override val localizedName = R.string.install_step_add_aliuhook
 
-    override suspend fun execute(container: StepContainer) {
-        val apk = container.getCompletedStep<CopyDependenciesStep>().patchedApk
-        val aliuhook = container.getCompletedStep<DownloadAliuhookStep>().targetFile
+    override suspend fun execute(container: StepRunner) {
+        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val aliuhook = container.getStep<DownloadAliuhookStep>().targetFile
 
         // Find the amount of .dex files in the apk
         val dexCount = ZipReader(apk).use {

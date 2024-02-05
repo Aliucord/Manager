@@ -3,7 +3,7 @@ package com.aliucord.manager.installer.steps.patch
 import android.content.Context
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
@@ -24,13 +24,13 @@ class ReplaceIconStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
     override val localizedName = R.string.setting_replace_icon
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         if (!prefs.replaceIcon) {
             state = StepState.Skipped
             return
         }
 
-        val apk = container.getCompletedStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
         ZipWriter(apk, /* append = */ true).use {
             val foregroundIcon = readAsset("icons/ic_logo_foreground.png")

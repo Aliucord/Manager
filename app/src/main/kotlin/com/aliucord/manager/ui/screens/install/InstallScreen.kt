@@ -24,12 +24,10 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
+import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.components.installer.InstallGroup
-import com.aliucord.manager.ui.components.installer.InstallStatus
-import com.aliucord.manager.ui.screens.install.InstallModel.InstallStepGroup
-import kotlinx.collections.immutable.toImmutableList
 
 class InstallScreen : Screen {
     override val key = "Install"
@@ -38,18 +36,15 @@ class InstallScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<InstallModel>()
+        val state = model.state.collectAsState()
 
-        var expandedGroup by remember { mutableStateOf<InstallStepGroup?>(null) }
-
-        if (model.returnToHome)
-            navigator.back(null)
-
-        LaunchedEffect(model.currentStep) {
-            expandedGroup = model.currentStep?.group
+        LaunchedEffect(model.state) {
+            if (model.state.value is InstallScreenState.CloseScreen)
+                navigator.back(currentActivity = null)
         }
 
-        // Exit warning dialog
-        var showAbortWarning by remember { mutableStateOf(false) }
+        // Exit warning dialog (cancel itself if install process state changes)
+        var showAbortWarning by remember(model.state.collectAsState()) { mutableStateOf(false) }
         if (showAbortWarning) {
             InstallerAbortDialog(
                 onDismiss = { showAbortWarning = false },
@@ -82,13 +77,7 @@ class InstallScreen : Screen {
             }
         ) { paddingValues ->
             Column(Modifier.padding(paddingValues)) {
-                val isCurrentlyProcessing by remember {
-                    derivedStateOf {
-                        model.steps[model.currentStep]?.status == InstallStatus.ONGOING
-                    }
-                }
-
-                if (isCurrentlyProcessing) {
+                if (state.value is InstallScreenState.Working) {
                     LinearProgressIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -104,16 +93,20 @@ class InstallScreen : Screen {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    for (group in InstallStepGroup.entries) key(group) {
-                        InstallGroup(
-                            name = stringResource(group.nameResId),
-                            isCurrent = expandedGroup == group,
-                            onClick = { expandedGroup = group },
-                            subSteps = model.getSteps(group).toImmutableList(),
-                        )
+                    var expandedGroup by remember { mutableStateOf(StepGroup.Prepare) }
+
+                    model.installSteps?.let { groupedSteps ->
+                        for ((group, steps) in groupedSteps.entries) key(group) {
+                            InstallGroup(
+                                name = stringResource(group.localizedName),
+                                isCurrent = group == expandedGroup,
+                                onClick = remember { { expandedGroup = group } },
+                                subSteps = steps,
+                            )
+                        }
                     }
 
-                    if (model.isFinished && model.stacktrace.isEmpty()) {
+                    if (state.value.isFinished) {
                         Row(
                             horizontalArrangement = Arrangement.End,
                             modifier = Modifier.fillMaxWidth()
@@ -124,20 +117,8 @@ class InstallScreen : Screen {
                         }
                     }
 
-                    if (model.stacktrace.isNotEmpty()) {
-                        SelectionContainer {
-                            Text(
-                                text = model.stacktrace,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontFamily = FontFamily.Monospace,
-                                softWrap = false,
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(10.dp))
-                                    .background(MaterialTheme.colorScheme.surfaceColorAtElevation(10.dp))
-                                    .padding(10.dp)
-                                    .horizontalScroll(rememberScrollState())
-                            )
-                        }
+                    if (state.value is InstallScreenState.Failed) {
+                        val failureLog = (state.value as InstallScreenState.Failed).failureLog
 
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
@@ -149,13 +130,27 @@ class InstallScreen : Screen {
 
                             Spacer(Modifier.weight(1f, true))
 
-                            OutlinedButton(onClick = model::saveDebugToFile) {
+                            OutlinedButton(onClick = model::saveFailureLog) {
                                 Text(stringResource(R.string.installer_save_file))
                             }
 
                             FilledTonalButton(onClick = model::copyDebugToClipboard) {
                                 Text(stringResource(R.string.action_copy))
                             }
+                        }
+
+                        SelectionContainer {
+                            Text(
+                                text = failureLog,
+                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = FontFamily.Monospace,
+                                softWrap = false,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(MaterialTheme.colorScheme.surfaceColorAtElevation(10.dp))
+                                    .padding(10.dp)
+                                    .horizontalScroll(rememberScrollState())
+                            )
                         }
                     }
                 }

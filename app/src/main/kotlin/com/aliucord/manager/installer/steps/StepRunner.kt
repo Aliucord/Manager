@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-abstract class StepContainer : KoinComponent {
+abstract class StepRunner : KoinComponent {
     private val preferences: PreferencesManager by inject()
 
     abstract val steps: ImmutableList<Step>
@@ -17,7 +17,7 @@ abstract class StepContainer : KoinComponent {
      * Get a step that has already been successfully executed.
      * This is used to retrieve previously executed dependency steps from a later step.
      */
-    inline fun <reified T : Step> getCompletedStep(): T {
+    inline fun <reified T : Step> getStep(): T {
         val step = steps.asSequence()
             .filterIsInstance<T>()
             .filter { it.state == StepState.Success }
@@ -32,7 +32,7 @@ abstract class StepContainer : KoinComponent {
 
     suspend fun executeAll(): Throwable? {
         for (step in steps) {
-            val error = step.executeCatching(this@StepContainer)
+            val error = step.executeCatching(this@StepRunner)
             if (error != null) return error
 
             // Add delay for human psychology and

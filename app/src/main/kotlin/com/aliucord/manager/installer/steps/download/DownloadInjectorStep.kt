@@ -2,7 +2,7 @@ package com.aliucord.manager.installer.steps.download
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.DownloadStep
 import com.aliucord.manager.installer.steps.prepare.FetchInfoStep
 import com.aliucord.manager.manager.PathManager
@@ -28,9 +28,9 @@ class DownloadInjectorStep : DownloadStep(), KoinComponent {
     override val targetFile
         get() = paths.cachedInjectorDex(aliucordHash).resolve("discord.apk")
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         aliucordHash = container
-            .getCompletedStep<FetchInfoStep>()
+            .getStep<FetchInfoStep>()
             .data.aliucordHash
 
         super.execute(container)

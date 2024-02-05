@@ -20,33 +20,15 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.aliucord.manager.R
+import com.aliucord.manager.installer.steps.base.Step
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.floor
-
-enum class InstallStatus {
-    ONGOING,
-    SUCCESSFUL,
-    UNSUCCESSFUL,
-    QUEUED
-}
-
-@Stable
-class InstallStepData(
-    val nameResId: Int,
-    status: InstallStatus,
-    duration: Float = 0f,
-    cached: Boolean = false,
-) {
-    var status by mutableStateOf(status)
-    var duration by mutableStateOf(duration)
-    var cached by mutableStateOf(cached)
-}
 
 @Composable
 fun InstallGroup(
     name: String,
     isCurrent: Boolean,
-    subSteps: ImmutableList<InstallStepData>,
+    subSteps: ImmutableList<Step>,
     onClick: () -> Unit,
 ) {
     val status = when {

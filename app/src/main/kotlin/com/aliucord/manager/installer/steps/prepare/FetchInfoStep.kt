@@ -2,7 +2,7 @@ package com.aliucord.manager.installer.steps.prepare
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepContainer
+import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.network.dto.Version
@@ -23,7 +23,7 @@ class FetchInfoStep : Step(), KoinComponent {
      */
     lateinit var data: Version
 
-    override suspend fun execute(container: StepContainer) {
+    override suspend fun execute(container: StepRunner) {
         data = github.getDataJson().getOrThrow()
     }
 }
