@@ -20,7 +20,7 @@ abstract class StepRunner : KoinComponent {
     inline fun <reified T : Step> getStep(): T {
         val step = steps.asSequence()
             .filterIsInstance<T>()
-            .filter { it.state == StepState.Success }
+            .filter { it.state.isFinished }
             .firstOrNull()
 
         if (step == null) {
@@ -37,8 +37,8 @@ abstract class StepRunner : KoinComponent {
 
             // Add delay for human psychology and
             // better group visibility in UI (the active group can change way too fast)
-            if (!preferences.devMode && step.durationMs < 1000) {
-                delay(1000L - step.durationMs)
+            if (!preferences.devMode && step.durationMs < 500) {
+                delay(500L - step.durationMs)
             }
         }
 

@@ -126,10 +126,11 @@
   <string name="install_step_installing">Installing APKs</string>
   <string name="install_step_cleanup">Cleaning up</string>
 
-  <string name="status_success">Success</string>
-  <string name="status_ongoing">Ongoing</string>
-  <string name="status_failed">Failed</string>
   <string name="status_queued">Queued</string>
+  <string name="status_ongoing">Ongoing</string>
+  <string name="status_skipped">Skipped</string>
+  <string name="status_success">Success</string>
+  <string name="status_failed">Failed</string>
 
   <string name="installer_abort_title">Really exit?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>

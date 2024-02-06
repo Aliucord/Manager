@@ -63,7 +63,10 @@ abstract class Step {
         val (error, executionTimeMs) = measureTimedValue {
             try {
                 execute(container)
-                state = StepState.Success
+
+                if (state != StepState.Skipped)
+                    state = StepState.Success
+
                 null
             } catch (t: Throwable) {
                 state = StepState.Error

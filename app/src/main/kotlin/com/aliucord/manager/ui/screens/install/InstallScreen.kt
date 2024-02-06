@@ -27,7 +27,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
-import com.aliucord.manager.ui.components.installer.InstallGroup
+import com.aliucord.manager.ui.screens.install.components.StepGroupCard
 
 class InstallScreen : Screen {
     override val key = "Install"
@@ -97,11 +97,11 @@ class InstallScreen : Screen {
 
                     model.installSteps?.let { groupedSteps ->
                         for ((group, steps) in groupedSteps.entries) key(group) {
-                            InstallGroup(
+                            StepGroupCard(
                                 name = stringResource(group.localizedName),
-                                isCurrent = group == expandedGroup,
-                                onClick = remember { { expandedGroup = group } },
                                 subSteps = steps,
+                                isExpanded = expandedGroup == group,
+                                onExpand = { expandedGroup = group },
                             )
                         }
                     }

@@ -79,7 +79,7 @@ abstract class DownloadStep : Step(), KoinComponent {
             }
 
             is DownloadManager.Result.Cancelled ->
-                state = StepState.Cancelled
+                state = StepState.Error
         }
     }
 }

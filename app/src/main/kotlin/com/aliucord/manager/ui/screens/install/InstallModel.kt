@@ -115,7 +115,7 @@ class InstallModel(
         val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
         val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unknown"
 
-        return """
+        val header = """
             Aliucord Manager v${BuildConfig.VERSION_NAME}
             Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
 
@@ -123,8 +123,8 @@ class InstallModel(
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
             Device: ${Build.MANUFACTURER} - ${Build.MODEL} (${Build.DEVICE})
             SOC: $soc
-
-            ${Log.getStackTraceString(stacktrace)}
         """.trimIndent()
+
+        return header + "\n\n" + Log.getStackTraceString(stacktrace)
     }
 }

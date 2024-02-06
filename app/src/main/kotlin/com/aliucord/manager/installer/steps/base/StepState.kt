@@ -5,6 +5,8 @@ enum class StepState {
     Running,
     Success,
     Error,
-    Skipped,
-    Cancelled, // TODO: something like the discord dnd sign except its not red, but gray maybe
+    Skipped;
+
+    val isFinished: Boolean
+        get() = this == Success || this == Error || this == Skipped
 }

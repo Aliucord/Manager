@@ -4,6 +4,8 @@ import android.app.Application
 import android.app.DownloadManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
@@ -40,10 +42,16 @@ class DownloadManager(application: Application) {
             .setTitle("Aliucord Manager")
             .setDescription("Downloading ${out.name}...")
             .setDestinationUri(Uri.fromFile(out))
-            .setAllowedOverMetered(true)
-            .setAllowedOverRoaming(true)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
             .addRequestHeader("User-Agent", "Aliucord Manager/${BuildConfig.VERSION_NAME}")
+            .apply {
+                // Disable gzip on emulator due to https compression bug
+                println(Build.PRODUCT)
+                // if (Build.PRODUCT == "google_sdk") {
+                    Log.i(BuildConfig.TAG, "Disabling DownloadManager compression")
+                    addRequestHeader("Accept-Encoding", null)
+                // }
+            }
             .let(downloadManager::enqueue)
 
         // Repeatedly request download state until it is finished
