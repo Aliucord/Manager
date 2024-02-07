@@ -65,6 +65,7 @@ class InstallScreen : Screen {
                     title = { Text(stringResource(R.string.installer)) },
                     navigationIcon = {
                         IconButton(
+                            // TODO: only show warning when in progress
                             onClick = { showAbortWarning = true },
                         ) {
                             Icon(
@@ -93,7 +94,13 @@ class InstallScreen : Screen {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    var expandedGroup by remember { mutableStateOf(StepGroup.Prepare) }
+                    var expandedGroup by remember { mutableStateOf<StepGroup?>(StepGroup.Prepare) }
+
+                    // Close all groups when successfully finished everything
+                    LaunchedEffect(state.value) {
+                        if (state.value == InstallScreenState.Success)
+                            expandedGroup = null
+                    }
 
                     model.installSteps?.let { groupedSteps ->
                         for ((group, steps) in groupedSteps.entries) key(group) {

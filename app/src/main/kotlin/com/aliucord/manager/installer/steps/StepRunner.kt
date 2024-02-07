@@ -1,12 +1,18 @@
 package com.aliucord.manager.installer.steps
 
 import com.aliucord.manager.installer.steps.base.Step
-import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.manager.PreferencesManager
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
+/**
+ * The minimum time that is required to occur between step switches, to avoid
+ * quickly switching the step groups in the UI. (very disorienting)
+ * Larger delay leads to a perception that it's doing more work than it actually is.
+ */
+const val MINIMUM_STEP_DELAY: Long = 600L
 
 abstract class StepRunner : KoinComponent {
     private val preferences: PreferencesManager by inject()
@@ -35,10 +41,9 @@ abstract class StepRunner : KoinComponent {
             val error = step.executeCatching(this@StepRunner)
             if (error != null) return error
 
-            // Add delay for human psychology and
-            // better group visibility in UI (the active group can change way too fast)
-            if (!preferences.devMode && step.durationMs < 500) {
-                delay(500L - step.durationMs)
+            // Skip minimum run time when in dev mode
+            if (!preferences.devMode && step.durationMs < MINIMUM_STEP_DELAY) {
+                delay(MINIMUM_STEP_DELAY - step.durationMs)
             }
         }
 

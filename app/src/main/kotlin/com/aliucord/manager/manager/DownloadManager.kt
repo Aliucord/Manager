@@ -46,11 +46,10 @@ class DownloadManager(application: Application) {
             .addRequestHeader("User-Agent", "Aliucord Manager/${BuildConfig.VERSION_NAME}")
             .apply {
                 // Disable gzip on emulator due to https compression bug
-                println(Build.PRODUCT)
-                // if (Build.PRODUCT == "google_sdk") {
-                    Log.i(BuildConfig.TAG, "Disabling DownloadManager compression")
+                if (Build.FINGERPRINT.contains("emulator")) {
+                    Log.d(BuildConfig.TAG, "Disabling DownloadManager compression")
                     addRequestHeader("Accept-Encoding", null)
-                // }
+                }
             }
             .let(downloadManager::enqueue)
 

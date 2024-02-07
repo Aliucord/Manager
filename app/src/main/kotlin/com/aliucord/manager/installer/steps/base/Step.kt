@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.time.measureTimedValue
 import kotlin.math.roundToInt
 
@@ -62,7 +64,9 @@ abstract class Step {
         // Execute this steps logic while timing it
         val (error, executionTimeMs) = measureTimedValue {
             try {
-                execute(container)
+                withContext(Dispatchers.Default) {
+                    execute(container)
+                }
 
                 if (state != StepState.Skipped)
                     state = StepState.Success

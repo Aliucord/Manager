@@ -73,6 +73,10 @@ class InstallModel(
                 .mapValues { it.value.toUnsafeImmutable() }
                 .toUnsafeImmutable()
 
+            // Intentionally delay to show the state change of the first step in UI when it runs
+            // without it, on a fast internet it just immediately shows as "Success"
+            delay(600)
+
             // Execute all the steps and catch any errors
             when (val error = runner.executeAll()) {
                 // Successfully installed
