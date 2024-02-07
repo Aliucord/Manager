@@ -1,12 +1,14 @@
 package com.aliucord.manager.ui.util
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
 
+@Immutable
 sealed interface DiscordVersion : Comparable<DiscordVersion> {
-    object Error : DiscordVersion
-    object None : DiscordVersion
+    data object Error : DiscordVersion
+    data object None : DiscordVersion
 
     data class Existing(
         val type: Type,

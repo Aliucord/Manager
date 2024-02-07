@@ -1,101 +1,44 @@
 package com.aliucord.manager.ui.screens.home
 
 import android.app.Application
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.Settings
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.GithubRepository
-import com.aliucord.manager.installer.util.uninstallApk
-import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.util.DiscordVersion
-import com.aliucord.manager.util.getPackageVersion
+import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
-import kotlinx.coroutines.*
+import kotlinx.collections.immutable.toImmutableList
 
 class HomeModel(
     private val application: Application,
     private val github: GithubRepository,
-    val preferences: PreferencesManager,
 ) : ScreenModel {
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
-    var installedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
+    var installations by mutableStateOf<InstallsState>(InstallsState.Fetching)
         private set
 
     init {
-        screenModelScope.launch(Dispatchers.IO) {
-            _fetchInstalledVersion()
-            _fetchSupportedVersion()
-        }
+        fetchInstallations()
+        fetchSupportedVersion()
     }
 
-    private suspend fun _fetchInstalledVersion() {
-        try {
-            val (versionName, versionCode) = application.getPackageVersion(preferences.packageName)
-
-            withContext(Dispatchers.Main) {
-                installedVersion = DiscordVersion.Existing(
-                    type = DiscordVersion.parseVersionType(versionCode),
-                    name = versionName.split("-")[0].trim(),
-                    code = versionCode,
-                )
-            }
-        } catch (t: PackageManager.NameNotFoundException) {
-            withContext(Dispatchers.Main) {
-                installedVersion = DiscordVersion.None
-            }
-        } catch (t: Throwable) {
-            Log.e(BuildConfig.TAG, Log.getStackTraceString(t))
-
-            withContext(Dispatchers.Main) {
-                installedVersion = DiscordVersion.Error
-            }
-        }
-    }
-
-    private suspend fun _fetchSupportedVersion() {
-        val version = github.getDataJson()
-
-        withContext(Dispatchers.Main) {
-            version.fold(
-                success = {
-                    val versionCode = it.versionCode.toIntOrNull() ?: return@fold
-
-                    supportedVersion = DiscordVersion.Existing(
-                        type = DiscordVersion.parseVersionType(versionCode),
-                        name = it.versionName.split("-")[0].trim(),
-                        code = versionCode,
-                    )
-                },
-                fail = {
-                    Log.e(BuildConfig.TAG, Log.getStackTraceString(it))
-                    supportedVersion = DiscordVersion.Error
-                }
-            )
-        }
-    }
-
-    fun fetchInstalledVersion() {
-        screenModelScope.launch(Dispatchers.IO) {
-            _fetchInstalledVersion()
-        }
-    }
-
-    fun fetchSupportedVersion() {
-        screenModelScope.launch(Dispatchers.IO) {
-            _fetchSupportedVersion()
-        }
-    }
-
-    fun launchAliucord() {
+    fun launchApp(packageName: String) {
         val launchIntent = application.packageManager
-            .getLaunchIntentForPackage(preferences.packageName)
+            .getLaunchIntentForPackage(packageName)
 
         if (launchIntent != null) {
             application.startActivity(launchIntent)
@@ -104,7 +47,79 @@ class HomeModel(
         }
     }
 
-    fun uninstallAliucord() {
-        application.uninstallApk(preferences.packageName)
+    fun openAppInfo(packageName: String) {
+        val launchIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .setData("package:$packageName".toUri())
+
+        application.startActivity(launchIntent)
+    }
+
+    private fun fetchInstallations() = screenModelScope.launchBlock {
+        try {
+            val packageManager = application.packageManager
+
+            val installedPackages = packageManager
+                .getInstalledPackages(PackageManager.GET_META_DATA)
+                .takeIf { it.isNotEmpty() }
+                ?: throw IllegalStateException("Failed to fetch installed packages (returned none)")
+
+            val aliucordPackages = installedPackages
+                .asSequence()
+                .filter {
+                    val isAliucordPkg = it.packageName == "com.aliucord"
+                    val hasAliucordMeta = it.applicationInfo.metaData?.containsKey("isAliucord") == true
+                    isAliucordPkg || hasAliucordMeta
+                }
+
+            val aliucordInstallations = aliucordPackages
+                .map {
+                    // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
+                    @Suppress("DEPRECATION")
+                    val versionCode = it.versionCode
+
+                    val baseVersion = it.applicationInfo.metaData?.getInt("aliucordBaseVersion")
+                    val isBaseUpdated = /* TODO: remote data json instead */ baseVersion == 0
+
+                    InstallData(
+                        name = packageManager.getApplicationLabel(it.applicationInfo).toString(),
+                        packageName = it.packageName,
+                        baseUpdated = isBaseUpdated,
+                        icon = packageManager
+                            .getApplicationIcon(it.applicationInfo)
+                            .toBitmap()
+                            .asImageBitmap()
+                            .let(::BitmapPainter),
+                        version = DiscordVersion.Existing(
+                            type = DiscordVersion.parseVersionType(versionCode),
+                            name = it.versionName.split("-")[0].trim(),
+                            code = versionCode,
+                        ),
+                    )
+                }
+
+            installations = InstallsState.Fetched(data = aliucordInstallations.toImmutableList())
+        } catch (t: Throwable) {
+            Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
+            installations = InstallsState.Error
+        }
+    }
+
+    private fun fetchSupportedVersion() = screenModelScope.launchBlock {
+        github.getDataJson().fold(
+            success = {
+                val versionCode = it.versionCode.toIntOrNull() ?: return@fold
+
+                supportedVersion = DiscordVersion.Existing(
+                    type = DiscordVersion.parseVersionType(versionCode),
+                    name = it.versionName.split("-")[0].trim(),
+                    code = versionCode,
+                )
+            },
+            fail = {
+                Log.e(BuildConfig.TAG, Log.getStackTraceString(it))
+                supportedVersion = DiscordVersion.Error
+            }
+        )
     }
 }

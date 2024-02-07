@@ -3,6 +3,7 @@
   <string name="app_description">A modification for the Discord Android App</string>
 
   <string name="aliucord">Aliucord</string>
+  <string name="discord">Discord</string>
   <string name="github">GitHub</string>
   <string name="support_server">Support Server</string>
   <string name="commits">Commits</string>
@@ -15,6 +16,7 @@
   <string name="action_confirm">Confirm</string>
   <string name="action_dismiss">Dismiss</string>
   <string name="action_install">Install</string>
+  <string name="action_add_install">Add Installation</string>
   <string name="action_reinstall">Reinstall</string>
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
@@ -29,6 +31,7 @@
   <string name="action_copied">Copied!</string>
   <string name="action_cleared_cache">Cleared cache!</string>
   <string name="action_exit_anyways">Exit anyways</string>
+  <string name="action_open_info">Open info</string>
 
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to function, file permissions are required. Since shared data is stored in ~/Aliucord, permissions are required in order to access it.</string>
@@ -77,6 +80,9 @@
   <string name="contributors_commit_title">§name§%1$s§ §middle§authored§ §commit§%2$s§</string>
 
   <string name="network_load_fail">Failed to load</string>
+
+  <string name="label_pkg_name">Package:</string>
+  <string name="label_version_discord">Discord version:</string>
 
   <string name="version_supported">Supported version:</string>
   <string name="version_installed">Installed version:</string>

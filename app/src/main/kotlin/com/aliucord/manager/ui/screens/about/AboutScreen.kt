@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,6 +46,7 @@ class AboutScreen : Screen {
             }
         ) { paddingValues ->
             LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 contentPadding = paddingValues
                     .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
                 modifier = Modifier
@@ -68,7 +68,7 @@ class AboutScreen : Screen {
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                .padding(start = 16.dp, top = 12.dp, bottom = 16.dp)
+                                .padding(start = 16.dp, top = 12.dp, bottom = 12.dp)
                         )
                     }
 
@@ -96,61 +96,6 @@ class AboutScreen : Screen {
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ProjectHeader(modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-    ) {
-        AsyncImage(
-            model = "https://github.com/Aliucord.png",
-            contentDescription = stringResource(R.string.aliucord),
-            modifier = Modifier.size(71.dp)
-        )
-
-        Text(
-            text = stringResource(R.string.aliucord),
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 26.sp
-            )
-        )
-
-        Text(
-            text = stringResource(R.string.app_description),
-            style = MaterialTheme.typography.titleSmall.copy(
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
-        )
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            val uriHandler = LocalUriHandler.current
-
-            TextButton(onClick = { uriHandler.openUri("https://github.com/Aliucord") }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_account_github_white_24dp),
-                    contentDescription = stringResource(R.string.github)
-                )
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(id = R.string.github))
-            }
-
-            TextButton(onClick = { uriHandler.openUri("https://aliucord.com") }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_link),
-                    contentDescription = stringResource(R.string.website)
-                )
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(id = R.string.website))
             }
         }
     }

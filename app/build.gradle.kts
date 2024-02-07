@@ -91,10 +91,11 @@ android {
         jvmTarget = "11"
         freeCompilerArgs += listOf(
             "-Xcontext-receivers",
-            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-//            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
         )
     }
 
@@ -105,6 +106,10 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
+    lint {
+        disable += "ModifierParameter"
     }
 }
 
