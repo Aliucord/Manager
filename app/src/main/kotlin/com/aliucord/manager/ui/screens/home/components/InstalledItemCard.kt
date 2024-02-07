@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.SegmentedButton
 import com.aliucord.manager.ui.screens.home.InstallData
@@ -43,7 +42,7 @@ fun InstalledItemCard(
             )
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             modifier = Modifier.padding(20.dp),
         ) {
             Row(
@@ -59,12 +58,24 @@ fun InstalledItemCard(
                         .clip(CircleShape),
                 )
 
-                Text(
-                    text = "\"${data.name}\"",
-                    fontWeight = FontWeight.SemiBold,
-                    style = LocalTextStyle.current.copy(fontSize = 18.sp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .94f),
-                )
+                Column {
+                    Text(
+                        text = "\"${data.name}\"",
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .94f),
+                    )
+
+                    Text(
+                        text = data.packageName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .padding(start = 1.dp)
+                            .offset(y = (-2).dp)
+                            .alpha(.7f)
+                            .basicMarquee(),
+                    )
+                }
 
                 Spacer(Modifier.weight(1f, fill = true))
 
@@ -86,77 +97,6 @@ fun InstalledItemCard(
                     //     style = MaterialTheme.typography.labelLarge,
                     // )
                 }
-            }
-
-            FlowRow(
-                maxItemsInEachRow = 2,
-                // horizontalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "Account:",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = "rushii",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.basicMarquee(),
-                    )
-                }
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "Plugins:",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = "129",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.basicMarquee(),
-                    )
-                }
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "Package name:",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = data.packageName,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.basicMarquee(),
-                    )
-                }
-                // LabelTextItem(
-                //     label = stringResource(R.string.label_pkg_name),
-                //     value = data.packageName,
-                //     modifier = Modifier.basicMarquee(),
-                // )
-                //
-                // LabelTextItem(
-                //     label = "Plugins:",
-                //     value = "Unknown",
-                // )
             }
 
             Row(

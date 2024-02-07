@@ -10,7 +10,7 @@ import kotlin.coroutines.CoroutineContext
  */
 inline fun CoroutineScope.launchBlock(
     context: CoroutineContext = Dispatchers.Main,
-    noinline block: suspend CoroutineScope.() -> Unit
+    noinline block: suspend CoroutineScope.() -> Unit,
 ) {
     launch(context, block = block)
 }
