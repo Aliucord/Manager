@@ -20,6 +20,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -43,12 +44,19 @@ class HomeScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<HomeModel>()
 
+        // Refresh installations list when the screen changes or activity resumes
+        LifecycleResumeEffect {
+            model.fetchInstallations()
+
+            onPauseOrDispose {}
+        }
+
         var showNetworkWarningDialog by remember { mutableStateOf(false) }
         var showInstallerDialog by remember { mutableStateOf(false) }
 
         val onClickInstall: () -> Unit = remember {
             {
-                if ((model.installations as? InstallsState.Fetched)?.data?.isNotEmpty() == false) {
+                if ((model.installations as? InstallsState.Fetched)?.data?.isNotEmpty() == true) {
                     model.showMultiInstallToast()
                 } else if (model.isNetworkDangerous()) {
                     showNetworkWarningDialog = true

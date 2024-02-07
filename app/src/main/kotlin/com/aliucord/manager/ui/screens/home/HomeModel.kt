@@ -36,7 +36,7 @@ class HomeModel(
         private set
 
     init {
-        fetchInstallations()
+        // fetchInstallations() is called from UI
         fetchSupportedVersion()
     }
 
@@ -94,7 +94,9 @@ class HomeModel(
         return dangerousMobileDataStates.contains(telephony.dataState)
     }
 
-    private fun fetchInstallations() = screenModelScope.launchBlock {
+    fun fetchInstallations() = screenModelScope.launchBlock {
+        installations = InstallsState.Fetching
+
         try {
             val packageManager = application.packageManager
 

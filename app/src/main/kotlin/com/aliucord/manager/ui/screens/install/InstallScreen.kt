@@ -38,8 +38,8 @@ class InstallScreen : Screen {
         val model = getScreenModel<InstallModel>()
         val state = model.state.collectAsState()
 
-        LaunchedEffect(model.state) {
-            if (model.state.value is InstallScreenState.CloseScreen)
+        LaunchedEffect(state.value) {
+            if (state.value is InstallScreenState.CloseScreen)
                 navigator.back(currentActivity = null)
         }
 

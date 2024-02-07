@@ -84,7 +84,7 @@ class InstallModel(
                     mutableState.value = InstallScreenState.Success
 
                     // Wait 20s before returning to Home
-                    delay(20_000)
+                    delay(5000)
                     mutableState.value = InstallScreenState.CloseScreen
                 }
 
