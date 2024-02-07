@@ -99,6 +99,7 @@
   <string name="installer_cached">(Cached)</string>
   <string name="installer_success">Successfully installed Aliucord</string>
   <string name="installer_aborted">Aborted Aliucord installation</string>
+  <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
 
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
@@ -110,28 +111,32 @@
   <string name="install_error_incompatible">Application is incompatible with this device</string>
   <string name="install_error_timeout">Installation timed out</string>
 
-  <string name="install_group_apk_dl">Download APKs</string>
-  <string name="install_group_lib_dl">Download Libraries</string>
-  <string name="install_group_patch">Patch APKs</string>
+  <string name="install_group_prepare">Prepare</string>
+  <string name="install_group_download">Download dependencies</string>
+  <string name="install_group_patch">Patch APK</string>
   <string name="install_group_install">Install APK</string>
 
+  <string name="install_step_fetch_kt_version">Fetching target Discord version</string>
+  <string name="install_step_downgrade_check">Checking for older installations</string>
+  <string name="install_step_dl_kt_apk">Downloading Discord APK</string>
+  <string name="install_step_dl_kotlin">Downloading Kotlin Stdlib</string>
+  <string name="install_step_dl_injector">Downloading Aliucord Injector</string>
+  <string name="install_step_dl_aliuhook">Downloading Aliuhook library</string>
+  <string name="install_step_copy">Copying dependencies</string>
   <string name="install_step_patch_icons">Patching app icons</string>
   <string name="install_step_patch_manifests">Patching apk manifests</string>
-  <string name="install_step_patch_dex">Adding aliucord dex into apk</string>
-  <string name="install_step_patch_libs">Replacing libraries</string>
+  <string name="install_step_add_injector">Adding Aliucord injector</string>
+  <string name="install_step_add_aliuhook">Adding Aliuhook library</string>
+  <string name="install_step_alignment">Aligning APKs</string>
   <string name="install_step_signing">Signing APKs</string>
   <string name="install_step_installing">Installing APKs</string>
+  <string name="install_step_cleanup">Cleaning up</string>
 
-  <string name="install_step_fetch_kt_version">Fetching target Discord version</string>
-  <string name="install_step_dl_kt_apk">Downloading Discord APK</string>
-  <string name="install_step_dl_kotlin">Downloading Kotlin library</string>
-  <string name="install_step_dl_injector">Downloading injector</string>
-  <string name="install_step_dl_aliuhook">Downloading Aliuhook library</string>
-
-  <string name="status_success">Success</string>
-  <string name="status_ongoing">Ongoing</string>
-  <string name="status_failed">Failed</string>
   <string name="status_queued">Queued</string>
+  <string name="status_ongoing">Ongoing</string>
+  <string name="status_skipped">Skipped</string>
+  <string name="status_success">Success</string>
+  <string name="status_failed">Failed</string>
 
   <string name="installer_abort_title">Really exit?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>

@@ -4,416 +4,131 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import android.util.Log
-import androidx.annotation.StringRes
 import androidx.compose.runtime.*
-import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.domain.repository.GithubRepository
-import com.aliucord.manager.installer.util.*
-import com.aliucord.manager.manager.DownloadManager
-import com.aliucord.manager.manager.PreferencesManager
-import com.aliucord.manager.network.utils.getOrThrow
-import com.aliucord.manager.ui.components.installer.InstallStatus
-import com.aliucord.manager.ui.components.installer.InstallStepData
+import com.aliucord.manager.installer.steps.KotlinInstallRunner
+import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.installer.steps.base.Step
+import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.*
-import com.github.diamondminer88.zip.*
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.time.measureTimedValue
 
 class InstallModel(
     private val application: Application,
-    private val downloadManager: DownloadManager,
-    private val preferences: PreferencesManager,
-    private val githubRepository: GithubRepository,
-    private val aliucordMaven: AliucordMavenRepository,
-    private val installData: InstallData,
-) : ScreenModel {
-    private val externalCacheDir = application.externalCacheDir!!
-    private val installationRunning = AtomicBoolean(false)
+    private val paths: PathManager,
+) : StateScreenModel<InstallScreenState>(InstallScreenState.Pending) {
+    private lateinit var startTime: Date
+    private var installJob: Job? = null
 
-    var returnToHome by mutableStateOf(false)
-
-    var isFinished by mutableStateOf(false)
+    var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set
 
-    var stacktrace by mutableStateOf("")
-        private set
-
-    private val debugInfo: String
-        get() = """
-            Aliucord Manager ${BuildConfig.VERSION_NAME}
-            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} ${if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""}
-
-            Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}
-            Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
-
-            Installing Aliucord kt with the ${installData.downloadMethod} apk method
-
-            Failed on: ${currentStep?.name}
-        """.trimIndent()
+    init {
+        restart()
+    }
 
     fun copyDebugToClipboard() {
-        val text = "$debugInfo\n\n$stacktrace"
-            // TODO: remove this useless replace
-            .replace("(\\\\*~_)".toRegex(), "\\$1")
+        val content = (state.value as? InstallScreenState.Failed)?.failureLog
+            ?: return
 
-        application.copyToClipboard(text)
+        application.copyToClipboard(content)
         application.showToast(R.string.action_copied)
     }
 
-    private var debugLogPath by mutableStateOf<String?>(null)
+    fun saveFailureLog() {
+        val failureLog = (state.value as? InstallScreenState.Failed)?.failureLog
+            ?: return
 
-    @SuppressLint("SimpleDateFormat")
-    fun saveDebugToFile() {
-        val name = if (debugLogPath != null) {
-            debugLogPath!!
-        } else {
-            "Aliucord Manager ${SimpleDateFormat("yyyy-MM-dd hh-mm-s a").format(Date())}.log"
-                .also { debugLogPath = it }
-        }
+        @SuppressLint("SimpleDateFormat")
+        val formattedDate = SimpleDateFormat("yyyy-MM-dd hh-mm-s a").format(startTime)
+        val fileName = "Aliucord Manager $formattedDate.log"
 
-        application.saveFile(name, "$debugInfo\n\n$stacktrace")
+        application.saveFile(fileName, failureLog)
     }
 
     fun clearCache() {
-        externalCacheDir.deleteRecursively()
+        paths.clearCache()
         application.showToast(R.string.action_cleared_cache)
     }
 
-    private val installJob = screenModelScope.launch(Dispatchers.Main) {
-        if (installationRunning.getAndSet(true)) {
-            return@launch
-        }
+    fun restart() {
+        installJob?.cancel("Manual cancellation")
+        installSteps = null
 
-        withContext(Dispatchers.IO) {
-            try {
-                installKotlin()
+        startTime = Date()
+        mutableState.value = InstallScreenState.Working
 
-                isFinished = true
-                delay(20000)
-                returnToHome = true
-            } catch (t: Throwable) {
-                stacktrace = Log.getStackTraceString(t)
+        val newInstallJob = screenModelScope.launch {
+            val runner = KotlinInstallRunner()
 
-                Log.e(
-                    BuildConfig.TAG,
-                    "$debugInfo\n\n${Log.getStackTraceString(t)}"
-                )
-            }
+            installSteps = runner.steps.groupBy { it.group }
+                .mapValues { it.value.toUnsafeImmutable() }
+                .toUnsafeImmutable()
 
-            installationRunning.set(false)
-        }
-    }
+            // Intentionally delay to show the state change of the first step in UI when it runs
+            // without it, on a fast internet it just immediately shows as "Success"
+            delay(600)
 
-    private fun clearOldCache(targetVersion: Int) {
-        externalCacheDir.listFiles { f -> f.isDirectory }
-            ?.map { it.name.toIntOrNull() to it }
-            ?.filter { it.first != null }
-            ?.filter { it.first!! in (126021 + 1) until targetVersion }
-            ?.forEach { it.second.deleteRecursively() }
-    }
+            // Execute all the steps and catch any errors
+            when (val error = runner.executeAll()) {
+                // Successfully installed
+                null -> {
+                    mutableState.value = InstallScreenState.Success
 
-    private suspend fun uninstallNewAliucord(targetVersion: Int) {
-        val (_, versionCode) = try {
-            application.getPackageVersion(preferences.packageName)
-        } catch (t: Throwable) {
-            return
-        }
-
-        if (targetVersion < versionCode) {
-            application.uninstallApk(preferences.packageName)
-
-            withContext(Dispatchers.Main) {
-                application.showToast(R.string.installer_uninstall_new)
-            }
-
-            throw Error("Pleaser uninstall newer Aliucord prior to installing")
-        }
-    }
-
-    override fun onDispose() {
-        if (installationRunning.getAndSet(false)) {
-            installJob.cancel("ViewModel cleared")
-        }
-    }
-
-    private suspend fun installKotlin() {
-        steps += listOfNotNull(
-            InstallStep.FETCH_KT_VERSION,
-            InstallStep.DL_KT_APK,
-            InstallStep.DL_KOTLIN,
-            InstallStep.DL_INJECTOR,
-            InstallStep.DL_ALIUHOOK,
-            if (preferences.replaceIcon) InstallStep.PATCH_APP_ICON else null,
-            InstallStep.PATCH_MANIFEST,
-            InstallStep.PATCH_DEX,
-            InstallStep.PATCH_LIBS,
-            InstallStep.SIGN_APK,
-            InstallStep.INSTALL_APK,
-        ).map {
-            it to InstallStepData(it.nameResId, InstallStatus.QUEUED)
-        }
-
-        val dataJson = step(InstallStep.FETCH_KT_VERSION) {
-            githubRepository.getDataJson().getOrThrow()
-        }
-
-        val arch = Build.SUPPORTED_ABIS.first()
-        val cacheDir = externalCacheDir
-        val discordCacheDir = externalCacheDir.resolve(dataJson.versionCode)
-        val patchedDir = discordCacheDir.resolve("patched").also { it.deleteRecursively() }
-
-        dataJson.versionCode.toInt().also {
-            clearOldCache(it)
-            uninstallNewAliucord(it)
-        }
-
-        // Download base.apk
-        val baseApkFile = step(InstallStep.DL_KT_APK) {
-            discordCacheDir.resolve("base.apk").let { file ->
-                if (file.exists()) {
-                    cached = true
-                } else {
-                    downloadManager.downloadDiscordApk(dataJson.versionCode, file)
+                    // Wait 20s before returning to Home
+                    delay(20_000)
+                    mutableState.value = InstallScreenState.CloseScreen
                 }
 
-                file.copyTo(
-                    patchedDir.resolve(file.name),
-                    true
-                )
-            }
-        }
+                else -> {
+                    Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
 
-        val kotlinFile = step(InstallStep.DL_KOTLIN) {
-            cacheDir.resolve("kotlin.dex").also { file ->
-                if (file.exists()) {
-                    cached = true
-                } else {
-                    downloadManager.downloadKotlinDex(file)
+                    mutableState.value = InstallScreenState.Failed(failureLog = getFailureInfo(error))
                 }
             }
         }
 
-        // Download the injector dex
-        val injectorFile = step(InstallStep.DL_INJECTOR) {
-            cacheDir.resolve("injector-${dataJson.aliucordHash}.dex").also { file ->
-                if (file.exists()) {
-                    cached = true
-                } else {
-                    downloadManager.downloadKtInjector(file)
-                }
-            }
-        }
+        newInstallJob.invokeOnCompletion { error ->
+            when (error) {
+                // Successfully executed, already handled above
+                null -> {}
 
-        // Download Aliuhook aar
-        val aliuhookAarFile = step(InstallStep.DL_ALIUHOOK) {
-            // Fetch aliuhook version
-            val aliuhookVersion = aliucordMaven.getAliuhookVersion().getOrThrow()
-
-            // Download aliuhook aar
-            cacheDir.resolve("aliuhook-${aliuhookVersion}.aar").also { file ->
-                if (file.exists()) {
-                    cached = true
-                } else {
-                    downloadManager.downloadAliuhook(aliuhookVersion, file)
-                }
-            }
-        }
-
-        // Replace app icons
-        if (preferences.replaceIcon) {
-            step(InstallStep.PATCH_APP_ICON) {
-                ZipWriter(baseApkFile, true).use { baseApk ->
-                    val foregroundIcon = application.assets.open("icons/ic_logo_foreground.png")
-                        .use { it.readBytes() }
-                    val squareIcon = application.assets.open("icons/ic_logo_square.png")
-                        .use { it.readBytes() }
-
-                    val replacements = mapOf(
-                        arrayOf("MbV.png", "kbF.png", "_eu.png", "EtS.png") to foregroundIcon,
-                        arrayOf("_h_.png", "9MB.png", "Dy7.png", "kC0.png", "oEH.png", "RG0.png", "ud_.png", "W_3.png") to squareIcon
-                    )
-
-                    for ((files, replacement) in replacements) {
-                        for (file in files) {
-                            val path = "res/$file"
-                            baseApk.deleteEntry(path)
-                            baseApk.writeEntry(path, replacement)
-                        }
-                    }
-                }
-            }
-        }
-
-        // Patch manifests
-        step(InstallStep.PATCH_MANIFEST) {
-            val manifest = ZipReader(baseApkFile)
-                .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
-                ?: throw IllegalStateException("No manifest in base apk")
-
-            ZipWriter(baseApkFile, true).use { zip ->
-                val patchedManifestBytes = ManifestPatcher.patchManifest(
-                    manifestBytes = manifest,
-                    packageName = preferences.packageName,
-                    appName = preferences.appName,
-                    debuggable = preferences.debuggable,
-                )
-
-                zip.deleteEntry("AndroidManifest.xml")
-                zip.writeEntry("AndroidManifest.xml", patchedManifestBytes)
-            }
-        }
-
-        // Re-order dex files
-        val dexCount = step(InstallStep.PATCH_DEX) {
-            val (dexCount, firstDexBytes) = ZipReader(baseApkFile).use { zip ->
-                Pair(
-                    // Find the amount of .dex files in apk
-                    zip.entryNames.count { it.endsWith(".dex") },
-
-                    // Get the first dex
-                    zip.openEntry("classes.dex")?.read()
-                        ?: throw IllegalStateException("No classes.dex in base apk")
-                )
-            }
-
-            ZipWriter(baseApkFile, true).use { zip ->
-                // Move copied dex to end of dex list
-                zip.deleteEntry("classes.dex")
-                zip.writeEntry("classes${dexCount + 1}.dex", firstDexBytes)
-
-                // Add Kotlin & Aliucord's dex
-                zip.writeEntry("classes.dex", injectorFile.readBytes())
-                zip.writeEntry("classes${dexCount + 2}.dex", kotlinFile.readBytes())
-            }
-
-            dexCount
-        }
-
-        // Replace libs
-        step(InstallStep.PATCH_LIBS) {
-            ZipWriter(baseApkFile, true).use { baseApk ->
-                ZipReader(aliuhookAarFile).use { aliuhookAar ->
-                    for (libFile in arrayOf("libaliuhook.so", "libc++_shared.so", "liblsplant.so")) {
-                        val bytes = aliuhookAar.openEntry("jni/$arch/$libFile")?.read()
-                            ?: throw IllegalStateException("Failed to read $libFile from aliuhook aar")
-
-                        baseApk.writeEntry("lib/$arch/$libFile", bytes)
-                    }
-
-                    // Add Aliuhook's dex file
-                    val aliuhookDex = aliuhookAar.openEntry("classes.dex")?.read()
-                        ?: throw IllegalStateException("No classes.dex in aliuhook aar")
-
-                    baseApk.writeEntry("classes${dexCount + 3}.dex", aliuhookDex)
-                }
-            }
-        }
-
-        step(InstallStep.SIGN_APK) {
-            // Align resources.arsc due to targeting api 30 for silent install
-            if (Build.VERSION.SDK_INT >= 31) {
-                val bytes = ZipReader(baseApkFile).use {
-                    if (it.entryNames.contains("resources.arsc")) {
-                        it.openEntry("resources.arsc")?.read()
-                    } else {
-                        null
-                    }
+                // Job was cancelled before being able to finish setting state
+                is CancellationException -> {
+                    Log.w(BuildConfig.TAG, "Installation was cancelled before completing", error)
+                    mutableState.value = InstallScreenState.CloseScreen
                 }
 
-                ZipWriter(baseApkFile, true).use {
-                    it.deleteEntry("resources.arsc", true)
-                    it.writeEntry("resources.arsc", bytes, ZipCompression.NONE, 4096)
-                }
-            }
-
-            Signer.signApk(baseApkFile)
-        }
-
-        step(InstallStep.INSTALL_APK) {
-            application.installApks(silent = !preferences.devMode, baseApkFile)
-
-            if (!preferences.keepPatchedApks) {
-                patchedDir.deleteRecursively()
+                // This should never happen, all install errors are caught
+                else -> throw error
             }
         }
+
+        installJob = newInstallJob
     }
 
-    private inline fun <T> step(step: InstallStep, block: InstallStepData.() -> T): T {
-        steps[step]!!.status = InstallStatus.ONGOING
-        currentStep = step
+    private fun getFailureInfo(stacktrace: Throwable): String {
+        val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
+        val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unknown"
 
-        try {
-            val value = measureTimedValue { block.invoke(steps[step]!!) }
-            val millis = value.duration.inWholeMilliseconds
+        val header = """
+            Aliucord Manager v${BuildConfig.VERSION_NAME}
+            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
 
-            // Add delay for human psychology + groups are switched too fast
-            if (!preferences.devMode && millis < 1000) {
-                Thread.sleep(1000 - millis)
-            }
+            Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}
+            Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
+            Device: ${Build.MANUFACTURER} - ${Build.MODEL} (${Build.DEVICE})
+            SOC: $soc
+        """.trimIndent()
 
-            steps[step]!!.apply {
-                duration = millis.div(1000f)
-                status = InstallStatus.SUCCESSFUL
-            }
-
-            currentStep = step
-            return value.value
-        } catch (t: Throwable) {
-            steps[step]!!.status = InstallStatus.UNSUCCESSFUL
-
-            currentStep = step
-            throw t
-        }
-    }
-
-    enum class InstallStepGroup(
-        @StringRes
-        val nameResId: Int,
-    ) {
-        APK_DL(R.string.install_group_apk_dl),
-        LIB_DL(R.string.install_group_lib_dl),
-        PATCHING(R.string.install_group_patch),
-        INSTALLING(R.string.install_group_install)
-    }
-
-    // Order matters, define it in the same order as it is patched
-    enum class InstallStep(
-        val group: InstallStepGroup,
-
-        @StringRes
-        val nameResId: Int,
-    ) {
-        // Kotlin
-        FETCH_KT_VERSION(InstallStepGroup.APK_DL, R.string.install_step_fetch_kt_version),
-        DL_KT_APK(InstallStepGroup.APK_DL, R.string.install_step_dl_kt_apk),
-        DL_KOTLIN(InstallStepGroup.LIB_DL, R.string.install_step_dl_kotlin),
-        DL_INJECTOR(InstallStepGroup.LIB_DL, R.string.install_step_dl_injector),
-        DL_ALIUHOOK(InstallStepGroup.LIB_DL, R.string.install_step_dl_aliuhook),
-
-        // Common
-        PATCH_APP_ICON(InstallStepGroup.PATCHING, R.string.install_step_patch_icons),
-        PATCH_MANIFEST(InstallStepGroup.PATCHING, R.string.install_step_patch_manifests),
-        PATCH_DEX(InstallStepGroup.PATCHING, R.string.install_step_patch_dex),
-        PATCH_LIBS(InstallStepGroup.PATCHING, R.string.install_step_patch_libs),
-        SIGN_APK(InstallStepGroup.INSTALLING, R.string.install_step_signing),
-        INSTALL_APK(InstallStepGroup.INSTALLING, R.string.install_step_installing);
-    }
-
-    var currentStep: InstallStep? by mutableStateOf(null)
-    val steps = mutableStateMapOf<InstallStep, InstallStepData>()
-
-    // TODO: cache this instead
-    fun getSteps(group: InstallStepGroup): List<InstallStepData> {
-        return steps
-            .filterKeys { it.group == group }.entries
-            .sortedBy { it.key.ordinal }
-            .map { it.value }
+        return header + "\n\n" + Log.getStackTraceString(stacktrace)
     }
 }
