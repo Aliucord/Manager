@@ -42,7 +42,7 @@ fun InstalledItemCard(
             )
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier.padding(20.dp),
         ) {
             Row(
@@ -54,7 +54,7 @@ fun InstalledItemCard(
                     painter = data.icon,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(34.dp)
                         .clip(CircleShape),
                 )
 
