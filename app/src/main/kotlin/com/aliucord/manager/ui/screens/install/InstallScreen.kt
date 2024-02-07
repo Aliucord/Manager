@@ -43,8 +43,20 @@ class InstallScreen : Screen {
                 navigator.back(currentActivity = null)
         }
 
-        // Exit warning dialog (cancel itself if install process state changes)
+        // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
         var showAbortWarning by remember(model.state.collectAsState()) { mutableStateOf(false) }
+
+        // Only show exit warning if currently working
+        val onTryExit: () -> Unit = remember {
+            {
+                if (state.value == InstallScreenState.Working) {
+                    showAbortWarning = true
+                } else {
+                    navigator.back(currentActivity = null)
+                }
+            }
+        }
+
         if (showAbortWarning) {
             InstallerAbortDialog(
                 onDismiss = { showAbortWarning = false },
@@ -54,9 +66,7 @@ class InstallScreen : Screen {
                 },
             )
         } else {
-            BackHandler {
-                showAbortWarning = true
-            }
+            BackHandler(onBack = onTryExit)
         }
 
         Scaffold(
@@ -64,10 +74,7 @@ class InstallScreen : Screen {
                 TopAppBar(
                     title = { Text(stringResource(R.string.installer)) },
                     navigationIcon = {
-                        IconButton(
-                            // TODO: only show warning when in progress
-                            onClick = { showAbortWarning = true },
-                        ) {
+                        IconButton(onClick = onTryExit) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_back),
                                 contentDescription = stringResource(R.string.navigation_back),
