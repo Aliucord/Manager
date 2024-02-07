@@ -80,6 +80,8 @@
   <string name="contributors_commit_title">§name§%1$s§ §middle§authored§ §commit§%2$s§</string>
 
   <string name="network_load_fail">Failed to load</string>
+  <string name="network_warning_title">Metered network</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
 
   <string name="label_pkg_name">Package:</string>
   <string name="label_version_discord">Discord version:</string>

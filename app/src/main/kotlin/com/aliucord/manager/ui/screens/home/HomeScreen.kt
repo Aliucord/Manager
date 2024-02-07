@@ -27,6 +27,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.ProjectHeader
 import com.aliucord.manager.ui.components.dialogs.InstallerDialog
+import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.home.components.*
 import com.aliucord.manager.ui.screens.install.InstallScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
@@ -42,7 +43,33 @@ class HomeScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<HomeModel>()
 
+        var showNetworkWarningDialog by remember { mutableStateOf(false) }
         var showInstallerDialog by remember { mutableStateOf(false) }
+
+        val onClickInstall: () -> Unit = remember {
+            {
+                if ((model.installations as? InstallsState.Fetched)?.data?.isNotEmpty() == false) {
+                    model.showMultiInstallToast()
+                } else if (model.isNetworkDangerous()) {
+                    showNetworkWarningDialog = true
+                } else {
+                    showInstallerDialog = true
+                }
+            }
+        }
+
+        if (showNetworkWarningDialog) {
+            NetworkWarningDialog(
+                onConfirm = {
+                    showNetworkWarningDialog = false
+                    showInstallerDialog = true
+                },
+                onDismiss = {
+                    showNetworkWarningDialog = false
+                },
+            )
+        }
+
         if (showInstallerDialog) {
             InstallerDialog(
                 onDismiss = { showInstallerDialog = false },
@@ -72,9 +99,7 @@ class HomeScreen : Screen {
 
                 item(key = "ADD_INSTALL_BUTTON") {
                     InstallButton(
-                        // TODO: install options screen to configure pkg name
-                        enabled = (model.installations as? InstallsState.Fetched)?.data?.isEmpty() ?: false,
-                        onClick = { showInstallerDialog = true },
+                        onClick = onClickInstall,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 10.dp)
