@@ -46,9 +46,9 @@ class HomeScreen : Screen {
         if (showInstallerDialog) {
             InstallerDialog(
                 onDismiss = { showInstallerDialog = false },
-                onConfirm = { data ->
+                onConfirm = {
                     showInstallerDialog = false
-                    navigator.push(InstallScreen(data))
+                    navigator.push(InstallScreen())
                 }
             )
         }

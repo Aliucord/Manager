@@ -59,6 +59,7 @@ class ManagerApplication : Application() {
             modules(module {
                 single { providePreferences() }
                 single { provideDownloadManager() }
+                single { providePathManager() }
             })
         }
     }

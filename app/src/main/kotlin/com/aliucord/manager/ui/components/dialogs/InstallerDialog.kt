@@ -5,29 +5,18 @@
 
 package com.aliucord.manager.ui.components.dialogs
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import com.aliucord.manager.ui.screens.install.InstallData
-
-enum class DownloadMethod { DOWNLOAD }
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 
 @Composable
 fun InstallerDialog(
     onDismiss: () -> Unit,
-    onConfirm: (InstallData) -> Unit,
+    onConfirm: () -> Unit,
 ) {
-    val downloadMethod by rememberSaveable { mutableStateOf(DownloadMethod.DOWNLOAD) }
-
-    fun triggerConfirm() {
-        onDismiss()
-        onConfirm(
-            InstallData(downloadMethod)
-        )
-    }
-
-    SideEffect(::triggerConfirm)
+    SideEffect(onConfirm)
 
     // TODO: local install option
+    // TODO: mobile data warning
 
     // Dialog(
     //     onDismissRequest = onDismiss,

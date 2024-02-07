@@ -8,9 +8,9 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installer.util.uninstallApk
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.util.getPackageVersion

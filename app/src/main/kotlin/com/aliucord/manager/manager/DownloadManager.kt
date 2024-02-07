@@ -4,51 +4,37 @@ import android.app.Application
 import android.app.DownloadManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.network.service.AliucordGithubService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
- * Handle downloading remote urls to a file through the system [DownloadManager].
+ * Handle downloading remote urls to a path through the system [DownloadManager].
  */
 class DownloadManager(application: Application) {
     private val downloadManager = application.getSystemService<DownloadManager>()
         ?: throw IllegalStateException("DownloadManager service is not available")
 
-    // Discord APK downloading
-    suspend fun downloadDiscordApk(version: String, out: File): Result =
-        download("${BuildConfig.BACKEND_URL}/download/discord?v=$version", out)
-
-    // Aliucord Kotlin downloads
-    suspend fun downloadKtInjector(out: File): Result =
-        download(AliucordGithubService.KT_INJECTOR_URL, out)
-
-    suspend fun downloadAliuhook(version: String, out: File): Result =
-        download(AliucordMavenRepository.getAliuhookUrl(version), out)
-
-    suspend fun downloadKotlinDex(out: File): Result =
-        download(AliucordGithubService.KOTLIN_DEX_URL, out)
-
     /**
      * Start a cancellable download with the system [DownloadManager].
      * If the current [CoroutineScope] is cancelled, then the system download will be cancelled within 100ms.
      * @param url Remote src url
-     * @param out Target path to download to
-     * @param onProgressUpdate Download progress update in a `[0,1]` range, and if null then the download is currently in a pending state.
-     *                         This is called every 100ms, and should not perform long-running tasks.
+     * @param out Target path to download to. It is assumed that the application has write permissions to this path.
+     * @param onProgressUpdate An optional [ProgressListener]
      */
     suspend fun download(
         url: String,
         out: File,
-        onProgressUpdate: ((Float?) -> Unit)? = null,
+        onProgressUpdate: ProgressListener? = null,
     ): Result {
+        onProgressUpdate?.onUpdate(null)
         out.parentFile?.mkdirs()
 
         // Create and start a download in the system DownloadManager
@@ -56,10 +42,15 @@ class DownloadManager(application: Application) {
             .setTitle("Aliucord Manager")
             .setDescription("Downloading ${out.name}...")
             .setDestinationUri(Uri.fromFile(out))
-            .setAllowedOverMetered(true)
-            .setAllowedOverRoaming(true)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
             .addRequestHeader("User-Agent", "Aliucord Manager/${BuildConfig.VERSION_NAME}")
+            .apply {
+                // Disable gzip on emulator due to https compression bug
+                if (Build.FINGERPRINT.contains("emulator")) {
+                    Log.d(BuildConfig.TAG, "Disabling DownloadManager compression")
+                    addRequestHeader("Accept-Encoding", null)
+                }
+            }
             .let(downloadManager::enqueue)
 
         // Repeatedly request download state until it is finished
@@ -90,13 +81,13 @@ class DownloadManager(application: Application) {
 
                 when (status) {
                     DownloadManager.STATUS_PENDING, DownloadManager.STATUS_PAUSED ->
-                        onProgressUpdate?.invoke(null)
+                        onProgressUpdate?.onUpdate(null)
 
                     DownloadManager.STATUS_RUNNING ->
-                        onProgressUpdate?.invoke(getDownloadProgress(cursor))
+                        onProgressUpdate?.onUpdate(getDownloadProgress(cursor))
 
                     DownloadManager.STATUS_SUCCESSFUL ->
-                        return Result.Success
+                        return Result.Success(out)
 
                     DownloadManager.STATUS_FAILED -> {
                         val reasonColumn = cursor.getColumnIndex(DownloadManager.COLUMN_REASON)
@@ -127,10 +118,26 @@ class DownloadManager(application: Application) {
     }
 
     /**
+     * A callback executed from a coroutine called every 100ms in order to provide
+     * info about the current download. This should not perform long-running tasks as the delay will be offset.
+     */
+    fun interface ProgressListener {
+        /**
+         * @param progress The current download progress in a `[0,1]` range. If null, then the download is either
+         *                 paused, pending, or waiting to retry.
+         */
+        fun onUpdate(progress: Float?)
+    }
+
+    /**
      * The state of a download after execution has been completed and the system-level [DownloadManager] has been cleaned up.
      */
     sealed interface Result {
-        data object Success : Result
+        /**
+         * The download succeeded successfully.
+         * @param file The path that the download was downloaded to.
+         */
+        data class Success(val file: File) : Result
 
         /**
          * This download was interrupted and the in-progress file has been deleted.
