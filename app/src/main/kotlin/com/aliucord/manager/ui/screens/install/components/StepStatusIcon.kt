@@ -1,8 +1,10 @@
 package com.aliucord.manager.ui.screens.install.components
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -14,9 +16,14 @@ import androidx.compose.ui.unit.Dp
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.base.StepState
 import kotlin.math.floor
+import kotlin.math.roundToInt
 
 @Composable
-fun StepStatusIcon(status: StepState, size: Dp) {
+fun StepStatusIcon(
+    status: StepState,
+    size: Dp,
+    stepProgress: Float = -1f,
+) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
     val context = LocalContext.current
 
@@ -28,12 +35,31 @@ fun StepStatusIcon(status: StepState, size: Dp) {
             modifier = Modifier.size(size)
         )
 
-        StepState.Running -> CircularProgressIndicator(
-            strokeWidth = strokeWidth,
-            modifier = Modifier
-                .size(size)
-                .semantics { contentDescription = context.getString(R.string.status_ongoing) }
-        )
+        StepState.Running -> {
+            val animatedProgress by animateFloatAsState(
+                targetValue = stepProgress,
+                animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
+                label = "Progress",
+            )
+
+            if (stepProgress > .1f) {
+                CircularProgressIndicator(
+                    progress = { animatedProgress },
+                    strokeWidth = strokeWidth,
+                    modifier = Modifier
+                        .size(size)
+                        .semantics { contentDescription = "${(stepProgress * 100).roundToInt()}%" },
+                )
+            } else {
+                // Infinite spinner
+                CircularProgressIndicator(
+                    strokeWidth = strokeWidth,
+                    modifier = Modifier
+                        .size(size)
+                        .semantics { contentDescription = context.getString(R.string.status_ongoing) },
+                )
+            }
+        }
 
         StepState.Success -> Icon(
             painter = painterResource(R.drawable.ic_check_circle),

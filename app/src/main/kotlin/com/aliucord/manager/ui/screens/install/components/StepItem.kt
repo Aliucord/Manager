@@ -22,7 +22,11 @@ fun StepItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier,
     ) {
-        StepStatusIcon(step.state, size = 18.dp)
+        StepStatusIcon(
+            size = 18.dp,
+            status = step.state,
+            stepProgress = step.progress,
+        )
 
         Text(
             text = stringResource(step.localizedName),
