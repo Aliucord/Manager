@@ -3,6 +3,7 @@
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">A modification for the Discord Android App</string>
   <string name="aliucord">Aliucord</string>
+  <string name="discord">Discord</string>
   <string name="github">GitHub</string>
   <string name="support_server">Support Server</string>
   <string name="installer">Installer</string>
@@ -11,6 +12,7 @@
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>
   <string name="action_dismiss">Dismiss</string>
+  <string name="action_add_install">Add Installation</string>
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
   <string name="action_launch">Launch</string>
@@ -24,6 +26,7 @@
   <string name="action_copied">Copied!</string>
   <string name="action_cleared_cache">Cleared cache!</string>
   <string name="action_exit_anyways">Exit anyways</string>
+  <string name="action_open_info">Open info</string>
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
@@ -62,6 +65,8 @@
   <string name="contributors">Contributors</string>
   <string name="contributors_contributions">%o contributions</string>
   <string name="network_load_fail">Failed to load</string>
+  <string name="network_warning_title">Metered network</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="version_supported">Supported version:</string>
   <string name="version_none">None</string>
   <string name="version_stable">Stable</string>

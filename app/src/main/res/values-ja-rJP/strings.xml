@@ -3,15 +3,17 @@
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">AndroidのDiscord Mod</string>
   <string name="aliucord">Aliucord</string>
+  <string name="discord">Discord</string>
   <string name="github">GitHub</string>
   <string name="support_server">サポートサーバー</string>
-    <string name="installer">インストーラー</string>
+  <string name="installer">インストーラー</string>
   <string name="action_cancel">Cancel</string>
   <string name="action_retry">再試行</string>
   <string name="action_apply">適用</string>
   <string name="action_confirm">確定</string>
   <string name="action_dismiss">閉じる</string>
-    <string name="action_update">アップデート</string>
+  <string name="action_add_install">Add Installation</string>
+  <string name="action_update">アップデート</string>
   <string name="action_clear">クリア</string>
   <string name="action_launch">開く</string>
   <string name="action_uninstall">アンインストール</string>
@@ -24,6 +26,7 @@
   <string name="action_copied">コピーしました！</string>
   <string name="action_cleared_cache">キャッシュを消去しました！</string>
   <string name="action_exit_anyways">Exit anyways</string>
+  <string name="action_open_info">Open info</string>
   <string name="permissions_grant_title">権限を付与</string>
   <string name="permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
 ~/Aliucordに共有データが保存されるため、Managerを機能させるためには権限が必要です。</string>
@@ -58,13 +61,15 @@
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">プラグイン処理中にエラーが発生しました！</string>
   <string name="navigation_back">戻る</string>
-    <string name="navigation_about">概要</string>
+  <string name="navigation_about">概要</string>
   <string name="navigation_settings">設定</string>
   <string name="contributors">貢献者</string>
   <string name="contributors_contributions">%o の貢献</string>
-    <string name="network_load_fail">読み込みに失敗しました</string>
+  <string name="network_load_fail">読み込みに失敗しました</string>
+  <string name="network_warning_title">Metered network</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="version_supported">サポートされているバージョン:</string>
-    <string name="version_none">なし</string>
+  <string name="version_none">なし</string>
   <string name="version_stable">安定版</string>
   <string name="version_beta">ベータ版</string>
   <string name="version_alpha">アルファ版</string>
@@ -73,7 +78,7 @@
   <string name="installer_save_file">ファイルに保存</string>
   <string name="installer_file_save_success">%sに保存しました</string>
   <string name="installer_file_save_failed">%sの保存に失敗しました</string>
-    <string name="installer_success">Aliucordのインストールに成功しました</string>
+  <string name="installer_success">Aliucordのインストールに成功しました</string>
   <string name="installer_aborted">Aliucordのインストールが中断されました</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">続行するには現在のバージョンのAliucordをアンインストールしてください！</string>
@@ -96,7 +101,7 @@
   <string name="install_step_dl_injector">インジェクターをダウンロード中</string>
   <string name="install_step_dl_aliuhook">Aliuhookライブラリをダウンロード中</string>
   <string name="install_step_copy">Copying dependencies</string>
-    <string name="install_step_patch_manifests">APKマニフェストにパッチを適用</string>
+  <string name="install_step_patch_manifests">APKマニフェストにパッチを適用</string>
   <string name="install_step_add_injector">Adding Aliucord injector</string>
   <string name="install_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="install_step_alignment">Aligning APKs</string>

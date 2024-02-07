@@ -3,6 +3,7 @@
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">Uma modificação do aplicativo do Discord para Android</string>
   <string name="aliucord">Aliucord</string>
+  <string name="discord">Discord</string>
   <string name="github">GitHub</string>
   <string name="support_server">Servidor de Suporte</string>
   <string name="installer">Instalador</string>
@@ -11,6 +12,7 @@
   <string name="action_apply">Aplicar</string>
   <string name="action_confirm">Confirmar</string>
   <string name="action_dismiss">Dispensar</string>
+  <string name="action_add_install">Add Installation</string>
   <string name="action_update">Atualização</string>
   <string name="action_clear">Limpar</string>
   <string name="action_launch">Iniciar</string>
@@ -24,6 +26,7 @@
   <string name="action_copied">Copiado!</string>
   <string name="action_cleared_cache">Cachê limpo!</string>
   <string name="action_exit_anyways">Sair mesmo assim</string>
+  <string name="action_open_info">Open info</string>
   <string name="permissions_grant_title">Conceder permissões</string>
   <string name="permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
@@ -62,6 +65,8 @@
   <string name="contributors">Colaboradores</string>
   <string name="contributors_contributions">%o contribuições</string>
   <string name="network_load_fail">Falha ao carregar</string>
+  <string name="network_warning_title">Metered network</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="version_supported">Versões suportadas:</string>
   <string name="version_none">Nenhum</string>
   <string name="version_stable">Estável</string>
