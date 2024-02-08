@@ -62,7 +62,7 @@ fun StepGroupCard(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            StepStatusIcon(groupState, 24.dp)
+            StepStateIcon(groupState, 24.dp)
 
             Text(text = name)
 

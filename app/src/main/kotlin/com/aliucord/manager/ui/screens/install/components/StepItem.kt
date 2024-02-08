@@ -22,9 +22,9 @@ fun StepItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier,
     ) {
-        StepStatusIcon(
+        StepStateIcon(
             size = 18.dp,
-            status = step.state,
+            state = step.state,
             stepProgress = step.progress,
         )
 
