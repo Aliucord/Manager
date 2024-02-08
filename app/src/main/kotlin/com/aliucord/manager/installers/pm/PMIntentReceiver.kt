@@ -10,7 +10,13 @@ import com.aliucord.manager.util.showToast
 
 class PMIntentReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val installerResult = when (val statusCode = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)) {
+        val realSessionId = intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1)
+        val expectedSessionId = intent.getIntExtra(EXTRA_SESSION_ID, -2)
+
+        if (realSessionId != expectedSessionId) return
+
+        val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)
+        val installerResult = when (status) {
             -999 -> {
                 // Invalid intent
                 null
@@ -38,23 +44,30 @@ class PMIntentReceiver : BroadcastReceiver() {
             }
 
             else -> {
-                Log.w(BuildConfig.TAG, "Install failed with error code $statusCode")
+                Log.w(BuildConfig.TAG, "Install failed with error code $status")
 
-                if (statusCode <= PackageInstaller.STATUS_SUCCESS)
+                if (status <= PackageInstaller.STATUS_SUCCESS)
                     null // Unknown status code (not an error)
                 else {
-                    PMInstallerError(statusCode).also {
+                    PMInstallerError(status).also {
                         context.showToast(it.localizedReason)
                     }
                 }
             }
         }
 
-        if (installerResult != null) {
+        // Forward result to PMResultReceiver if relaying is enabled and have a real result
+        if (installerResult != null && intent.getBooleanExtra(EXTRA_RELAY_ENABLED, false)) {
             val relayIntent = Intent(PMResultReceiver.ACTION_RECEIVE_RESULT)
                 .putExtra(PMResultReceiver.EXTRA_RESULT, installerResult)
+                .putExtra(PMResultReceiver.EXTRA_SESSION_ID, realSessionId)
 
             context.sendBroadcast(relayIntent)
         }
+    }
+
+    companion object {
+        const val EXTRA_RELAY_ENABLED = "relayEnabled"
+        const val EXTRA_SESSION_ID = "expectedSessionId"
     }
 }

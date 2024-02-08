@@ -89,7 +89,7 @@
   <string name="installer_file_save_success">Saved to %s</string>
   <string name="installer_file_save_failed">Failed to save %s</string>
   <string name="installer_success">Successfully installed Aliucord</string>
-  <string name="installer_aborted">Aborted Aliucord installation</string>
+  <string name="installer_aborted">Cancelled Aliucord installation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
 

@@ -8,6 +8,8 @@ import android.content.pm.*
 import android.content.pm.PackageInstaller.SessionParams
 import android.os.Build
 import android.os.Process
+import android.util.Log
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.installers.Installer
 import com.aliucord.manager.installers.InstallerResult
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -19,9 +21,51 @@ import java.io.File
 class PMInstaller(
     val context: Context,
 ) : Installer {
-    override fun install(apks: List<File>, silent: Boolean) {
-        val packageInstaller = context.packageManager.packageInstaller
+    init {
+        val pkgInstaller = context.packageManager.packageInstaller
 
+        // Destroy all open sessions that may have not been previously cleaned up
+        for (session in pkgInstaller.mySessions) {
+            Log.d(BuildConfig.TAG, "Deleting PackageInstaller session ${session.sessionId}")
+            pkgInstaller.abandonSession(session.sessionId)
+        }
+    }
+
+    override fun install(apks: List<File>, silent: Boolean) {
+        startInstall(createInstallSession(silent), apks, false)
+    }
+
+    override suspend fun waitInstall(apks: List<File>, silent: Boolean): InstallerResult {
+        val sessionId = createInstallSession(silent)
+
+        return suspendCancellableCoroutine { continuation ->
+            // This will receive parsed data forwarded by PMIntentReceiver
+            val relayReceiver = PMResultReceiver(sessionId, continuation)
+
+            // Unregister PMResultReceiver when this coroutine finishes
+            // additionally, cancel the install session entirely
+            continuation.invokeOnCancellation {
+                context.unregisterReceiver(relayReceiver)
+                context.packageManager.packageInstaller.abandonSession(sessionId)
+            }
+
+            @SuppressLint("UnspecifiedRegisterReceiverFlag")
+            if (Build.VERSION.SDK_INT >= 33) {
+                context.registerReceiver(relayReceiver, relayReceiver.filter, Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                context.registerReceiver(relayReceiver, relayReceiver.filter)
+            }
+
+            startInstall(sessionId, apks, relay = true)
+        }
+    }
+
+    /**
+     * Starts a [PackageInstaller] session with the necessary params.
+     * @param silent If this is an update, then the update will occur without user interaction.
+     * @return The open install session id.
+     */
+    private fun createInstallSession(silent: Boolean): Int {
         val params = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
             setInstallLocation(PackageInfo.INSTALL_LOCATION_AUTO)
 
@@ -46,17 +90,27 @@ class PMInstaller(
             }
         }
 
+        return context.packageManager.packageInstaller.createSession(params)
+    }
+
+    /**
+     * Start a [PackageInstaller] session for installation.
+     * @param apks The apks to install
+     * @param relay Whether to use the [PMResultReceiver] flow.
+     */
+    private fun startInstall(sessionId: Int, apks: List<File>, relay: Boolean) {
         val callbackIntent = Intent(context, PMIntentReceiver::class.java)
+            .putExtra(PMIntentReceiver.EXTRA_SESSION_ID, sessionId)
+            .putExtra(PMIntentReceiver.EXTRA_RELAY_ENABLED, relay)
+
         val pendingIntent = PendingIntent.getBroadcast(
             /* context = */ context,
             /* requestCode = */ 0,
             /* intent = */ callbackIntent,
-            /* flags = */ PendingIntent.FLAG_MUTABLE,
+            /* flags = */ PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
-        val sessionId = packageInstaller.createSession(params)
-
-        packageInstaller.openSession(sessionId).use { session ->
+        context.packageManager.packageInstaller.openSession(sessionId).use { session ->
             val bufferSize = 1 * 1024 * 1024 // 1MiB
 
             for (apk in apks) {
@@ -67,24 +121,6 @@ class PMInstaller(
             }
 
             session.commit(pendingIntent.intentSender)
-        }
-    }
-
-    override suspend fun waitInstall(apks: List<File>, silent: Boolean): InstallerResult {
-        return suspendCancellableCoroutine { continuation ->
-            // This will receive parsed data forwarded by PMIntentReceiver
-            val relayReceiver = PMResultReceiver(continuation)
-
-            try {
-                @SuppressLint("UnspecifiedRegisterReceiverFlag")
-                if (Build.VERSION.SDK_INT >= 33) {
-                    context.registerReceiver(relayReceiver, relayReceiver.filter, Context.RECEIVER_NOT_EXPORTED)
-                } else {
-                    context.registerReceiver(relayReceiver, relayReceiver.filter)
-                }
-            } finally {
-                context.unregisterReceiver(relayReceiver)
-            }
         }
     }
 }
