@@ -82,7 +82,6 @@
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Por favor, desinstale a versão atual do Aliucord para continuar!</string>
   <string name="install_error_unknown">Falha ao instalar (Razão desconhecida)</string>
-  <string name="install_error_code">Falha ao instalar (código do erro %d)</string>
   <string name="install_error_blocked">A instalação foi bloqueada</string>
   <string name="install_error_invalid">Um ou mais APKs eram inválidos ou corruptos</string>
   <string name="install_error_conflict">Conflitos com um app existente, geralmente devido a assinaturas incompatíveis</string>

@@ -82,7 +82,6 @@
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">請解除安裝目前版本的 Aliucord 以繼續！</string>
   <string name="install_error_unknown">安裝失敗（未知的原因）</string>
-  <string name="install_error_code">安裝失敗（錯誤代碼 %d）</string>
   <string name="install_error_blocked">安裝已被阻止</string>
   <string name="install_error_invalid">一個或多個 apk 損壞或無效</string>
   <string name="install_error_conflict">與現有應用程式衝突，通常是因為簽署名不相符造成的</string>
