@@ -25,10 +25,10 @@ class ReplaceIconStep : Step(), KoinComponent {
     override val localizedName = R.string.setting_replace_icon
 
     override suspend fun execute(container: StepRunner) {
-        if (!prefs.replaceIcon) {
-            state = StepState.Skipped
-            return
-        }
+        // if (!prefs.replaceIcon) {
+        //     state = StepState.Skipped
+        //     return
+        // }
 
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
 

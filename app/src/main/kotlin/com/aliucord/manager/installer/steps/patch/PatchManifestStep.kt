@@ -27,16 +27,16 @@ class PatchManifestStep : Step(), KoinComponent {
             .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
             ?: throw IllegalArgumentException("No manifest found in APK")
 
-        val patchedManifest = ManifestPatcher.patchManifest(
-            manifestBytes = manifest,
-            packageName = prefs.packageName,
-            appName = prefs.appName,
-            debuggable = prefs.debuggable,
-        )
-
-        ZipWriter(apk, /* append = */ true).use {
-            it.deleteEntry("AndroidManifest.xml")
-            it.writeEntry("AndroidManifest.xml", patchedManifest)
-        }
+        // val patchedManifest = ManifestPatcher.patchManifest(
+        //     manifestBytes = manifest,
+        //     packageName = prefs.packageName,
+        //     appName = prefs.appName,
+        //     debuggable = prefs.debuggable,
+        // )
+        //
+        // ZipWriter(apk, /* append = */ true).use {
+        //     it.deleteEntry("AndroidManifest.xml")
+        //     it.writeEntry("AndroidManifest.xml", patchedManifest)
+        // }
     }
 }

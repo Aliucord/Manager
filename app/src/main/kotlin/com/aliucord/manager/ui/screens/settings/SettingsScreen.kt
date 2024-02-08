@@ -76,21 +76,21 @@ class SettingsScreen : Screen {
 
                 SettingsHeader(stringResource(R.string.settings_advanced))
 
-                SettingsTextField(
-                    label = stringResource(R.string.setting_app_name),
-                    pref = preferences.appName,
-                    onPrefChange = model::setAppName
-                )
+                // SettingsTextField(
+                //     label = stringResource(R.string.setting_app_name),
+                //     pref = preferences.appName,
+                //     onPrefChange = model::setAppName
+                // )
                 Spacer(modifier = Modifier.height(4.dp))
 
-                SettingsSwitch(
-                    label = stringResource(R.string.setting_replace_icon),
-                    secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
-                    pref = preferences.replaceIcon,
-                    icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) }
-                ) {
-                    preferences.replaceIcon = it
-                }
+                // SettingsSwitch(
+                //     label = stringResource(R.string.setting_replace_icon),
+                //     secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
+                //     pref = preferences.replaceIcon,
+                //     icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) }
+                // ) {
+                //     preferences.replaceIcon = it
+                // }
 
                 SettingsSwitch(
                     label = stringResource(R.string.setting_keep_patched_apks),
@@ -118,34 +118,13 @@ class SettingsScreen : Screen {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        SettingsTextField(
-                            label = stringResource(R.string.setting_package_name),
-                            pref = preferences.packageName,
-                            onPrefChange = model::setPackageName,
-                            error = model.packageNameError
-                        )
-
-                        SettingsTextField(
-                            label = stringResource(R.string.setting_target_version),
-                            pref = preferences.version,
-                            onPrefChange = model::setVersion
-                        )
-
-                        SettingsSwitch(
-                            label = stringResource(R.string.setting_debuggable),
-                            secondaryLabel = stringResource(R.string.setting_debuggable_desc),
-                            pref = preferences.debuggable,
-                            icon = { Icon(painterResource(R.drawable.ic_bug), null) },
-                            onPrefChange = { preferences.debuggable = it },
-                        )
-
-                        SettingsSwitch(
-                            label = stringResource(R.string.setting_hermes_replace_libcpp),
-                            secondaryLabel = stringResource(R.string.setting_hermes_replace_libcpp_desc),
-                            icon = { Icon(painterResource(R.drawable.ic_copy_file), null) },
-                            pref = preferences.hermesReplaceLibCpp,
-                            onPrefChange = { preferences.hermesReplaceLibCpp = it },
-                        )
+                        // SettingsSwitch(
+                        //     label = stringResource(R.string.setting_debuggable),
+                        //     secondaryLabel = stringResource(R.string.setting_debuggable_desc),
+                        //     pref = preferences.debuggable,
+                        //     icon = { Icon(painterResource(R.drawable.ic_bug), null) },
+                        //     onPrefChange = { preferences.debuggable = it },
+                        // )
                     }
                 }
 
