@@ -94,7 +94,6 @@
   <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
 
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
-  <string name="install_error_code">Failed to install (error code %d)</string>
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
   <string name="install_error_conflict">Conflicts with an existing app, usually due to mismatched signatures</string>

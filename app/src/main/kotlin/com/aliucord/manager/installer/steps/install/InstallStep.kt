@@ -6,7 +6,6 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.patch.CopyDependenciesStep
-import com.aliucord.manager.installer.util.installApks
 import com.aliucord.manager.manager.PreferencesManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
