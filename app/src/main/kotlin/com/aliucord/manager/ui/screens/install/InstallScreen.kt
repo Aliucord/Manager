@@ -85,12 +85,17 @@ class InstallScreen : Screen {
             }
         ) { paddingValues ->
             Column(Modifier.padding(paddingValues)) {
-                if (state.value is InstallScreenState.Working) {
+                if (state.value == InstallScreenState.Working) {
                     LinearProgressIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)
-                            .padding(bottom = 4.dp)
+                            .height(4.dp)
+                    )
+                } else {
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
                     )
                 }
 
@@ -99,6 +104,7 @@ class InstallScreen : Screen {
                     modifier = Modifier
                         .verticalScroll(rememberScrollState())
                         .fillMaxWidth()
+                        .padding(top = 6.dp)
                         .padding(16.dp)
                 ) {
                     var expandedGroup by remember { mutableStateOf<StepGroup?>(StepGroup.Prepare) }
