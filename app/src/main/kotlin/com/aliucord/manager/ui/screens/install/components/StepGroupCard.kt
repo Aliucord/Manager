@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
-import com.aliucord.manager.ui.util.thenIf
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -49,10 +47,8 @@ fun StepGroupCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .thenIf(isExpanded) {
-                background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
-            }
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -60,7 +56,7 @@ fun StepGroupCard(
             modifier = Modifier
                 .clickable(true, onClick = onExpand)
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 20.dp)
         ) {
             StepStateIcon(groupState, 24.dp)
 
