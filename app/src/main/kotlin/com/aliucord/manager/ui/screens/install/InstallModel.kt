@@ -12,6 +12,8 @@ import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.KotlinInstallRunner
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.Step
+import com.aliucord.manager.installer.steps.base.StepState
+import com.aliucord.manager.installer.steps.install.InstallStep
 import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.*
@@ -79,13 +81,20 @@ class InstallModel(
 
             // Execute all the steps and catch any errors
             when (val error = runner.executeAll()) {
-                // Successfully installed
                 null -> {
-                    mutableState.value = InstallScreenState.Success
+                    // If install step is marked skipped then the installation was manually aborted
+                    // and if so, immediately close install screen
+                    if (runner.getStep<InstallStep>().state == StepState.Skipped) {
+                        mutableState.value = InstallScreenState.CloseScreen
+                    }
+                    // At this point, the installation has successfully completed
+                    else {
+                        mutableState.value = InstallScreenState.Success
 
-                    // Wait 20s before returning to Home
-                    delay(5000)
-                    mutableState.value = InstallScreenState.CloseScreen
+                        // Wait 20s before returning to Home
+                        delay(5000)
+                        mutableState.value = InstallScreenState.CloseScreen
+                    }
                 }
 
                 else -> {
