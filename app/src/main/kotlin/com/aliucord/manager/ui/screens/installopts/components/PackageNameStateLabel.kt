@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.installopts.PackageNameState
@@ -24,19 +25,19 @@ fun PackageNameStateLabel(
     ) { animatedState ->
         val (label, icon, tint) = when (animatedState) {
             PackageNameState.Invalid -> Triple(
-                "Invalid package name!",
+                R.string.installopts_pkgname_invalid,
                 R.drawable.ic_canceled,
                 MaterialTheme.colorScheme.error,
             )
 
             PackageNameState.Taken -> Triple(
-                "Target package will be overwritten!",
+                R.string.installopts_pkgname_taken,
                 R.drawable.ic_warning,
                 Color(0xFFFFCC00),
             )
 
             PackageNameState.Ok -> Triple(
-                "Valid package name!",
+                R.string.installopts_pkgname_ok,
                 R.drawable.ic_check_circle,
                 Color(0xFF59B463),
             )
@@ -55,7 +56,7 @@ fun PackageNameStateLabel(
             )
 
             Text(
-                text = label,
+                text = stringResource(label),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.alpha(.7f),
             )

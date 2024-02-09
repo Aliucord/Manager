@@ -5,7 +5,6 @@
 
 package com.aliucord.manager.ui.screens.settings
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -76,21 +75,7 @@ class SettingsScreen : Screen {
 
                 SettingsHeader(stringResource(R.string.settings_advanced))
 
-                // SettingsTextField(
-                //     label = stringResource(R.string.setting_app_name),
-                //     pref = preferences.appName,
-                //     onPrefChange = model::setAppName
-                // )
                 Spacer(modifier = Modifier.height(4.dp))
-
-                // SettingsSwitch(
-                //     label = stringResource(R.string.setting_replace_icon),
-                //     secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
-                //     pref = preferences.replaceIcon,
-                //     icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) }
-                // ) {
-                //     preferences.replaceIcon = it
-                // }
 
                 SettingsSwitch(
                     label = stringResource(R.string.setting_keep_patched_apks),
@@ -108,24 +93,6 @@ class SettingsScreen : Screen {
                     icon = { Icon(painterResource(R.drawable.ic_code), null) }
                 ) {
                     preferences.devMode = it
-                }
-
-                AnimatedVisibility(
-                    visible = preferences.devMode,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        // SettingsSwitch(
-                        //     label = stringResource(R.string.setting_debuggable),
-                        //     secondaryLabel = stringResource(R.string.setting_debuggable_desc),
-                        //     pref = preferences.debuggable,
-                        //     icon = { Icon(painterResource(R.drawable.ic_bug), null) },
-                        //     onPrefChange = { preferences.debuggable = it },
-                        // )
-                    }
                 }
 
                 Button(

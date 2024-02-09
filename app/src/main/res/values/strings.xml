@@ -13,11 +13,12 @@
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>
   <string name="action_dismiss">Dismiss</string>
+  <string name="action_install">Install</string>
+  <string name="action_uninstall">Uninstall</string>
   <string name="action_add_install">Add Installation</string>
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
   <string name="action_launch">Launch</string>
-  <string name="action_uninstall">Uninstall</string>
   <string name="action_close">Close</string>
   <string name="action_open_settings">Open settings</string>
   <string name="action_search">Search</string>
@@ -28,6 +29,7 @@
   <string name="action_cleared_cache">Cleared cache!</string>
   <string name="action_exit_anyways">Exit anyways</string>
   <string name="action_open_info">Open info</string>
+  <string name="action_reset_default">Reset to default</string>
 
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to function, file permissions are required. Since shared data is stored in ~/Aliucord, permissions are required in order to access it.</string>
@@ -44,7 +46,6 @@
   <string name="setting_debuggable">Debuggable</string>
   <string name="setting_debuggable_desc">Enable debuggable flag</string>
   <string name="setting_app_name">App Name</string>
-  <string name="setting_package_name">Package Name</string>
   <string name="setting_target_version">Download Version (RN only)</string>
   <string name="setting_dynamic_color">Dynamic color</string>
   <string name="setting_hermes_replace_libcpp">Replace libc++ (RN only)</string>
@@ -137,4 +138,13 @@
   <string name="downloader_err_response">Download failed (Invalid response)</string>
   <string name="downloader_err_file_exists">Download failed (File exists)</string>
   <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
+
+  <string name="installopts_pkgname_title">Package Name</string>
+  <string name="installopts_pkgname_desc">The package name is a unique identifier for all apps. Using different ones can allow for multiple installations of Aliucord.</string>
+  <string name="installopts_pkgname_invalid">Invalid package name!</string>
+  <string name="installopts_pkgname_taken">Target app will be overwritten!</string>
+  <string name="installopts_pkgname_ok">Valid package name!</string>
+
+  <string name="installopts_appname_title">App Name</string>
+  <string name="installopts_appname_desc">The app name is what\'s displayed in the launcher. This should be changed on secondary installations for ease of use.</string>
 </resources>

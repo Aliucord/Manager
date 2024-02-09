@@ -15,6 +15,7 @@ import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.installer.steps.install.InstallStep
 import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.*
 import kotlinx.collections.immutable.ImmutableList
@@ -26,6 +27,7 @@ import java.util.Date
 class InstallModel(
     private val application: Application,
     private val paths: PathManager,
+    private val options: InstallOptions,
 ) : StateScreenModel<InstallScreenState>(InstallScreenState.Pending) {
     private lateinit var startTime: Date
     private var installJob: Job? = null
@@ -69,7 +71,7 @@ class InstallModel(
         mutableState.value = InstallScreenState.Working
 
         val newInstallJob = screenModelScope.launch {
-            val runner = KotlinInstallRunner()
+            val runner = KotlinInstallRunner(options)
 
             installSteps = runner.steps.groupBy { it.group }
                 .mapValues { it.value.toUnsafeImmutable() }

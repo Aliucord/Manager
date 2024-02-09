@@ -5,18 +5,14 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.util.ManifestPatcher
-import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 /**
  * Patch the APK's AndroidManifest.xml
  */
-class PatchManifestStep : Step(), KoinComponent {
-    private val prefs: PreferencesManager by inject()
-
+class PatchManifestStep(private val options: InstallOptions) : Step() {
     override val group = StepGroup.Patch
     override val localizedName = R.string.install_step_patch_manifests
 
@@ -27,16 +23,16 @@ class PatchManifestStep : Step(), KoinComponent {
             .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
             ?: throw IllegalArgumentException("No manifest found in APK")
 
-        // val patchedManifest = ManifestPatcher.patchManifest(
-        //     manifestBytes = manifest,
-        //     packageName = prefs.packageName,
-        //     appName = prefs.appName,
-        //     debuggable = prefs.debuggable,
-        // )
-        //
-        // ZipWriter(apk, /* append = */ true).use {
-        //     it.deleteEntry("AndroidManifest.xml")
-        //     it.writeEntry("AndroidManifest.xml", patchedManifest)
-        // }
+        val patchedManifest = ManifestPatcher.patchManifest(
+            manifestBytes = manifest,
+            packageName = options.packageName,
+            appName = options.appName,
+            debuggable = options.debuggable,
+        )
+
+        ZipWriter(apk, /* append = */ true).use {
+            it.deleteEntry("AndroidManifest.xml")
+            it.writeEntry("AndroidManifest.xml", patchedManifest)
+        }
     }
 }
