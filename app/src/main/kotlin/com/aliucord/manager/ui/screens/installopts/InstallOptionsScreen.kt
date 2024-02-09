@@ -5,21 +5,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.TextDivider
-import com.aliucord.manager.ui.components.settings.SettingsSwitch
 import com.aliucord.manager.ui.screens.install.InstallScreen
-import com.aliucord.manager.ui.screens.installopts.components.AppNameSetting
-import com.aliucord.manager.ui.screens.installopts.components.PackageNameSetting
-import com.aliucord.manager.ui.screens.settings.SettingsScreen
+import com.aliucord.manager.ui.screens.installopts.components.InstallOptionsAppBar
+import com.aliucord.manager.ui.screens.installopts.components.PackageNameState
+import com.aliucord.manager.ui.screens.installopts.components.options.SwitchInstallOption
+import com.aliucord.manager.ui.screens.installopts.components.options.TextInstallOption
+import com.aliucord.manager.ui.util.thenIf
 
 class InstallOptionsScreen : Screen {
     override val key = "InstallOptions"
@@ -33,52 +35,71 @@ class InstallOptionsScreen : Screen {
             topBar = { InstallOptionsAppBar() },
         ) { paddingValues ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(26.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 20.dp)
+                    .padding(start = 20.dp, end = 20.dp, top = 6.dp, bottom = 20.dp)
             ) {
+                Text(
+                    text = stringResource(R.string.installopts_title),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+
                 TextDivider(
                     text = "Basic",
                     modifier = Modifier.padding(top = 8.dp),
                 )
 
-                AppNameSetting(
-                    name = model.appName,
-                    nameIsDefault = model.appNameIsDefault,
-                    nameIsError = model.appNameIsError,
-                    onChangeName = model::changeAppName,
-                    onResetName = model::resetAppName,
+                SwitchInstallOption(
+                    icon = painterResource(R.drawable.ic_app_shortcut),
+                    name = stringResource(R.string.installopts_icon_title),
+                    description = stringResource(R.string.installopts_icon_desc),
+                    value = model.replaceIcon,
+                    onValueChange = model::changeReplaceIcon,
                 )
 
-                PackageNameSetting(
-                    name = model.packageName,
-                    nameIsDefault = model.packageNameIsDefault,
-                    state = model.packageNameState,
-                    onChangeName = model::changePackageName,
-                    onResetName = model::resetPackageName,
+                TextInstallOption(
+                    name = stringResource(R.string.installopts_appname_title),
+                    description = stringResource(R.string.installopts_appname_desc),
+                    value = model.appName,
+                    valueIsError = model.appNameIsError,
+                    valueIsDefault = model.appNameIsDefault,
+                    onValueChange = model::changeAppName,
+                    onValueReset = model::resetAppName
                 )
 
-                SettingsSwitch(
-                    label = stringResource(R.string.setting_replace_icon),
-                    secondaryLabel = stringResource(R.string.setting_replace_icon_desc),
-                    icon = { Icon(painterResource(R.drawable.ic_app_shortcut), null) },
-                    pref = model.replaceIcon,
-                    onPrefChange = model::changeReplaceIcon,
-                )
+                TextInstallOption(
+                    name = stringResource(R.string.installopts_pkgname_title),
+                    description = stringResource(R.string.installopts_pkgname_desc),
+                    value = model.packageName,
+                    valueIsError = model.packageNameState == PackageNameState.Invalid,
+                    valueIsDefault = model.packageNameIsDefault,
+                    onValueChange = model::changePackageName,
+                    onValueReset = model::resetPackageName,
+                ) {
+                    PackageNameState(
+                        state = model.packageNameState,
+                        modifier = Modifier.padding(start = 4.dp),
+                    )
+                }
 
                 TextDivider(
                     text = "Advanced",
                     modifier = Modifier.padding(top = 8.dp),
                 )
 
-                SettingsSwitch(
-                    label = stringResource(R.string.setting_debuggable),
-                    secondaryLabel = stringResource(R.string.setting_debuggable_desc),
-                    icon = { Icon(painterResource(R.drawable.ic_bug), null) },
-                    pref = model.debuggable,
-                    onPrefChange = model::changeDebuggable,
+                SwitchInstallOption(
+                    icon = painterResource(R.drawable.ic_bug),
+                    name = stringResource(R.string.installopts_debuggable_title),
+                    description = stringResource(R.string.installopts_debuggable_desc),
+                    value = model.debuggable,
+                    onValueChange = model::changeDebuggable,
+                    enabled = model.isDevMode,
+                    modifier = Modifier
+                        .thenIf(!model.isDevMode) { alpha(.6f) }
                 )
 
                 Spacer(Modifier.weight(1f))
@@ -97,22 +118,4 @@ class InstallOptionsScreen : Screen {
             }
         }
     }
-}
-
-@Composable
-fun InstallOptionsAppBar() {
-    TopAppBar(
-        navigationIcon = { BackButton() },
-        title = { Text("Configure installation") },
-        actions = {
-            val navigator = LocalNavigator.currentOrThrow
-
-            IconButton(onClick = { navigator.push(SettingsScreen()) }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_settings),
-                    contentDescription = stringResource(R.string.navigation_settings)
-                )
-            }
-        }
-    )
 }

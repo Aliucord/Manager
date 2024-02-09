@@ -1,4 +1,4 @@
-package com.aliucord.manager.ui.screens.installopts.components
+package com.aliucord.manager.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.*

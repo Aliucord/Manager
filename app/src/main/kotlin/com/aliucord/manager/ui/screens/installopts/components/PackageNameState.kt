@@ -15,7 +15,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.installopts.PackageNameState
 
 @Composable
-fun PackageNameStateLabel(
+fun PackageNameState(
     state: PackageNameState,
     modifier: Modifier = Modifier,
 ) {

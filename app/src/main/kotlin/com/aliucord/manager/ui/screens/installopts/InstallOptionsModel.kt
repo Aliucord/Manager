@@ -5,11 +5,13 @@ import android.content.pm.PackageManager.NameNotFoundException
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.util.debounce
 import kotlinx.coroutines.launch
 
 class InstallOptionsModel(
     private val context: Context,
+    private val prefs: PreferencesManager,
 ) : ScreenModel {
     // ---------- Package name state ----------
     var packageName by mutableStateOf("com.aliucord")
@@ -89,6 +91,8 @@ class InstallOptionsModel(
     }
 
     // ---------- Other ----------
+    val isDevMode: Boolean
+        get() = prefs.devMode
 
     // A throttled variant of fetchPkgNameState()
     private val fetchPkgNameStateDebounced: () -> Unit =

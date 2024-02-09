@@ -6,7 +6,6 @@ import androidx.compose.runtime.Immutable
 data class InstallOptions(
     val appName: String,
     val packageName: String,
-
     val debuggable: Boolean,
     val replaceIcon: Boolean,
 )

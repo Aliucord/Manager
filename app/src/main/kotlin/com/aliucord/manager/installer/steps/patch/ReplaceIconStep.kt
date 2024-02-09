@@ -21,7 +21,7 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
     private val context: Context by inject()
 
     override val group = StepGroup.Patch
-    override val localizedName = R.string.setting_replace_icon
+    override val localizedName = R.string.install_step_patch_icon
 
     override suspend fun execute(container: StepRunner) {
         if (!options.replaceIcon) {
