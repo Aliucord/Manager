@@ -1,4 +1,4 @@
-package com.aliucord.manager.ui.screens.home.components
+package com.aliucord.manager.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

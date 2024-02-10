@@ -28,14 +28,16 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.screens.install.components.StepGroupCard
+import com.aliucord.manager.ui.screens.installopts.InstallOptions
+import org.koin.core.parameter.parametersOf
 
-class InstallScreen : Screen {
+class InstallScreen(private val data: InstallOptions) : Screen {
     override val key = "Install"
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val model = getScreenModel<InstallModel>()
+        val model = getScreenModel<InstallModel> { parametersOf(data) }
         val state = model.state.collectAsState()
 
         LaunchedEffect(state.value) {
