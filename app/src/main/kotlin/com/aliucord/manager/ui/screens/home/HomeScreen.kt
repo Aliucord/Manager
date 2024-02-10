@@ -14,18 +14,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.aliucord.manager.R
+import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.ProjectHeader
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.home.components.*
@@ -56,7 +51,7 @@ class HomeScreen : Screen {
                 if (model.isNetworkDangerous()) {
                     showNetworkWarningDialog = true
                 } else {
-                    navigator.push(InstallOptionsScreen())
+                    navigator.push(InstallOptionsScreen(model.supportedVersion))
                 }
             }
         }
@@ -65,7 +60,7 @@ class HomeScreen : Screen {
             NetworkWarningDialog(
                 onConfirm = {
                     showNetworkWarningDialog = false
-                    navigator.push(InstallOptionsScreen())
+                    navigator.push(InstallOptionsScreen(model.supportedVersion))
                 },
                 onDismiss = {
                     showNetworkWarningDialog = false
@@ -100,24 +95,10 @@ class HomeScreen : Screen {
                 }
 
                 item(key = "SUPPORTED_VERSION") {
-                    AnimatedVisibility(
-                        enter = fadeIn() + slideInVertically { it * -2 },
-                        exit = fadeOut() + slideOutVertically { it * -2 },
-                        visible = model.supportedVersion !is DiscordVersion.None,
-                    ) {
-                        VersionDisplay(
-                            version = model.supportedVersion,
-                            prefix = {
-                                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                                    append(stringResource(R.string.version_supported))
-                                    append(" ")
-                                }
-                            },
-                            modifier = Modifier
-                                .alpha(.5f)
-                                .padding(bottom = 22.dp),
-                        )
-                    }
+                    AnimatedVersionDisplay(
+                        version = model.supportedVersion,
+                        modifier = Modifier.padding(bottom = 22.dp),
+                    )
                 }
 
                 val installations = (model.installations as? InstallsState.Fetched)?.data

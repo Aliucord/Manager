@@ -42,7 +42,7 @@ fun SwitchInstallOption(
         Icon(
             painter = icon,
             contentDescription = null,
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(26.dp),
         )
 
         Column(
@@ -67,6 +67,7 @@ fun SwitchInstallOption(
             enabled = enabled,
             onCheckedChange = onValueChange,
             interactionSource = interactionSource,
+            modifier = Modifier.padding(start = 6.dp),
         )
     }
 }

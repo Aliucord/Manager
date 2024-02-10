@@ -2,7 +2,7 @@ package com.aliucord.manager.ui.screens.installopts
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -15,15 +15,19 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.TextDivider
 import com.aliucord.manager.ui.screens.install.InstallScreen
 import com.aliucord.manager.ui.screens.installopts.components.InstallOptionsAppBar
 import com.aliucord.manager.ui.screens.installopts.components.PackageNameState
 import com.aliucord.manager.ui.screens.installopts.components.options.SwitchInstallOption
 import com.aliucord.manager.ui.screens.installopts.components.options.TextInstallOption
+import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.thenIf
 
-class InstallOptionsScreen : Screen {
+class InstallOptionsScreen(
+    private val supportedVersion: DiscordVersion = DiscordVersion.None,
+) : Screen {
     override val key = "InstallOptions"
 
     @Composable
@@ -35,11 +39,11 @@ class InstallOptionsScreen : Screen {
             topBar = { InstallOptionsAppBar() },
         ) { paddingValues ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(start = 20.dp, end = 20.dp, top = 6.dp, bottom = 20.dp)
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
             ) {
                 Text(
                     text = stringResource(R.string.installopts_title),
@@ -48,10 +52,18 @@ class InstallOptionsScreen : Screen {
                     textAlign = TextAlign.Center,
                 )
 
-                TextDivider(
-                    text = "Basic",
-                    modifier = Modifier.padding(top = 8.dp),
+                var animatedVersion by remember { mutableStateOf<DiscordVersion>(DiscordVersion.None) }
+                LaunchedEffect(Unit) {
+                    animatedVersion = supportedVersion
+                }
+                AnimatedVersionDisplay(
+                    version = animatedVersion,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .offset(y = (-10).dp),
                 )
+
+                TextDivider(text = stringResource(R.string.installopts_divider_basic))
 
                 SwitchInstallOption(
                     icon = painterResource(R.drawable.ic_app_shortcut),
@@ -59,6 +71,7 @@ class InstallOptionsScreen : Screen {
                     description = stringResource(R.string.installopts_icon_desc),
                     value = model.replaceIcon,
                     onValueChange = model::changeReplaceIcon,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 TextInstallOption(
@@ -87,8 +100,8 @@ class InstallOptionsScreen : Screen {
                 }
 
                 TextDivider(
-                    text = "Advanced",
-                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(R.string.installopts_divider_advanced),
+                    modifier = Modifier.padding(top = 12.dp),
                 )
 
                 SwitchInstallOption(
@@ -111,6 +124,7 @@ class InstallOptionsScreen : Screen {
                         contentColor = MaterialTheme.colorScheme.primary,
                     ),
                     modifier = Modifier
+                        .padding(bottom = 10.dp)
                         .align(Alignment.End),
                 ) {
                     Text(stringResource(R.string.action_install))
