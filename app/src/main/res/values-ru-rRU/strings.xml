@@ -12,11 +12,12 @@
   <string name="action_apply">Применить</string>
   <string name="action_confirm">Подтвердить</string>
   <string name="action_dismiss">Скрыть</string>
+  <string name="action_install">Install</string>
+  <string name="action_uninstall">Удалить</string>
   <string name="action_add_install">Add Installation</string>
   <string name="action_update">Обновить</string>
   <string name="action_clear">Стереть</string>
   <string name="action_launch">Запустить</string>
-  <string name="action_uninstall">Удалить</string>
   <string name="action_close">Закрыть</string>
   <string name="action_open_settings">Открыть настройки</string>
   <string name="action_search">Поиск</string>
@@ -27,6 +28,7 @@
   <string name="action_cleared_cache">Кеш очищен!</string>
   <string name="action_exit_anyways">Exit anyways</string>
   <string name="action_open_info">Open info</string>
+  <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Предоставление разрешений</string>
   <string name="permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
@@ -90,6 +92,7 @@
   <string name="install_step_dl_aliuhook">Скачивание библиотеки Aliuhook</string>
   <string name="install_step_copy">Copying dependencies</string>
   <string name="install_step_patch_manifests">Патч манифестов пакета</string>
+  <string name="install_step_patch_icon">Patching app icon</string>
   <string name="install_step_add_injector">Adding Aliucord injector</string>
   <string name="install_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="install_step_alignment">Aligning APKs</string>
@@ -109,4 +112,18 @@
   <string name="downloader_err_response">Download failed (Invalid response)</string>
   <string name="downloader_err_file_exists">Download failed (File exists)</string>
   <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
+  <string name="installopts_title">Aliucord provides several customizations at installation time that are not able to be changed once installed.</string>
+  <string name="installopts_pkgname_title">Package Name</string>
+  <string name="installopts_pkgname_desc">The package name is a unique identifier for all apps. Using different ones can allow for multiple installations of Aliucord.</string>
+  <string name="installopts_pkgname_invalid">Invalid package name!</string>
+  <string name="installopts_pkgname_taken">Target app will be overwritten!</string>
+  <string name="installopts_pkgname_ok">Valid package name!</string>
+  <string name="installopts_appname_title">App Name</string>
+  <string name="installopts_appname_desc">The app name is what\'s displayed in your home launcher. This should be changed on secondary installations for ease of use.</string>
+  <string name="installopts_debuggable_title">Debuggable</string>
+  <string name="installopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
+  <string name="installopts_icon_title">Replace app icon</string>
+  <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="installopts_divider_basic">Basic</string>
+  <string name="installopts_divider_advanced">Advanced</string>
 </resources>

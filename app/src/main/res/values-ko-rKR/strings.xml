@@ -12,11 +12,12 @@
   <string name="action_apply">적용</string>
   <string name="action_confirm">확인</string>
   <string name="action_dismiss">닫기</string>
+  <string name="action_install">Install</string>
+  <string name="action_uninstall">설치 삭제</string>
   <string name="action_add_install">Add Installation</string>
   <string name="action_update">업데이트</string>
   <string name="action_clear">초기화</string>
   <string name="action_launch">실행</string>
-  <string name="action_uninstall">설치 삭제</string>
   <string name="action_close">닫기</string>
   <string name="action_open_settings">설정 열기</string>
   <string name="action_search">검색</string>
@@ -27,6 +28,7 @@
   <string name="action_cleared_cache">캐시를 비웠어요!</string>
   <string name="action_exit_anyways">Exit anyways</string>
   <string name="action_open_info">Open info</string>
+  <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
@@ -90,6 +92,7 @@
   <string name="install_step_dl_aliuhook">Aliuhook 라이브러리 다운로드 중</string>
   <string name="install_step_copy">Copying dependencies</string>
   <string name="install_step_patch_manifests">APK manifests 패치 중</string>
+  <string name="install_step_patch_icon">Patching app icon</string>
   <string name="install_step_add_injector">Adding Aliucord injector</string>
   <string name="install_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="install_step_alignment">Aligning APKs</string>
@@ -109,4 +112,18 @@
   <string name="downloader_err_response">Download failed (Invalid response)</string>
   <string name="downloader_err_file_exists">Download failed (File exists)</string>
   <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
+  <string name="installopts_title">Aliucord provides several customizations at installation time that are not able to be changed once installed.</string>
+  <string name="installopts_pkgname_title">Package Name</string>
+  <string name="installopts_pkgname_desc">The package name is a unique identifier for all apps. Using different ones can allow for multiple installations of Aliucord.</string>
+  <string name="installopts_pkgname_invalid">Invalid package name!</string>
+  <string name="installopts_pkgname_taken">Target app will be overwritten!</string>
+  <string name="installopts_pkgname_ok">Valid package name!</string>
+  <string name="installopts_appname_title">App Name</string>
+  <string name="installopts_appname_desc">The app name is what\'s displayed in your home launcher. This should be changed on secondary installations for ease of use.</string>
+  <string name="installopts_debuggable_title">Debuggable</string>
+  <string name="installopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
+  <string name="installopts_icon_title">Replace app icon</string>
+  <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="installopts_divider_basic">Basic</string>
+  <string name="installopts_divider_advanced">Advanced</string>
 </resources>
