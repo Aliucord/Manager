@@ -14,23 +14,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.aliucord.manager.R
+import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.ProjectHeader
-import com.aliucord.manager.ui.components.dialogs.InstallerDialog
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.home.components.*
-import com.aliucord.manager.ui.screens.install.InstallScreen
+import com.aliucord.manager.ui.screens.installopts.InstallOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
@@ -52,16 +46,12 @@ class HomeScreen : Screen {
         }
 
         var showNetworkWarningDialog by remember { mutableStateOf(false) }
-        var showInstallerDialog by remember { mutableStateOf(false) }
-
         val onClickInstall: () -> Unit = remember {
             {
-                if ((model.installations as? InstallsState.Fetched)?.data?.isNotEmpty() == true) {
-                    model.showMultiInstallToast()
-                } else if (model.isNetworkDangerous()) {
+                if (model.isNetworkDangerous()) {
                     showNetworkWarningDialog = true
                 } else {
-                    showInstallerDialog = true
+                    navigator.push(InstallOptionsScreen(model.supportedVersion))
                 }
             }
         }
@@ -70,21 +60,11 @@ class HomeScreen : Screen {
             NetworkWarningDialog(
                 onConfirm = {
                     showNetworkWarningDialog = false
-                    showInstallerDialog = true
+                    navigator.push(InstallOptionsScreen(model.supportedVersion))
                 },
                 onDismiss = {
                     showNetworkWarningDialog = false
                 },
-            )
-        }
-
-        if (showInstallerDialog) {
-            InstallerDialog(
-                onDismiss = { showInstallerDialog = false },
-                onConfirm = {
-                    showInstallerDialog = false
-                    navigator.push(InstallScreen())
-                }
             )
         }
 
@@ -115,24 +95,10 @@ class HomeScreen : Screen {
                 }
 
                 item(key = "SUPPORTED_VERSION") {
-                    AnimatedVisibility(
-                        enter = fadeIn() + slideInVertically { it * -2 },
-                        exit = fadeOut() + slideOutVertically { it * -2 },
-                        visible = model.supportedVersion !is DiscordVersion.None,
-                    ) {
-                        VersionDisplay(
-                            version = model.supportedVersion,
-                            prefix = {
-                                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                                    append(stringResource(R.string.version_supported))
-                                    append(" ")
-                                }
-                            },
-                            modifier = Modifier
-                                .alpha(.5f)
-                                .padding(bottom = 22.dp),
-                        )
-                    }
+                    AnimatedVersionDisplay(
+                        version = model.supportedVersion,
+                        modifier = Modifier.padding(bottom = 22.dp),
+                    )
                 }
 
                 val installations = (model.installations as? InstallsState.Fetched)?.data
@@ -146,7 +112,7 @@ class HomeScreen : Screen {
                     ) {
                         InstalledItemCard(
                             data = it,
-                            onUpdate = { showInstallerDialog = true }, // TODO: prefilled install options screen
+                            onUpdate = ::TODO, // TODO: prefilled install options screen
                             onOpenApp = { model.launchApp(it.packageName) },
                             onOpenInfo = { model.openAppInfo(it.packageName) },
                             onOpenPlugins = { navigator.push(PluginsScreen()) }, // TODO: install-specific plugins

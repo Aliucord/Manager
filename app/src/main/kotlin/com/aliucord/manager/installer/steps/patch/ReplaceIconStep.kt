@@ -7,7 +7,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
-import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.github.diamondminer88.zip.ZipWriter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -17,15 +17,14 @@ import java.io.InputStream
  * Replace icons
  */
 @Stable
-class ReplaceIconStep : Step(), KoinComponent {
+class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinComponent {
     private val context: Context by inject()
-    private val prefs: PreferencesManager by inject()
 
     override val group = StepGroup.Patch
-    override val localizedName = R.string.setting_replace_icon
+    override val localizedName = R.string.install_step_patch_icon
 
     override suspend fun execute(container: StepRunner) {
-        if (!prefs.replaceIcon) {
+        if (!options.replaceIcon) {
             state = StepState.Skipped
             return
         }

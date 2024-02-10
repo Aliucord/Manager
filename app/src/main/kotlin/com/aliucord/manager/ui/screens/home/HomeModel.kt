@@ -7,7 +7,6 @@ import android.net.ConnectivityManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -57,10 +56,6 @@ class HomeModel(
             .setData("package:$packageName".toUri())
 
         application.startActivity(launchIntent)
-    }
-
-    fun showMultiInstallToast() {
-        Toast.makeText(application, "Multi-install support is coming soon!", Toast.LENGTH_SHORT).show()
     }
 
     /**

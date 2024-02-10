@@ -1,7 +1,12 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.aliucord.manager.ui.util
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import kotlinx.collections.immutable.ImmutableList
@@ -75,3 +80,7 @@ inline fun annotatingStringResource(
         append(string.substring(lastIndex))
     }
 }
+
+@Stable
+inline fun Modifier.mirrorVertically(): Modifier =
+    scale(scaleX = -1f, scaleY = 1f)

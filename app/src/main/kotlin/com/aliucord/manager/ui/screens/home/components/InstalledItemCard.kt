@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.SegmentedButton
+import com.aliucord.manager.ui.components.VersionDisplay
 import com.aliucord.manager.ui.screens.home.InstallData
 
 @Composable
