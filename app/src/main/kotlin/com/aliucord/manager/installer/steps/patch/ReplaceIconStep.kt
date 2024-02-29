@@ -6,9 +6,10 @@ import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
-import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
+import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
+import com.google.devrel.gmscore.tools.apk.arsc.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.InputStream
@@ -24,12 +25,35 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
     override val localizedName = R.string.install_step_patch_icon
 
     override suspend fun execute(container: StepRunner) {
-        if (!options.replaceIcon) {
-            state = StepState.Skipped
-            return
+        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+
+        val newArscBytes = run {
+            val arscBytes = ZipReader(apk).use { it.openEntry("resources.arsc")!!.read() }
+            val arsc = BinaryResourceFile(arscBytes)
+            val mainChunk = arsc.chunks.single() as ResourceTableChunk
+            val packageChunk = mainChunk.packages.single()
+
+            val colorTypeChunks = packageChunk.getTypeChunks("color")
+            colorTypeChunks.forEach { chunk ->
+                chunk.entries.values.find { it.key() == "brand_new_500" }?.value()?.also { value ->
+                    BinaryResourceValue::class.java.getDeclaredField("data")
+                        .apply { isAccessible = true }
+                        .set(value, 0xFF000000U.toInt())
+                }
+            }
+
+            arsc.toByteArray(/* shrink = */ true)
         }
 
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        // packageChunk.getTypeChunks("color").forEach { typeChunk ->
+        //     typeChunk.entries.forEach { (i, entry) ->
+        //         println("${typeChunk.id} ${typeChunk.typeName} -> ${entry.typeName()} ${entry.key()} : ${entry.value().type()} ${entry.value().data().toHexString()}")
+        //     }
+        // }
+
+        if (!options.replaceIcon) {
+            return
+        }
 
         ZipWriter(apk, /* append = */ true).use {
             val foregroundIcon = readAsset("icons/ic_logo_foreground.png")
@@ -43,10 +67,13 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
             for ((files, replacement) in replacements) {
                 for (file in files) {
                     val path = "res/$file"
-                    it.deleteEntry(path)
-                    it.writeEntry(path, replacement)
+                    // it.deleteEntry(path)
+                    // it.writeEntry(path, replacement)
                 }
             }
+
+            it.deleteEntry("resources.arsc")
+            it.writeEntry("resources.arsc", newArscBytes)
         }
     }
 
