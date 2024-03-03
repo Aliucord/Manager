@@ -26,7 +26,7 @@ class DownloadInjectorStep : DownloadStep(), KoinComponent {
     override val localizedName = R.string.install_step_dl_injector
     override val targetUrl = URL
     override val targetFile
-        get() = paths.cachedInjectorDex(aliucordHash).resolve("discord.apk")
+        get() = paths.cachedInjectorDex(aliucordHash)
 
     override suspend fun execute(container: StepRunner) {
         aliucordHash = container
