@@ -7,14 +7,14 @@
   <string name="github">GitHub</string>
   <string name="support_server">Сервер поддержки</string>
   <string name="installer">Установщик</string>
-  <string name="action_cancel">Cancel</string>
+  <string name="action_cancel">Отменить</string>
   <string name="action_retry">Повторить</string>
   <string name="action_apply">Применить</string>
   <string name="action_confirm">Подтвердить</string>
   <string name="action_dismiss">Скрыть</string>
-  <string name="action_install">Install</string>
+  <string name="action_install">Установить</string>
   <string name="action_uninstall">Удалить</string>
-  <string name="action_add_install">Add Installation</string>
+  <string name="action_add_install">Создать установку</string>
   <string name="action_update">Обновить</string>
   <string name="action_clear">Стереть</string>
   <string name="action_launch">Запустить</string>
@@ -27,7 +27,7 @@
   <string name="action_copied">Скопировано!</string>
   <string name="action_cleared_cache">Кеш очищен!</string>
   <string name="action_exit_anyways">Exit anyways</string>
-  <string name="action_open_info">Open info</string>
+  <string name="action_open_info">Открыть инфо</string>
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Предоставление разрешений</string>
   <string name="permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
@@ -80,7 +80,7 @@
   <string name="install_error_storage">Not enough available storage to install</string>
   <string name="install_error_incompatible">Application is incompatible with this device</string>
   <string name="install_error_timeout">Installation timed out</string>
-  <string name="install_group_prepare">Prepare</string>
+  <string name="install_group_prepare">Подготовка</string>
   <string name="install_group_download">Download dependencies</string>
   <string name="install_group_patch">Патч пакетов</string>
   <string name="install_group_install">Установка</string>
@@ -118,7 +118,7 @@
   <string name="installopts_pkgname_invalid">Invalid package name!</string>
   <string name="installopts_pkgname_taken">Target app will be overwritten!</string>
   <string name="installopts_pkgname_ok">Valid package name!</string>
-  <string name="installopts_appname_title">App Name</string>
+  <string name="installopts_appname_title">Название приложения</string>
   <string name="installopts_appname_desc">The app name is what\'s displayed in your home launcher. This should be changed on secondary installations for ease of use.</string>
   <string name="installopts_debuggable_title">Debuggable</string>
   <string name="installopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
