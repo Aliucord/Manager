@@ -128,10 +128,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.immutable)
 
-    implementation(libs.apkresources)
     implementation(libs.apksig)
     implementation(libs.axml)
     implementation(libs.bouncycastle)
+    implementation(libs.binaryResources)
     implementation(libs.coil)
     implementation(variantOf(libs.zip) { artifactType("aar") })
 }

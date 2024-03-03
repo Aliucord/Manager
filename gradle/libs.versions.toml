@@ -1,13 +1,13 @@
 [versions]
 accompanist = "0.32.0"
-agp = "8.2.1"
+agp = "8.2.2"
 androidx-activity = "1.8.2"
 androidx-core = "1.12.0"
 androidx-splashscreen = "1.0.1"
 androidx-lifecycle = "2.7.0"
-apkresources = "31.4.0-alpha09"
 apksig = "7.4.2"
 axml = "1.0.1"
+binary-resources = "1.0.0"
 bouncycastle = "1.70"
 coil = "2.5.0"
 compose = "1.5.4"
@@ -66,9 +66,9 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 
 # Other
-apkresources = { module = "com.android.tools.apkparser:binary-resources", version.ref = "apkresources" }
 apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
 axml = { module = "com.aliucord:axml", version.ref = "axml" }
+binaryResources = { module = "com.aliucord.apkparser:binary-resources", version.ref = "binary-resources" }
 bouncycastle = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" } # Only use the "aar" artifact
