@@ -9,6 +9,7 @@ import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.installer.util.ArscUtil
 import com.aliucord.manager.installer.util.ArscUtil.addColorResource
+import com.aliucord.manager.installer.util.ArscUtil.addResource
 import com.aliucord.manager.installer.util.ArscUtil.getMainArscChunk
 import com.aliucord.manager.installer.util.ArscUtil.getPackageChunk
 import com.aliucord.manager.installer.util.ArscUtil.getResourceFileName
@@ -16,6 +17,7 @@ import com.aliucord.manager.installer.util.AxmlUtil
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.screens.installopts.InstallOptions.IconReplacement
 import com.aliucord.manager.util.find
+import com.aliucord.manager.util.getResBytes
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
 import com.google.devrel.gmscore.tools.apk.arsc.*
@@ -44,6 +46,19 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
         val arsc = ArscUtil.readArsc(apk)
 
         val iconRscIds = readManifestIconInfo(apk)
+        val monochromeRscId = if (!options.monochromeIcon) null else {
+            val filePathIdx = arsc.getMainArscChunk().stringPool
+                .addString("res/ic_aliucord_monochrome.xml")
+
+            arsc.getPackageChunk().addResource(
+                typeName = "drawable",
+                resourceName = "ic_aliucord_monochrome",
+                configurations = { it.isDefault },
+                valueType = BinaryResourceValue.Type.STRING,
+                valueData = filePathIdx,
+            )
+        }
+
         val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
         val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
 
@@ -54,12 +69,12 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
                 val newColorRscId = arsc.getPackageChunk()
                     .addColorResource("aliucord", options.iconReplacement.color)
 
-                for (rscFile in arrayOf(squareIconFile, roundIconFile)) {
+                for (rscFile in setOf(squareIconFile, roundIconFile)) { // setOf to get rid of duplicates
                     AxmlUtil.patchAdaptiveIcon(
                         apk = apk,
                         resourcePath = rscFile,
                         backgroundColor = newColorRscId,
-                        monochromeIcon = BinaryResourceIdentifier.create(0),
+                        monochromeIcon = monochromeRscId,
                     )
                 }
             }
@@ -83,6 +98,10 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
             //         it.writeEntry(path, replacement)
             //     }
             // }
+
+            if (options.monochromeIcon) {
+                it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
+            }
 
             it.deleteEntry("resources.arsc")
             it.writeEntry("resources.arsc", newArscBytes)
@@ -120,8 +139,8 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
 
         return ManifestIconInfo(
             // Resource IDs into resources.arsc
-            BinaryResourceIdentifier.create(squareIcon.typedValue().data()),
-            BinaryResourceIdentifier.create(squareIcon.typedValue().data()),
+            squareIcon = BinaryResourceIdentifier.create(squareIcon.typedValue().data()),
+            roundIcon = BinaryResourceIdentifier.create(roundIcon.typedValue().data()),
         )
     }
 

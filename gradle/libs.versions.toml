@@ -20,7 +20,7 @@ kotlinx-immutable = "0.3.7"
 kotlinx-serialization = "1.5.0"
 ktor = "2.3.7"
 voyager = "1.0.0"
-zip = "2.1.0"
+zip = "2.1.1"
 
 [libraries]
 # Accompanist

@@ -53,16 +53,18 @@ fun Context.getPackageVersion(pkg: String): Pair<String, Int> {
  * @param id The resource identifier
  * @return The resource's raw bytes as stored inside the APK
  */
-fun Context.getResBytes(@AnyRes id: Int): ByteArray? {
+fun Context.getResBytes(@AnyRes id: Int): ByteArray {
     val tValue = TypedValue()
     this.resources.getValue(
-        /* id = */ R.drawable.ic_canceled,
+        /* id = */ id,
         /* outValue = */ tValue,
         /* resolveRefs = */ true,
     )
 
     val resPath = tValue.string.toString()
 
-    return this.javaClass.getResourceAsStream(resPath)
+    return this.javaClass.classLoader
+        ?.getResourceAsStream(resPath)
         ?.use(InputStream::readBytes)
+        ?: error("Failed to get resource file $resPath from APK")
 }

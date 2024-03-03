@@ -106,18 +106,32 @@ object AxmlUtil {
                 val iconEndChunkIdx = xmlChunk.chunks
                     .indexOfLast { it is XmlEndElementChunk && it.name == "adaptive-icon" }
 
-                val namespaceIdx = xmlChunk.stringPool
-                    .indexOf("http://schemas.android.com/apk/res/android")
-                val monochromeIdx = xmlChunk.stringPool
-                    .indexOf("monochrome")
+                val namespaceIdx = xmlChunk.stringPool.indexOf("http://schemas.android.com/apk/res/android")
+                val drawableIdx = xmlChunk.stringPool.indexOf("drawable")
+                val monochromeIdx = xmlChunk.stringPool.addString("monochrome")
 
                 val startChunk = XmlStartElementChunk(
                     /* namespaceIndex = */ namespaceIdx,
-                    /* nameIndex = */ namespaceIdx,
+                    /* nameIndex = */ monochromeIdx,
                     /* idIndex = */ -1,
                     /* classIndex = */ -1,
                     /* styleIndex = */ -1,
-                    /* attributes = */ listOf<XmlAttribute>(),
+                    /* attributes = */
+                    listOf(
+                        XmlAttribute(
+                            /* namespaceIndex = */ -1,
+                            /* nameIndex = */ drawableIdx,
+                            /* rawValueIndex = */ -1,
+                            /* typedValue = */
+                            BinaryResourceValue(
+                                /* size = */ BinaryResourceValue.SIZE,
+                                /* type = */ BinaryResourceValue.Type.REFERENCE,
+                                /* data = */ monochromeIcon.resourceId(),
+                            ),
+                            // This is wrong but it doesn't matter here as long as this attribute isn't stringified
+                            /* parent = */ null,
+                        )
+                    ),
                     /* parent = */ xmlChunk,
                 )
                 val endChunk = XmlEndElementChunk(

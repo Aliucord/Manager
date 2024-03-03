@@ -53,28 +53,60 @@ object ArscUtil {
         name: String,
         color: Color,
     ): BinaryResourceIdentifier {
-        // Add a new resource entry to the color "type spec chunk" and,
+        return this.addResource(
+            typeName = "color",
+            resourceName = name,
+            configurations = { true },
+            valueType = BinaryResourceValue.Type.INT_COLOR_ARGB8,
+            valueData = color.toArgb(),
+        )
+    }
+
+    /**
+     * Adds a new color resource to the matching configuration variants in an arsc package.
+     *
+     * @param typeName The type of the resource (ex: `mipmap`, `drawable`, etc.)
+     * @param resourceName The new resource name.
+     * @param configurations A predicate whether to add the value into a matching type chunk.
+     * @param valueType The type of the resource value.
+     * @param valueData The raw data of the resource value.
+     * @return The resource ID of the newly added resource.
+     */
+    fun PackageChunk.addResource(
+        typeName: String,
+        resourceName: String,
+        configurations: (BinaryResourceConfiguration) -> Boolean,
+        valueType: BinaryResourceValue.Type,
+        valueData: Int,
+    ): BinaryResourceIdentifier {
+        // Add a new resource entry to the "type spec chunk" and,
         // a new resource entry to all matching "type chunks"
 
-        val colorSpecChunk = this.getTypeSpecChunk("color")
-        val colorTypeChunks = this.getTypeChunks("color")
+        val specChunk = this.getTypeSpecChunk(typeName)
+        val typeChunks = this.getTypeChunks(typeName)
 
         // Add a new string to the pool to be used as a key
-        val stringKeyIdx = this.keyStringPool.addString(name)
+        val resourceNameIdx = this.keyStringPool.addString(resourceName, /* deduplicate = */ true)
 
         // Add a new resource entry to the type spec chunk
-        val resourceIdx = colorSpecChunk.addResource(/* flags = */ 0)
+        val resourceIdx = specChunk.addResource(/* flags = */ 0)
 
-        for (typeChunk in colorTypeChunks) {
+        for (typeChunk in typeChunks) {
+            // If no matching config, add a null entry and try next chunk
+            if (!configurations(typeChunk.configuration)) {
+                (typeChunk.entries as MutableObjectList).add(null)
+                continue
+            }
+
             val entry = TypeChunk.Entry(
                 /* headerSize = */ 8,
                 /* flags = */ 0,
-                /* keyIndex = */ stringKeyIdx,
+                /* keyIndex = */ resourceNameIdx,
                 /* value = */
                 BinaryResourceValue(
                     /* size = */ BinaryResourceValue.SIZE,
-                    /* type = */ BinaryResourceValue.Type.INT_COLOR_ARGB8,
-                    /* data = */ color.toArgb(),
+                    /* type = */ valueType,
+                    /* data = */ valueData,
                 ),
                 /* values = */ null, // not a complex resource
                 /* parentEntry = */ 0, // not a complex resource
@@ -87,7 +119,7 @@ object ArscUtil {
 
         return BinaryResourceIdentifier.create(
             /* packageId = */ this.id,
-            /* typeId = */ colorSpecChunk.id,
+            /* typeId = */ specChunk.id,
             /* entryId = */ resourceIdx,
         )
     }
@@ -124,35 +156,4 @@ object ArscUtil {
 
         return value
     }
-
-    // fun getResourceFileName(
-    //     globalStringPool: StringPoolChunk,
-    //     arscPackage: PackageChunk,
-    //     typeName: String,
-    //     resourceName: String,
-    //     configurationName: String,
-    // ): String {
-    //     val resourceNameIdx = arscPackage.keyStringPool.indexOf(resourceName)
-    //
-    //     arscPackage.getTypeChunks(typeName).forEach { chunk ->
-    //         if (chunk.configuration.toString() != configurationName)
-    //             return@forEach
-    //
-    //         chunk.entries.forEach forEach2@{ entry ->
-    //             if (entry?.keyIndex() != resourceNameIdx
-    //                 || entry.isComplex
-    //                 || entry.value().type() != BinaryResourceValue.Type.STRING
-    //             ) {
-    //                 return@forEach2
-    //             }
-    //
-    //             val valueIdx = entry.value().data()
-    //             val value = globalStringPool.getString(valueIdx)
-    //
-    //             return value
-    //         }
-    //     }
-    //
-    //     throw IllegalArgumentException("Unable to find the target resource in arsc")
-    // }
 }
