@@ -25,6 +25,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.ui.components.Wakelock
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.screens.install.components.StepGroupCard
@@ -44,6 +45,9 @@ class InstallScreen(private val data: InstallOptions) : Screen {
             if (state.value is InstallScreenState.CloseScreen)
                 navigator.back(currentActivity = null)
         }
+
+        // Prevent screen from turning off while working
+        Wakelock(active = state.value is InstallScreenState.Working)
 
         // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
         var showAbortWarning by remember(model.state.collectAsState()) { mutableStateOf(false) }
