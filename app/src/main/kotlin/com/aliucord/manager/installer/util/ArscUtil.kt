@@ -12,7 +12,7 @@ object ArscUtil {
      * Read and parse `resources.arsc` from an APK.
      */
     fun readArsc(apk: File): BinaryResourceFile {
-        val arscBytes = ZipReader(apk).use { zip ->
+        val bytes = ZipReader(apk).use { zip ->
             val entry = zip.openEntry("resources.arsc")
                 ?: error("APK missing resources.arsc")
 
@@ -20,7 +20,7 @@ object ArscUtil {
         }
 
         return try {
-            BinaryResourceFile(arscBytes)
+            BinaryResourceFile(bytes)
         } catch (t: Throwable) {
             throw Error("Failed to parse resources.arsc", t)
         }

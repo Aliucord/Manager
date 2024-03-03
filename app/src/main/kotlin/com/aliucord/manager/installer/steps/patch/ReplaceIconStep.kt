@@ -12,8 +12,10 @@ import com.aliucord.manager.installer.util.ArscUtil.addColorResource
 import com.aliucord.manager.installer.util.ArscUtil.getMainArscChunk
 import com.aliucord.manager.installer.util.ArscUtil.getPackageChunk
 import com.aliucord.manager.installer.util.ArscUtil.getResourceFileName
+import com.aliucord.manager.installer.util.AxmlUtil
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.screens.installopts.InstallOptions.IconReplacement
+import com.aliucord.manager.util.find
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
 import com.google.devrel.gmscore.tools.apk.arsc.*
@@ -41,44 +43,25 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
         val arsc = ArscUtil.readArsc(apk)
 
+        val iconRscIds = readManifestIconInfo(apk)
+        val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
+        val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
+
         when (options.iconReplacement) {
             is IconReplacement.Original -> {} // no-op
 
             is IconReplacement.CustomColor -> {
-                val iconRscIds = readManifestIconInfo(apk)
-                val newColorRscId = arsc.getPackageChunk().addColorResource("aliucord", options.iconReplacement.color)
+                val newColorRscId = arsc.getPackageChunk()
+                    .addColorResource("aliucord", options.iconReplacement.color)
 
-                val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
-                val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
-
-                fun patchIconFile(file: String) {
-                    val iconXml = run {
-                        ZipReader(apk)
-                            .use { it.openEntry(file)!!.read() }
-                            .let(::BinaryResourceFile)
-                    }
-
-                    val mainXmlChunk = (iconXml.chunks.single() as XmlChunk)
-                    val backgroundChunk = mainXmlChunk.chunks.values
-                        .filterIsInstance<XmlStartElementChunk>()
-                        .find { it.name == "background" }!!
-                    val drawableAttr = backgroundChunk.attributes.find { it.name() == "drawable" }!!
-
-                    assert(drawableAttr.typedValue().type() == BinaryResourceValue.Type.REFERENCE)
-
-                    BinaryResourceValue::class.java
-                        .getDeclaredField("data")
-                        .apply { isAccessible = true }
-                        .set(drawableAttr.typedValue(), newColorRscId.resourceId())
-
-                    ZipWriter(apk, /* append = */ true).use {
-                        it.deleteEntry(squareIconFile)
-                        it.writeEntry(squareIconFile, iconXml.toByteArray(true))
-                    }
+                for (rscFile in arrayOf(squareIconFile, roundIconFile)) {
+                    AxmlUtil.patchAdaptiveIcon(
+                        apk = apk,
+                        resourcePath = rscFile,
+                        backgroundColor = newColorRscId,
+                        monochromeIcon = BinaryResourceIdentifier.create(0),
+                    )
                 }
-
-                patchIconFile(squareIconFile)
-                patchIconFile(roundIconFile)
             }
 
             is IconReplacement.CustomImage -> {}
@@ -120,9 +103,8 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
         val roundIconStringIdx = mainChunk.stringPool.indexOf("roundIcon")
         val applicationStringIdx = mainChunk.stringPool.indexOf("application")
 
-        val applicationChunk = mainChunk.chunks.values.asSequence()
-            .filterIsInstance<XmlStartElementChunk>()
-            .find { it.nameIndex == applicationStringIdx }
+        val applicationChunk = mainChunk.chunks
+            .find { it is XmlStartElementChunk && it.nameIndex == applicationStringIdx } as? XmlStartElementChunk
             ?: error("Unable to find <application> in manifest")
 
         val squareIcon = applicationChunk.attributes
