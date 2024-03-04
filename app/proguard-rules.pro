@@ -28,12 +28,6 @@
 # Serializer for classes with named companion objects are retrieved using `getDeclaredClasses`.
 # If you have any, uncomment and replace classes with those containing named companion objects.
 -keepattributes InnerClasses # Needed for `getDeclaredClasses`.
-#-if @kotlinx.serialization.Serializable class
-#com.xinto.opencord.gateway.io.OpCode, # <-- List serializable classes with named companions.
-#com.xinto.opencord.gateway.io.EventName
-#{
-#    static **$* *;
-#}
 -keepnames class <1>$$serializer { # -keepnames suffices; class is kept when serializer() is kept.
     static <1>$$serializer INSTANCE;
 }
@@ -47,6 +41,10 @@
 
 # Amount of optimization iterations, taken from an SO post
 -optimizationpasses 5
+-mergeinterfacesaggressively
 
 # Broaden access modifiers to increase results during optimization
 -allowaccessmodification
+
+# Suppress missing class warnings
+-dontwarn org.slf4j.impl.StaticLoggerBinder
