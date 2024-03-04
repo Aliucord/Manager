@@ -1,6 +1,5 @@
 package com.aliucord.manager.installer.util
 
-import androidx.collection.MutableObjectList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.github.diamondminer88.zip.ZipReader
@@ -94,7 +93,7 @@ object ArscUtil {
         for (typeChunk in typeChunks) {
             // If no matching config, add a null entry and try next chunk
             if (!configurations(typeChunk.configuration)) {
-                (typeChunk.entries as MutableObjectList).add(null)
+                typeChunk.addEntry(null)
                 continue
             }
 
@@ -104,7 +103,6 @@ object ArscUtil {
                 /* keyIndex = */ resourceNameIdx,
                 /* value = */
                 BinaryResourceValue(
-                    /* size = */ BinaryResourceValue.SIZE,
                     /* type = */ valueType,
                     /* data = */ valueData,
                 ),
@@ -113,8 +111,7 @@ object ArscUtil {
                 /* parent = */ typeChunk,
             )
 
-            // TODO: add a "addEntry(TypeChunk.Entry)" method to lib
-            (typeChunk.entries as MutableObjectList).add(entry)
+            typeChunk.addEntry(entry)
         }
 
         return BinaryResourceIdentifier.create(

@@ -12,7 +12,7 @@ object AxmlUtil {
      * @param apk The source apk
      * @param resourcePath The full path to the axml file inside the apk, which may be flattened.
      */
-    fun readAxml(apk: File, resourcePath: String): BinaryResourceFile {
+    private fun readAxml(apk: File, resourcePath: String): BinaryResourceFile {
         val bytes = ZipReader(apk).use { zip ->
             val entry = zip.openEntry(resourcePath)
                 ?: error("APK missing resource file at $resourcePath")
@@ -30,7 +30,7 @@ object AxmlUtil {
     /**
      * Get the only top-level chunk in an axml file.
      */
-    fun BinaryResourceFile.getMainAxmlChunk(): XmlChunk {
+    private fun BinaryResourceFile.getMainAxmlChunk(): XmlChunk {
         return this.chunks.singleOrNull() as? XmlChunk
             ?: error("Invalid top-level axml chunk")
     }
@@ -59,6 +59,14 @@ object AxmlUtil {
             ?: error("Failed to find $name attribute in an axml chunk")
     }
 
+    /**
+     * Patches an <adaptive-icon> axml file to change the `background`, `foreground`, and `monochrome` resource references.
+     * If any of the following are not null, then they will be patched.
+     * @param backgroundColor A color resource id to replace <background> with.
+     *
+     * @param foregroundIcon A drawable resource id to replace <foreground> with.
+     * @param monochromeIcon A drawable resource id to add or replace <monochrome> with.
+     */
     fun patchAdaptiveIcon(
         apk: File,
         resourcePath: String,
@@ -111,7 +119,7 @@ object AxmlUtil {
                 val monochromeIdx = xmlChunk.stringPool.addString("monochrome")
 
                 val startChunk = XmlStartElementChunk(
-                    /* namespaceIndex = */ namespaceIdx,
+                    /* namespaceIndex = */ -1,
                     /* nameIndex = */ monochromeIdx,
                     /* idIndex = */ -1,
                     /* classIndex = */ -1,
@@ -119,12 +127,11 @@ object AxmlUtil {
                     /* attributes = */
                     listOf(
                         XmlAttribute(
-                            /* namespaceIndex = */ -1,
+                            /* namespaceIndex = */ namespaceIdx,
                             /* nameIndex = */ drawableIdx,
                             /* rawValueIndex = */ -1,
                             /* typedValue = */
                             BinaryResourceValue(
-                                /* size = */ BinaryResourceValue.SIZE,
                                 /* type = */ BinaryResourceValue.Type.REFERENCE,
                                 /* data = */ monochromeIcon.resourceId(),
                             ),
@@ -150,4 +157,45 @@ object AxmlUtil {
             zip.writeEntry(resourcePath, xml.toByteArray(/* shrink = */ true))
         }
     }
+
+    /**
+     * From an APK, read the manifest's `icon` and `roundIcon` references to a resource.
+     * This is then used to get the filename of the resource from `resources.arsc`.
+     */
+    fun readManifestIconInfo(apk: File): ManifestIconInfo {
+        val manifestBytes = ZipReader(apk).use { it.openEntry("AndroidManifest.xml")!!.read() }
+        val manifest = BinaryResourceFile(manifestBytes)
+        val mainChunk = manifest.chunks.single() as XmlChunk
+
+        // Prefetch string indexes to avoid parsing the entire string pool
+        val iconStringIdx = mainChunk.stringPool.indexOf("icon")
+        val roundIconStringIdx = mainChunk.stringPool.indexOf("roundIcon")
+        val applicationStringIdx = mainChunk.stringPool.indexOf("application")
+
+        val applicationChunk = mainChunk.chunks
+            .find { it is XmlStartElementChunk && it.nameIndex == applicationStringIdx } as? XmlStartElementChunk
+            ?: error("Unable to find <application> in manifest")
+
+        val squareIcon = applicationChunk.attributes
+            .find { it.nameIndex() == iconStringIdx }
+            ?: error("Unable to find android:icon in manifest")
+
+        val roundIcon = applicationChunk.attributes
+            .find { it.nameIndex() == roundIconStringIdx }
+            ?: error("Unable to find android:roundIcon in manifest")
+
+        assert(squareIcon.typedValue().type() == BinaryResourceValue.Type.REFERENCE)
+        assert(roundIcon.typedValue().type() == BinaryResourceValue.Type.REFERENCE)
+
+        return ManifestIconInfo(
+            // Resource IDs into resources.arsc
+            squareIcon = BinaryResourceIdentifier.create(squareIcon.typedValue().data()),
+            roundIcon = BinaryResourceIdentifier.create(roundIcon.typedValue().data()),
+        )
+    }
+
+    data class ManifestIconInfo(
+        val squareIcon: BinaryResourceIdentifier,
+        val roundIcon: BinaryResourceIdentifier,
+    )
 }
