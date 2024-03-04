@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Toestemmingen verlenen</string>
   <string name="permissions_grant_body">Om Aliucord Manager te laten functioneren, zijn bestandsrechten vereist. Omdat gedeelde gegevens zijn opgeslagen in ~/Aliucord, zijn machtigingen vereist voor toegang.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Kon Aliucord niet opstarten</string>
   <string name="settings_theme">Thema</string>
   <string name="settings_advanced">Geavanceerd</string>

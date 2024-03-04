@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Engedélyek Megadása</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
   <string name="settings_theme">Theme</string>
   <string name="settings_advanced">Advanced</string>

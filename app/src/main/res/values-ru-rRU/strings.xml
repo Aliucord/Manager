@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Предоставление разрешений</string>
   <string name="permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
   <string name="settings_theme">Тема</string>
   <string name="settings_advanced">Дополнительные</string>

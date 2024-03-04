@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Εκχώρηση αδειών</string>
   <string name="permissions_grant_body">Για να λειτουργήσει σωστά ο Aliucord Manager, πρέπει να εκχωρήσετε δικαιώματα αρχείου. Δεδομένου ότι τα κοινόχρηστα δεδομένα αποθηκεύονται στο ~/Aliucord, απαιτούνται δικαιώματα για να λειτουργήσει ο Manager.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Αποτυχία εκκίνησης του Aliucord</string>
   <string name="settings_theme">Θέμα</string>
   <string name="settings_advanced">Προηγμένες επιλογές</string>

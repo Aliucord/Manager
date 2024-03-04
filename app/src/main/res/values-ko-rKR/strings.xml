@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
   <string name="settings_theme">테마</string>
   <string name="settings_advanced">고급 설정</string>
