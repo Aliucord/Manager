@@ -108,33 +108,36 @@ class HomeModel(
                     isAliucordPkg || hasAliucordMeta
                 }
 
-            val aliucordInstallations = aliucordPackages
-                .map {
-                    // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
-                    @Suppress("DEPRECATION")
-                    val versionCode = it.versionCode
+            val aliucordInstallations = aliucordPackages.map {
+                // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
+                @Suppress("DEPRECATION")
+                val versionCode = it.versionCode
 
-                    val baseVersion = it.applicationInfo.metaData?.getInt("aliucordBaseVersion")
-                    val isBaseUpdated = /* TODO: remote data json instead */ baseVersion == 0
+                val baseVersion = it.applicationInfo.metaData?.getInt("aliucordBaseVersion")
+                val isBaseUpdated = /* TODO: remote data json instead */ baseVersion == 0
 
-                    InstallData(
-                        name = packageManager.getApplicationLabel(it.applicationInfo).toString(),
-                        packageName = it.packageName,
-                        baseUpdated = isBaseUpdated,
-                        icon = packageManager
-                            .getApplicationIcon(it.applicationInfo)
-                            .toBitmap()
-                            .asImageBitmap()
-                            .let(::BitmapPainter),
-                        version = DiscordVersion.Existing(
-                            type = DiscordVersion.parseVersionType(versionCode),
-                            name = it.versionName.split("-")[0].trim(),
-                            code = versionCode,
-                        ),
-                    )
-                }
+                InstallData(
+                    name = packageManager.getApplicationLabel(it.applicationInfo).toString(),
+                    packageName = it.packageName,
+                    baseUpdated = isBaseUpdated,
+                    icon = packageManager
+                        .getApplicationIcon(it.applicationInfo)
+                        .toBitmap()
+                        .asImageBitmap()
+                        .let(::BitmapPainter),
+                    version = DiscordVersion.Existing(
+                        type = DiscordVersion.parseVersionType(versionCode),
+                        name = it.versionName.split("-")[0].trim(),
+                        code = versionCode,
+                    ),
+                )
+            }.toImmutableList()
 
-            installations = InstallsState.Fetched(data = aliucordInstallations.toImmutableList())
+            installations = if (aliucordInstallations.isNotEmpty()) {
+                InstallsState.Fetched(data = aliucordInstallations)
+            } else {
+                InstallsState.None
+            }
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
             installations = InstallsState.Error
