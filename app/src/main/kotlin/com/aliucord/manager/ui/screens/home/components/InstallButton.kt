@@ -14,11 +14,19 @@ import com.aliucord.manager.R
 @Composable
 fun InstallButton(
     enabled: Boolean = true,
+    secondaryInstall: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FilledTonalIconButton(
         shape = MaterialTheme.shapes.medium,
+        colors = IconButtonDefaults.filledTonalIconButtonColors(
+            containerColor = if (secondaryInstall) {
+                MaterialTheme.colorScheme.secondaryContainer
+            } else {
+                MaterialTheme.colorScheme.primary
+            },
+        ),
         enabled = enabled,
         onClick = onClick,
         modifier = modifier,

@@ -43,7 +43,7 @@ fun InstalledItemCard(
             )
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             modifier = Modifier.padding(20.dp),
         ) {
             Row(

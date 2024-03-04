@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -131,6 +130,7 @@ fun PresentInstallsContent(
 
         item(key = "ADD_INSTALL_BUTTON") {
             InstallButton(
+                secondaryInstall = true,
                 onClick = onClickInstall,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -141,7 +141,7 @@ fun PresentInstallsContent(
         item(key = "SUPPORTED_VERSION") {
             AnimatedVersionDisplay(
                 version = model.supportedVersion,
-                modifier = Modifier.padding(bottom = 22.dp),
+                modifier = Modifier.padding(bottom = 30.dp),
             )
         }
 
@@ -166,6 +166,21 @@ fun PresentInstallsContent(
                 )
             }
         }
+
+        item(key = "END_INDICATOR") {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .alpha(.6f)
+                    .padding(top = 12.dp)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = "...",
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
+        }
     }
 }
 
@@ -185,6 +200,7 @@ fun NoInstallsContent(
         ProjectHeader()
 
         InstallButton(
+            secondaryInstall = false,
             onClick = onClickInstall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -193,54 +209,27 @@ fun NoInstallsContent(
 
         AnimatedVersionDisplay(
             version = supportedVersion,
-            modifier = Modifier.padding(bottom = 22.dp),
+            modifier = Modifier.padding(bottom = 30.dp),
         )
 
-        Box(
-            modifier = Modifier.fillMaxSize(),
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .alpha(.7f)
+                .padding(bottom = 90.dp)
+                .fillMaxSize()
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier
-                    .alpha(.1f)
-                    .fillMaxSize()
-            ) {
-                for (i in 0..<3) key(i) {
-                    Surface(
-                        content = {},
-                        shape = MaterialTheme.shapes.medium,
-                        tonalElevation = 2.dp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(195.dp)
-                            .shadow(
-                                clip = false,
-                                elevation = 2.dp,
-                                shape = MaterialTheme.shapes.medium,
-                            ),
-                    )
-                }
-            }
+            Text(
+                text = """ /ᐠﹷ ‸ ﹷ ᐟ\ﾉ""",
+                style = MaterialTheme.typography.labelLarge
+                    .copy(fontSize = 38.sp),
+            )
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .alpha(.8f)
-                    .align(Alignment.Center)
-                    .padding(bottom = 80.dp),
-            ) {
-                Text(
-                    text = """ /ᐠﹷ ‸ ﹷ ᐟ\ﾉ""",
-                    style = MaterialTheme.typography.labelLarge
-                        .copy(fontSize = 38.sp),
-                )
-
-                Text(
-                    text = stringResource(R.string.installs_no_installs),
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
+            Text(
+                text = stringResource(R.string.installs_no_installs),
+                style = MaterialTheme.typography.labelLarge,
+            )
         }
     }
 }
