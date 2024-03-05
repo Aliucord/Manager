@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
+import java.io.Serializable
 
 @Immutable
 sealed interface DiscordVersion : Comparable<DiscordVersion> {
@@ -14,7 +15,7 @@ sealed interface DiscordVersion : Comparable<DiscordVersion> {
         val type: Type,
         val name: String,
         val code: Int,
-    ) : DiscordVersion {
+    ) : DiscordVersion, Serializable {
         val rawCode: Int
             get() = (code / 1000 * 100) + code % 100
     }
