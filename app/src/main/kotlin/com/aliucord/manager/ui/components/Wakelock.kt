@@ -1,12 +1,10 @@
 package com.aliucord.manager.ui.components
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.view.WindowManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
+import com.aliucord.manager.util.findActivity
 
 /**
  * Maintain an active screen wakelock as long as [active] is true and this component is in scope.
@@ -27,13 +25,4 @@ fun Wakelock(active: Boolean = false) {
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
-}
-
-private fun Context.findActivity(): Activity? {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context
-        context = context.baseContext
-    }
-    return null
 }

@@ -1,7 +1,12 @@
 package com.aliucord.manager.installer.steps
 
+import android.content.Context
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ProcessLifecycleOwner
+import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.ui.util.InstallNotifications
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
@@ -14,7 +19,10 @@ import org.koin.core.component.inject
  */
 const val MINIMUM_STEP_DELAY: Long = 600L
 
+const val ERROR_NOTIF_ID = 200002
+
 abstract class StepRunner : KoinComponent {
+    private val context: Context by inject()
     private val preferences: PreferencesManager by inject()
 
     abstract val steps: ImmutableList<Step>
@@ -39,7 +47,10 @@ abstract class StepRunner : KoinComponent {
     suspend fun executeAll(): Throwable? {
         for (step in steps) {
             val error = step.executeCatching(this@StepRunner)
-            if (error != null) return error
+            if (error != null) {
+                showErrorNotification()
+                return error
+            }
 
             // Skip minimum run time when in dev mode
             if (!preferences.devMode && step.durationMs < MINIMUM_STEP_DELAY) {
@@ -48,5 +59,17 @@ abstract class StepRunner : KoinComponent {
         }
 
         return null
+    }
+
+    private fun showErrorNotification() {
+        // If app backgrounded
+        if (ProcessLifecycleOwner.get().lifecycle.currentState == Lifecycle.State.CREATED) {
+            InstallNotifications.createNotification(
+                context = context,
+                id = ERROR_NOTIF_ID,
+                title = R.string.notif_install_fail_title,
+                description = R.string.notif_install_fail_desc,
+            )
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.aliucord.manager.util
 
+import android.app.Activity
 import android.content.*
 import android.os.Environment
 import android.util.Log
@@ -43,4 +44,13 @@ fun Context.getPackageVersion(pkg: String): Pair<String, Int> {
     @Suppress("DEPRECATION")
     return packageManager.getPackageInfo(pkg, 0)
         .let { it.versionName to it.versionCode }
+}
+
+fun Context.findActivity(): Activity? {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    return null
 }

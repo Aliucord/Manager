@@ -146,4 +146,11 @@
   <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
   <string name="installopts_divider_basic">Basic</string>
   <string name="installopts_divider_advanced">Advanced</string>
+
+  <string name="notif_group_install_title">Active installation</string>
+  <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
+  <string name="notif_install_ready_title">Aliucord installation ready!</string>
+  <string name="notif_install_ready_desc">Click to install…</string>
+  <string name="notif_install_fail_title">Aliucord failed to install</string>
+  <string name="notif_install_fail_desc">Click to view more info…</string>
 </resources>
