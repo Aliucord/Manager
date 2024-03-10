@@ -6,23 +6,19 @@
 package com.aliucord.manager.ui.screens.install
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -37,8 +33,7 @@ import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.screens.install.components.InstallAppBar
 import com.aliucord.manager.ui.screens.install.components.StepGroupCard
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
-import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
-import com.aliucord.manager.ui.util.paddings.exclude
+import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.core.parameter.parametersOf
@@ -127,85 +122,59 @@ class InstallScreen(private val data: InstallOptions) : Screen {
 
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(20.dp),
-                    contentPadding = paddingValues.exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
+                    contentPadding = paddingValues
+                        .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
+                        .add(PaddingValues(bottom = 25.dp)),
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxSize(),
                 ) {
                     if (showMinimizationWarning && !state.value.isFinished) {
                         item(key = "MINIMIZATION_WARNING_BANNER") {
-                            Column {
-                                TextBanner(
-                                    text = stringResource(R.string.installer_minimization_warning),
-                                    icon = painterResource(R.drawable.ic_warning),
-                                    iconColor = MaterialTheme.customColors.onWarningContainer,
-                                    outlineColor = MaterialTheme.customColors.warning,
-                                    containerColor = MaterialTheme.customColors.warningContainer,
-                                    modifier = Modifier
-                                        .padding(bottom = 20.dp)
-                                        .fillMaxWidth()
-                                        .animateItemPlacement(),
-                                )
+                            TextBanner(
+                                text = stringResource(R.string.installer_minimization_warning),
+                                icon = painterResource(R.drawable.ic_warning),
+                                iconColor = MaterialTheme.customColors.onWarningContainer,
+                                outlineColor = MaterialTheme.customColors.warning,
+                                containerColor = MaterialTheme.customColors.warningContainer,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .animateItemPlacement(),
+                            )
+                        }
 
-                                HorizontalDivider(
-                                    thickness = (.5).dp,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                            }
+                        item(contentType = "DIVIDER") {
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                modifier = Modifier.animateItemPlacement(),
+                            )
                         }
                     }
 
                     if (state.value is InstallScreenState.Failed) {
-                        stickyHeader(key = "FAILED_BANNER") {
+                        item(key = "FAILED_BANNER") {
                             val handler = LocalUriHandler.current
 
-                            Surface(Modifier.animateItemPlacement()) {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                                ) {
-                                    TextBanner(
-                                        text = "Installation failed! You can either retry or click this to open the Aliucord server for help.",
-                                        icon = painterResource(R.drawable.ic_warning),
-                                        iconColor = MaterialTheme.colorScheme.error,
-                                        // outlineColor = MaterialTheme.colorScheme.error.copy(alpha = .5f),
-                                        outlineColor = MaterialTheme.colorScheme.errorContainer,
-                                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable { handler.openUri("https://discord.gg/${BuildConfig.SUPPORT_SERVER}") }
-                                    )
+                            TextBanner(
+                                text = "Installation failed! You can either retry or click this to open the Aliucord server for help.",
+                                icon = painterResource(R.drawable.ic_warning),
+                                iconColor = MaterialTheme.colorScheme.error,
+                                outlineColor = null,
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                                onClick = { handler.openUri("https://discord.gg/${BuildConfig.SUPPORT_SERVER}") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .animateItemPlacement()
+                            )
+                        }
 
-                                    FilledTonalIconButton(
-                                        shape = MaterialTheme.shapes.medium,
-                                        colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                            containerColor = MaterialTheme.colorScheme.primary,
-                                        ),
-                                        onClick = model::restart,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    ) {
-                                        Row(
-                                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            Icon(
-                                                painter = painterResource(R.drawable.ic_refresh),
-                                                contentDescription = null,
-                                            )
-                                            Text(
-                                                text = "Retry installation",
-                                                style = MaterialTheme.typography.labelLarge,
-                                            )
-                                        }
-                                    }
-
-                                    HorizontalDivider(
-                                        thickness = (.5).dp,
-                                        modifier = Modifier
-                                            .padding(top = 8.dp, bottom = 10.dp)
-                                            .fillMaxWidth(),
-                                    )
-                                }
-                            }
+                        item(contentType = "DIVIDER") {
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp)
+                                    .animateItemPlacement(),
+                            )
                         }
                     }
 
@@ -237,25 +206,65 @@ class InstallScreen(private val data: InstallOptions) : Screen {
                     // }
 
                     if (state.value is InstallScreenState.Failed) {
-                        val failureLog = (state.value as InstallScreenState.Failed).failureLog
+                        item(contentType = "DIVIDER") {
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp)
+                                    .animateItemPlacement(),
+                            )
+                        }
 
                         item(key = "BUTTON_ROW") {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
-                                modifier = Modifier.fillMaxWidth()
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(14.dp),
+                                modifier = Modifier
+                                    .animateItemPlacement()
                             ) {
-                                FilledTonalButton(onClick = model::clearCache) {
-                                    Text(stringResource(R.string.setting_clear_cache))
+                                FilledTonalIconButton(
+                                    shape = MaterialTheme.shapes.medium,
+                                    colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                    ),
+                                    onClick = model::restart,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(42.dp),
+                                ) {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_refresh),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(20.dp),
+                                        )
+                                        Text(
+                                            text = "Retry installation",
+                                            style = MaterialTheme.typography.labelLarge,
+                                            textAlign = TextAlign.Center,
+                                        )
+                                    }
                                 }
 
-                                Spacer(Modifier.weight(1f, true))
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    FilledTonalButton(onClick = model::clearCache) {
+                                        Text(stringResource(R.string.setting_clear_cache))
+                                    }
 
-                                OutlinedButton(onClick = model::saveFailureLog) {
-                                    Text(stringResource(R.string.installer_save_file))
-                                }
+                                    Spacer(Modifier.weight(1f, true))
 
-                                FilledTonalButton(onClick = model::copyDebugToClipboard) {
-                                    Text(stringResource(R.string.action_copy))
+                                    OutlinedButton(onClick = model::saveFailureLog) {
+                                        Text(stringResource(R.string.installer_save_file))
+                                    }
+
+                                    FilledTonalButton(onClick = model::copyDebugToClipboard) {
+                                        Text(stringResource(R.string.action_copy))
+                                    }
                                 }
                             }
                         }

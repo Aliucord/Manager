@@ -52,13 +52,16 @@ fun StepGroupCard(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier
                 .clickable(true, onClick = onExpand)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 20.dp)
+                .padding(20.dp)
         ) {
-            StepStateIcon(groupState, 24.dp)
+            StepStateIcon(
+                state = groupState,
+                size = 24.dp,
+            )
 
             Text(text = name)
 
@@ -88,7 +91,7 @@ fun StepGroupCard(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background.copy(0.6f))
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(20.dp)
                     .padding(start = 4.dp)
             ) {
                 for (step in subSteps) key(step) {
