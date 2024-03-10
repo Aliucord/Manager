@@ -74,6 +74,7 @@
   <string name="installer_aborted">中斷 Aliucord 安裝</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">請解除安裝目前版本的 Aliucord 以繼續！</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">安裝失敗（未知的原因）</string>
   <string name="install_error_blocked">安裝已被阻止</string>
   <string name="install_error_invalid">一個或多個 apk 損壞或無效</string>

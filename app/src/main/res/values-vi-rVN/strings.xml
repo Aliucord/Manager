@@ -74,6 +74,7 @@
   <string name="installer_aborted">Đã hủy bỏ cài đặt Aliucord</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Vui lòng gỡ cài đặt phiên bản Aliucord hiện tại của bạn để tiếp tục!</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
