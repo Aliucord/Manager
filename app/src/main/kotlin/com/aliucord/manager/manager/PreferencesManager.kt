@@ -5,7 +5,7 @@ import com.aliucord.manager.manager.base.BasePreferenceManager
 import com.aliucord.manager.ui.components.Theme
 
 class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager(preferences) {
-    var theme by enumPreference("theme", Theme.SYSTEM)
+    var theme by enumPreference("theme", Theme.DARK)
     var dynamicColor by booleanPreference("dynamic_color", true)
     var devMode by booleanPreference("dev_mode", false)
     var installer by enumPreference("installer", InstallerSetting.PM)

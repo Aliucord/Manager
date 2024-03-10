@@ -26,6 +26,8 @@ import com.aliucord.manager.ui.screens.installopts.components.PackageNameState
 import com.aliucord.manager.ui.screens.installopts.components.options.SwitchInstallOption
 import com.aliucord.manager.ui.screens.installopts.components.options.TextInstallOption
 import com.aliucord.manager.ui.util.*
+import com.aliucord.manager.util.isIgnoringBatteryOptimizations
+import com.aliucord.manager.util.requestNoBatteryOptimizations
 
 class InstallOptionsScreen(
     private val supportedVersion: DiscordVersion = DiscordVersion.None,
@@ -40,6 +42,9 @@ class InstallOptionsScreen(
 
         LaunchedEffect(Unit) {
             InstallNotifications.requestPermissions(context)
+
+            if (!context.isIgnoringBatteryOptimizations())
+                context.requestNoBatteryOptimizations()
         }
 
         Scaffold(

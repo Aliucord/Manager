@@ -28,8 +28,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.components.Wakelock
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
-import com.aliucord.manager.ui.screens.install.components.InstallAppBar
-import com.aliucord.manager.ui.screens.install.components.StepGroupCard
+import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import org.koin.core.parameter.parametersOf
 
@@ -92,6 +91,10 @@ class InstallScreen(private val data: InstallOptions) : Screen {
                             .fillMaxWidth()
                             .height(8.dp)
                             .padding(bottom = 4.dp)
+                    )
+
+                    MinimizationWarning(
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
