@@ -1,7 +1,11 @@
 package com.aliucord.manager.util
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
-import android.os.Environment
+import android.net.Uri
+import android.os.*
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -43,4 +47,42 @@ fun Context.getPackageVersion(pkg: String): Pair<String, Int> {
     @Suppress("DEPRECATION")
     return packageManager.getPackageInfo(pkg, 0)
         .let { it.versionName to it.versionCode }
+}
+
+fun Context.findActivity(): Activity? {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    return null
+}
+
+fun Context.isIgnoringBatteryOptimizations(): Boolean {
+    val power = applicationContext.getSystemService(PowerManager::class.java)
+    val name = applicationContext.packageName
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        return power.isIgnoringBatteryOptimizations(name)
+    }
+    return true
+}
+
+/**
+ * Launch a system dialog to enable unrestricted battery usage.
+ */
+@SuppressLint("BatteryLife")
+fun Context.requestNoBatteryOptimizations() {
+    val intent = Intent(
+        /* action = */ Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+        /* uri = */ Uri.fromParts("package", this.packageName, null)
+    )
+
+    with(intent) {
+        addCategory(Intent.CATEGORY_DEFAULT)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+    }
+
+    startActivity(intent)
 }

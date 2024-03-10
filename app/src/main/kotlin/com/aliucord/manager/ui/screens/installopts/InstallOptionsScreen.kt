@@ -1,11 +1,14 @@
 package com.aliucord.manager.ui.screens.installopts
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -22,8 +25,9 @@ import com.aliucord.manager.ui.screens.installopts.components.InstallOptionsAppB
 import com.aliucord.manager.ui.screens.installopts.components.PackageNameState
 import com.aliucord.manager.ui.screens.installopts.components.options.SwitchInstallOption
 import com.aliucord.manager.ui.screens.installopts.components.options.TextInstallOption
-import com.aliucord.manager.ui.util.DiscordVersion
-import com.aliucord.manager.ui.util.thenIf
+import com.aliucord.manager.ui.util.*
+import com.aliucord.manager.util.isIgnoringBatteryOptimizations
+import com.aliucord.manager.util.requestNoBatteryOptimizations
 
 class InstallOptionsScreen(
     private val supportedVersion: DiscordVersion = DiscordVersion.None,
@@ -32,16 +36,25 @@ class InstallOptionsScreen(
 
     @Composable
     override fun Content() {
+        val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<InstallOptionsModel>()
+
+        LaunchedEffect(Unit) {
+            InstallNotifications.requestPermissions(context)
+
+            if (!context.isIgnoringBatteryOptimizations())
+                context.requestNoBatteryOptimizations()
+        }
 
         Scaffold(
             topBar = { InstallOptionsAppBar() },
         ) { paddingValues ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedByLastAtBottom(20.dp),
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(paddingValues)
                     .padding(horizontal = 20.dp, vertical = 10.dp)
             ) {

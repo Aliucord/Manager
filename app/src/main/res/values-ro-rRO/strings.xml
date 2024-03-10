@@ -12,11 +12,12 @@
   <string name="action_apply">Aplicare</string>
   <string name="action_confirm">Confirmare</string>
   <string name="action_dismiss">Respinge</string>
+  <string name="action_install">Install</string>
+  <string name="action_uninstall">Uninstall</string>
   <string name="action_add_install">Add Installation</string>
   <string name="action_update">Actualizare</string>
   <string name="action_clear">Șterge</string>
   <string name="action_launch">Launch</string>
-  <string name="action_uninstall">Uninstall</string>
   <string name="action_close">Close</string>
   <string name="action_open_settings">Open settings</string>
   <string name="action_search">Search</string>
@@ -27,8 +28,10 @@
   <string name="action_cleared_cache">Cleared cache!</string>
   <string name="action_exit_anyways">Exit anyways</string>
   <string name="action_open_info">Open info</string>
+  <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
   <string name="settings_theme">Theme</string>
   <string name="settings_advanced">Advanced</string>
@@ -71,6 +74,7 @@
   <string name="installer_aborted">Aborted Aliucord installation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
@@ -90,6 +94,7 @@
   <string name="install_step_dl_aliuhook">Downloading Aliuhook library</string>
   <string name="install_step_copy">Copying dependencies</string>
   <string name="install_step_patch_manifests">Patching apk manifests</string>
+  <string name="install_step_patch_icon">Patching app icon</string>
   <string name="install_step_add_injector">Adding Aliucord injector</string>
   <string name="install_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="install_step_alignment">Aligning APKs</string>
@@ -109,4 +114,24 @@
   <string name="downloader_err_response">Download failed (Invalid response)</string>
   <string name="downloader_err_file_exists">Download failed (File exists)</string>
   <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>
+  <string name="installopts_title">Aliucord provides several customizations at installation time that are not able to be changed once installed.</string>
+  <string name="installopts_pkgname_title">Package Name</string>
+  <string name="installopts_pkgname_desc">The package name is a unique identifier for all apps. Using different ones can allow for multiple installations of Aliucord.</string>
+  <string name="installopts_pkgname_invalid">Invalid package name!</string>
+  <string name="installopts_pkgname_taken">Target app will be overwritten!</string>
+  <string name="installopts_pkgname_ok">Valid package name!</string>
+  <string name="installopts_appname_title">App Name</string>
+  <string name="installopts_appname_desc">The app name is what\'s displayed in your home launcher. This should be changed on secondary installations for ease of use.</string>
+  <string name="installopts_debuggable_title">Debuggable</string>
+  <string name="installopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
+  <string name="installopts_icon_title">Replace app icon</string>
+  <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="installopts_divider_basic">Basic</string>
+  <string name="installopts_divider_advanced">Advanced</string>
+  <string name="notif_group_install_title">Active installation</string>
+  <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
+  <string name="notif_install_ready_title">Aliucord installation ready!</string>
+  <string name="notif_install_ready_desc">Click to install…</string>
+  <string name="notif_install_fail_title">Aliucord failed to install</string>
+  <string name="notif_install_fail_desc">Click to view more info…</string>
 </resources>

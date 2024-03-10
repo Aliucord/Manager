@@ -29,6 +29,7 @@ accompanist-systemUiController = { module = "com.google.accompanist:accompanist-
 # AndroidX
 androidx-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
 
@@ -80,6 +81,7 @@ androidx = [
     "androidx-core",
     "androidx-activity",
     "androidx-lifecycle",
+    "androidx-lifecycle-process",
     "androidx-splashscreen",
 ]
 compose = [
