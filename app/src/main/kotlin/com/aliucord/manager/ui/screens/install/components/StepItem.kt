@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.installer.steps.base.Step
+import com.aliucord.manager.installer.steps.base.StepState
 
 @Composable
 fun StepItem(
@@ -36,13 +37,9 @@ fun StepItem(
             modifier = Modifier.weight(1f, true),
         )
 
-        // TODO: live step duration counter
-        if (step.state.isFinished) {
-            Text(
-                text = "%.2fs".format(step.durationMs / 1000f),
-                style = MaterialTheme.typography.labelSmall,
-                maxLines = 1,
-            )
-        }
+        TimeElapsed(
+            enabled = step.state != StepState.Pending,
+            seconds = step.collectDurationAsState().value,
+        )
     }
 }

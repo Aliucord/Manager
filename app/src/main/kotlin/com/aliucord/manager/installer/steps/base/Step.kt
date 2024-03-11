@@ -4,10 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.aliucord.manager.util.toPrecision
+import kotlinx.coroutines.*
 import org.koin.core.time.measureTimedValue
-import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 /**
  * A base install process step. Steps are single-use
@@ -44,12 +44,44 @@ abstract class Step {
     var progress by mutableFloatStateOf(-1f)
         protected set
 
+    private val durationSecs = mutableFloatStateOf(0f)
+    private var startTime: Long? = null
+    private var totalTimeMs: Long? = null
+
     /**
-     * The total execution time once this step has finished execution.
+     * The total amount of time this step has/was executed for in milliseconds.
+     * If this step has not started executing then it will return `0`.
      */
-    // TODO: make this a live value
-    var durationMs by mutableIntStateOf(0)
-        private set
+    fun getDuration(): Long {
+        // Step hasn't started executing
+        val startTime = startTime ?: return 0
+
+        // Step already finished executing
+        totalTimeMs?.let { return it }
+
+        return System.currentTimeMillis() - startTime
+    }
+
+    /**
+     * The live execution time of this step in seconds.
+     * The value is clamped to a resolution of 10ms updated every 50ms.
+     */
+    @Composable
+    fun collectDurationAsState(): State<Float> {
+        if (state.isFinished)
+            return durationSecs
+
+        LaunchedEffect(state) {
+            while (true) {
+                durationSecs.floatValue = (getDuration() / 1000.0)
+                    .toPrecision(2).toFloat()
+
+                delay(50)
+            }
+        }
+
+        return durationSecs
+    }
 
     /**
      * Thin wrapper over [execute] but handling errors.
@@ -60,6 +92,7 @@ abstract class Step {
             throw IllegalStateException("Cannot execute a step that has already started")
 
         state = StepState.Running
+        startTime = System.currentTimeMillis()
 
         // Execute this steps logic while timing it
         val (error, executionTimeMs) = measureTimedValue {
@@ -78,7 +111,9 @@ abstract class Step {
             }
         }
 
-        durationMs = executionTimeMs.roundToInt()
+        totalTimeMs = executionTimeMs.roundToLong()
+        durationSecs.floatValue = executionTimeMs.toFloat() / 1000f
+
         return error
     }
 }

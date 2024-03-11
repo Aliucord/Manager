@@ -53,8 +53,9 @@ abstract class StepRunner : KoinComponent {
             }
 
             // Skip minimum run time when in dev mode
-            if (!preferences.devMode && step.durationMs < MINIMUM_STEP_DELAY) {
-                delay(MINIMUM_STEP_DELAY - step.durationMs)
+            val duration = step.getDuration()
+            if (!preferences.devMode && duration < MINIMUM_STEP_DELAY) {
+                delay(MINIMUM_STEP_DELAY - duration)
             }
         }
 
