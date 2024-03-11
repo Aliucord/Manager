@@ -24,7 +24,7 @@ fun StepGroupCard(
     isExpanded: Boolean,
     onExpand: () -> Unit,
 ) {
-    val groupState by remember {
+    val groupState by remember(subSteps) {
         derivedStateOf {
             when {
                 // If all steps are pending then show pending

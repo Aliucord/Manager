@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,6 +49,7 @@ class InstallScreen(private val data: InstallOptions) : Screen {
         val model = getScreenModel<InstallModel> { parametersOf(data) }
 
         val state = model.state.collectAsState()
+        val listState = rememberLazyListState()
         val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
 
         LaunchedEffect(state.value) {
@@ -79,6 +81,8 @@ class InstallScreen(private val data: InstallOptions) : Screen {
         LaunchedEffect(state.value) {
             if (state.value == InstallScreenState.Success)
                 expandedGroup = null
+
+            listState.animateScrollToItem(0)
         }
 
         if (showAbortWarning) {
@@ -121,6 +125,7 @@ class InstallScreen(private val data: InstallOptions) : Screen {
                 }
 
                 LazyColumn(
+                    state = listState,
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     contentPadding = paddingValues
                         .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
@@ -156,7 +161,7 @@ class InstallScreen(private val data: InstallOptions) : Screen {
                             val handler = LocalUriHandler.current
 
                             TextBanner(
-                                text = "Installation failed! You can either retry or click this to open the Aliucord server for help.",
+                                text = "Installation failed! You can either retry or click this banner to open the Aliucord server for help.",
                                 icon = painterResource(R.drawable.ic_warning),
                                 iconColor = MaterialTheme.colorScheme.error,
                                 outlineColor = null,

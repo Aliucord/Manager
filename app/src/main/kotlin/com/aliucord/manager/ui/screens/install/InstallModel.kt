@@ -81,7 +81,6 @@ class InstallModel(
         val newInstallJob = screenModelScope.launch {
             val runner = KotlinInstallRunner(options)
 
-            // FIXME: restarting does not display new steps in UI
             installSteps = runner.steps.groupBy { it.group }
                 .mapValues { it.value.toUnsafeImmutable() }
                 .toUnsafeImmutable()
