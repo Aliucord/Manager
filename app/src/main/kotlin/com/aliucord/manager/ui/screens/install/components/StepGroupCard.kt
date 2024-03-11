@@ -39,6 +39,16 @@ fun StepGroupCard(
         }
     }
 
+    val totalSeconds = remember(groupState.isFinished) {
+        if (!groupState.isFinished) {
+            0f
+        } else {
+            subSteps
+                .sumOf { step -> step.getDuration() }
+                .div(1000f)
+        }
+    }
+
     LaunchedEffect(groupState) {
         if (groupState != StepState.Pending)
             onExpand()
@@ -67,9 +77,9 @@ fun StepGroupCard(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (groupState.isFinished) Text(
-                "%.2fs".format(subSteps.sumOf { it.durationMs } / 1000f),
-                style = MaterialTheme.typography.labelMedium
+            TimeElapsed(
+                enabled = groupState.isFinished,
+                seconds = totalSeconds,
             )
 
             if (isExpanded) {
