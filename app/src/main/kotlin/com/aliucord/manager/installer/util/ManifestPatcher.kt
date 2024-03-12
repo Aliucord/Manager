@@ -12,6 +12,7 @@ import pxb.android.axml.*
 object ManifestPatcher {
     private const val ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android"
     private const val USES_CLEARTEXT_TRAFFIC = "usesCleartextTraffic"
+    private const val VM_SAFE_MODE = "vmSafeMode"
     private const val DEBUGGABLE = "debuggable"
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
     private const val NETWORK_SECURITY_CONFIG = "networkSecurityConfig"
@@ -127,6 +128,11 @@ object ManifestPatcher {
                                     if (addLegacyStorage) super.attr(ANDROID_NAMESPACE, REQUEST_LEGACY_EXTERNAL_STORAGE, -1, TYPE_INT_BOOLEAN, 1)
                                     if (addDebuggable) super.attr(ANDROID_NAMESPACE, DEBUGGABLE, -1, TYPE_INT_BOOLEAN, 1)
                                     if (addUseClearTextTraffic) super.attr(ANDROID_NAMESPACE, USES_CLEARTEXT_TRAFFIC, -1, TYPE_INT_BOOLEAN, 1)
+
+                                    // Disable JIT and AOT through manifest
+                                    // https://developer.android.com/guide/topics/manifest/application-element#vmSafeMode
+                                    super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, -1, TYPE_INT_BOOLEAN, 1)
+
                                     super.end()
                                 }
                             }
