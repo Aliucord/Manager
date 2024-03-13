@@ -20,6 +20,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.TextDivider
+import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.screens.install.InstallScreen
 import com.aliucord.manager.ui.screens.installopts.components.InstallOptionsAppBar
 import com.aliucord.manager.ui.screens.installopts.components.PackageNameState
@@ -39,6 +40,8 @@ class InstallOptionsScreen(
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<InstallOptionsModel>()
+
+        PlayProtectDialog(onDismiss = { /*TODO*/ })
 
         LaunchedEffect(Unit) {
             InstallNotifications.requestPermissions(context)
