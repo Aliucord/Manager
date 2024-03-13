@@ -12,7 +12,9 @@ import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
+import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.InstallNotifications
+import com.aliucord.manager.util.isPackageInstalled
 import com.aliucord.manager.util.isPlayProtectEnabled
 import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
@@ -23,7 +25,7 @@ private const val READY_NOTIF_ID = 200001
 /**
  * Install the final APK with the system's PackageManager.
  */
-class InstallStep : Step(), KoinComponent {
+class InstallStep(private val options: InstallOptions) : Step(), KoinComponent {
     private val context: Context by inject()
     private val installers: InstallerManager by inject()
     private val prefs: PreferencesManager by inject()
@@ -59,7 +61,7 @@ class InstallStep : Step(), KoinComponent {
         ProcessLifecycleOwner.get().lifecycle.withResumed {}
 
         // Show [PlayProtectDialog] and wait until it gets dismissed
-        if (context.isPlayProtectEnabled() == true) {
+        if (!context.isPackageInstalled(options.packageName) && context.isPlayProtectEnabled() == true) {
             _gppWarningLock.emit(true)
             _gppWarningLock
                 .filter { show -> !show }

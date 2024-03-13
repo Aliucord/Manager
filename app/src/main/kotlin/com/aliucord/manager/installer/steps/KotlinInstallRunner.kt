@@ -33,7 +33,7 @@ class KotlinInstallRunner(options: InstallOptions) : StepRunner() {
         // Install
         AlignmentStep(),
         SigningStep(),
-        InstallStep(),
+        InstallStep(options),
         CleanupStep(),
     )
 }

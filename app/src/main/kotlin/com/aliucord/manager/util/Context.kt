@@ -3,6 +3,7 @@ package com.aliucord.manager.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -50,6 +51,15 @@ fun Context.getPackageVersion(pkg: String): Pair<String, Int> {
     @Suppress("DEPRECATION")
     return packageManager.getPackageInfo(pkg, 0)
         .let { it.versionName to it.versionCode }
+}
+
+fun Context.isPackageInstalled(packageName: String): Boolean {
+    return try {
+        packageManager.getPackageInfo(packageName, 0)
+        true
+    } catch (_: PackageManager.NameNotFoundException) {
+        false
+    }
 }
 
 fun Context.findActivity(): Activity? {
