@@ -30,11 +30,12 @@ abstract class StepRunner : KoinComponent {
     /**
      * Get a step that has already been successfully executed.
      * This is used to retrieve previously executed dependency steps from a later step.
+     * @param completed Only match steps that have finished executing.
      */
-    inline fun <reified T : Step> getStep(): T {
+    inline fun <reified T : Step> getStep(completed: Boolean = true): T {
         val step = steps.asSequence()
             .filterIsInstance<T>()
-            .filter { it.state.isFinished }
+            .filter { !completed || it.state.isFinished }
             .firstOrNull()
 
         if (step == null) {

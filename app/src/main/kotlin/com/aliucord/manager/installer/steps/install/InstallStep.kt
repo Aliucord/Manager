@@ -11,7 +11,10 @@ import com.aliucord.manager.installer.steps.patch.CopyDependenciesStep
 import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.util.InstallNotifications
+import com.aliucord.manager.util.isPlayProtectEnabled
+import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -25,8 +28,19 @@ class InstallStep : Step(), KoinComponent {
     private val installers: InstallerManager by inject()
     private val prefs: PreferencesManager by inject()
 
+    /**
+     * Locks and unlocks the step's execution to start and wait until [PlayProtectDialog] dismissed.
+     */
+    private val _gppWarningLock = MutableSharedFlow<Boolean>()
+    val gppWarningLock: Flow<Boolean>
+        get() = _gppWarningLock
+
     override val group = StepGroup.Install
     override val localizedName = R.string.install_step_installing
+
+    suspend fun dismissGPPWarning() {
+        _gppWarningLock.emit(false)
+    }
 
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
@@ -43,6 +57,15 @@ class InstallStep : Step(), KoinComponent {
 
         // Wait until app resumed
         ProcessLifecycleOwner.get().lifecycle.withResumed {}
+
+        // Show [PlayProtectDialog] and wait until it gets dismissed
+        if (context.isPlayProtectEnabled() == true) {
+            _gppWarningLock.emit(true)
+            _gppWarningLock
+                .filter { show -> !show }
+                .take(1)
+                .collect()
+        }
 
         val result = installers.getActiveInstaller().waitInstall(
             apks = listOf(apk),

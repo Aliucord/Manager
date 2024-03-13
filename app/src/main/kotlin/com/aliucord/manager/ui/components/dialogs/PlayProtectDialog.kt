@@ -2,12 +2,14 @@ package com.aliucord.manager.ui.components.dialogs
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -24,8 +26,8 @@ fun PlayProtectDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         dismissButton = {
-            FilledTonalButton(onClick = context::launchPlayProtect,                ) {
-                Text("Open GPP")
+            FilledTonalButton(onClick = context::launchPlayProtect) {
+                Text(stringResource(R.string.play_protect_warning_open_gpp))
             }
         },
         confirmButton = {
@@ -35,8 +37,8 @@ fun PlayProtectDialog(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                ) {
-                Text("Continue")
+            ) {
+                Text(stringResource(R.string.play_protect_warning_ok))
             }
         },
         icon = {
@@ -47,17 +49,19 @@ fun PlayProtectDialog(
                 modifier = Modifier.size(36.dp),
             )
         },
-        title = { Text("Play Protect") },
+        title = { Text(stringResource(R.string.play_protect_warning_title)) },
         text = {
             Text(
-                text = "Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to using a unique untrusted signing key.\n\nIn that case, press \"More Details\" -> \"Install anyway\"",
+                text = stringResource(R.string.play_protect_warning_desc),
                 textAlign = TextAlign.Center,
             )
         },
         properties = DialogProperties(
             dismissOnBackPress = false,
+            usePlatformDefaultWidth = false,
         ),
-        modifier = modifier,
+        modifier = modifier
+            .padding(25.dp),
     )
 }
 

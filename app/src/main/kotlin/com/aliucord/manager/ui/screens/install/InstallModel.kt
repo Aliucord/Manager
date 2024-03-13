@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.aliucord.manager.ui.screens.install
 
 import android.annotation.SuppressLint
@@ -21,6 +23,7 @@ import com.aliucord.manager.util.*
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -32,6 +35,10 @@ class InstallModel(
     private lateinit var startTime: Date
     private var installJob: Job? = null
     private var autocloseCancelled: Boolean = false
+
+    private val _showGPPWarning = MutableSharedFlow<Boolean>()
+    val showGPPWarning: Flow<Boolean>
+        get() = _showGPPWarning
 
     var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set
@@ -71,6 +78,13 @@ class InstallModel(
         autocloseCancelled = true
     }
 
+    /**
+     * Hide the 'Google Play Protect is enabled on your device' warning dialog
+     */
+    fun dismissGPPWarning() {
+        screenModelScope.launch { _showGPPWarning.emit(false) }
+    }
+
     fun restart() {
         installJob?.cancel("Manual cancellation")
         installSteps = null
@@ -80,6 +94,19 @@ class InstallModel(
 
         val newInstallJob = screenModelScope.launch {
             val runner = KotlinInstallRunner(options)
+
+            // Bind InstallStep's GPP Warning state to this
+            runner.getStep<InstallStep>(completed = false).also { step ->
+                step.gppWarningLock
+                    .take(1) // A single true value to indicate to open warning
+                    .onEach { _showGPPWarning.emit(true) }
+                    .launchIn(this@launch)
+
+                _showGPPWarning
+                    .filter { show -> !show } // Only check when warning dismissed
+                    .onEach { step.dismissGPPWarning() }
+                    .launchIn(this@launch)
+            }
 
             installSteps = runner.steps.groupBy { it.group }
                 .mapValues { it.value.toUnsafeImmutable() }

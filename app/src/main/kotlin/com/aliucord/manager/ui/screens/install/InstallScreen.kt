@@ -28,6 +28,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.components.Wakelock
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
+import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import org.koin.core.parameter.parametersOf
@@ -39,7 +40,8 @@ class InstallScreen(private val data: InstallOptions) : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<InstallModel> { parametersOf(data) }
-        val state = model.state.collectAsState()
+        val state = model.state.collectAsState() // TODO: use `by`
+        val showGPPWarning by model.showGPPWarning.collectAsState(initial = false)
 
         LaunchedEffect(state.value) {
             if (state.value is InstallScreenState.CloseScreen)
@@ -73,6 +75,10 @@ class InstallScreen(private val data: InstallOptions) : Screen {
             )
         } else {
             BackHandler(onBack = onTryExit)
+        }
+
+        if (showGPPWarning) {
+            PlayProtectDialog(onDismiss = model::dismissGPPWarning)
         }
 
         Scaffold(
