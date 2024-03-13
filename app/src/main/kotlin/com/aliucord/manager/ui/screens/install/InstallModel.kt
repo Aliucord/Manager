@@ -137,17 +137,24 @@ class InstallModel(
         installJob = newInstallJob
     }
 
-    private fun getFailureInfo(stacktrace: Throwable): String {
+    private suspend fun getFailureInfo(stacktrace: Throwable): String {
         val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
-        val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unknown"
+        val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unavailable"
+        val playProtect = when (application.isPlayProtectEnabled()) {
+            null -> "Unavailable"
+            true -> "Enabled"
+            false -> "Disabled"
+        }
 
         val header = """
             Aliucord Manager v${BuildConfig.VERSION_NAME}
             Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
 
-            Running Android ${Build.VERSION.RELEASE}, API level ${Build.VERSION.SDK_INT}
+            Android API: ${Build.VERSION.SDK_INT}
+            ROM: Android ${Build.VERSION.RELEASE} (Patch ${Build.VERSION.SECURITY_PATCH})
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
-            Device: ${Build.MANUFACTURER} - ${Build.MODEL} (${Build.DEVICE})
+            Device: ${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE})
+            Play Protect: $playProtect
             SOC: $soc
         """.trimIndent()
 

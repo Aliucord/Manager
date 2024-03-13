@@ -11,7 +11,10 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.google.android.gms.safetynet.SafetyNet
 import java.io.File
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 fun Context.copyToClipboard(text: String) {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -85,4 +88,25 @@ fun Context.requestNoBatteryOptimizations() {
     }
 
     startActivity(intent)
+}
+
+/**
+ * Checks if the Play Protect/Verify Apps feature is enabled on this device.
+ * @return `null` if failed to obtain, otherwise whether it's enabled.
+ */
+suspend fun Context.isPlayProtectEnabled(): Boolean? {
+    return suspendCoroutine { continuation ->
+        SafetyNet.getClient(this)
+            .isVerifyAppsEnabled
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val enabled = task.result.isVerifyAppsEnabled
+                    Log.d(BuildConfig.TAG, "Play Protect enabled: $enabled")
+                    continuation.resume(enabled)
+                } else {
+                    Log.d(BuildConfig.TAG, "Failed to check Play Protect status", task.exception)
+                    continuation.resume(false)
+                }
+            }
+    }
 }
