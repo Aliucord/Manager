@@ -42,7 +42,7 @@ data class InstallOptions(
          * Replaces the foreground image of the icon entirely and sets the background to transparent.
          * This does not affect the monochrome icon.
          */
-        data class CustomImage(val imageBytes: ByteArray? = null) : IconReplacement
+        data class CustomImage(val imageBytes: ByteArray) : IconReplacement
 
         /**
          * Changes the background of the icon to a specific color without

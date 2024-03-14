@@ -1,6 +1,7 @@
 package com.aliucord.manager.installer.steps.patch
 
 import android.content.Context
+import android.os.Build
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
@@ -18,10 +19,10 @@ import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.screens.installopts.InstallOptions.IconReplacement
 import com.aliucord.manager.util.getResBytes
 import com.github.diamondminer88.zip.ZipWriter
+import com.google.devrel.gmscore.tools.apk.arsc.BinaryResourceIdentifier
 import com.google.devrel.gmscore.tools.apk.arsc.BinaryResourceValue
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.InputStream
 
 /**
  * Patch the mipmap-v26 launcher icons' background, foreground and monochrome attributes,
@@ -37,7 +38,7 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
     override val localizedName = R.string.install_step_patch_icon
 
     override suspend fun execute(container: StepRunner) {
-        if (!options.monochromeIcon && options.iconReplacement is IconReplacement.Original) {
+        if (Build.VERSION.SDK_INT < 26 || (!options.monochromeIcon && options.iconReplacement is IconReplacement.Original)) {
             state = StepState.Skipped
             return
         }
@@ -46,11 +47,19 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
         val arsc = ArscUtil.readArsc(apk)
 
         val iconRscIds = AxmlUtil.readManifestIconInfo(apk)
-        val monochromeRscId = if (!options.monochromeIcon) null else {
+        val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
+        val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
+
+        var foregroundIcon: BinaryResourceIdentifier? = null
+        var backgroundIcon: BinaryResourceIdentifier? = null
+        var monochromeIcon: BinaryResourceIdentifier? = null
+
+        // Add the monochrome resource and add the resource file later
+        if (options.monochromeIcon) {
             val filePathIdx = arsc.getMainArscChunk().stringPool
                 .addString("res/ic_aliucord_monochrome.xml")
 
-            arsc.getPackageChunk().addResource(
+            monochromeIcon = arsc.getPackageChunk().addResource(
                 typeName = "drawable",
                 resourceName = "ic_aliucord_monochrome",
                 configurations = { it.isDefault },
@@ -59,55 +68,49 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
             )
         }
 
-        val typeChunks = arsc.getPackageChunk().getTypeChunks("mipmap")
-        println("type: mipmap, configs: ${typeChunks.map { it.configuration.toString() }}")
+        // Add a new color resource to use
+        if (options.iconReplacement is IconReplacement.CustomColor) {
+            backgroundIcon = arsc.getPackageChunk()
+                .addColorResource("aliucord", options.iconReplacement.color)
+        }
 
-        val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
-        val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
+        // Add a new mipmap resource and the file to be added later
+        if (options.iconReplacement is IconReplacement.CustomImage) {
+            val iconPathIdx = arsc.getMainArscChunk().stringPool
+                .addString("res/ic_foreground_replacement.png")
 
-        when (options.iconReplacement) {
-            is IconReplacement.Original -> {} // no-op
+            foregroundIcon = arsc.getPackageChunk().addResource(
+                typeName = "mipmap",
+                resourceName = "ic_foreground_replacement",
+                configurations = { it.toString().endsWith("dpi") }, // Any mipmap config except anydpi-v26
+                valueType = BinaryResourceValue.Type.STRING,
+                valueData = iconPathIdx,
+            )
+        }
 
-            is IconReplacement.CustomColor -> {
-                val newColorRscId = arsc.getPackageChunk()
-                    .addColorResource("aliucord", options.iconReplacement.color)
-
-                for (rscFile in setOf(squareIconFile, roundIconFile)) { // setOf to get rid of duplicates
-                    AxmlUtil.patchAdaptiveIcon(
-                        apk = apk,
-                        resourcePath = rscFile,
-                        backgroundColor = newColorRscId,
-                        monochromeIcon = monochromeRscId,
-                    )
-                }
-            }
-
-            is IconReplacement.CustomImage -> {}
+        for (rscFile in setOf(squareIconFile, roundIconFile)) { // setOf to not possibly patch same file twice
+            AxmlUtil.patchAdaptiveIcon(
+                apk = apk,
+                resourcePath = rscFile,
+                backgroundColor = backgroundIcon,
+                foregroundIcon = foregroundIcon,
+                monochromeIcon = monochromeIcon,
+            )
         }
 
         val newArscBytes = arsc.toByteArray(/* shrink = */ true)
 
         ZipWriter(apk, /* append = */ true).use {
-            // val squareIcon = readAsset("icons/ic_logo_square.png")
-            // val roundIcon = readAsset("icons/ic_logo_round.png")
-            //
-            // for ((files, replacement) in replacements) {
-            //     for (file in files) {
-            //         val path = "res/$file"
-            //         it.deleteEntry(path)
-            //         it.writeEntry(path, replacement)
-            //     }
-            // }
-
             if (options.monochromeIcon) {
                 it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
+            }
+
+            if (options.iconReplacement is IconReplacement.CustomImage) {
+                it.writeEntry("res/ic_foreground_replacement.png", options.iconReplacement.imageBytes)
             }
 
             it.deleteEntry("resources.arsc")
             it.writeEntry("resources.arsc", newArscBytes)
         }
     }
-
-    private fun readAsset(fileName: String): ByteArray =
-        context.assets.open(fileName).use(InputStream::readBytes)
 }
