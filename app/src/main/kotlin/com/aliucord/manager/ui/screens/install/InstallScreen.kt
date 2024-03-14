@@ -7,6 +7,7 @@ package com.aliucord.manager.ui.screens.install
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -15,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -28,7 +28,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.components.Wakelock
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
-import com.aliucord.manager.ui.screens.install.components.StepGroupCard
+import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import org.koin.core.parameter.parametersOf
 
@@ -76,19 +76,13 @@ class InstallScreen(private val data: InstallOptions) : Screen {
         }
 
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.installer)) },
-                    navigationIcon = {
-                        IconButton(onClick = onTryExit) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_back),
-                                contentDescription = stringResource(R.string.navigation_back),
-                            )
-                        }
-                    }
-                )
-            }
+            topBar = { InstallAppBar(onTryExit) },
+            modifier = Modifier
+                .clickable(
+                    indication = null,
+                    onClick = model::cancelAutoclose,
+                    interactionSource = remember(::MutableInteractionSource),
+                ),
         ) { paddingValues ->
             Column(Modifier.padding(paddingValues)) {
                 if (state.value is InstallScreenState.Working) {
@@ -97,6 +91,10 @@ class InstallScreen(private val data: InstallOptions) : Screen {
                             .fillMaxWidth()
                             .height(8.dp)
                             .padding(bottom = 4.dp)
+                    )
+
+                    MinimizationWarning(
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
@@ -121,7 +119,10 @@ class InstallScreen(private val data: InstallOptions) : Screen {
                                 name = stringResource(group.localizedName),
                                 subSteps = steps,
                                 isExpanded = expandedGroup == group,
-                                onExpand = { expandedGroup = group },
+                                onExpand = {
+                                    model.cancelAutoclose()
+                                    expandedGroup = group
+                                },
                             )
                         }
                     }

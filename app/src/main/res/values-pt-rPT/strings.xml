@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Conceder permissões</string>
   <string name="permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Falha ao iniciar Aliucord</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Avançado</string>
@@ -73,6 +74,7 @@
   <string name="installer_aborted">Abortar a instalação de Aliucord</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Por favor, desinstale a versão atual do Aliucord de modo a continuar o processo!</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">Falha ao instalar (motivo desconhecido)</string>
   <string name="install_error_blocked">A instalação foi bloqueada</string>
   <string name="install_error_invalid">Um ou mais APKs estavam inválidos, ou corrompidos</string>
@@ -126,4 +128,10 @@
   <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
   <string name="installopts_divider_basic">Basic</string>
   <string name="installopts_divider_advanced">Advanced</string>
+  <string name="notif_group_install_title">Active installation</string>
+  <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
+  <string name="notif_install_ready_title">Aliucord installation ready!</string>
+  <string name="notif_install_ready_desc">Click to install…</string>
+  <string name="notif_install_fail_title">Aliucord failed to install</string>
+  <string name="notif_install_fail_desc">Click to view more info…</string>
 </resources>

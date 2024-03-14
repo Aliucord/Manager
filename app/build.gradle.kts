@@ -77,6 +77,10 @@ android {
             // okhttp3 is used by some lib (no cookies so publicsuffixes.gz can be dropped)
             excludes += "/okhttp3/**"
         }
+        jniLibs {
+            // x86 is dead
+            excludes += "/lib/x86/*.so"
+        }
     }
 
     compileOptions {

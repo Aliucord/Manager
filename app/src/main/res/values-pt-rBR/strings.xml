@@ -31,6 +31,7 @@
   <string name="action_reset_default">Restaurar</string>
   <string name="permissions_grant_title">Conceder permissões</string>
   <string name="permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Avançado</string>
@@ -73,6 +74,7 @@
   <string name="installer_aborted">Instalação do Aliucord abortada</string>
   <string name="installer_dl_verify_fail">Falha ao verificar o download</string>
   <string name="installer_uninstall_new">Por favor, desinstale a versão atual do Aliucord para continuar!</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">Falha ao instalar (Razão desconhecida)</string>
   <string name="install_error_blocked">A instalação foi bloqueada</string>
   <string name="install_error_invalid">Um ou mais APKs eram inválidos ou corruptos</string>
@@ -126,4 +128,10 @@
   <string name="installopts_icon_desc">Muda o ícone do aplicativo para usar a marca Aliucord ao invés da do próprio Discord.</string>
   <string name="installopts_divider_basic">Básico</string>
   <string name="installopts_divider_advanced">Avançado</string>
+  <string name="notif_group_install_title">Active installation</string>
+  <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
+  <string name="notif_install_ready_title">Aliucord installation ready!</string>
+  <string name="notif_install_ready_desc">Click to install…</string>
+  <string name="notif_install_fail_title">Aliucord failed to install</string>
+  <string name="notif_install_fail_desc">Click to view more info…</string>
 </resources>

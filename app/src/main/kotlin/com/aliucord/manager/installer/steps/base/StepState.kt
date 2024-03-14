@@ -8,5 +8,5 @@ enum class StepState {
     Skipped;
 
     val isFinished: Boolean
-        get() = this == Success || this == Error || this == Skipped
+        get() = this == Success || this == Skipped || this == Error
 }

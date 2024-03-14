@@ -8,8 +8,7 @@ package com.aliucord.manager.ui.components
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -29,6 +28,10 @@ fun ManagerTheme(
         isDarkTheme -> darkColorScheme()
         else -> lightColorScheme()
     }
+    val customColors = when (isDarkTheme) {
+        true -> DarkCustomColors
+        false -> LightCustomColors
+    }
 
     val systemUiController = rememberSystemUiController()
 
@@ -42,10 +45,12 @@ fun ManagerTheme(
         )
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content
-    )
+    CompositionLocalProvider(LocalCustomColors provides customColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            content = content
+        )
+    }
 }
 
 enum class Theme {

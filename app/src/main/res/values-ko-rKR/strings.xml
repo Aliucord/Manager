@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
   <string name="settings_theme">테마</string>
   <string name="settings_advanced">고급 설정</string>
@@ -73,6 +74,7 @@
   <string name="installer_aborted">Aliucord 설치를 중단했어요</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">계속하려면 Aliucord의 현재 버전을 설치 삭제해 주세요!</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
@@ -126,4 +128,10 @@
   <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
   <string name="installopts_divider_basic">Basic</string>
   <string name="installopts_divider_advanced">Advanced</string>
+  <string name="notif_group_install_title">Active installation</string>
+  <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
+  <string name="notif_install_ready_title">Aliucord installation ready!</string>
+  <string name="notif_install_ready_desc">Click to install…</string>
+  <string name="notif_install_fail_title">Aliucord failed to install</string>
+  <string name="notif_install_fail_desc">Click to view more info…</string>
 </resources>

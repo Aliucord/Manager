@@ -31,6 +31,7 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">授予權限</string>
   <string name="permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
+  <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 啟動失敗</string>
   <string name="settings_theme">主題</string>
   <string name="settings_advanced">進階</string>
@@ -73,6 +74,7 @@
   <string name="installer_aborted">中斷 Aliucord 安裝</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">請解除安裝目前版本的 Aliucord 以繼續！</string>
+  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">安裝失敗（未知的原因）</string>
   <string name="install_error_blocked">安裝已被阻止</string>
   <string name="install_error_invalid">一個或多個 apk 損壞或無效</string>
@@ -126,4 +128,10 @@
   <string name="installopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
   <string name="installopts_divider_basic">Basic</string>
   <string name="installopts_divider_advanced">Advanced</string>
+  <string name="notif_group_install_title">Active installation</string>
+  <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
+  <string name="notif_install_ready_title">Aliucord installation ready!</string>
+  <string name="notif_install_ready_desc">Click to install…</string>
+  <string name="notif_install_fail_title">Aliucord failed to install</string>
+  <string name="notif_install_fail_desc">Click to view more info…</string>
 </resources>
