@@ -69,7 +69,7 @@ voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voy
 # Other
 apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
 axml = { module = "com.aliucord:axml", version.ref = "axml" }
-binaryResources = { module = "com.aliucord.apkparser:binary-resources", version.ref = "binary-resources" }
+binaryResources = { module = "com.aliucord:binary-resources", version.ref = "binary-resources" }
 bouncycastle = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" } # Only use the "aar" artifact

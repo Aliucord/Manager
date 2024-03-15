@@ -17,7 +17,6 @@ dependencyResolutionManagement {
             name = "aliucord"
             url = uri("https://maven.aliucord.com/snapshots")
         }
-        mavenLocal()
     }
 }
 

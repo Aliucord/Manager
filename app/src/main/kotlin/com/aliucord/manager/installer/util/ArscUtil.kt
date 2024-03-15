@@ -11,12 +11,8 @@ object ArscUtil {
      * Read and parse `resources.arsc` from an APK.
      */
     fun readArsc(apk: File): BinaryResourceFile {
-        val bytes = ZipReader(apk).use { zip ->
-            val entry = zip.openEntry("resources.arsc")
-                ?: error("APK missing resources.arsc")
-
-            entry.read()
-        }
+        val bytes = ZipReader(apk).use { it.openEntry("resources.arsc")?.read() }
+            ?: error("APK missing resources.arsc")
 
         return try {
             BinaryResourceFile(bytes)
@@ -29,7 +25,10 @@ object ArscUtil {
      * Get the only top-level chunk in an arsc file.
      */
     fun BinaryResourceFile.getMainArscChunk(): ResourceTableChunk {
-        return this.chunks.singleOrNull() as? ResourceTableChunk
+        if (this.chunks.size > 1)
+            error("More than 1 top level chunk in resources.arsc")
+
+        return this.chunks.first() as? ResourceTableChunk
             ?: error("Invalid top-level resources.arsc chunk")
     }
 
@@ -140,7 +139,7 @@ object ArscUtil {
             ?: error("Unable to find target resource")
 
         val entry = try {
-            typeChunk.entries[resourceId.entryId()]
+            typeChunk.getEntry(resourceId.entryId())!!
         } catch (_: Throwable) {
             error("Unable to find target resource")
         }

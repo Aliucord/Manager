@@ -13,12 +13,8 @@ object AxmlUtil {
      * @param resourcePath The full path to the axml file inside the apk, which may be flattened.
      */
     private fun readAxml(apk: File, resourcePath: String): BinaryResourceFile {
-        val bytes = ZipReader(apk).use { zip ->
-            val entry = zip.openEntry(resourcePath)
-                ?: error("APK missing resource file at $resourcePath")
-
-            entry.read()
-        }
+        val bytes = ZipReader(apk).use { it.openEntry(resourcePath)?.read() }
+            ?: error("APK missing resource file at $resourcePath")
 
         return try {
             BinaryResourceFile(bytes)
@@ -31,7 +27,10 @@ object AxmlUtil {
      * Get the only top-level chunk in an axml file.
      */
     private fun BinaryResourceFile.getMainAxmlChunk(): XmlChunk {
-        return this.chunks.singleOrNull() as? XmlChunk
+        if (this.chunks.size > 1)
+            error("More than 1 top level chunk in axml")
+
+        return this.chunks.first() as? XmlChunk
             ?: error("Invalid top-level axml chunk")
     }
 
@@ -163,9 +162,10 @@ object AxmlUtil {
      * This is then used to get the filename of the resource from `resources.arsc`.
      */
     fun readManifestIconInfo(apk: File): ManifestIconInfo {
-        val manifestBytes = ZipReader(apk).use { it.openEntry("AndroidManifest.xml")!!.read() }
+        val manifestBytes = ZipReader(apk).use { it.openEntry("AndroidManifest.xml")?.read() }
+            ?: error("APK missing manifest")
         val manifest = BinaryResourceFile(manifestBytes)
-        val mainChunk = manifest.chunks.single() as XmlChunk
+        val mainChunk = manifest.getMainAxmlChunk()
 
         // Prefetch string indexes to avoid parsing the entire string pool
         val iconStringIdx = mainChunk.stringPool.indexOf("icon")
