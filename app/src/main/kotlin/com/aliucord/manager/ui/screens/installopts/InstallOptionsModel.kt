@@ -86,7 +86,9 @@ class InstallOptionsModel(
             appName = appName,
             packageName = packageName,
             debuggable = debuggable,
-            replaceIcon = replaceIcon, // TODO: advanced icon patchers
+            // TODO: advanced icon options
+            iconReplacement = InstallOptions.IconReplacement.Aliucord,
+            monochromeIcon = true,
         )
     }
 

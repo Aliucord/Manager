@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.ui.screens.install
 
+import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -37,9 +38,13 @@ import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
 
-class InstallScreen(private val data: InstallOptions) : Screen {
+@Parcelize
+class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "Install"
 
     @Composable

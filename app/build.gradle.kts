@@ -135,6 +135,7 @@ dependencies {
     implementation(libs.apksig)
     implementation(libs.axml)
     implementation(libs.bouncycastle)
+    implementation(libs.binaryResources)
     implementation(libs.coil)
     implementation(variantOf(libs.zip) { artifactType("aar") })
 }
