@@ -3,8 +3,9 @@ package com.aliucord.manager.ui.screens.installopts
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import com.aliucord.manager.util.ColorParceler
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.TypeParceler
 
 @Immutable
 @Parcelize
@@ -51,7 +52,10 @@ data class InstallOptions(
          */
         @Immutable
         @Parcelize
-        data class CustomColor(val colorArgb: Int) : IconReplacement
+        data class CustomColor(
+            @TypeParceler<Color, ColorParceler>
+            val color: Color,
+        ) : IconReplacement
 
         /**
          * Replaces the foreground image of the icon entirely and sets the background to transparent.
@@ -69,7 +73,7 @@ data class InstallOptions(
             /**
              * The default icon replacement option.
              */
-            val Aliucord = CustomColor(Color(0xFF00C853).toArgb())
+            val Aliucord = CustomColor(Color(0xFF00C853))
         }
     }
 }

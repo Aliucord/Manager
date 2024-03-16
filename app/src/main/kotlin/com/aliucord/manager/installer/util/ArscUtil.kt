@@ -44,19 +44,19 @@ object ArscUtil {
      * Adds a new color resource to all configuration variants in an arsc package.
      *
      * @param name The new resource name.
-     * @param colorArgb The value of the new color resource.
+     * @param color The value of the new color resource.
      * @return The resource ID of the newly added resource.
      */
     fun PackageChunk.addColorResource(
         name: String,
-        colorArgb: Int,
+        color: Color,
     ): BinaryResourceIdentifier {
         return this.addResource(
             typeName = "color",
             resourceName = name,
             configurations = { true },
             valueType = BinaryResourceValue.Type.INT_COLOR_ARGB8,
-            valueData = colorArgb,
+            valueData = color.toArgb(),
         )
     }
 
