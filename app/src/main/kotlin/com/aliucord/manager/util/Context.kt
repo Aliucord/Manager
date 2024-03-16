@@ -8,12 +8,15 @@ import android.net.Uri
 import android.os.*
 import android.provider.Settings
 import android.util.Log
+import android.util.TypedValue
 import android.widget.Toast
+import androidx.annotation.AnyRes
 import androidx.annotation.StringRes
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.google.android.gms.safetynet.SafetyNet
 import java.io.File
+import java.io.InputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -100,6 +103,27 @@ fun Context.requestNoBatteryOptimizations() {
     startActivity(intent)
 }
 
+/*
+ * Get the raw bytes for a resource.
+ * @param id The resource identifier
+ * @return The resource's raw bytes as stored inside the APK
+ */
+fun Context.getResBytes(@AnyRes id: Int): ByteArray {
+    val tValue = TypedValue()
+    this.resources.getValue(
+        /* id = */ id,
+        /* outValue = */ tValue,
+        /* resolveRefs = */ true,
+    )
+
+    val resPath = tValue.string.toString()
+
+    return this.javaClass.classLoader
+        ?.getResourceAsStream(resPath)
+        ?.use(InputStream::readBytes)
+        ?: error("Failed to get resource file $resPath from APK")
+}
+
 /**
  * Checks if the Play Protect/Verify Apps feature is enabled on this device.
  * @return `null` if failed to obtain, otherwise whether it's enabled.
@@ -115,7 +139,7 @@ suspend fun Context.isPlayProtectEnabled(): Boolean? {
                     continuation.resume(enabled)
                 } else {
                     Log.d(BuildConfig.TAG, "Failed to check Play Protect status", task.exception)
-                    continuation.resume(false)
+                    continuation.resume(null)
                 }
             }
     }
