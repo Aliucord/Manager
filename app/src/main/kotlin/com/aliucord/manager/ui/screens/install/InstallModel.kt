@@ -151,6 +151,6 @@ class InstallModel(
             SOC: $soc
         """.trimIndent()
 
-        return header + "\n\n" + Log.getStackTraceString(stacktrace)
+        return header + "\n\n" + Log.getStackTraceString(stacktrace).trimEnd()
     }
 }
