@@ -71,7 +71,7 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
         // Add a new color resource to use
         if (options.iconReplacement is IconReplacement.CustomColor) {
             backgroundIcon = arsc.getPackageChunk()
-                .addColorResource("aliucord", options.iconReplacement.color)
+                .addColorResource("aliucord", options.iconReplacement.colorArgb)
         }
 
         // Add a new mipmap resource and the file to be added later

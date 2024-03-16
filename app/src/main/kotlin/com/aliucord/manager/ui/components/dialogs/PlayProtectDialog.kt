@@ -69,7 +69,6 @@ private fun Context.launchPlayProtect() {
     Intent("com.google.android.gms.settings.VERIFY_APPS_SETTINGS")
         .setPackage("com.google.android.gms")
         .addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         .also(::startActivity)
 }

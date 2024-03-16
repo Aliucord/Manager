@@ -11,8 +11,7 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.KotlinInstallRunner
-import com.aliucord.manager.installer.steps.StepGroup
+import com.aliucord.manager.installer.steps.*
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.installer.steps.install.InstallStep
@@ -32,15 +31,16 @@ class InstallModel(
     private val paths: PathManager,
     private val options: InstallOptions,
 ) : StateScreenModel<InstallScreenState>(InstallScreenState.Pending) {
-    private lateinit var startTime: Date
+    private var startTime: Date? = null
     private var installJob: Job? = null
+    private var stepRunner: StepRunner? = null
+
     private var autocloseCancelled: Boolean = false
 
-    private val _showGPPWarning = MutableSharedFlow<Boolean>()
-    val showGPPWarning: Flow<Boolean>
-        get() = _showGPPWarning
-
     var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
+        private set
+
+    var showGppWarning by mutableStateOf(false)
         private set
 
     init {
@@ -56,6 +56,7 @@ class InstallModel(
     }
 
     fun saveFailureLog() {
+        val startTime = startTime ?: return
         val failureLog = (state.value as? InstallScreenState.Failed)?.failureLog
             ?: return
 
@@ -82,7 +83,14 @@ class InstallModel(
      * Hide the 'Google Play Protect is enabled on your device' warning dialog
      */
     fun dismissGPPWarning() {
-        screenModelScope.launch { _showGPPWarning.emit(false) }
+        showGppWarning = false
+
+        // Continue executing step
+        screenModelScope.launch {
+            stepRunner
+                ?.getStep<InstallStep>(completed = false)
+                ?.dismissGPPWarning()
+        }
     }
 
     fun restart() {
@@ -94,19 +102,14 @@ class InstallModel(
 
         val newInstallJob = screenModelScope.launch {
             val runner = KotlinInstallRunner(options)
+                .also { stepRunner = it }
 
             // Bind InstallStep's GPP Warning state to this
-            runner.getStep<InstallStep>(completed = false).also { step ->
-                step.gppWarningLock
-                    .take(1) // A single true value to indicate to open warning
-                    .onEach { _showGPPWarning.emit(true) }
-                    .launchIn(this@launch)
-
-                _showGPPWarning
-                    .filter { show -> !show } // Only check when warning dismissed
-                    .onEach { step.dismissGPPWarning() }
-                    .launchIn(this@launch)
-            }
+            runner.getStep<InstallStep>(completed = false)
+                .gppWarningLock
+                .take(1) // Take only the initially trigger value
+                .onEach { showGppWarning = true }
+                .launchIn(this@launch)
 
             installSteps = runner.steps.groupBy { it.group }
                 .mapValues { it.value.toUnsafeImmutable() }

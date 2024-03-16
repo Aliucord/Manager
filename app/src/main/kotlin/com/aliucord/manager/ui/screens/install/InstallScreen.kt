@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.ui.screens.install
 
+import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,9 +32,13 @@ import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
 
-class InstallScreen(private val data: InstallOptions) : Screen {
+@Parcelize
+class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "Install"
 
     @Composable
@@ -41,7 +46,6 @@ class InstallScreen(private val data: InstallOptions) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<InstallModel> { parametersOf(data) }
         val state = model.state.collectAsState() // TODO: use `by`
-        val showGPPWarning by model.showGPPWarning.collectAsState(initial = false)
 
         LaunchedEffect(state.value) {
             if (state.value is InstallScreenState.CloseScreen)
@@ -77,7 +81,7 @@ class InstallScreen(private val data: InstallOptions) : Screen {
             BackHandler(onBack = onTryExit)
         }
 
-        if (showGPPWarning) {
+        if (model.showGppWarning) {
             PlayProtectDialog(onDismiss = model::dismissGPPWarning)
         }
 
