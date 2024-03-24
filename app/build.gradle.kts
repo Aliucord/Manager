@@ -118,6 +118,9 @@ android {
 }
 
 dependencies {
+//    implementation("com.google.android.gms:play-services-safetynet:18.0.1")
+    implementation("org.microg.gms:play-services-safetynet:0.3.0.233515-dirty")
+//    implementation("org.microg.gms:play-services-safetynet:0.3.0.233515")
     implementation(libs.bundles.accompanist)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.compose)
