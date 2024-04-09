@@ -98,8 +98,6 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
             )
         }
 
-        val newArscBytes = arsc.toByteArray(/* shrink = */ true)
-
         ZipWriter(apk, /* append = */ true).use {
             if (options.monochromeIcon) {
                 it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
@@ -110,7 +108,7 @@ class ReplaceIconStep(private val options: InstallOptions) : Step(), KoinCompone
             }
 
             it.deleteEntry("resources.arsc")
-            it.writeEntry("resources.arsc", newArscBytes)
+            it.writeEntry("resources.arsc", arsc.toByteArray())
         }
     }
 }
