@@ -153,7 +153,7 @@ object AxmlUtil {
 
         ZipWriter(apk, /* append = */ true).use { zip ->
             zip.deleteEntry(resourcePath)
-            zip.writeEntry(resourcePath, xml.toByteArray(/* shrink = */ true))
+            zip.writeEntry(resourcePath, xml.toByteArray())
         }
     }
 
