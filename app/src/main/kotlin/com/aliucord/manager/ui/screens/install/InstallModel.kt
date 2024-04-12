@@ -31,13 +31,21 @@ class InstallModel(
 ) : StateScreenModel<InstallScreenState>(InstallScreenState.Pending) {
     private lateinit var startTime: Date
     private var installJob: Job? = null
-    private var autocloseCancelled: Boolean = false
 
     var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set
 
     init {
         restart()
+    }
+
+    fun launchApp() {
+        screenModelScope.launch {
+            if (state.value !is InstallScreenState.Success)
+                return@launch
+
+            // TODO: finish this
+        }
     }
 
     fun copyDebugToClipboard() {
@@ -62,13 +70,6 @@ class InstallModel(
     fun clearCache() {
         paths.clearCache()
         application.showToast(R.string.action_cleared_cache)
-    }
-
-    /**
-     * Cancel the screen auto-close once installation was completed
-     */
-    fun cancelAutoclose() {
-        autocloseCancelled = true
     }
 
     fun restart() {
@@ -100,13 +101,6 @@ class InstallModel(
                     // At this point, the installation has successfully completed
                     else {
                         mutableState.value = InstallScreenState.Success
-                        autocloseCancelled = false
-
-                        // Wait 5s before returning to Home if screen hasn't been clicked
-                        delay(5000)
-                        if (!autocloseCancelled) {
-                            mutableState.value = InstallScreenState.CloseScreen
-                        }
                     }
                 }
 

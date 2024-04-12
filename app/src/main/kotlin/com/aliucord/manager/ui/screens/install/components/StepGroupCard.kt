@@ -23,6 +23,7 @@ fun StepGroupCard(
     subSteps: ImmutableList<Step>,
     isExpanded: Boolean,
     onExpand: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val groupState by remember(subSteps) {
         derivedStateOf {
@@ -55,8 +56,7 @@ fun StepGroupCard(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
     ) {

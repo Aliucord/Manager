@@ -7,20 +7,20 @@ package com.aliucord.manager.ui.screens.install
 
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -32,15 +32,18 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.TextBanner
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
-import com.aliucord.manager.ui.screens.install.components.InstallAppBar
-import com.aliucord.manager.ui.screens.install.components.StepGroupCard
+import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.paddings.*
+import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.filter
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
+
+private val VERTICAL_PADDING: Dp = 18.dp
 
 @Parcelize
 class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
@@ -53,17 +56,17 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
         val context = LocalContext.current
         val model = getScreenModel<InstallModel> { parametersOf(data) }
 
-        val state = model.state.collectAsState()
+        val state by model.state.collectAsState()
         val listState = rememberLazyListState()
         val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
 
-        LaunchedEffect(state.value) {
-            if (state.value is InstallScreenState.CloseScreen)
+        LaunchedEffect(state) {
+            if (state is InstallScreenState.CloseScreen)
                 navigator.back(currentActivity = null)
         }
 
         // Prevent screen from turning off while working
-        Wakelock(active = state.value is InstallScreenState.Working)
+        Wakelock(active = state is InstallScreenState.Working)
 
         // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
         var showAbortWarning by remember(model.state.collectAsState()) { mutableStateOf(false) }
@@ -74,7 +77,7 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
         // Only show exit warning if currently working
         val onTryExit: () -> Unit = remember {
             {
-                if (state.value == InstallScreenState.Working) {
+                if (state == InstallScreenState.Working) {
                     showAbortWarning = true
                 } else {
                     navigator.back(currentActivity = null)
@@ -83,8 +86,8 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
         }
 
         // Close all groups when successfully finished everything
-        LaunchedEffect(state.value) {
-            if (state.value == InstallScreenState.Success)
+        LaunchedEffect(state) {
+            if (state == InstallScreenState.Success)
                 expandedGroup = null
 
             listState.animateScrollToItem(0)
@@ -104,19 +107,13 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
 
         Scaffold(
             topBar = { InstallAppBar(onTryExit) },
-            modifier = Modifier
-                .clickable(
-                    indication = null,
-                    onClick = model::cancelAutoclose,
-                    interactionSource = remember(::MutableInteractionSource),
-                ),
         ) { paddingValues ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(VERTICAL_PADDING),
                 modifier = Modifier
                     .padding(paddingValues.exclude(PaddingValuesSides.Bottom)),
             ) {
-                if (state.value == InstallScreenState.Working) {
+                if (state == InstallScreenState.Working) {
                     LinearProgressIndicator(
                         modifier = Modifier
                             .height(4.dp)
@@ -131,7 +128,7 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
 
                 LazyColumn(
                     state = listState,
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    verticalArrangement = Arrangement.spacedByLastAtBottom(0.dp),
                     contentPadding = paddingValues
                         .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
                         .add(PaddingValues(bottom = 25.dp)),
@@ -139,8 +136,8 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                         .padding(horizontal = 16.dp)
                         .fillMaxSize(),
                 ) {
-                    if (showMinimizationWarning && !state.value.isFinished) {
-                        item(key = "MINIMIZATION_WARNING_BANNER") {
+                    item(key = "MINIMIZATION_WARNING") {
+                        BannerSection(visible = showMinimizationWarning && !state.isFinished) {
                             TextBanner(
                                 text = stringResource(R.string.installer_minimization_warning),
                                 icon = painterResource(R.drawable.ic_warning),
@@ -148,21 +145,14 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                                 outlineColor = MaterialTheme.customColors.warning,
                                 containerColor = MaterialTheme.customColors.warningContainer,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .animateItemPlacement(),
-                            )
-                        }
-
-                        item(contentType = "DIVIDER") {
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                modifier = Modifier.animateItemPlacement(),
+                                    .padding(bottom = VERTICAL_PADDING)
+                                    .fillMaxWidth(),
                             )
                         }
                     }
 
-                    if (state.value is InstallScreenState.Failed) {
-                        item(key = "FAILED_BANNER") {
+                    item(key = "FAILED_BANNER") {
+                        BannerSection(visible = state is InstallScreenState.Failed) {
                             val handler = LocalUriHandler.current
 
                             TextBanner(
@@ -173,17 +163,8 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                                 containerColor = MaterialTheme.colorScheme.errorContainer,
                                 onClick = { handler.openUri("https://discord.gg/${BuildConfig.SUPPORT_SERVER}") },
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .animateItemPlacement()
-                            )
-                        }
-
-                        item(contentType = "DIVIDER") {
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(vertical = 4.dp)
-                                    .animateItemPlacement(),
+                                    .padding(bottom = VERTICAL_PADDING)
+                                    .fillMaxWidth(),
                             )
                         }
                     }
@@ -194,110 +175,116 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                                 name = stringResource(group.localizedName),
                                 subSteps = steps,
                                 isExpanded = expandedGroup == group,
-                                onExpand = {
-                                    model.cancelAutoclose()
-                                    expandedGroup = group
-                                },
+                                onExpand = { expandedGroup = group },
+                                modifier = Modifier
+                                    .padding(bottom = VERTICAL_PADDING)
+                                    .fillMaxWidth()
                             )
                         }
                     }
 
-                    // if (state.value is InstallScreenState.Success) {
-                    //     item(key = "BUTTON_ROW") {
-                    //         Row(
-                    //             horizontalArrangement = Arrangement.End,
-                    //             modifier = Modifier.fillMaxWidth()
-                    //         ) {
-                    //             FilledTonalButton(onClick = model::clearCache) {
-                    //                 Text(stringResource(R.string.setting_clear_cache))
-                    //             }
-                    //         }
-                    //     }
-                    // }
+                    item(key = "BUTTONS") {
+                        val filteredState by remember { model.state.filter { it.isNewlyFinished } }
+                            .collectAsState(initial = null)
 
-                    if (state.value is InstallScreenState.Failed) {
-                        item(contentType = "DIVIDER") {
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(vertical = 4.dp)
-                                    .animateItemPlacement(),
-                            )
-                        }
-
-                        item(key = "BUTTON_ROW") {
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(14.dp),
-                                modifier = Modifier
-                                    .animateItemPlacement()
-                            ) {
-                                FilledTonalIconButton(
-                                    shape = MaterialTheme.shapes.medium,
-                                    colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary,
-                                    ),
-                                    onClick = model::restart,
+                        AnimatedVisibility(
+                            visible = filteredState != null,
+                            enter = fadeIn() + slideInVertically(),
+                            exit = ExitTransition.None,
+                        ) {
+                            Column {
+                                HorizontalDivider(
+                                    thickness = 1.dp,
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(42.dp),
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.ic_refresh),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(20.dp),
+                                        .padding(vertical = 4.dp)
+                                        .padding(bottom = VERTICAL_PADDING)
+                                )
+
+                                when (filteredState) {
+                                    InstallScreenState.Success -> {
+                                        MainActionButton(
+                                            text = "Launch Aliucord",
+                                            icon = painterResource(R.drawable.ic_launch),
+                                            onClick = model::launchApp,
                                         )
-                                        Text(
+                                    }
+
+                                    is InstallScreenState.Failed -> {
+                                        MainActionButton(
                                             text = "Retry installation",
-                                            style = MaterialTheme.typography.labelLarge,
-                                            textAlign = TextAlign.Center,
+                                            icon = painterResource(R.drawable.ic_refresh),
+                                            onClick = model::restart,
                                         )
                                     }
-                                }
 
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) {
-                                    FilledTonalButton(onClick = model::clearCache) {
-                                        Text(stringResource(R.string.setting_clear_cache))
-                                    }
-
-                                    Spacer(Modifier.weight(1f, true))
-
-                                    OutlinedButton(onClick = model::saveFailureLog) {
-                                        Text(stringResource(R.string.installer_save_file))
-                                    }
-
-                                    FilledTonalButton(onClick = model::copyDebugToClipboard) {
-                                        Text(stringResource(R.string.action_copy))
-                                    }
+                                    else -> error("unreachable")
                                 }
                             }
                         }
+                    }
 
-                        // item(key = "ERROR_LOG") {
-                        //     SelectionContainer {
-                        //         Text(
-                        //             text = failureLog,
-                        //             style = MaterialTheme.typography.labelSmall,
-                        //             fontFamily = FontFamily.Monospace,
-                        //             softWrap = false,
-                        //             modifier = Modifier
-                        //                 .padding(top = 20.dp)
-                        //                 .clip(RoundedCornerShape(10.dp))
-                        //                 .background(MaterialTheme.colorScheme.surfaceColorAtElevation(10.dp))
-                        //                 .padding(24.dp)
-                        //                 .horizontalScroll(rememberScrollState())
-                        //         )
-                        //     }
-                        // }
+                    item(key = "FUN_FACT") {
+                        val facts = arrayOf(
+                            "Did you know that Google Play Protect is useless?",
+                            "Did you know Discord (allegedly) fired the Android team when introducing RNA?",
+                            "Did you know Aliucord with 150+ plugins still somehow runs better than Discord's new app?",
+                            "i am in your walls",
+                        )
+
+                        Text(
+                            text = "FUN FACT: " + remember { facts.random() },
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(horizontal = VERTICAL_PADDING)
+                                .padding(bottom = 25.dp)
+                                .fillMaxWidth()
+                                .alpha(.6f)
+                        )
                     }
                 }
             }
         }
     }
 }
+
+@Composable
+private fun BannerSection(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + slideOutVertically(),
+        modifier = modifier
+            .padding(bottom = VERTICAL_PADDING),
+    ) {
+        Column {
+            content()
+
+            HorizontalDivider(
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 4.dp),
+            )
+        }
+    }
+}
+
+// item(key = "ERROR_LOG") {
+//     SelectionContainer {
+//         Text(
+//             text = failureLog,
+//             style = MaterialTheme.typography.labelSmall,
+//             fontFamily = FontFamily.Monospace,
+//             softWrap = false,
+//             modifier = Modifier
+//                 .padding(top = VERTICAL_PADDING)
+//                 .clip(RoundedCornerShape(10.dp))
+//                 .background(MaterialTheme.colorScheme.surfaceColorAtElevation(10.dp))
+//                 .padding(24.dp)
+//                 .horizontalScroll(rememberScrollState())
+//         )
+//     }
+// }

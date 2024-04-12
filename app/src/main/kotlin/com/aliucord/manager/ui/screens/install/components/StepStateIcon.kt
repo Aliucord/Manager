@@ -35,7 +35,7 @@ fun StepStateIcon(
             StepState.Pending -> Icon(
                 painter = painterResource(R.drawable.ic_circle),
                 contentDescription = stringResource(R.string.status_queued),
-                tint = MaterialTheme.colorScheme.onSurface.copy(0.4f),
+                tint = MaterialTheme.colorScheme.onSurface.copy(.2f),
                 modifier = Modifier.size(size)
             )
 
