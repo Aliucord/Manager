@@ -32,6 +32,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.ui.TextBanner
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
+import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.paddings.*
@@ -103,6 +104,10 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
             )
         } else {
             BackHandler(onBack = onTryExit)
+        }
+
+        if (model.showGppWarning) {
+            PlayProtectDialog(onDismiss = model::dismissGPPWarning)
         }
 
         Scaffold(

@@ -3,6 +3,7 @@ package com.aliucord.manager.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -13,8 +14,11 @@ import androidx.annotation.AnyRes
 import androidx.annotation.StringRes
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.google.android.gms.safetynet.SafetyNet
 import java.io.File
 import java.io.InputStream
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 fun Context.copyToClipboard(text: String) {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -50,6 +54,15 @@ fun Context.getPackageVersion(pkg: String): Pair<String, Int> {
     @Suppress("DEPRECATION")
     return packageManager.getPackageInfo(pkg, 0)
         .let { it.versionName to it.versionCode }
+}
+
+fun Context.isPackageInstalled(packageName: String): Boolean {
+    return try {
+        packageManager.getPackageInfo(packageName, 0)
+        true
+    } catch (_: PackageManager.NameNotFoundException) {
+        false
+    }
 }
 
 fun Context.findActivity(): Activity? {
@@ -90,7 +103,7 @@ fun Context.requestNoBatteryOptimizations() {
     startActivity(intent)
 }
 
-/**
+/*
  * Get the raw bytes for a resource.
  * @param id The resource identifier
  * @return The resource's raw bytes as stored inside the APK
@@ -109,4 +122,25 @@ fun Context.getResBytes(@AnyRes id: Int): ByteArray {
         ?.getResourceAsStream(resPath)
         ?.use(InputStream::readBytes)
         ?: error("Failed to get resource file $resPath from APK")
+}
+
+/**
+ * Checks if the Play Protect/Verify Apps feature is enabled on this device.
+ * @return `null` if failed to obtain, otherwise whether it's enabled.
+ */
+suspend fun Context.isPlayProtectEnabled(): Boolean? {
+    return suspendCoroutine { continuation ->
+        SafetyNet.getClient(this)
+            .isVerifyAppsEnabled
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val enabled = task.result.isVerifyAppsEnabled
+                    Log.d(BuildConfig.TAG, "Play Protect enabled: $enabled")
+                    continuation.resume(enabled)
+                } else {
+                    Log.d(BuildConfig.TAG, "Failed to check Play Protect status", task.exception)
+                    continuation.resume(null)
+                }
+            }
+    }
 }
