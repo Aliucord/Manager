@@ -137,6 +137,7 @@ dependencies {
     implementation(libs.bouncycastle)
     implementation(libs.binaryResources)
     implementation(libs.coil)
+    implementation(libs.microg)
     implementation(variantOf(libs.zip) { artifactType("aar") })
 }
 

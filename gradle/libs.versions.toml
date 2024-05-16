@@ -19,6 +19,7 @@ kotlin = "1.9.22"
 kotlinx-immutable = "0.3.7"
 kotlinx-serialization = "1.5.0"
 ktor = "2.3.7"
+microg = "0.3.2.240913"
 voyager = "1.0.0"
 zip = "2.1.1"
 
@@ -72,6 +73,7 @@ axml = { module = "com.aliucord:axml", version.ref = "axml" }
 binaryResources = { module = "com.aliucord:binary-resources", version.ref = "binary-resources" }
 bouncycastle = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "microg" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" } # Only use the "aar" artifact
 
 [bundles]
