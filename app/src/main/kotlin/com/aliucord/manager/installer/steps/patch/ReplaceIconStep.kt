@@ -8,6 +8,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
+import com.aliucord.manager.installer.steps.download.CopyDependenciesStep
 import com.aliucord.manager.installer.util.ArscUtil
 import com.aliucord.manager.installer.util.ArscUtil.addColorResource
 import com.aliucord.manager.installer.util.ArscUtil.addResource

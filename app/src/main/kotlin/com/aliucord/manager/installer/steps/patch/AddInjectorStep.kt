@@ -4,8 +4,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
-import com.aliucord.manager.installer.steps.download.DownloadInjectorStep
-import com.aliucord.manager.installer.steps.download.DownloadKotlinStep
+import com.aliucord.manager.installer.steps.download.*
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
 import org.koin.core.component.KoinComponent

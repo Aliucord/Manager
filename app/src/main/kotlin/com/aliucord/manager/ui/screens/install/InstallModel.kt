@@ -4,6 +4,7 @@ package com.aliucord.manager.ui.screens.install
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.*
@@ -52,14 +53,9 @@ class InstallModel(
         if (state.value !is InstallScreenState.Success)
             return
 
-        val launchIntent = application.packageManager
-            .getLaunchIntentForPackage(options.packageName)
-
-        if (launchIntent != null) {
-            application.startActivity(launchIntent)
-        } else {
-            application.showToast(R.string.launch_aliucord_fail)
-        }
+        Intent(options.packageName)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .also(application::startActivity)
     }
 
     fun copyDebugToClipboard() {

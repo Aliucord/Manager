@@ -78,7 +78,6 @@
   <string name="version_unknown">Unknown</string>
   <string name="version_load_fail">Failed to retrieve version</string>
 
-  <string name="installer_save_file">Save to file</string>
   <string name="installer_file_save_success">Saved to %s</string>
   <string name="installer_file_save_failed">Failed to save %s</string>
   <string name="installer_success">Successfully installed Aliucord</string>
