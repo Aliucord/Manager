@@ -159,4 +159,10 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -> \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
+
+  <string name="fun_fact_prefix">Fun Fact: %s</string>
+  <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>
+  <string name="fun_fact_2">Did you know Aliucord with 150+ plugins somehow runs better than Discord\'s new app?</string>
+  <string name="fun_fact_3">Did you know Aliucord has over 200 available plugins?</string>
+  <string name="fun_fact_4">i am in your walls</string>
 </resources>

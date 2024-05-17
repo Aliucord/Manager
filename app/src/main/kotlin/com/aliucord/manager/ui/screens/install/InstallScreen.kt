@@ -229,15 +229,8 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                     }
 
                     item(key = "FUN_FACT") {
-                        val facts = arrayOf(
-                            "Did you know that Google Play Protect is useless?",
-                            "Did you know Discord (allegedly) fired the Android team when introducing RNA?",
-                            "Did you know Aliucord with 150+ plugins still somehow runs better than Discord's new app?",
-                            "i am in your walls",
-                        )
-
                         Text(
-                            text = "FUN FACT: " + remember { facts.random() },
+                            text = stringResource(R.string.fun_fact_prefix, stringResource(model.funFact)),
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center,
                             modifier = Modifier

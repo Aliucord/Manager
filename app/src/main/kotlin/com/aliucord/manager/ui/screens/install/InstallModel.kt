@@ -41,16 +41,24 @@ class InstallModel(
     var showGppWarning by mutableStateOf(false)
         private set
 
+    var funFact by mutableIntStateOf(0)
+        private set
+
     init {
         restart()
     }
 
     fun launchApp() {
-        screenModelScope.launch {
-            if (state.value !is InstallScreenState.Success)
-                return@launch
+        if (state.value !is InstallScreenState.Success)
+            return
 
-            // TODO: finish this
+        val launchIntent = application.packageManager
+            .getLaunchIntentForPackage(options.packageName)
+
+        if (launchIntent != null) {
+            application.startActivity(launchIntent)
+        } else {
+            application.showToast(R.string.launch_aliucord_fail)
         }
     }
 
@@ -98,6 +106,7 @@ class InstallModel(
         installSteps = null
 
         startTime = Date()
+        funFact = FUN_FACTS.random()
         mutableState.value = InstallScreenState.Working
 
         val newInstallJob = screenModelScope.launch {
@@ -182,5 +191,17 @@ class InstallModel(
         """.trimIndent()
 
         return header + "\n\n" + Log.getStackTraceString(stacktrace).trimEnd()
+    }
+
+    private companion object {
+        /**
+         * Random fun facts to show on the installation screen.
+         */
+        val FUN_FACTS = arrayOf(
+            R.string.fun_fact_1,
+            R.string.fun_fact_2,
+            R.string.fun_fact_3,
+            R.string.fun_fact_4,
+        )
     }
 }
