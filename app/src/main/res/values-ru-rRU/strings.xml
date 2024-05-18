@@ -134,8 +134,8 @@
   <string name="notif_install_ready_desc">Нажмите для установки…</string>
   <string name="notif_install_fail_title">Не удалось установить Aliucord</string>
   <string name="notif_install_fail_desc">Нажмите для просмотра доп. информации...</string>
-  <string name="play_protect_warning_title">Play Protect</string>
-  <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -&gt; \"Install anyway\"</string>
-  <string name="play_protect_warning_ok">Continue</string>
-  <string name="play_protect_warning_open_gpp">Open Play Protect</string>
+  <string name="play_protect_warning_title">Защита Play</string>
+  <string name="play_protect_warning_desc">Похоже, на вашем устройстве включена функция Google Play Protect. Она может попытаться помешать новой установке из-за использования уникального ключа подписи. Вы можете отключить ее в настройках Play Protect.\n\nЕсли появится предупреждение, нажмите\n «Подробнее» -&gt; «Установить в любом случае»</string>
+  <string name="play_protect_warning_ok">Продолжить</string>
+  <string name="play_protect_warning_open_gpp">Открыть защиту Play</string>
 </resources>
