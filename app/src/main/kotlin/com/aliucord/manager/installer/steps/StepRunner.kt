@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.aliucord.manager.R
+import com.aliucord.manager.installer.steps.base.DownloadStep
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.util.InstallNotifications
@@ -50,6 +51,14 @@ abstract class StepRunner : KoinComponent {
             val error = step.executeCatching(this@StepRunner)
             if (error != null) {
                 showErrorNotification()
+
+                // If this is a patch step and it failed, then clear download cache just in case
+                if (step.group == StepGroup.Patch && !preferences.devMode) {
+                    for (downloadStep in steps.asSequence().filterIsInstance<DownloadStep>()) {
+                        downloadStep.targetFile.delete()
+                    }
+                }
+
                 return error
             }
 
