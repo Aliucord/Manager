@@ -166,21 +166,6 @@ fun PresentInstallsContent(
                 )
             }
         }
-
-        item(key = "END_INDICATOR") {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .alpha(.6f)
-                    .padding(top = 12.dp)
-                    .fillMaxWidth(),
-            ) {
-                Text(
-                    text = "...",
-                    style = MaterialTheme.typography.labelSmall,
-                )
-            }
-        }
     }
 }
 
