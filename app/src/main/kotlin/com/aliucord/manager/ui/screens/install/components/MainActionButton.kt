@@ -14,14 +14,17 @@ fun MainActionButton(
     text: String,
     icon: Painter,
     onClick: () -> Unit,
+    enabled: Boolean = true,
+    colors: IconButtonColors = IconButtonDefaults.filledTonalIconButtonColors(
+        containerColor = MaterialTheme.colorScheme.primary,
+    ),
     modifier: Modifier = Modifier,
 ) {
     FilledTonalIconButton(
         shape = MaterialTheme.shapes.medium,
-        colors = IconButtonDefaults.filledTonalIconButtonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-        ),
+        colors = colors,
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
             .height(46.dp),
@@ -30,15 +33,16 @@ fun MainActionButton(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.labelLarge,
-                textAlign = TextAlign.Center,
-            )
             Icon(
                 painter = icon,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
+            )
+
+            Text(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
             )
         }
     }

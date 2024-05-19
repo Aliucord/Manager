@@ -51,6 +51,7 @@ class InstallModel(
     init {
         restart()
 
+        // Rotate fun facts every 20s
         screenModelScope.launch {
             while (true) {
                 funFact = FUN_FACTS.random()

@@ -245,24 +245,21 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                                     else -> error("unreachable")
                                 }
 
-                                Row(
-                                    horizontalArrangement = Arrangement.End,
+                                MainActionButton(
+                                    text = stringResource(R.string.setting_clear_cache),
+                                    icon = painterResource(R.drawable.ic_delete_forever),
+                                    enabled = !cacheCleared,
+                                    colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.error,
+                                    ),
+                                    onClick = {
+                                        cacheCleared = true
+                                        model.clearCache()
+                                    },
                                     modifier = Modifier
-                                        .padding(top = 8.dp)
+                                        .padding(top = 14.dp)
                                         .fillMaxWidth()
-                                ) {
-                                    // Clear cache button
-                                    Button(
-                                        // TODO: adjust colors
-                                        onClick = {
-                                            cacheCleared = true
-                                            // model.clearCache()
-                                        },
-                                        enabled = !cacheCleared,
-                                    ) {
-                                        Text(stringResource(R.string.setting_clear_cache))
-                                    }
-                                }
+                                )
                             }
                         }
                     }
@@ -281,8 +278,7 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                                 style = MaterialTheme.typography.bodySmall,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
-                                    .padding(horizontal = VERTICAL_PADDING)
-                                    .padding(bottom = 25.dp)
+                                    .padding(top = VERTICAL_PADDING, bottom = 25.dp, start = VERTICAL_PADDING, end = VERTICAL_PADDING)
                                     .fillMaxWidth()
                                     .alpha(.6f)
                             )
