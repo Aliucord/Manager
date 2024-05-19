@@ -68,7 +68,6 @@
   <string name="version_alpha">アルファ版</string>
   <string name="version_unknown">不明</string>
   <string name="version_load_fail">バージョンの取得に失敗しました</string>
-  <string name="installer_save_file">ファイルに保存</string>
   <string name="installer_file_save_success">%sに保存しました</string>
   <string name="installer_file_save_failed">%sの保存に失敗しました</string>
   <string name="installer_success">Aliucordのインストールに成功しました</string>
@@ -139,4 +138,16 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -&gt; \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
+  <string name="fun_fact_prefix">Fun Fact: %s</string>
+  <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>
+  <string name="fun_fact_2">Did you know Aliucord with 150+ plugins somehow runs better than Discord\'s new app?</string>
+  <string name="fun_fact_3">Did you know Aliucord has over 200 available plugins?</string>
+  <string name="fun_fact_4">i am in your walls</string>
+  <string name="fun_fact_5">Did you know AliucordRN spawned Enmity and Vendetta?</string>
+  <string name="fun_fact_6">Having issues? Visit the #support channel in our Discord!</string>
+  <string name="fun_fact_7">The IWillCrashYourDiscord plugin crashes your discord.</string>
+  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
+  <string name="fun_fact_9">Aliucord can run on WearOS</string>
+  <string name="fun_fact_10">Aliucord uses the *real* old UI, from mid-2022!</string>
+  <string name="fun_fact_11">There was an attempt to make Aliucord run on iOS…</string>
 </resources>
