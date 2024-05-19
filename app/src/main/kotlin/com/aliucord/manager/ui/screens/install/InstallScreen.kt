@@ -8,6 +8,7 @@ package com.aliucord.manager.ui.screens.install
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -15,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -37,6 +39,7 @@ import com.aliucord.manager.ui.screens.install.components.*
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
+import com.aliucord.manager.ui.util.thenIf
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.filter
@@ -174,6 +177,21 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                         }
                     }
 
+                    item(key = "INSTALLED_BANNER") {
+                        BannerSection(visible = state is InstallScreenState.Success) {
+                            TextBanner(
+                                text = "Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.",
+                                icon = painterResource(R.drawable.ic_check_circle),
+                                iconColor = Color(0xFF59B463),
+                                outlineColor = MaterialTheme.colorScheme.surfaceVariant,
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                modifier = Modifier
+                                    .padding(bottom = VERTICAL_PADDING)
+                                    .fillMaxWidth(),
+                            )
+                        }
+                    }
+
                     for ((group, steps) in model.installSteps?.entries ?: persistentListOf()) {
                         item(key = System.identityHashCode(group)) {
                             StepGroupCard(
@@ -184,11 +202,13 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
                                 modifier = Modifier
                                     .padding(bottom = VERTICAL_PADDING)
                                     .fillMaxWidth()
+                                    .thenIf(state is InstallScreenState.Success) { alpha(.6f) }
                             )
                         }
                     }
 
                     item(key = "BUTTONS") {
+                        var cacheCleared by remember { mutableStateOf(false) }
                         val filteredState by remember { model.state.filter { it.isNewlyFinished } }
                             .collectAsState(initial = null)
 
@@ -224,21 +244,49 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
 
                                     else -> error("unreachable")
                                 }
+
+                                Row(
+                                    horizontalArrangement = Arrangement.End,
+                                    modifier = Modifier
+                                        .padding(top = 8.dp)
+                                        .fillMaxWidth()
+                                ) {
+                                    // Clear cache button
+                                    Button(
+                                        // TODO: adjust colors
+                                        onClick = {
+                                            cacheCleared = true
+                                            // model.clearCache()
+                                        },
+                                        enabled = !cacheCleared,
+                                    ) {
+                                        Text(stringResource(R.string.setting_clear_cache))
+                                    }
+                                }
                             }
                         }
                     }
 
                     item(key = "FUN_FACT") {
-                        Text(
-                            text = stringResource(R.string.fun_fact_prefix, stringResource(model.funFact)),
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .padding(horizontal = VERTICAL_PADDING)
-                                .padding(bottom = 25.dp)
-                                .fillMaxWidth()
-                                .alpha(.6f)
-                        )
+                        AnimatedContent(
+                            targetState = model.funFact,
+                            label = "fun fact transition",
+                            transitionSpec = {
+                                (fadeIn(tween(220, delayMillis = 90)) + slideInHorizontally { it * -2 }) togetherWith
+                                    (fadeOut(tween(90)) + slideOutHorizontally { it * 2 })
+                            }
+                        ) { text ->
+                            Text(
+                                text = stringResource(R.string.fun_fact_prefix, stringResource(text)),
+                                style = MaterialTheme.typography.bodySmall,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .padding(horizontal = VERTICAL_PADDING)
+                                    .padding(bottom = 25.dp)
+                                    .fillMaxWidth()
+                                    .alpha(.6f)
+                            )
+                        }
                     }
                 }
             }

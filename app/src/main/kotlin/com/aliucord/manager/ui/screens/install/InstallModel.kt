@@ -7,6 +7,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -26,6 +27,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.time.Duration.Companion.seconds
 
 class InstallModel(
     private val application: Application,
@@ -42,11 +44,19 @@ class InstallModel(
     var showGppWarning by mutableStateOf(false)
         private set
 
+    @get:StringRes
     var funFact by mutableIntStateOf(0)
         private set
 
     init {
         restart()
+
+        screenModelScope.launch {
+            while (true) {
+                funFact = FUN_FACTS.random()
+                delay(20.seconds)
+            }
+        }
     }
 
     fun launchApp() {
@@ -79,7 +89,7 @@ class InstallModel(
     }
 
     fun clearCache() {
-        paths.clearCache()
+        screenModelScope.launch { paths.clearCache() }
         application.showToast(R.string.action_cleared_cache)
     }
 
@@ -102,7 +112,6 @@ class InstallModel(
         installSteps = null
 
         startTime = Date()
-        funFact = FUN_FACTS.random()
         mutableState.value = InstallScreenState.Working
 
         val newInstallJob = screenModelScope.launch {
@@ -198,6 +207,13 @@ class InstallModel(
             R.string.fun_fact_2,
             R.string.fun_fact_3,
             R.string.fun_fact_4,
+            R.string.fun_fact_5,
+            R.string.fun_fact_6,
+            R.string.fun_fact_7,
+            R.string.fun_fact_8,
+            R.string.fun_fact_9,
+            R.string.fun_fact_10,
+            R.string.fun_fact_11,
         )
     }
 }

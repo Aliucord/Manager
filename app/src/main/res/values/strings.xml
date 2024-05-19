@@ -164,4 +164,11 @@
   <string name="fun_fact_2">Did you know Aliucord with 150+ plugins somehow runs better than Discord\'s new app?</string>
   <string name="fun_fact_3">Did you know Aliucord has over 200 available plugins?</string>
   <string name="fun_fact_4">i am in your walls</string>
+  <string name="fun_fact_5">Did you know AliucordRN spawned Enmity and Vendetta?</string>
+  <string name="fun_fact_6">Having issues? Visit the #support channel in our Discord!</string>
+  <string name="fun_fact_7">The IWillCrashYourDiscord plugin crashes your discord.</string>
+  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
+  <string name="fun_fact_9">Aliucord can run on WearOS</string>
+  <string name="fun_fact_10">Aliucord uses the *real* old UI, from mid-2022!</string>
+  <string name="fun_fact_11">There was an attempt to make Aliucord run on iOS…</string>
 </resources>
