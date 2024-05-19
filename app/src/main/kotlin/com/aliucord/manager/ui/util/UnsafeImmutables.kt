@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "NOTHING_TO_INLINE")
 
 package com.aliucord.manager.ui.util
 
@@ -12,18 +12,18 @@ import kotlinx.collections.immutable.adapters.*
  * and assumes the user knows that it shouldn't change through crucial parts of rendering.
  */
 
-fun <T> Collection<T>.toUnsafeImmutable(): ImmutableCollection<T> =
+inline fun <T> Collection<T>.toUnsafeImmutable(): ImmutableCollection<T> =
     ImmutableCollectionAdapter(this)
 
-fun <T> List<T>.toUnsafeImmutable(): ImmutableList<T> =
+inline fun <T> List<T>.toUnsafeImmutable(): ImmutableList<T> =
     ImmutableListAdapter(this)
 
-fun <T> Set<T>.toUnsafeImmutable(): ImmutableSet<T> =
+inline fun <T> Set<T>.toUnsafeImmutable(): ImmutableSet<T> =
     ImmutableSetAdapter(this)
 
-fun <K, V> Map<K, V>.toUnsafeImmutable(): ImmutableMap<K, V> =
+inline fun <K, V> Map<K, V>.toUnsafeImmutable(): ImmutableMap<K, V> =
     ImmutableMapAdapter(this)
 
-fun <T> emptyImmutableList(): ImmutableList<T> = persistentListOf()
-fun <T> emptyImmutableSet(): ImmutableSet<T> = persistentSetOf()
-fun <K, V> emptyImmutableMap(): ImmutableMap<K, V> = persistentMapOf()
+inline fun <T> emptyImmutableList(): ImmutableList<T> = persistentListOf()
+inline fun <T> emptyImmutableSet(): ImmutableSet<T> = persistentSetOf()
+inline fun <K, V> emptyImmutableMap(): ImmutableMap<K, V> = persistentMapOf()
