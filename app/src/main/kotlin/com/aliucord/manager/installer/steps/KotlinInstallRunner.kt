@@ -22,9 +22,9 @@ class KotlinInstallRunner(options: InstallOptions) : StepRunner() {
         DownloadInjectorStep(),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
+        CopyDependenciesStep(),
 
         // Patch
-        CopyDependenciesStep(),
         ReplaceIconStep(options),
         PatchManifestStep(options),
         AddInjectorStep(),

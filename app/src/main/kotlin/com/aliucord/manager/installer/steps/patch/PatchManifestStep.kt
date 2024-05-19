@@ -4,6 +4,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
+import com.aliucord.manager.installer.steps.download.CopyDependenciesStep
 import com.aliucord.manager.installer.util.ManifestPatcher
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.github.diamondminer88.zip.ZipReader

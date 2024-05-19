@@ -7,7 +7,7 @@ import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
-import com.aliucord.manager.installer.steps.patch.CopyDependenciesStep
+import com.aliucord.manager.installer.steps.download.CopyDependenciesStep
 import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.manager.PreferencesManager

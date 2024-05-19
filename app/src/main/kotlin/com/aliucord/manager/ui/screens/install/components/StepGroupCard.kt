@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
-import com.aliucord.manager.ui.util.thenIf
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -25,8 +23,9 @@ fun StepGroupCard(
     subSteps: ImmutableList<Step>,
     isExpanded: Boolean,
     onExpand: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val groupState by remember {
+    val groupState by remember(subSteps) {
         derivedStateOf {
             when {
                 // If all steps are pending then show pending
@@ -57,22 +56,22 @@ fun StepGroupCard(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .thenIf(isExpanded) {
-                background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
-            }
+        modifier = modifier
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier
                 .clickable(true, onClick = onExpand)
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(20.dp)
         ) {
-            StepStateIcon(groupState, 24.dp)
+            StepStateIcon(
+                state = groupState,
+                size = 24.dp,
+            )
 
             Text(text = name)
 
@@ -102,7 +101,7 @@ fun StepGroupCard(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background.copy(0.6f))
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(20.dp)
                     .padding(start = 4.dp)
             ) {
                 for (step in subSteps) key(step) {

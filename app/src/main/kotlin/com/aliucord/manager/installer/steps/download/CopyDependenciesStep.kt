@@ -1,10 +1,9 @@
-package com.aliucord.manager.installer.steps.patch
+package com.aliucord.manager.installer.steps.download
 
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
-import com.aliucord.manager.installer.steps.download.DownloadDiscordStep
 import com.aliucord.manager.manager.PathManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -22,7 +21,7 @@ class CopyDependenciesStep : Step(), KoinComponent {
     val patchedApk: File = paths.patchingWorkingDir()
         .resolve("patched.apk")
 
-    override val group = StepGroup.Patch
+    override val group = StepGroup.Download
     override val localizedName = R.string.install_step_copy
 
     override suspend fun execute(container: StepRunner) {

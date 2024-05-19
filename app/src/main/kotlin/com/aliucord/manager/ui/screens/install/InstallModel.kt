@@ -4,8 +4,10 @@ package com.aliucord.manager.ui.screens.install
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -25,6 +27,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.time.Duration.Companion.seconds
 
 class InstallModel(
     private val application: Application,
@@ -35,16 +38,35 @@ class InstallModel(
     private var installJob: Job? = null
     private var stepRunner: StepRunner? = null
 
-    private var autocloseCancelled: Boolean = false
-
     var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set
 
     var showGppWarning by mutableStateOf(false)
         private set
 
+    @get:StringRes
+    var funFact by mutableIntStateOf(0)
+        private set
+
     init {
         restart()
+
+        // Rotate fun facts every 20s
+        screenModelScope.launch {
+            while (true) {
+                funFact = FUN_FACTS.random()
+                delay(20.seconds)
+            }
+        }
+    }
+
+    fun launchApp() {
+        if (state.value !is InstallScreenState.Success)
+            return
+
+        Intent(options.packageName)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .also(application::startActivity)
     }
 
     fun copyDebugToClipboard() {
@@ -68,15 +90,8 @@ class InstallModel(
     }
 
     fun clearCache() {
-        paths.clearCache()
+        screenModelScope.launch { paths.clearCache() }
         application.showToast(R.string.action_cleared_cache)
-    }
-
-    /**
-     * Cancel the screen auto-close once installation was completed
-     */
-    fun cancelAutoclose() {
-        autocloseCancelled = true
     }
 
     /**
@@ -130,13 +145,6 @@ class InstallModel(
                     // At this point, the installation has successfully completed
                     else {
                         mutableState.value = InstallScreenState.Success
-                        autocloseCancelled = false
-
-                        // Wait 5s before returning to Home if screen hasn't been clicked
-                        delay(5000)
-                        if (!autocloseCancelled) {
-                            mutableState.value = InstallScreenState.CloseScreen
-                        }
                     }
                 }
 
@@ -188,6 +196,25 @@ class InstallModel(
             SOC: $soc
         """.trimIndent()
 
-        return header + "\n\n" + Log.getStackTraceString(stacktrace)
+        return header + "\n\n" + Log.getStackTraceString(stacktrace).trimEnd()
+    }
+
+    private companion object {
+        /**
+         * Random fun facts to show on the installation screen.
+         */
+        val FUN_FACTS = arrayOf(
+            R.string.fun_fact_1,
+            R.string.fun_fact_2,
+            R.string.fun_fact_3,
+            R.string.fun_fact_4,
+            R.string.fun_fact_5,
+            R.string.fun_fact_6,
+            R.string.fun_fact_7,
+            R.string.fun_fact_8,
+            R.string.fun_fact_9,
+            R.string.fun_fact_10,
+            R.string.fun_fact_11,
+        )
     }
 }

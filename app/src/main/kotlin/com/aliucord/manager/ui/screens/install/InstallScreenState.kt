@@ -1,5 +1,7 @@
 package com.aliucord.manager.ui.screens.install
 
+import com.aliucord.manager.ui.screens.install.InstallScreenState.*
+
 sealed interface InstallScreenState {
     data object Pending : InstallScreenState
     data object Working : InstallScreenState
@@ -10,7 +12,10 @@ sealed interface InstallScreenState {
     ) : InstallScreenState
 
     data object CloseScreen : InstallScreenState
-
-    val isFinished: Boolean
-        get() = this !is Pending && this !is Working
 }
+
+val InstallScreenState.isNewlyFinished: Boolean
+    inline get() = this == Success || this is Failed
+
+val InstallScreenState.isFinished: Boolean
+    inline get() = isNewlyFinished || this == CloseScreen

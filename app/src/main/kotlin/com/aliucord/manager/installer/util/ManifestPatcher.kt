@@ -93,7 +93,7 @@ object ManifestPatcher {
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == NETWORK_SECURITY_CONFIG) return
                                     super.attr(ns, name, resourceId, type, value)
-                                    if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false;
+                                    if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
                                     if (name == DEBUGGABLE) addDebuggable = false
                                     if (name == USES_CLEARTEXT_TRAFFIC) addUseClearTextTraffic = false
                                 }
