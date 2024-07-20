@@ -12,7 +12,7 @@
   <string name="action_apply">Zastosuj</string>
   <string name="action_confirm">Potwierdź</string>
   <string name="action_dismiss">Odrzuć</string>
-  <string name="action_install">Install</string>
+  <string name="action_install"></string>
   <string name="action_uninstall">Odinstaluj</string>
   <string name="action_add_install">Add Installation</string>
   <string name="action_update">Aktualizuj</string>
