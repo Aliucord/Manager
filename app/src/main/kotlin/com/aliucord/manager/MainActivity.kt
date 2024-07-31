@@ -20,8 +20,8 @@ import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
-import com.aliucord.manager.ui.screens.install.InstallScreen
-import com.aliucord.manager.ui.screens.installopts.InstallOptionsScreen
+import com.aliucord.manager.ui.screens.patching.PatchingScreen
+import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import org.koin.android.ext.android.inject
@@ -63,16 +63,16 @@ class MainActivity : ComponentActivity() {
 
                             when {
                                 // Going from Home -> InstallOptions
-                                initialState is HomeScreen && targetState is InstallOptionsScreen ->
+                                initialState is HomeScreen && targetState is PatchOptionsScreen ->
                                     slideInVertically { (it * 1.5).toInt() } + fadeIn togetherWith fadeOut
                                 // Going from InstallOptions -> Home
-                                initialState is InstallOptionsScreen && targetState is HomeScreen ->
+                                initialState is PatchOptionsScreen && targetState is HomeScreen ->
                                     fadeIn togetherWith slideOutVertically { it * 2 } + fadeOut
                                 // Going from InstallOptions -> Install
-                                initialState is InstallOptionsScreen && targetState is InstallScreen ->
+                                initialState is PatchOptionsScreen && targetState is PatchingScreen ->
                                     slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
                                 // Going from Install -> InstallOptions
-                                initialState is InstallScreen && targetState is InstallOptionsScreen ->
+                                initialState is PatchingScreen && targetState is PatchOptionsScreen ->
                                     fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
 
                                 else -> fadeIn togetherWith fadeOut

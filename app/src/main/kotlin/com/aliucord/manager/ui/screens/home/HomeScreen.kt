@@ -28,7 +28,7 @@ import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.ProjectHeader
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.home.components.*
-import com.aliucord.manager.ui.screens.installopts.InstallOptionsScreen
+import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
@@ -55,7 +55,7 @@ class HomeScreen : Screen {
                 if (model.isNetworkDangerous()) {
                     showNetworkWarningDialog = true
                 } else {
-                    navigator.push(InstallOptionsScreen(model.supportedVersion))
+                    navigator.push(PatchOptionsScreen(model.supportedVersion))
                 }
             }
         }
@@ -64,7 +64,7 @@ class HomeScreen : Screen {
             NetworkWarningDialog(
                 onConfirm = {
                     showNetworkWarningDialog = false
-                    navigator.push(InstallOptionsScreen(model.supportedVersion))
+                    navigator.push(PatchOptionsScreen(model.supportedVersion))
                 },
                 onDismiss = {
                     showNetworkWarningDialog = false

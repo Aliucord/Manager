@@ -9,8 +9,8 @@ import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.network.service.*
 import com.aliucord.manager.ui.screens.about.AboutModel
 import com.aliucord.manager.ui.screens.home.HomeModel
-import com.aliucord.manager.ui.screens.install.InstallModel
-import com.aliucord.manager.ui.screens.installopts.InstallOptionsModel
+import com.aliucord.manager.ui.screens.patching.PatchingScreenModel
+import com.aliucord.manager.ui.screens.patchopts.PatchOptionsModel
 import com.aliucord.manager.ui.screens.plugins.PluginsModel
 import com.aliucord.manager.ui.screens.settings.SettingsModel
 import com.aliucord.manager.ui.widgets.updater.UpdaterViewModel
@@ -53,9 +53,9 @@ class ManagerApplication : Application() {
                 factoryOf(::HomeModel)
                 factoryOf(::PluginsModel)
                 factoryOf(::AboutModel)
-                factoryOf(::InstallModel)
+                factoryOf(::PatchingScreenModel)
                 factoryOf(::SettingsModel)
-                factoryOf(::InstallOptionsModel)
+                factoryOf(::PatchOptionsModel)
                 viewModelOf(::UpdaterViewModel)
             })
 
