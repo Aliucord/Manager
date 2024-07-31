@@ -6,7 +6,6 @@
 package com.aliucord.manager
 
 import android.os.Bundle
-import android.os.Environment
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -26,9 +25,6 @@ import com.aliucord.manager.ui.screens.installopts.InstallOptionsScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import org.koin.android.ext.android.inject
-
-// TODO: move to a path provider in DI
-val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
 
 class MainActivity : ComponentActivity() {
     private val preferences: PreferencesManager by inject()

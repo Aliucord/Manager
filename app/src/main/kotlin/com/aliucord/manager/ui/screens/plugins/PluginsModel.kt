@@ -5,13 +5,15 @@ import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.aliucordDir
 import com.aliucord.manager.domain.model.Plugin
+import com.aliucord.manager.manager.PathManager
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.*
 
-class PluginsModel : ScreenModel {
+class PluginsModel(
+    private val paths: PathManager,
+) : ScreenModel {
     var showChangelogDialog by mutableStateOf(false)
         private set
 
@@ -57,8 +59,6 @@ class PluginsModel : ScreenModel {
         plugins.remove(plugin)
     }
 
-    private val settingsFile = aliucordDir.resolve("settings/Aliucord.json")
-
     fun setPluginEnabled(plugin: String, enable: Boolean) {
         screenModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
@@ -69,13 +69,13 @@ class PluginsModel : ScreenModel {
 
             @OptIn(ExperimentalSerializationApi::class)
             try {
-                val settings = settingsFile.inputStream()
+                val settings = paths.coreSettingsFile.inputStream()
                     .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
                     .toMutableMap()
 
                 settings["AC_PM_$plugin"] = JsonPrimitive(enable)
 
-                settingsFile.outputStream()
+                paths.coreSettingsFile.outputStream()
                     .use { Json.encodeToStream(settings, it) }
             } catch (t: Throwable) {
                 Log.e(BuildConfig.TAG, "Failed to write Aliucord.json: ${Log.getStackTraceString(t)}")
@@ -85,11 +85,11 @@ class PluginsModel : ScreenModel {
     }
 
     private suspend fun loadEnabled(): Map<String, Boolean> = withContext(Dispatchers.IO) {
-        if (!settingsFile.exists()) return@withContext emptyMap()
+        if (!paths.coreSettingsFile.exists()) return@withContext emptyMap()
 
         @OptIn(ExperimentalSerializationApi::class)
         try {
-            settingsFile.inputStream()
+            paths.coreSettingsFile.inputStream()
                 .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
                 .filterKeys { it.startsWith("AC_PM_") }
                 .mapKeys { it.key.substring("AC_PM_".length) }
@@ -107,14 +107,12 @@ class PluginsModel : ScreenModel {
         }
 
         screenModelScope.launch(Dispatchers.IO) {
-            val pluginsDir = aliucordDir.resolve("plugins")
-
-            if (!pluginsDir.exists() && !pluginsDir.mkdirs()) {
+            if (!paths.pluginsDir.exists() && !paths.pluginsDir.mkdirs()) {
                 Log.e(BuildConfig.TAG, "Failed to create plugins dir. Missing Permissions?")
                 return@launch
             }
 
-            val files = pluginsDir.listFiles { file -> file.extension == "zip" } ?: return@launch
+            val files = paths.pluginsDir.listFiles { file -> file.extension == "zip" } ?: return@launch
             val loadedPlugins = files.mapNotNull { file ->
                 try {
                     Plugin(file)

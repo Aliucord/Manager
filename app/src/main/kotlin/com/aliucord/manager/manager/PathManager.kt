@@ -1,12 +1,34 @@
 package com.aliucord.manager.manager
 
 import android.content.Context
+import android.os.Environment
 import java.io.File
 
 /**
  * A central place to provide all system paths that are used.
  */
 class PathManager(context: Context) {
+    /**
+     * The Aliucord folder in which plugins/settings/themes are stored.
+     * Standard path: `~/Aliucord`
+     */
+    val aliucordDir = Environment.getExternalStorageDirectory().resolve("Aliucord")
+
+    /**
+     * The directory in external storage in which plugins are stored by Aliucord.
+     */
+    val pluginsDir = aliucordDir.resolve("plugins")
+
+    /**
+     * The settings file in which Aliucord's core uses.
+     */
+    val coreSettingsFile = aliucordDir.resolve("settings/Aliucord.json")
+
+    /**
+     * Global keystore used for signing APKs.
+     */
+    val keystoreFile = aliucordDir.resolve("ks.keystore")
+
     private val externalCacheDir = context.externalCacheDir
         ?: throw Error("External cache directory isn't supported")
 
