@@ -10,15 +10,19 @@ import android.os.Environment
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.FadeTransition
+import cafe.adriel.voyager.transitions.ScreenTransition
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
+import com.aliucord.manager.ui.screens.install.InstallScreen
+import com.aliucord.manager.ui.screens.installopts.InstallOptionsScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import org.koin.android.ext.android.inject
 
@@ -59,7 +63,30 @@ class MainActivity : ComponentActivity() {
                         navigator.back(this@MainActivity)
                     }
 
-                    FadeTransition(navigator)
+                    ScreenTransition(
+                        navigator = navigator,
+                        transition = block@{
+                            val fadeIn = fadeIn(tween(durationMillis = 300))
+                            val fadeOut = fadeOut(tween(durationMillis = 750, delayMillis = 200))
+
+                            when {
+                                // Going from Home -> InstallOptions
+                                initialState is HomeScreen && targetState is InstallOptionsScreen ->
+                                    slideInVertically { (it * 1.5).toInt() } + fadeIn togetherWith fadeOut
+                                // Going from InstallOptions -> Home
+                                initialState is InstallOptionsScreen && targetState is HomeScreen ->
+                                    fadeIn togetherWith slideOutVertically { it * 2 } + fadeOut
+                                // Going from InstallOptions -> Install
+                                initialState is InstallOptionsScreen && targetState is InstallScreen ->
+                                    slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
+                                // Going from Install -> InstallOptions
+                                initialState is InstallScreen && targetState is InstallOptionsScreen ->
+                                    fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
+
+                                else -> fadeIn togetherWith fadeOut
+                            }
+                        }
+                    )
                 }
             }
         }
