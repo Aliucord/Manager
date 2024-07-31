@@ -97,6 +97,7 @@
   <string name="install_step_patch_icon">Patching app icon</string>
   <string name="install_step_add_injector">Adding Aliucord injector</string>
   <string name="install_step_add_aliuhook">Adding Aliuhook library</string>
+  <string name="install_step_save_metadata">Store metadata</string>
   <string name="install_step_alignment">Aligning APKs</string>
   <string name="install_step_signing">APKの署名</string>
   <string name="install_step_installing">APKのインストール</string>

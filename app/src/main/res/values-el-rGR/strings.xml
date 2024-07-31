@@ -96,6 +96,7 @@
   <string name="install_step_patch_icon">Ενημέρωση εικονιδίων εφαρμογής</string>
   <string name="install_step_add_injector">Προσθήκη Aliucord injector</string>
   <string name="install_step_add_aliuhook">Προσθήκη βιβλιοθήκης Aliuhook</string>
+  <string name="install_step_save_metadata">Store metadata</string>
   <string name="install_step_alignment">Ευθυγράμμιση APKs</string>
   <string name="install_step_signing">Υπογραφή APKs</string>
   <string name="install_step_installing">Εγκατάσταση APKs</string>

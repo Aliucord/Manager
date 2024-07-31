@@ -96,6 +96,7 @@
   <string name="install_step_patch_icon">Патч значка приложения</string>
   <string name="install_step_add_injector">Добавление инжектора Aliucord</string>
   <string name="install_step_add_aliuhook">Добавление библиотеки Aliuhook</string>
+  <string name="install_step_save_metadata">Store metadata</string>
   <string name="install_step_alignment">Выравнивание APK</string>
   <string name="install_step_signing">Подписывание пакетов</string>
   <string name="install_step_installing">Установка пакетов</string>

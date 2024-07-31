@@ -96,6 +96,7 @@
   <string name="install_step_patch_icon">Parcheando icono de aplicación</string>
   <string name="install_step_add_injector">Añadiendo inyector de Aliucord</string>
   <string name="install_step_add_aliuhook">Añadiendo librería Aliuhook</string>
+  <string name="install_step_save_metadata">Store metadata</string>
   <string name="install_step_alignment">Alineando los APK</string>
   <string name="install_step_signing">Firmando APK...</string>
   <string name="install_step_installing">Instalando APKs</string>
