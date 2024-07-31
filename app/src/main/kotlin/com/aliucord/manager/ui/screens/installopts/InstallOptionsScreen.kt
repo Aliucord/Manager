@@ -28,6 +28,7 @@ import com.aliucord.manager.ui.screens.installopts.components.options.TextInstal
 import com.aliucord.manager.ui.util.*
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import com.aliucord.manager.util.requestNoBatteryOptimizations
+import kotlinx.coroutines.delay
 
 class InstallOptionsScreen(
     private val supportedVersion: DiscordVersion = DiscordVersion.None,
@@ -41,6 +42,10 @@ class InstallOptionsScreen(
         val model = getScreenModel<InstallOptionsModel>()
 
         LaunchedEffect(Unit) {
+            // Ensure that when popping this screen off the stack that permission requests don't get triggered
+            // The coroutine context local to this screen gets cancelled and never continues after the delay()
+            delay(1000)
+
             InstallNotifications.requestPermissions(context)
 
             if (!context.isIgnoringBatteryOptimizations())
@@ -132,7 +137,7 @@ class InstallOptionsScreen(
 
                 FilledTonalButton(
                     enabled = model.isConfigValid,
-                    onClick = { navigator replace InstallScreen(model.generateConfig()) },
+                    onClick = { navigator.push(InstallScreen(model.generateConfig())) },
                     colors = ButtonDefaults.filledTonalButtonColors(
                         contentColor = MaterialTheme.colorScheme.primary,
                     ),

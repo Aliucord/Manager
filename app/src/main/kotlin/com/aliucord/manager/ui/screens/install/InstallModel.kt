@@ -18,6 +18,7 @@ import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.installer.steps.install.InstallStep
 import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.screens.installopts.InstallOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.*
@@ -33,10 +34,13 @@ class InstallModel(
     private val application: Application,
     private val paths: PathManager,
     private val options: InstallOptions,
+    private val prefs: PreferencesManager,
 ) : StateScreenModel<InstallScreenState>(InstallScreenState.Pending) {
     private var startTime: Date? = null
     private var installJob: Job? = null
     private var stepRunner: StepRunner? = null
+
+    val devMode get() = prefs.devMode
 
     var installSteps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set

@@ -66,7 +66,12 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
 
         LaunchedEffect(state) {
             if (state is InstallScreenState.CloseScreen)
-                navigator.back(currentActivity = null)
+                navigator.popUntilRoot()
+        }
+
+        // Go home directly if install was successful
+        BackHandler(state is InstallScreenState.Success) {
+            navigator.popUntilRoot()
         }
 
         // Prevent screen from turning off while working
@@ -81,7 +86,7 @@ class InstallScreen(private val data: InstallOptions) : Screen, Parcelable {
         // Only show exit warning if currently working
         val onTryExit: () -> Unit = remember {
             {
-                if (state == InstallScreenState.Working) {
+                if (state == InstallScreenState.Working && !model.devMode) {
                     showAbortWarning = true
                 } else {
                     navigator.back(currentActivity = null)
