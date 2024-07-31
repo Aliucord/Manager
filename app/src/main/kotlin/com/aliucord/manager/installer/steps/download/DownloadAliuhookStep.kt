@@ -3,7 +3,7 @@ package com.aliucord.manager.installer.steps.download
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.installer.steps.StepRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.installer.steps.base.DownloadStep
 import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.network.utils.getOrThrow
@@ -21,7 +21,8 @@ class DownloadAliuhookStep : DownloadStep(), KoinComponent {
     /**
      * This is populated right before the download starts (ref: [execute])
      */
-    private lateinit var targetVersion: String
+    lateinit var targetVersion: String
+        private set
 
     override val localizedName = R.string.install_step_dl_aliuhook
     override val targetUrl get() = AliucordMavenRepository.getAliuhookUrl(targetVersion)
@@ -33,4 +34,3 @@ class DownloadAliuhookStep : DownloadStep(), KoinComponent {
         super.execute(container)
     }
 }
-

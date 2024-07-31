@@ -3,7 +3,7 @@ package com.aliucord.manager.installer.steps.base
 import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import com.aliucord.manager.installer.steps.StepGroup
-import com.aliucord.manager.installer.steps.StepRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.util.toPrecision
 import kotlinx.coroutines.*
 import org.koin.core.time.measureTimedValue

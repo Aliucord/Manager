@@ -1,4 +1,4 @@
-package com.aliucord.manager.installer.steps
+package com.aliucord.manager.installer
 
 import com.aliucord.manager.installer.steps.download.*
 import com.aliucord.manager.installer.steps.install.*
@@ -29,6 +29,7 @@ class KotlinInstallRunner(options: InstallOptions) : StepRunner() {
         PatchManifestStep(options),
         AddInjectorStep(),
         AddAliuhookStep(),
+        SaveMetadataStep(options),
 
         // Install
         AlignmentStep(),

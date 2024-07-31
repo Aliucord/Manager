@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
-import com.aliucord.manager.installer.steps.StepRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.installer.steps.download.CopyDependenciesStep

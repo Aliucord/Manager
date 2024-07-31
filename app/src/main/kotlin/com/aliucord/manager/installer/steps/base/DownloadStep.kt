@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
-import com.aliucord.manager.installer.steps.StepRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.manager.DownloadManager
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.Dispatchers

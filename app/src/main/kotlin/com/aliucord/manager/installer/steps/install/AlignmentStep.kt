@@ -3,7 +3,7 @@ package com.aliucord.manager.installer.steps.install
 import android.os.Build
 import com.aliucord.manager.R
 import com.aliucord.manager.installer.steps.StepGroup
-import com.aliucord.manager.installer.steps.StepRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState
 import com.aliucord.manager.installer.steps.download.CopyDependenciesStep
@@ -14,8 +14,6 @@ import org.koin.core.component.KoinComponent
  * Align certain files in the APK to a 4KiB boundary.
  */
 class AlignmentStep : Step(), KoinComponent {
-    private val currentDeviceArch = Build.SUPPORTED_ABIS.first()
-
     override val group = StepGroup.Install
     override val localizedName = R.string.install_step_alignment
 

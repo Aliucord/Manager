@@ -13,6 +13,8 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.installer.KotlinInstallRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.installer.steps.*
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.installer.steps.base.StepState

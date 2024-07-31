@@ -24,6 +24,7 @@ import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.screens.install.InstallScreen
 import com.aliucord.manager.ui.screens.installopts.InstallOptionsScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
+import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import org.koin.android.ext.android.inject
 
 // TODO: move to a path provider in DI
@@ -46,12 +47,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 StoragePermissionsDialog()
 
-                @Suppress("KotlinConstantConditions")
-                if (
-                    BuildConfig.GIT_BRANCH == "release" &&
-                    !BuildConfig.GIT_LOCAL_CHANGES &&
-                    !BuildConfig.GIT_LOCAL_COMMITS
-                ) {
+                if (!IS_CUSTOM_BUILD) {
                     UpdaterDialog()
                 }
 

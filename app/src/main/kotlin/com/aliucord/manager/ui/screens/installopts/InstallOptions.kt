@@ -4,11 +4,15 @@ import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import com.aliucord.manager.util.ColorParceler
+import com.aliucord.manager.util.ColorSerializer
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Immutable
 @Parcelize
+@Serializable
 data class InstallOptions(
     /**
      * The app name that's user-facing in launchers.
@@ -38,12 +42,15 @@ data class InstallOptions(
 ) : Parcelable {
     @Immutable
     @Parcelize
+    @Serializable
     sealed interface IconReplacement : Parcelable {
         /**
          * Keeps the original icons that are present in the APK.
          */
         @Immutable
         @Parcelize
+        @Serializable
+        @SerialName("original")
         data object Original : IconReplacement
 
         /**
@@ -52,8 +59,11 @@ data class InstallOptions(
          */
         @Immutable
         @Parcelize
+        @Serializable
+        @SerialName("color")
         data class CustomColor(
             @TypeParceler<Color, ColorParceler>
+            @Serializable(ColorSerializer::class)
             val color: Color,
         ) : IconReplacement
 
@@ -63,6 +73,8 @@ data class InstallOptions(
          */
         @Immutable
         @Parcelize
+        @Serializable
+        @SerialName("image")
         data class CustomImage(val imageBytes: ByteArray) : IconReplacement {
             override fun hashCode() = imageBytes.contentHashCode()
             override fun equals(other: Any?) = this === other

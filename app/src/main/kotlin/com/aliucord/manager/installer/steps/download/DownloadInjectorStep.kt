@@ -2,7 +2,7 @@ package com.aliucord.manager.installer.steps.download
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.installer.steps.StepRunner
+import com.aliucord.manager.installer.StepRunner
 import com.aliucord.manager.installer.steps.base.DownloadStep
 import com.aliucord.manager.installer.steps.prepare.FetchInfoStep
 import com.aliucord.manager.manager.PathManager
@@ -21,7 +21,8 @@ class DownloadInjectorStep : DownloadStep(), KoinComponent {
      * Populated from a dependency step ([FetchInfoStep]).
      * This is used as cache invalidation (ref: [Version.aliucordHash])
      */
-    private lateinit var aliucordHash: String
+    lateinit var aliucordHash: String
+        private set
 
     override val localizedName = R.string.install_step_dl_injector
     override val targetUrl = URL

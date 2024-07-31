@@ -1,9 +1,10 @@
-package com.aliucord.manager.installer.steps
+package com.aliucord.manager.installer
 
 import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.aliucord.manager.R
+import com.aliucord.manager.installer.steps.StepGroup
 import com.aliucord.manager.installer.steps.base.DownloadStep
 import com.aliucord.manager.installer.steps.base.Step
 import com.aliucord.manager.manager.PreferencesManager
