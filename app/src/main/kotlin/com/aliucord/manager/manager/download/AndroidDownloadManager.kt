@@ -1,39 +1,35 @@
-package com.aliucord.manager.manager
+package com.aliucord.manager.manager.download
 
 import android.app.Application
 import android.app.DownloadManager
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
-import android.util.Log
-import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.download.IDownloadManager.ProgressListener
+import com.aliucord.manager.manager.download.IDownloadManager.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
- * Handle downloading remote urls to a path through the system [DownloadManager].
+ * Handle downloading remote urls to a path through the system's [DownloadManager].
  */
-class DownloadManager(application: Application) {
+class AndroidDownloadManager(application: Application) : IDownloadManager {
     private val downloadManager = application.getSystemService<DownloadManager>()
         ?: throw IllegalStateException("DownloadManager service is not available")
 
     /**
-     * Start a cancellable download with the system [DownloadManager].
+     * Start a cancellable download with the system [IDownloadManager].
      * If the current [CoroutineScope] is cancelled, then the system download will be cancelled within 100ms.
      * @param url Remote src url
      * @param out Target path to download to. It is assumed that the application has write permissions to this path.
      * @param onProgressUpdate An optional [ProgressListener]
      */
-    suspend fun download(
-        url: String,
-        out: File,
-        onProgressUpdate: ProgressListener? = null,
-    ): Result {
+    override suspend fun download(url: String, out: File, onProgressUpdate: ProgressListener?): Result {
         onProgressUpdate?.onUpdate(null)
         out.parentFile?.mkdirs()
 
@@ -44,13 +40,6 @@ class DownloadManager(application: Application) {
             .setDestinationUri(Uri.fromFile(out))
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
             .addRequestHeader("User-Agent", "Aliucord Manager/${BuildConfig.VERSION_NAME}")
-            .apply {
-                // Disable gzip on emulator due to https compression bug
-                if (Build.FINGERPRINT.contains("emulator")) {
-                    Log.d(BuildConfig.TAG, "Disabling DownloadManager compression")
-                    addRequestHeader("Accept-Encoding", null)
-                }
-            }
             .let(downloadManager::enqueue)
 
         // Repeatedly request download state until it is finished
@@ -93,7 +82,7 @@ class DownloadManager(application: Application) {
                         val reasonColumn = cursor.getColumnIndex(DownloadManager.COLUMN_REASON)
                         val reason = cursor.getInt(reasonColumn)
 
-                        return Result.Error(reason)
+                        return Error(reason)
                     }
 
                     else -> throw Error("Unreachable")
@@ -118,61 +107,29 @@ class DownloadManager(application: Application) {
     }
 
     /**
-     * A callback executed from a coroutine called every 100ms in order to provide
-     * info about the current download. This should not perform long-running tasks as the delay will be offset.
+     * Error returned by the system [DownloadManager].
+     * @param reason The reason code returned by the [DownloadManager.COLUMN_REASON] column.
      */
-    fun interface ProgressListener {
+    data class Error(private val reason: Int) : Result.Error() {
         /**
-         * @param progress The current download progress in a `[0,1]` range. If null, then the download is either
-         *                 paused, pending, or waiting to retry.
+         * Convert a [DownloadManager.COLUMN_REASON] code into its name.
          */
-        fun onUpdate(progress: Float?)
-    }
+        override fun getDebugReason(): String = when (reason) {
+            DownloadManager.ERROR_UNKNOWN -> "Unknown"
+            DownloadManager.ERROR_FILE_ERROR -> "File Error"
+            DownloadManager.ERROR_UNHANDLED_HTTP_CODE -> "Unhandled HTTP code"
+            DownloadManager.ERROR_HTTP_DATA_ERROR -> "HTTP data error"
+            DownloadManager.ERROR_TOO_MANY_REDIRECTS -> "Too many redirects"
+            DownloadManager.ERROR_INSUFFICIENT_SPACE -> "Insufficient space"
+            DownloadManager.ERROR_DEVICE_NOT_FOUND -> "Target file's device not found"
+            DownloadManager.ERROR_CANNOT_RESUME -> "Cannot resume"
+            DownloadManager.ERROR_FILE_ALREADY_EXISTS -> "File exists"
+            /* DownloadManager.ERROR_BLOCKED */ 1010 -> "Network policy block"
+            else -> "Unknown code ($reason)"
+        }
 
-    /**
-     * The state of a download after execution has been completed and the system-level [DownloadManager] has been cleaned up.
-     */
-    sealed interface Result {
-        /**
-         * The download succeeded successfully.
-         * @param file The path that the download was downloaded to.
-         */
-        data class Success(val file: File) : Result
-
-        /**
-         * This download was interrupted and the in-progress file has been deleted.
-         * @param systemTriggered Whether the cancellation happened from the system (ie. clicked cancel on the download notification)
-         *                        Otherwise, this was caused by a coroutine cancellation.
-         */
-        data class Cancelled(val systemTriggered: Boolean) : Result
-
-        /**
-         * Error returned by the system [DownloadManager].
-         * @param reason The reason code returned by the [DownloadManager.COLUMN_REASON] column.
-         */
-        data class Error(private val reason: Int) : Result {
-            /**
-             * Convert a [DownloadManager.COLUMN_REASON] code into its name.
-             */
-            val debugReason = when (reason) {
-                DownloadManager.ERROR_UNKNOWN -> "Unknown"
-                DownloadManager.ERROR_FILE_ERROR -> "File Error"
-                DownloadManager.ERROR_UNHANDLED_HTTP_CODE -> "Unhandled HTTP code"
-                DownloadManager.ERROR_HTTP_DATA_ERROR -> "HTTP data error"
-                DownloadManager.ERROR_TOO_MANY_REDIRECTS -> "Too many redirects"
-                DownloadManager.ERROR_INSUFFICIENT_SPACE -> "Insufficient space"
-                DownloadManager.ERROR_DEVICE_NOT_FOUND -> "Target file's device not found"
-                DownloadManager.ERROR_CANNOT_RESUME -> "Cannot resume"
-                DownloadManager.ERROR_FILE_ALREADY_EXISTS -> "File exists"
-                /* DownloadManager.ERROR_BLOCKED */ 1010 -> "Network policy block"
-                else -> "Unknown code ($reason)"
-            }
-
-            /**
-             * Simplified + translatable user facing errors
-             */
-            @StringRes
-            val localizedReason = when (reason) { // @formatter:off
+        override fun getLocalizedReason(context: Context): String {
+            val string = when (reason) { // @formatter:off
                 DownloadManager.ERROR_HTTP_DATA_ERROR,
                 DownloadManager.ERROR_TOO_MANY_REDIRECTS,
                 DownloadManager.ERROR_UNHANDLED_HTTP_CODE ->
@@ -186,6 +143,10 @@ class DownloadManager(application: Application) {
 
                 else -> R.string.downloader_err_unknown
             } // @formatter:on
+
+            return context.getString(string)
         }
+
+        override fun toString(): String = getDebugReason()
     }
 }

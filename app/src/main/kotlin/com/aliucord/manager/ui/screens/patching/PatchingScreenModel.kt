@@ -11,14 +11,14 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.patcher.KotlinPatchRunner
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
 import com.aliucord.manager.patcher.steps.install.InstallStep
-import com.aliucord.manager.manager.PathManager
-import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.*
@@ -193,6 +193,7 @@ class PatchingScreenModel(
             Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
 
             Android API: ${Build.VERSION.SDK_INT}
+            Emulator: $IS_PROBABLY_EMULATOR (guess)
             ROM: Android ${Build.VERSION.RELEASE} (Patch ${Build.VERSION.SECURITY_PATCH})
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
             Device: ${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE})

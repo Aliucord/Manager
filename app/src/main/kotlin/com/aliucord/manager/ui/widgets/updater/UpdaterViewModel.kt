@@ -5,8 +5,10 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.di.DownloadManagerProvider
 import com.aliucord.manager.domain.repository.GithubRepository
-import com.aliucord.manager.manager.*
+import com.aliucord.manager.manager.InstallerManager
+import com.aliucord.manager.manager.InstallerSetting
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrNull
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class UpdaterViewModel(
     private val github: GithubRepository,
-    private val downloadManager: DownloadManager,
+    private val downloaders: DownloadManagerProvider,
     private val installers: InstallerManager,
     private val application: Application,
 ) : ViewModel() {
@@ -41,7 +43,7 @@ class UpdaterViewModel(
             application.externalCacheDir!!.resolve("manager.apk").also {
                 it.delete()
 
-                downloadManager.download(url, it)
+                downloaders.getActiveDownloader().download(url, it)
                 installers.getInstaller(InstallerSetting.PM).install(
                     apks = listOf(it),
                     silent = true,

@@ -6,6 +6,9 @@ import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.manager.InstallerManager
+import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.manager.download.AndroidDownloadManager
+import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.network.service.*
 import com.aliucord.manager.ui.screens.about.AboutModel
 import com.aliucord.manager.ui.screens.home.HomeModel
@@ -62,9 +65,12 @@ class ManagerApplication : Application() {
             // Managers
             modules(module {
                 single { providePreferences() }
-                single { provideDownloadManager() }
-                single { providePathManager() }
+                singleOf(::PathManager)
                 singleOf(::InstallerManager)
+
+                singleOf(::DownloadManagerProvider)
+                singleOf(::AndroidDownloadManager)
+                singleOf(::KtorDownloadManager)
             })
 
             // Installers

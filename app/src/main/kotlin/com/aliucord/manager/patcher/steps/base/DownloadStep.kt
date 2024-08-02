@@ -1,11 +1,13 @@
 package com.aliucord.manager.patcher.steps.base
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
+import com.aliucord.manager.di.DownloadManagerProvider
+import com.aliucord.manager.manager.download.IDownloadManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.manager.DownloadManager
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +18,7 @@ import java.io.File
 @Stable
 abstract class DownloadStep : Step(), KoinComponent {
     private val context: Context by inject()
-    private val downloads: DownloadManager by inject()
+    private val downloaders: DownloadManagerProvider by inject()
 
     /**
      * The remote url to download
@@ -53,12 +55,12 @@ abstract class DownloadStep : Step(), KoinComponent {
             targetFile.delete()
         }
 
-        val result = downloads.download(targetUrl, targetFile) { newProgress ->
+        val result = downloaders.getActiveDownloader().download(targetUrl, targetFile) { newProgress ->
             progress = newProgress ?: -1f
         }
 
         when (result) {
-            is DownloadManager.Result.Success -> {
+            is IDownloadManager.Result.Success -> {
                 try {
                     verify()
                 } catch (t: Throwable) {
@@ -70,15 +72,18 @@ abstract class DownloadStep : Step(), KoinComponent {
                 }
             }
 
-            is DownloadManager.Result.Error -> {
+            is IDownloadManager.Result.Error -> {
                 withContext(Dispatchers.Main) {
-                    context.showToast(result.localizedReason)
+                    val toastText = result.getLocalizedReason(context)
+                        ?: context.getString(R.string.downloader_err_unknown)
+
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
 
-                throw Error("Failed to download: ${result.debugReason}")
+                throw Error("Failed to download: $result")
             }
 
-            is DownloadManager.Result.Cancelled ->
+            is IDownloadManager.Result.Cancelled ->
                 state = StepState.Error
         }
     }
