@@ -13,6 +13,7 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.installers.Installer
 import com.aliucord.manager.installers.InstallerResult
 import kotlinx.coroutines.suspendCancellableCoroutine
+import com.aliucord.manager.util.isMiui
 import java.io.File
 
 /**
@@ -80,7 +81,8 @@ class PMInstaller(
             if (Build.VERSION.SDK_INT >= 31) {
                 setInstallScenario(PackageManager.INSTALL_SCENARIO_FAST)
 
-                if (silent) {
+                // Allegedly MIUI is not happy with silent installs
+                if (silent && !isMiui()) {
                     setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
                 }
             }

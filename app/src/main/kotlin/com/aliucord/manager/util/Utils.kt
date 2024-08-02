@@ -36,7 +36,7 @@ val IS_CUSTOM_BUILD by lazy {
 }
 
 /**
- * Whether this device is most likely an emulator.
+ * Check whether this device is most likely an emulator.
  * src: https://stackoverflow.com/a/21505193/13964629
  */
 val IS_PROBABLY_EMULATOR by lazy {
@@ -66,6 +66,14 @@ val IS_PROBABLY_EMULATOR by lazy {
         || Build.PRODUCT == "google_sdk"
         // Another Android SDK emulator check
         || getSystemProp("ro.kernel.qemu") == "1")
+}
+
+/**
+ * Checks whether this device is running MIUI
+ */
+fun isMiui(): Boolean {
+    return getSystemProp("ro.miui.ui.version.name")
+        ?.isNotEmpty() ?: false
 }
 
 /**
