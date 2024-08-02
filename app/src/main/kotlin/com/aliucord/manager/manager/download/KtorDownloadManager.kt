@@ -2,15 +2,14 @@ package com.aliucord.manager.manager.download
 
 import com.aliucord.manager.manager.download.IDownloadManager.Result
 import io.ktor.client.HttpClient
-import io.ktor.client.request.*
+import io.ktor.client.request.header
+import io.ktor.client.request.prepareGet
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentLength
-import io.ktor.utils.io.core.isEmpty
-import io.ktor.utils.io.core.readBytes
-import kotlinx.coroutines.*
+import io.ktor.utils.io.readAvailable
+import kotlinx.coroutines.CancellationException
 import java.io.File
-import kotlin.math.min
 
 /**
  * Handle downloading remote urls to a path with Ktor.
@@ -37,24 +36,23 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
                 val total = resp.contentLength() ?: 0
                 var retrieved = 0L
 
+                val buf = ByteArray(1024 * 1024 * 1)
+                var bufLen = 0
+
                 tmpOut.outputStream().use { stream ->
                     while (!channel.isClosedForRead) {
-                        channel.awaitContent()
-                        val packet = channel.readRemaining(1024 * 1024 * 1)
+                        bufLen = channel.readAvailable(buf)
+                        if (bufLen <= 0) break
 
-                        while (!packet.isEmpty) {
-                            // TODO: reuse bytearray
-                            val bytes = packet.readBytes()
-                            stream.write(bytes)
-                            stream.flush()
+                        stream.write(buf, 0, bufLen)
+                        stream.flush()
 
-                            retrieved += bytes.size
+                        retrieved += bufLen
 
-                            if (total > 0) {
-                                onProgressUpdate?.onUpdate(retrieved / total.toFloat())
-                            } else {
-                                onProgressUpdate?.onUpdate(null)
-                            }
+                        if (total > 0) {
+                            onProgressUpdate?.onUpdate(retrieved / total.toFloat())
+                        } else {
+                            onProgressUpdate?.onUpdate(null)
                         }
                     }
                 }
