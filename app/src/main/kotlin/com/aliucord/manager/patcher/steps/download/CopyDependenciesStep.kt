@@ -27,7 +27,6 @@ class CopyDependenciesStep : Step(), KoinComponent {
     override suspend fun execute(container: StepRunner) {
         val dir = paths.patchingWorkingDir()
 
-        // TODO: move this to a prepare step
         if (!dir.deleteRecursively())
             throw Error("Failed to clear existing patched dir")
 

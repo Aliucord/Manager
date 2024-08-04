@@ -8,12 +8,12 @@ import com.aliucord.manager.R
 
 @Composable
 fun PatchingAppBar(
-    onTryExit: () -> Unit,
+    onBack: () -> Unit,
 ) {
     TopAppBar(
         title = { Text(stringResource(R.string.installer)) },
         navigationIcon = {
-            IconButton(onClick = onTryExit) {
+            IconButton(onClick = onBack) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back),
                     contentDescription = stringResource(R.string.navigation_back),

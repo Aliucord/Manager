@@ -55,11 +55,11 @@ class PatchingScreenModel(
     init {
         restart()
 
-        // Rotate fun facts every 20s
+        // Rotate fun facts every so often
         screenModelScope.launch {
             while (true) {
                 funFact = FUN_FACTS.random()
-                delay(20.seconds)
+                delay(8.seconds)
             }
         }
     }

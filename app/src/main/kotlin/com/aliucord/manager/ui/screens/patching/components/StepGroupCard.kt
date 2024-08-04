@@ -51,7 +51,7 @@ fun StepGroupCard(
     }
 
     LaunchedEffect(groupState) {
-        if (groupState != StepState.Pending)
+        if (groupState == StepState.Running)
             onExpand()
     }
 

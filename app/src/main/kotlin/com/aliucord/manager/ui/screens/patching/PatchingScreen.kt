@@ -8,7 +8,6 @@ package com.aliucord.manager.ui.screens.patching
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -47,7 +45,7 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
 
-private val VERTICAL_PADDING: Dp = 18.dp
+val VERTICAL_PADDING: Dp = 18.dp
 
 @Parcelize
 class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
@@ -63,15 +61,6 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
         val state by model.state.collectAsState()
         val listState = rememberLazyListState()
         val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
-
-        // Go home directly if screen model mandates so (usually caused by cancelled PackageInstaller dialog)
-        LaunchedEffect(state) {
-            if (state is PatchingScreenState.CloseScreen)
-                navigator.popUntilRoot()
-        }
-
-        // Prevent screen from turning off while working
-        Wakelock(active = state is PatchingScreenState.Working)
 
         // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
         var showAbortWarning by remember(model.state.collectAsState()) { mutableStateOf(false) }
@@ -97,10 +86,21 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
             }
         }
 
-        // Close all groups when successfully finished everything
+        // Prevent screen from turning off while working
+        Wakelock(active = state is PatchingScreenState.Working)
+
         LaunchedEffect(state) {
-            if (state == PatchingScreenState.Success)
-                expandedGroup = null
+            when (state) {
+                // Go home directly if screen model mandates so (usually caused by cancelled PackageInstaller dialog)
+                PatchingScreenState.CloseScreen -> navigator.popUntilRoot()
+
+                // Close all groups when successfully finished everything
+                PatchingScreenState.Success -> {
+                    expandedGroup = null
+                }
+
+                else -> {}
+            }
 
             listState.animateScrollToItem(0)
         }
@@ -210,7 +210,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                 modifier = Modifier
                                     .padding(bottom = VERTICAL_PADDING)
                                     .fillMaxWidth()
-                                    .thenIf(state is PatchingScreenState.Success) { alpha(.6f) }
+                                    .thenIf(state is PatchingScreenState.Success) { alpha(.5f) }
                             )
                         }
                     }
@@ -251,47 +251,33 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                             icon = painterResource(R.drawable.ic_refresh),
                                             onClick = model::restart,
                                         )
+
+                                        MainActionButton(
+                                            text = stringResource(R.string.setting_clear_cache),
+                                            icon = painterResource(R.drawable.ic_delete_forever),
+                                            enabled = !cacheCleared,
+                                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                                containerColor = MaterialTheme.colorScheme.error,
+                                            ),
+                                            onClick = {
+                                                cacheCleared = true
+                                                model.clearCache()
+                                            },
+                                            modifier = Modifier
+                                                .padding(top = 14.dp)
+                                                .fillMaxWidth()
+                                        )
                                     }
                                 }
-
-                                MainActionButton(
-                                    text = stringResource(R.string.setting_clear_cache),
-                                    icon = painterResource(R.drawable.ic_delete_forever),
-                                    enabled = !cacheCleared,
-                                    colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                        containerColor = MaterialTheme.colorScheme.error,
-                                    ),
-                                    onClick = {
-                                        cacheCleared = true
-                                        model.clearCache()
-                                    },
-                                    modifier = Modifier
-                                        .padding(top = 14.dp)
-                                        .fillMaxWidth()
-                                )
                             }
                         }
                     }
 
                     item(key = "FUN_FACT") {
-                        AnimatedContent(
-                            targetState = model.funFact,
-                            label = "fun fact transition",
-                            transitionSpec = {
-                                (fadeIn(tween(220, delayMillis = 90)) + slideInHorizontally { it * -2 }) togetherWith
-                                    (fadeOut(tween(90)) + slideOutHorizontally { it * 2 })
-                            }
-                        ) { text ->
-                            Text(
-                                text = stringResource(R.string.fun_fact_prefix, stringResource(text)),
-                                style = MaterialTheme.typography.bodySmall,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .padding(top = VERTICAL_PADDING, bottom = 25.dp, start = VERTICAL_PADDING, end = VERTICAL_PADDING)
-                                    .fillMaxWidth()
-                                    .alpha(.6f)
-                            )
-                        }
+                        FunFact(
+                            text = stringResource(model.funFact),
+                            state = state,
+                        )
                     }
                 }
             }
