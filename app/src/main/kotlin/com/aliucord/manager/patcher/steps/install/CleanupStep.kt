@@ -1,12 +1,12 @@
 package com.aliucord.manager.patcher.steps.install
 
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
-import com.aliucord.manager.manager.PathManager
-import com.aliucord.manager.manager.PreferencesManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

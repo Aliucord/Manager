@@ -1,10 +1,10 @@
 package com.aliucord.manager.patcher.steps.download
 
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
-import com.aliucord.manager.manager.PathManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File

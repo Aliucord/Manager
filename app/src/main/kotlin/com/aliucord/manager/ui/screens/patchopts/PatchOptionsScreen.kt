@@ -21,8 +21,8 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.TextDivider
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
-import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameState
+import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
 import com.aliucord.manager.ui.screens.patchopts.components.options.SwitchPatchOption
 import com.aliucord.manager.ui.screens.patchopts.components.options.TextPatchOption
 import com.aliucord.manager.ui.util.*

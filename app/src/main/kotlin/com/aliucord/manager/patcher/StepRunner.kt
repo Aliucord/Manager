@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.DownloadStep
 import com.aliucord.manager.patcher.steps.base.Step
-import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.util.InstallNotifications
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay

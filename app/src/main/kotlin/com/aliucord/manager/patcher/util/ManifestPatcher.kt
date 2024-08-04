@@ -134,10 +134,22 @@ object ManifestPatcher {
                                 }
 
                                 override fun end() {
-                                    if (addLegacyStorage && Build.VERSION.SDK_INT >= 29) super.attr(ANDROID_NAMESPACE, REQUEST_LEGACY_EXTERNAL_STORAGE, android.R.attr.requestLegacyExternalStorage, TYPE_INT_BOOLEAN, 1)
+                                    if (addLegacyStorage && Build.VERSION.SDK_INT >= 29) super.attr(
+                                        ANDROID_NAMESPACE,
+                                        REQUEST_LEGACY_EXTERNAL_STORAGE,
+                                        android.R.attr.requestLegacyExternalStorage,
+                                        TYPE_INT_BOOLEAN,
+                                        1
+                                    )
                                     if (useVmSafeMode) super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
                                     if (addDebuggable) super.attr(ANDROID_NAMESPACE, DEBUGGABLE, android.R.attr.debuggable, TYPE_INT_BOOLEAN, 1)
-                                    if (addUseClearTextTraffic) super.attr(ANDROID_NAMESPACE, USES_CLEARTEXT_TRAFFIC, android.R.attr.usesCleartextTraffic, TYPE_INT_BOOLEAN, 1)
+                                    if (addUseClearTextTraffic) super.attr(
+                                        ANDROID_NAMESPACE,
+                                        USES_CLEARTEXT_TRAFFIC,
+                                        android.R.attr.usesCleartextTraffic,
+                                        TYPE_INT_BOOLEAN,
+                                        1
+                                    )
                                     super.end()
                                 }
                             }

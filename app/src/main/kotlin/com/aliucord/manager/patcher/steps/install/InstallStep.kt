@@ -3,14 +3,14 @@ package com.aliucord.manager.patcher.steps.install
 import android.content.Context
 import androidx.lifecycle.*
 import com.aliucord.manager.R
+import com.aliucord.manager.installers.InstallerResult
+import com.aliucord.manager.manager.InstallerManager
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
-import com.aliucord.manager.installers.InstallerResult
-import com.aliucord.manager.manager.InstallerManager
-import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.InstallNotifications

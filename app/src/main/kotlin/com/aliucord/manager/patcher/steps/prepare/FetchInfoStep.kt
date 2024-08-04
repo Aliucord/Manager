@@ -2,12 +2,12 @@ package com.aliucord.manager.patcher.steps.prepare
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.patcher.StepRunner
-import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.network.dto.Version
 import com.aliucord.manager.network.service.AliucordGithubService
 import com.aliucord.manager.network.utils.getOrThrow
+import com.aliucord.manager.patcher.StepRunner
+import com.aliucord.manager.patcher.steps.StepGroup
+import com.aliucord.manager.patcher.steps.base.Step
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
