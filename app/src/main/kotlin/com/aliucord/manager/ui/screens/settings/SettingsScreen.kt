@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
+import com.aliucord.manager.di.DownloaderSetting
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.ui.components.settings.*
@@ -75,7 +76,13 @@ class SettingsScreen : Screen {
 
                 SettingsHeader(stringResource(R.string.settings_advanced))
 
-                Spacer(modifier = Modifier.height(4.dp))
+                SettingsSwitch(
+                    label = stringResource(R.string.settings_developer_options),
+                    pref = preferences.devMode,
+                    icon = { Icon(painterResource(R.drawable.ic_code), null) }
+                ) {
+                    preferences.devMode = it
+                }
 
                 SettingsSwitch(
                     label = stringResource(R.string.setting_keep_patched_apks),
@@ -88,12 +95,18 @@ class SettingsScreen : Screen {
                 Spacer(modifier = Modifier.height(14.dp))
 
                 SettingsSwitch(
-                    label = stringResource(R.string.settings_developer_options),
-                    pref = preferences.devMode,
-                    icon = { Icon(painterResource(R.drawable.ic_code), null) }
-                ) {
-                    preferences.devMode = it
-                }
+                    label = stringResource(R.string.setting_alt_downloader),
+                    secondaryLabel = stringResource(R.string.setting_alt_downloader_desc),
+                    icon = { Icon(painterResource(R.drawable.ic_download), null) },
+                    pref = preferences.downloader == DownloaderSetting.Ktor,
+                    onPrefChange = {
+                        preferences.downloader = if (it) {
+                            DownloaderSetting.Ktor
+                        } else {
+                            DownloaderSetting.Android
+                        }
+                    }
+                )
 
                 Button(
                     modifier = Modifier
