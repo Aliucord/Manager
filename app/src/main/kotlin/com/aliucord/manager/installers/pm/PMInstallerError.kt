@@ -1,10 +1,10 @@
 package com.aliucord.manager.installers.pm
 
+import android.content.Context
 import android.content.pm.PackageInstaller
 import android.os.Parcelable
 import com.aliucord.manager.R
 import com.aliucord.manager.installers.InstallerResult
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -13,8 +13,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class PMInstallerError(val status: Int) : InstallerResult.Error(), Parcelable {
-    @IgnoredOnParcel
-    override val debugReason = when (status) {
+    override fun getDebugReason() = when (status) {
         PackageInstaller.STATUS_FAILURE -> "Unknown failure"
         PackageInstaller.STATUS_FAILURE_BLOCKED -> "Blocked"
         PackageInstaller.STATUS_FAILURE_INVALID -> "Invalid package"
@@ -25,15 +24,18 @@ data class PMInstallerError(val status: Int) : InstallerResult.Error(), Parcelab
         else -> "Unknown code ($status)"
     }
 
-    @IgnoredOnParcel
-    override val localizedReason = when (status) {
-        PackageInstaller.STATUS_FAILURE -> R.string.install_error_unknown
-        PackageInstaller.STATUS_FAILURE_BLOCKED -> R.string.install_error_blocked
-        PackageInstaller.STATUS_FAILURE_INVALID -> R.string.install_error_invalid
-        PackageInstaller.STATUS_FAILURE_CONFLICT -> R.string.install_error_conflict
-        PackageInstaller.STATUS_FAILURE_STORAGE -> R.string.install_error_storage
-        PackageInstaller.STATUS_FAILURE_INCOMPATIBLE -> R.string.install_error_incompatible
-        /* PackageInstaller.STATUS_FAILURE_TIMEOUT */ 8 -> R.string.install_error_timeout
-        else -> R.string.install_error_unknown
+    override fun getLocalizedReason(context: Context): String {
+        val string = when (status) {
+            PackageInstaller.STATUS_FAILURE -> R.string.install_error_unknown
+            PackageInstaller.STATUS_FAILURE_BLOCKED -> R.string.install_error_blocked
+            PackageInstaller.STATUS_FAILURE_INVALID -> R.string.install_error_invalid
+            PackageInstaller.STATUS_FAILURE_CONFLICT -> R.string.install_error_conflict
+            PackageInstaller.STATUS_FAILURE_STORAGE -> R.string.install_error_storage
+            PackageInstaller.STATUS_FAILURE_INCOMPATIBLE -> R.string.install_error_incompatible
+            /* PackageInstaller.STATUS_FAILURE_TIMEOUT */ 8 -> R.string.install_error_timeout
+            else -> R.string.install_error_unknown
+        }
+
+        return context.getString(string)
     }
 }

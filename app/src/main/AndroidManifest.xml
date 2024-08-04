@@ -29,7 +29,9 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true">
 
-    <receiver android:name=".installers.pm.PMIntentReceiver" />
+    <receiver
+        android:name=".installers.pm.PMIntentReceiver"
+        android:exported="false" />
 
     <provider
         android:name="androidx.core.content.FileProvider"

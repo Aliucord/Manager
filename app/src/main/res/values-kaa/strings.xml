@@ -69,8 +69,8 @@
   <string name="version_load_fail">Failed to retrieve version</string>
   <string name="installer_file_save_success">Saved to %s</string>
   <string name="installer_file_save_failed">Failed to save %s</string>
-  <string name="installer_success">Aliucord tabıslı ornatıldı</string>
-  <string name="installer_aborted">Aborted Aliucord installation</string>
+  <string name="installer_install_success">Aliucord tabıslı ornatıldı</string>
+  <string name="installer_install_aborted">Aborted Aliucord installation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
   <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>

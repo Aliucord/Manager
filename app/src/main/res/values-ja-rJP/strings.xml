@@ -70,8 +70,8 @@
   <string name="version_load_fail">バージョンの取得に失敗しました</string>
   <string name="installer_file_save_success">%sに保存しました</string>
   <string name="installer_file_save_failed">%sの保存に失敗しました</string>
-  <string name="installer_success">Aliucordのインストールに成功しました</string>
-  <string name="installer_aborted">Aliucordのインストールが中断されました</string>
+  <string name="installer_install_success">Aliucordのインストールに成功しました</string>
+  <string name="installer_install_aborted">Aliucordのインストールが中断されました</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">続行するには現在のバージョンのAliucordをアンインストールしてください！</string>
   <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>

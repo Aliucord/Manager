@@ -75,7 +75,7 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
         )
 
         when (result) {
-            is InstallerResult.Error -> throw Error("Failed to install APKs: ${result.debugReason}")
+            is InstallerResult.Error -> throw Error("Failed to install APKs: ${result.getDebugReason()}")
             is InstallerResult.Cancelled -> {
                 // The install screen is automatically closed immediately once cleanup finishes
                 state = StepState.Skipped

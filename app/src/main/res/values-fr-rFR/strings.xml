@@ -69,8 +69,8 @@
   <string name="version_load_fail">Échec de récupération de la version</string>
   <string name="installer_file_save_success">Enregistré dans %s</string>
   <string name="installer_file_save_failed">Échec de l\'enregistrement de %s</string>
-  <string name="installer_success">Aliucord installé avec succès</string>
-  <string name="installer_aborted">Installation d\'Aliucord interrompue</string>
+  <string name="installer_install_success">Aliucord installé avec succès</string>
+  <string name="installer_install_aborted">Installation d\'Aliucord interrompue</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Veuillez désinstaller votre version actuelle d\'Aliucord pour continuer !</string>
   <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>

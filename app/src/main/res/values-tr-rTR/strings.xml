@@ -69,8 +69,8 @@
   <string name="version_load_fail">Sürüm alınamadı</string>
   <string name="installer_file_save_success">%s\'a Kaydedildi</string>
   <string name="installer_file_save_failed">%s Kaydedilemedi</string>
-  <string name="installer_success">Aliucord başarıyla indirildi</string>
-  <string name="installer_aborted">Aliucord kurulumu iptal edildi</string>
+  <string name="installer_install_success">Aliucord başarıyla indirildi</string>
+  <string name="installer_install_aborted">Aliucord kurulumu iptal edildi</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Devam etmek için şimdiki Aliucord sürümünüzü
 lütfen silin!</string>

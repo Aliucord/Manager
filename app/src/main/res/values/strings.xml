@@ -80,19 +80,21 @@
 
   <string name="installer_file_save_success">Saved to %s</string>
   <string name="installer_file_save_failed">Failed to save %s</string>
-  <string name="installer_success">Successfully installed Aliucord</string>
-  <string name="installer_aborted">Cancelled Aliucord installation</string>
-  <string name="installer_dl_verify_fail">Failed to verify download</string>
+  <string name="installer_install_success">Successfully installed Aliucord</string>
+  <string name="installer_install_aborted">Cancelled Aliucord installation</string>
   <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
+  <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
+  <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
+  <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
 
-  <string name="install_error_unknown">Failed to install (Unknown reason)</string>
+  <string name="install_error_unknown">Installer failure (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
   <string name="install_error_conflict">Conflicts with an existing app, usually due to mismatched signatures</string>
   <string name="install_error_storage">Not enough available storage to install</string>
   <string name="install_error_incompatible">Application is incompatible with this device</string>
-  <string name="install_error_timeout">Installation timed out</string>
+  <string name="install_error_timeout">Installer timed out</string>
 
   <string name="install_group_prepare">Prepare</string>
   <string name="install_group_download">Download dependencies</string>
@@ -100,7 +102,7 @@
   <string name="install_group_install">Install APK</string>
 
   <string name="patch_step_fetch_kt_version">Fetching target Discord version</string>
-  <string name="patch_step_downgrade_check">Checking for older installations</string>
+  <string name="patch_step_downgrade_check">Checking for newer installations</string>
   <string name="patch_step_dl_kt_apk">Downloading Discord APK</string>
   <string name="patch_step_dl_kotlin">Downloading Kotlin Stdlib</string>
   <string name="patch_step_dl_injector">Downloading Aliucord Injector</string>

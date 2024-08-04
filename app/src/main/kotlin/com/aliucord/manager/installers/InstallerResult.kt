@@ -1,7 +1,7 @@
 package com.aliucord.manager.installers
 
+import android.content.Context
 import android.os.Parcelable
-import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -26,16 +26,16 @@ sealed interface InstallerResult : Parcelable {
      * This installation encountered an error and has been aborted.
      * All implementors should implement [Parcelable].
      */
-    abstract class Error : InstallerResult {
+    abstract class Error : InstallerResult, Parcelable {
         /**
-         * Loggable error that should not be shown to the user.
+         * The full internal error representation.
          */
-        abstract val debugReason: String
+        abstract fun getDebugReason(): String
 
         /**
-         * Simplified + translatable user facing errors.
+         * Simplified + translatable user facing reason for the failure.
+         * If null is returned, then the [getDebugReason] will be used instead.
          */
-        @get:StringRes
-        abstract val localizedReason: Int
+        open fun getLocalizedReason(context: Context): String? = null
     }
 }
