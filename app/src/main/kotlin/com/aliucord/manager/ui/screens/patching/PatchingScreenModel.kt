@@ -119,64 +119,57 @@ class PatchingScreenModel(
         startTime = Date()
         mutableState.value = PatchingScreenState.Working
 
-        val newJob = screenModelScope.launch {
-            val runner = KotlinPatchRunner(options)
-                .also { stepRunner = it }
-
-            // Bind InstallStep's GPP Warning state to this
-            runner.getStep<InstallStep>(completed = false)
-                .gppWarningLock
-                .take(1) // Take only the initially trigger value
-                .onEach { showGppWarning = true }
-                .launchIn(this@launch)
-
-            steps = runner.steps.groupBy { it.group }
-                .mapValues { it.value.toUnsafeImmutable() }
-                .toUnsafeImmutable()
-
-            // Intentionally delay to show the state change of the first step in UI when it runs
-            // without it, on a fast internet it just immediately shows as "Success"
-            delay(600)
-
-            // Execute all the steps and catch any errors
-            when (val error = runner.executeAll()) {
-                null -> {
-                    // If install step is marked skipped then the installation was manually aborted
-                    // and if so, immediately close install screen
-                    if (runner.getStep<InstallStep>().state == StepState.Skipped) {
-                        mutableState.value = PatchingScreenState.CloseScreen
-                    }
-                    // At this point, the installation has successfully completed
-                    else {
-                        mutableState.value = PatchingScreenState.Success
-                    }
-                }
-
-                else -> {
-                    Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
-
-                    mutableState.value = PatchingScreenState.Failed(failureLog = getFailureInfo(error))
-                }
+        runnerJob = screenModelScope.launch {
+            try {
+                startPatchRunner()
+            } catch (_: CancellationException) {
+                Log.w(BuildConfig.TAG, "Installation was cancelled before completion")
+                mutableState.value = PatchingScreenState.CloseScreen
+            } catch (error: Throwable) {
+                Log.e(BuildConfig.TAG, "Failed to orchestrate patch runner", error)
+                mutableState.value = PatchingScreenState.Failed(failureLog = getFailureInfo(error))
             }
         }
+    }
 
-        newJob.invokeOnCompletion { error ->
-            when (error) {
-                // Successfully executed, already handled above
-                null -> {}
+    private suspend fun startPatchRunner() {
+        val runner = KotlinPatchRunner(options)
+            .also { stepRunner = it }
 
-                // Job was cancelled before being able to finish setting state
-                is CancellationException -> {
-                    Log.w(BuildConfig.TAG, "Installation was cancelled before completing", error)
+        // Bind InstallStep's GPP Warning state to this
+        runner.getStep<InstallStep>(completed = false)
+            .gppWarningLock
+            .take(1) // Take only the initially trigger value
+            .onEach { showGppWarning = true }
+            .launchIn(CoroutineScope(currentCoroutineContext()))
+
+        steps = runner.steps.groupBy { it.group }
+            .mapValues { it.value.toUnsafeImmutable() }
+            .toUnsafeImmutable()
+
+        // Intentionally delay to show the state change of the first step in UI when it runs
+        // without it, on a fast internet it just immediately shows as "Success"
+        delay(600)
+
+        // Execute all the steps and catch any errors
+        when (val error = runner.executeAll()) {
+            null -> {
+                // If install step is marked skipped then the installation was manually aborted
+                // and if so, immediately close install screen
+                if (runner.getStep<InstallStep>().state == StepState.Skipped) {
                     mutableState.value = PatchingScreenState.CloseScreen
                 }
+                // At this point, the installation has successfully completed
+                else {
+                    mutableState.value = PatchingScreenState.Success
+                }
+            }
 
-                // This should never happen, all install errors are caught
-                else -> throw error
+            else -> {
+                Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
+                mutableState.value = PatchingScreenState.Failed(failureLog = getFailureInfo(error))
             }
         }
-
-        runnerJob = newJob
     }
 
     private suspend fun getFailureInfo(stacktrace: Throwable): String {
