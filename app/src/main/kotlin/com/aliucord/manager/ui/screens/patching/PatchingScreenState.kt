@@ -1,21 +1,16 @@
 package com.aliucord.manager.ui.screens.patching
 
-import com.aliucord.manager.ui.screens.patching.PatchingScreenState.*
+import com.aliucord.manager.ui.screens.patching.PatchingScreenState.CloseScreen
 
 sealed interface PatchingScreenState {
-    data object Pending : PatchingScreenState
     data object Working : PatchingScreenState
     data object Success : PatchingScreenState
-
-    data class Failed(
-        val failureLog: String,
-    ) : PatchingScreenState
-
+    data class Failed(val failureLog: String) : PatchingScreenState
     data object CloseScreen : PatchingScreenState
 }
 
-val PatchingScreenState.isNewlyFinished: Boolean
-    inline get() = this == Success || this is Failed
+val PatchingScreenState.isProgressChange: Boolean
+    inline get() = this != CloseScreen
 
 val PatchingScreenState.isFinished: Boolean
-    inline get() = isNewlyFinished || this == CloseScreen
+    inline get() = isProgressChange || this == CloseScreen

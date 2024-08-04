@@ -64,14 +64,10 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
         val listState = rememberLazyListState()
         val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
 
+        // Go home directly if screen model mandates so (usually caused by cancelled PackageInstaller dialog)
         LaunchedEffect(state) {
             if (state is PatchingScreenState.CloseScreen)
                 navigator.popUntilRoot()
-        }
-
-        // Go home directly if install was successful
-        BackHandler(state is PatchingScreenState.Success) {
-            navigator.popUntilRoot()
         }
 
         // Prevent screen from turning off while working
@@ -86,9 +82,16 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
         // Only show exit warning if currently working
         val onTryExit: () -> Unit = remember {
             {
+                // Show cancellation if currently running
                 if (state == PatchingScreenState.Working && !model.devMode) {
                     showAbortWarning = true
-                } else {
+                }
+                // Go home directly if install was successful
+                else if (state is PatchingScreenState.Success) {
+                    navigator.popUntilRoot()
+                }
+                // Go back to the patch options screen
+                else {
                     navigator.back(currentActivity = null)
                 }
             }
@@ -214,13 +217,13 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
 
                     item(key = "BUTTONS") {
                         var cacheCleared by remember { mutableStateOf(false) }
-                        val filteredState by remember { model.state.filter { it.isNewlyFinished } }
-                            .collectAsState(initial = null)
+                        val filteredState by remember { model.state.filter { it.isProgressChange } }
+                            .collectAsState(initial = PatchingScreenState.Working)
 
                         AnimatedVisibility(
-                            visible = filteredState != null,
+                            visible = filteredState != PatchingScreenState.Working,
                             enter = fadeIn() + slideInVertically(),
-                            exit = ExitTransition.None,
+                            exit = fadeOut() + slideOutVertically { it * -2 },
                         ) {
                             Column {
                                 HorizontalDivider(
@@ -231,6 +234,9 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                 )
 
                                 when (filteredState) {
+                                    PatchingScreenState.Working -> {}
+                                    PatchingScreenState.CloseScreen -> error("unreachable")
+
                                     PatchingScreenState.Success -> {
                                         MainActionButton(
                                             text = "Launch Aliucord",
@@ -246,8 +252,6 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                             onClick = model::restart,
                                         )
                                     }
-
-                                    else -> error("unreachable")
                                 }
 
                                 MainActionButton(

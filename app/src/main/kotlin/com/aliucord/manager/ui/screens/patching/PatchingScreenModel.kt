@@ -35,7 +35,7 @@ class PatchingScreenModel(
     private val paths: PathManager,
     private val options: PatchOptions,
     private val prefs: PreferencesManager,
-) : StateScreenModel<PatchingScreenState>(PatchingScreenState.Pending) {
+) : StateScreenModel<PatchingScreenState>(PatchingScreenState.Working) {
     private var startTime: Date? = null
     private var runnerJob: Job? = null
     private var stepRunner: StepRunner? = null
