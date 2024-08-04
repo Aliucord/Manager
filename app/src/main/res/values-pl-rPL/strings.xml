@@ -71,8 +71,10 @@
   <string name="installer_file_save_failed">Nie można zapisać %s</string>
   <string name="installer_install_success">Pomyślnie zainstalowano Aliucord</string>
   <string name="installer_install_aborted">Przerwano instalację Aliucord</string>
-  <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_uninstall_new">Odinstaluj aktualną wersję Aliucorda, aby kontynuować!</string>
+  <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
+  <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
+  <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>

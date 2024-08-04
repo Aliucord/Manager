@@ -71,8 +71,10 @@
   <string name="installer_file_save_failed">Не удалось сохранить в %s</string>
   <string name="installer_install_success">Aliucord успешно установлен</string>
   <string name="installer_install_aborted">Установка Aliucord отменена</string>
-  <string name="installer_dl_verify_fail">Не удалось верифицировать скачивание</string>
   <string name="installer_uninstall_new">Пожалуйста, удалите вашу текущую версию Aliucord, чтобы продолжить!</string>
+  <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
+  <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
+  <string name="installer_dl_verify_fail">Не удалось верифицировать скачивание</string>
   <string name="installer_minimization_warning">Поскольку оптимизация работы аккумулятора не была отключена, сворачивание этого экрана может прервать процесс установки!</string>
   <string name="install_error_unknown">Не удалось установить (неизвестная причина)</string>
   <string name="install_error_blocked">Установка заблокирована</string>
