@@ -41,6 +41,8 @@
   <string name="setting_dynamic_color">Màu động</string>
   <string name="setting_keep_patched_apks">Giữ lại các bản vá APKs</string>
   <string name="setting_keep_patched_apks_desc">Không xóa bỏ các bản vá APKs sau khi cài đặt (dành cho cài đặt thủ công)</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>

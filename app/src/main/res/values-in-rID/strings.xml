@@ -41,6 +41,8 @@
   <string name="setting_dynamic_color">Warna dinamis</string>
   <string name="setting_keep_patched_apks">Simpan APK yang ditambal</string>
   <string name="setting_keep_patched_apks_desc">Jangan hapus APK yang sudah ditambal setelah memasang (untuk memasang secara manual)</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Gelap</string>
   <string name="theme_light">Terang</string>

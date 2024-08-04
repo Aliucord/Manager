@@ -42,6 +42,8 @@
   <string name="setting_dynamic_color">ダイナミックカラー</string>
   <string name="setting_keep_patched_apks">パッチを適用した APK を維持</string>
   <string name="setting_keep_patched_apks_desc">インストール後にパッチ適用された APK を削除しないでください(手動でインストールする場合)</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>
   <string name="theme_light">ライト</string>

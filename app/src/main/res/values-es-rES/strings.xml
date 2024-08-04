@@ -41,6 +41,8 @@
   <string name="setting_dynamic_color">Colores dinámicos</string>
   <string name="setting_keep_patched_apks">Mantener los APK parcheados</string>
   <string name="setting_keep_patched_apks_desc">No eliminar los APK parcheados después de la instalación (para instalar manualmente)</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Oscuro</string>
   <string name="theme_light">Claro</string>

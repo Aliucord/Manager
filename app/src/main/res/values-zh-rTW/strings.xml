@@ -41,6 +41,8 @@
   <string name="setting_dynamic_color">動態色彩</string>
   <string name="setting_keep_patched_apks">保持補丁 APKs</string>
   <string name="setting_keep_patched_apks_desc">安裝後不刪除已安裝補丁的 APK（用於手動安裝）</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">跟隨系統</string>
   <string name="theme_dark">深色模式</string>
   <string name="theme_light">淺色模式</string>

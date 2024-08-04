@@ -41,6 +41,8 @@
   <string name="setting_dynamic_color">Динамические цвета</string>
   <string name="setting_keep_patched_apks">Сохранять пропатченные пакеты</string>
   <string name="setting_keep_patched_apks_desc">Не удалять пропатченные пакеты после установки (для ручной установки)</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
   <string name="theme_light">Светлая</string>

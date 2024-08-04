@@ -41,6 +41,8 @@
   <string name="setting_dynamic_color">Δυναμικό χρώμα</string>
   <string name="setting_keep_patched_apks">Διατήρηση patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Μη διαγράψετε patched APKs μετά την εγκατάσταση (για χειροκίνητη εγκατάσταση)</string>
+  <string name="setting_alt_downloader">Alternative downloader</string>
+  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
   <string name="theme_system">Σύστημα</string>
   <string name="theme_dark">Σκοτεινό</string>
   <string name="theme_light">Φωτεινό</string>
