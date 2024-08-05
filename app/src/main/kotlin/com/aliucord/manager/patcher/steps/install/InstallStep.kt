@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.lifecycle.*
 import com.aliucord.manager.R
 import com.aliucord.manager.installers.InstallerResult
-import com.aliucord.manager.manager.InstallerManager
-import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.manager.*
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
@@ -16,10 +15,12 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.InstallNotifications
 import com.aliucord.manager.util.isPackageInstalled
 import com.aliucord.manager.util.isPlayProtectEnabled
-import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+/**
+ * ID used for showing ready notifications if the activity is currently minimized when having reached this step.
+ */
 private const val READY_NOTIF_ID = 200001
 
 /**
@@ -29,20 +30,10 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
     private val context: Context by inject()
     private val installers: InstallerManager by inject()
     private val prefs: PreferencesManager by inject()
-
-    /**
-     * Locks and unlocks the step's execution to start and wait until [PlayProtectDialog] dismissed.
-     */
-    private val _gppWarningLock = MutableSharedFlow<Boolean>()
-    val gppWarningLock: Flow<Boolean>
-        get() = _gppWarningLock
+    private val overlays: OverlayManager by inject()
 
     override val group = StepGroup.Install
     override val localizedName = R.string.patch_step_install
-
-    suspend fun dismissGPPWarning() {
-        _gppWarningLock.emit(false)
-    }
 
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
@@ -62,11 +53,9 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
 
         // Show [PlayProtectDialog] and wait until it gets dismissed
         if (!context.isPackageInstalled(options.packageName) && context.isPlayProtectEnabled() == true) {
-            _gppWarningLock.emit(true)
-            _gppWarningLock
-                .filter { show -> !show }
-                .take(1)
-                .collect()
+            overlays.startComposableForResult { callback ->
+                PlayProtectDialog(onDismiss = { callback(Unit) })
+            }
         }
 
         val result = installers.getActiveInstaller().waitInstall(

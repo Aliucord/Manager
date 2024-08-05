@@ -25,7 +25,6 @@ import com.aliucord.manager.util.*
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.time.Duration.Companion.seconds
@@ -43,9 +42,6 @@ class PatchingScreenModel(
     val devMode get() = prefs.devMode
 
     var steps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
-        private set
-
-    var showGppWarning by mutableStateOf(false)
         private set
 
     @get:StringRes
@@ -98,20 +94,6 @@ class PatchingScreenModel(
         application.showToast(R.string.action_cleared_cache)
     }
 
-    /**
-     * Hide the 'Google Play Protect is enabled on your device' warning dialog
-     */
-    fun dismissGPPWarning() {
-        showGppWarning = false
-
-        // Continue executing step
-        screenModelScope.launch {
-            stepRunner
-                ?.getStep<InstallStep>(completed = false)
-                ?.dismissGPPWarning()
-        }
-    }
-
     fun restart() {
         runnerJob?.cancel("Manual cancellation")
         steps = null
@@ -135,13 +117,6 @@ class PatchingScreenModel(
     private suspend fun startPatchRunner() {
         val runner = KotlinPatchRunner(options)
             .also { stepRunner = it }
-
-        // Bind InstallStep's GPP Warning state to this
-        runner.getStep<InstallStep>(completed = false)
-            .gppWarningLock
-            .take(1) // Take only the initially trigger value
-            .onEach { showGppWarning = true }
-            .launchIn(CoroutineScope(currentCoroutineContext()))
 
         steps = runner.steps.groupBy { it.group }
             .mapValues { it.value.toUnsafeImmutable() }
