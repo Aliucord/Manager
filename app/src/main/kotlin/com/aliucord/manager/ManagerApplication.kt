@@ -29,7 +29,11 @@ class ManagerApplication : Application() {
         super.onCreate()
 
         startKoin {
+            // Android activities & context
             androidContext(this@ManagerApplication)
+            modules(module(createdAtStart = true) {
+                singleOf(::ActivityProvider)
+            })
 
             // HTTP
             modules(module {
