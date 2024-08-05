@@ -142,6 +142,8 @@
   <string name="play_protect_warning_desc">Похоже, на вашем устройстве включена функция Google Play Protect. Она может попытаться помешать новой установке из-за использования уникального ключа подписи. Вы можете отключить ее в настройках Play Protect.\n\nЕсли появится предупреждение, нажмите\n «Подробнее» -&gt; «Установить в любом случае»</string>
   <string name="play_protect_warning_ok">Продолжить</string>
   <string name="play_protect_warning_open_gpp">Открыть защиту Play</string>
+  <string name="alt_downloader_dialog_title">Alternative Downloader</string>
+  <string name="alt_downloader_dialog_desc">This download failed with a specific error that may indicate issues with the system\'s DownloadManager. Would you like to retry with the the alternative downloader implementation?</string>
   <string name="fun_fact_prefix">Fun Fact: %s</string>
   <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>
   <string name="fun_fact_2">Did you know Aliucord with 150+ plugins somehow runs better than Discord\'s new app?</string>
