@@ -1,13 +1,22 @@
 package com.aliucord.manager.patcher.steps.base
 
+import android.app.DownloadManager
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import androidx.annotation.CallSuper
 import androidx.compose.runtime.Stable
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.di.DownloadManagerProvider
+import com.aliucord.manager.di.DownloaderSetting
+import com.aliucord.manager.manager.OverlayManager
+import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.manager.download.AndroidDownloadManager
 import com.aliucord.manager.manager.download.IDownloadManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
+import com.aliucord.manager.ui.components.dialogs.AlternativeDownloaderDialog
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,6 +27,8 @@ import java.io.File
 @Stable
 abstract class DownloadStep : Step(), KoinComponent {
     private val context: Context by inject()
+    private val overlays: OverlayManager by inject()
+    private val prefs: PreferencesManager by inject()
     private val downloaders: DownloadManagerProvider by inject()
 
     /**
@@ -35,6 +46,7 @@ abstract class DownloadStep : Step(), KoinComponent {
      * Verify that the download completely successfully without errors.
      * @throws Throwable If verification fails.
      */
+    @CallSuper
     open suspend fun verify() {
         if (!targetFile.exists())
             throw Error("Downloaded file is missing!")
@@ -60,6 +72,9 @@ abstract class DownloadStep : Step(), KoinComponent {
         }
 
         when (result) {
+            is IDownloadManager.Result.Cancelled ->
+                state = StepState.Error
+
             is IDownloadManager.Result.Success -> {
                 try {
                     verify()
@@ -80,11 +95,31 @@ abstract class DownloadStep : Step(), KoinComponent {
                     Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
 
+                // If this is a specific Android DownloadManager error, then prompt to use a different downloader
+                if (result is AndroidDownloadManager.Error
+                    && result.reason in arrayOf(DownloadManager.ERROR_HTTP_DATA_ERROR, DownloadManager.ERROR_CANNOT_RESUME)
+                    && prefs.downloader != DownloaderSetting.Ktor
+                ) {
+                    state = StepState.Error
+
+                    val confirmed = overlays.startComposableForResult { callback ->
+                        AlternativeDownloaderDialog(
+                            onConfirm = { callback(true) },
+                            onDismiss = { callback(false) },
+                        )
+                    }
+
+                    if (confirmed) {
+                        Log.i(BuildConfig.TAG, "Changing to alternative downloader after failure")
+                        prefs.downloader = DownloaderSetting.Ktor
+                        state = StepState.Running
+
+                        return execute(container)
+                    }
+                }
+
                 throw Error("Failed to download: $result")
             }
-
-            is IDownloadManager.Result.Cancelled ->
-                state = StepState.Error
         }
     }
 }

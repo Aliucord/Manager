@@ -29,7 +29,7 @@ class DownloadDiscordStep : DownloadStep(), KoinComponent {
 
     private companion object {
         /**
-         * Last version of Discord before the RN transition.
+         * Last version of Discord before the RNA rewrite
          */
         const val DISCORD_KT_VERSION = 126021
 

@@ -110,7 +110,7 @@ class AndroidDownloadManager(application: Application) : IDownloadManager {
      * Error returned by the system [DownloadManager].
      * @param reason The reason code returned by the [DownloadManager.COLUMN_REASON] column.
      */
-    data class Error(private val reason: Int) : Result.Error() {
+    data class Error(val reason: Int) : Result.Error() {
         /**
          * Convert a [DownloadManager.COLUMN_REASON] code into its name.
          */

@@ -19,9 +19,12 @@ import org.koin.core.component.inject
  * quickly switching the step groups in the UI. (very disorienting)
  * Larger delay leads to a perception that it's doing more work than it actually is.
  */
-const val MINIMUM_STEP_DELAY: Long = 600L
+private const val MINIMUM_STEP_DELAY: Long = 600L
 
-const val ERROR_NOTIF_ID = 200002
+/**
+ * ID used for showing error notifications emanating from this step runner.
+ */
+private const val ERROR_NOTIF_ID = 200002
 
 abstract class StepRunner : KoinComponent {
     private val context: Context by inject()
