@@ -41,8 +41,8 @@
   <string name="setting_dynamic_color">动态颜色</string>
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
   <string name="setting_keep_patched_apks_desc">安装后不删除已修补的 APK（供手动安装）</string>
-  <string name="setting_alt_downloader">Alternative downloader</string>
-  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
+  <string name="setting_alt_downloader">备用下载器</string>
+  <string name="setting_alt_downloader_desc">使用自定义 HTTP 客户端代替系统下载管理器。可能会修复某些设备上的错误</string>
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
   <string name="theme_light">浅色</string>
@@ -142,8 +142,8 @@
   <string name="play_protect_warning_desc">您的设备上似乎启用了 Google Play 保护机制。它可能会尝试干扰使用了唯一的签名密钥的新安装。您可以在 Play 保护机制的设置中将其禁用。\n\n如果显示警告对话框，请点按\n“更多详细信息”-&gt;“仍然安装”</string>
   <string name="play_protect_warning_ok">继续</string>
   <string name="play_protect_warning_open_gpp">打开 Play 保护机制</string>
-  <string name="alt_downloader_dialog_title">Alternative Downloader</string>
-  <string name="alt_downloader_dialog_desc">This download failed with a specific error that may indicate issues with the system\'s DownloadManager. Would you like to retry with the the alternative downloader implementation?</string>
+  <string name="alt_downloader_dialog_title">备用下载器</string>
+  <string name="alt_downloader_dialog_desc">此下载失败，出现特定错误，这可能表明系统的下载管理器存在问题。您想使用备用下载器实现重试吗？</string>
   <string name="fun_fact_prefix">趣闻：%s</string>
   <string name="fun_fact_1">您知道 Google Play 保护机制是没用的吗？</string>
   <string name="fun_fact_2">您是否知道拥有 150 多个插件的 Aliucord 运行效果比 Discord 的新应用程序更好？</string>
