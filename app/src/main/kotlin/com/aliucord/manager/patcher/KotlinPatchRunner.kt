@@ -27,8 +27,8 @@ class KotlinPatchRunner(options: PatchOptions) : StepRunner() {
         // Patch
         ReplaceIconStep(options),
         PatchManifestStep(options),
-        AddInjectorStep(),
-        AddAliuhookStep(),
+        ReorganizeDexStep(),
+        AddAliuhookLibsStep(),
         SaveMetadataStep(options),
 
         // Install

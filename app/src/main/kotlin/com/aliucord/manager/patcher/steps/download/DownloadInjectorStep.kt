@@ -3,36 +3,36 @@ package com.aliucord.manager.patcher.steps.download
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.PathManager
-import com.aliucord.manager.network.dto.Version
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
+import com.aliucord.manager.patcher.steps.base.IDexProvider
+import com.aliucord.manager.patcher.steps.patch.ReorganizeDexStep
 import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
  * Download a compiled dex file to be injected into the APK as the first `classes.dex` to override an entry point class.
+ * Provides [ReorganizeDexStep] with the dex through the [IDexProvider] implementation.
  */
 @Stable
-class DownloadInjectorStep : DownloadStep(), KoinComponent {
+class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
     private val paths: PathManager by inject()
 
     /**
-     * Populated from a dependency step ([FetchInfoStep]).
-     * This is used as cache invalidation (ref: [Version.aliucordHash])
+     * This is populated right before the download starts (ref: [execute])
      */
-    lateinit var aliucordHash: String
+    lateinit var targetVersion: String
         private set
 
     override val localizedName = R.string.patch_step_dl_injector
     override val targetUrl = URL
     override val targetFile
-        get() = paths.cachedInjectorDex(aliucordHash)
+        get() = paths.cachedInjectorDex(targetVersion)
 
     override suspend fun execute(container: StepRunner) {
-        aliucordHash = container
-            .getStep<FetchInfoStep>()
-            .data.aliucordHash
+        targetVersion = container.getStep<FetchInfoStep>()
+            .data.injectorVersion
 
         super.execute(container)
     }
@@ -43,4 +43,8 @@ class DownloadInjectorStep : DownloadStep(), KoinComponent {
 
         const val URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/Injector.dex"
     }
+
+    override val dexCount = 1
+    override val dexPriority = 10
+    override fun getDexFiles() = listOf(targetFile.readBytes())
 }

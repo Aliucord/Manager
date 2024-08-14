@@ -1,6 +1,6 @@
 package com.aliucord.manager.network.service
 
-import com.aliucord.manager.network.dto.Version
+import com.aliucord.manager.network.dto.BuildInfo
 import com.aliucord.manager.network.utils.ApiResponse
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +10,7 @@ class AliucordGithubService(
     val github: GithubService,
     val http: HttpService,
 ) {
-    suspend fun getDataJson(): ApiResponse<Version> {
+    suspend fun getDataJson(): ApiResponse<BuildInfo> {
         return withContext(Dispatchers.IO) {
             http.request {
                 url("https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/data.json")

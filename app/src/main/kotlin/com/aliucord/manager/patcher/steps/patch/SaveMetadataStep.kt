@@ -36,7 +36,7 @@ class SaveMetadataStep(private val options: PatchOptions) : Step() {
             managerVersionName = BuildConfig.VERSION_NAME,
             customManager = IS_CUSTOM_BUILD,
             aliuhookVersion = aliuhook.targetVersion,
-            injectorCommitHash = injector.aliucordHash,
+            injectorVersion = injector.targetVersion,
         )
 
         ZipWriter(apk, /* append = */ true).use {

@@ -4,6 +4,7 @@ import android.os.Build
 import com.aliucord.manager.R
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
+import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
 import com.aliucord.manager.patcher.steps.download.DownloadAliuhookStep
@@ -12,22 +13,17 @@ import com.github.diamondminer88.zip.ZipWriter
 import org.koin.core.component.KoinComponent
 
 /**
- * Add the Aliuhook library's native libs along with dex
+ * Add the Aliuhook library's native libs.
+ * The dex is handled by [ReorganizeDexStep] through the [IDexProvider] implementation of [DownloadAliuhookStep].
  */
-class AddAliuhookStep : Step(), KoinComponent {
-    private val currentDeviceArch = Build.SUPPORTED_ABIS.first()
-
+class AddAliuhookLibsStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
     override val localizedName = R.string.patch_step_add_aliuhook
 
     override suspend fun execute(container: StepRunner) {
+        val currentDeviceArch = Build.SUPPORTED_ABIS.first()
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
         val aliuhook = container.getStep<DownloadAliuhookStep>().targetFile
-
-        // Find the amount of .dex files in the apk
-        val dexCount = ZipReader(apk).use {
-            it.entryNames.count { name -> name.endsWith(".dex") }
-        }
 
         ZipWriter(apk, /* append = */ true).use { patchedApk ->
             ZipReader(aliuhook).use { aliuhook ->
@@ -37,11 +33,6 @@ class AddAliuhookStep : Step(), KoinComponent {
 
                     patchedApk.writeEntry("lib/$currentDeviceArch/$libFile", bytes)
                 }
-
-                val aliuhookDex = aliuhook.openEntry("classes.dex")?.read()
-                    ?: throw IllegalStateException("No classes.dex in aliuhook aar")
-
-                patchedApk.writeEntry("classes${dexCount + 1}.dex", aliuhookDex)
             }
         }
     }

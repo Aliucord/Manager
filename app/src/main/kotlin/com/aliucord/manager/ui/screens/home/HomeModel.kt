@@ -147,11 +147,11 @@ class HomeModel(
     private fun fetchSupportedVersion() = screenModelScope.launchBlock {
         github.getDataJson().fold(
             success = {
-                val versionCode = it.versionCode.toIntOrNull() ?: return@fold
+                val versionCode = it.discordVersionCode.toIntOrNull() ?: return@fold
 
                 supportedVersion = DiscordVersion.Existing(
                     type = DiscordVersion.parseVersionType(versionCode),
-                    name = it.versionName.split("-")[0].trim(),
+                    name = it.discordVersionName.split("-")[0].trim(),
                     code = versionCode,
                 )
             },

@@ -24,12 +24,12 @@ data class InstallMetadata(
     val customManager: Boolean,
 
     /**
-     * Aliuhook release version injected into the APK.
+     * Version of the Aliucord release build that was injected into the APK.
      */
     val aliuhookVersion: String,
 
     /**
-     * Short commit hash of the commit the injector was built from.
+     * Version of the injector build that was injected into the APK.
      */
-    val injectorCommitHash: String,
+    val injectorVersion: String,
 )

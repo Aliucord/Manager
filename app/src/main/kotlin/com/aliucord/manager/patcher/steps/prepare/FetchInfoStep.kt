@@ -2,7 +2,7 @@ package com.aliucord.manager.patcher.steps.prepare
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.network.dto.Version
+import com.aliucord.manager.network.dto.BuildInfo
 import com.aliucord.manager.network.service.AliucordGithubService
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.patcher.StepRunner
@@ -21,7 +21,8 @@ class FetchInfoStep : Step(), KoinComponent {
     /**
      * Fetched data about the latest Aliucord commit and supported Discord version.
      */
-    lateinit var data: Version
+    lateinit var data: BuildInfo
+        private set
 
     override suspend fun execute(container: StepRunner) {
         data = github.getDataJson().getOrThrow()
