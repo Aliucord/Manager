@@ -64,9 +64,14 @@ class PatchingScreenModel(
         if (state.value !is PatchingScreenState.Success)
             return
 
-        Intent(options.packageName)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            .also(application::startActivity)
+        val launchIntent = application.packageManager
+            .getLaunchIntentForPackage(options.packageName)
+
+        if (launchIntent != null) {
+            application.startActivity(launchIntent)
+        } else {
+            application.showToast(R.string.launch_aliucord_fail)
+        }
     }
 
     fun copyDebugToClipboard() {
