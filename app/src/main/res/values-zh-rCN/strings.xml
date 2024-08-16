@@ -100,6 +100,7 @@
   <string name="patch_step_patch_icon">正在修补应用程序图标</string>
   <string name="patch_step_add_injector">正在添加 Aliucord 注入器</string>
   <string name="patch_step_add_aliuhook">正在添加 Aliuhook 库</string>
+  <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">存储元数据</string>
   <string name="patch_step_alignment">正在对齐 APK</string>
   <string name="patch_step_signing">正在签名 APK</string>

@@ -100,6 +100,7 @@
   <string name="patch_step_patch_icon">Parcheando icono de aplicación</string>
   <string name="patch_step_add_injector">Añadiendo inyector de Aliucord</string>
   <string name="patch_step_add_aliuhook">Añadiendo librería Aliuhook</string>
+  <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">Store metadata</string>
   <string name="patch_step_alignment">Alineando los APK</string>
   <string name="patch_step_signing">Firmando APK...</string>
