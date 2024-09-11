@@ -62,7 +62,7 @@ class UpdaterViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val (version, asset) = github.getManagerReleases().getOrNull()
                 ?.mapNotNull { release ->
-                    val version = SemVer.parse(release.tagName, vPrefix = true)
+                    val version = SemVer.parseOrNull(release.tagName)
                         ?: return@mapNotNull null
 
                     val asset = release.assets.find { it.name == "aliucord-manager-${release.tagName}.apk" }
@@ -73,7 +73,7 @@ class UpdaterViewModel(
                 ?.maxByOrNull { it.first }
                 ?: return@launch
 
-            val currentVersion = SemVer.parse(BuildConfig.VERSION_NAME)
+            val currentVersion = SemVer.parseOrNull(BuildConfig.VERSION_NAME)
                 ?: throw Error("Failed to parse app version")
 
             if (currentVersion >= version)

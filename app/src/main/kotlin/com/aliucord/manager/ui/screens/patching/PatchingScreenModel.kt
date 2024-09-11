@@ -2,7 +2,6 @@ package com.aliucord.manager.ui.screens.patching
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.StringRes

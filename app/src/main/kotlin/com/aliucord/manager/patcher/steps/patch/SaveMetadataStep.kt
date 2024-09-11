@@ -2,6 +2,7 @@ package com.aliucord.manager.patcher.steps.patch
 
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.patcher.InstallMetadata
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
@@ -33,10 +34,10 @@ class SaveMetadataStep(private val options: PatchOptions) : Step() {
 
         val metadata = InstallMetadata(
             options = options,
-            managerVersionName = BuildConfig.VERSION_NAME,
             customManager = IS_CUSTOM_BUILD,
+            managerVersion = SemVer.parse(BuildConfig.VERSION_NAME),
             aliuhookVersion = aliuhook.targetVersion,
-            injectorVersion = injector.targetVersion,
+            injectorVersion = SemVer.parse(injector.targetVersion),
         )
 
         ZipWriter(apk, /* append = */ true).use {

@@ -32,7 +32,7 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         targetVersion = container.getStep<FetchInfoStep>()
-            .data.injectorVersion
+            .data.injectorVersion.toString()
 
         super.execute(container)
     }
@@ -45,6 +45,6 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
     }
 
     override val dexCount = 1
-    override val dexPriority = 10
+    override val dexPriority = 3
     override fun getDexFiles() = listOf(targetFile.readBytes())
 }

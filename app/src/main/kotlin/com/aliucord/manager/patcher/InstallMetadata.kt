@@ -1,5 +1,6 @@
 package com.aliucord.manager.patcher
 
+import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import kotlinx.serialization.Serializable
 
@@ -14,22 +15,22 @@ data class InstallMetadata(
     val options: PatchOptions,
 
     /**
-     * The semver version of this manager that performed the installation.
-     */
-    val managerVersionName: String,
-
-    /**
      * Whether the manager is a real release or built from source.
      */
     val customManager: Boolean,
 
     /**
-     * Version of the Aliucord release build that was injected into the APK.
+     * The semver version of this manager that performed the installation.
+     */
+    val managerVersion: SemVer,
+
+    /**
+     * Version (commit hash) of the Aliuhook build that was injected into the APK.
      */
     val aliuhookVersion: String,
 
     /**
      * Version of the injector build that was injected into the APK.
      */
-    val injectorVersion: String,
+    val injectorVersion: SemVer,
 )

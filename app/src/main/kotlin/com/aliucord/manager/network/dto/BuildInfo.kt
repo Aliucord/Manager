@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.network.dto
 
+import com.aliucord.manager.network.utils.SemVer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,6 +15,7 @@ data class BuildInfo(
     val discordVersionCode: String,
     @SerialName("versionName")
     val discordVersionName: String,
-    @SerialName("aliucordHash")
-    val injectorVersion: String,
+
+    val injectorVersion: SemVer,
+    val patchesVersion: SemVer,
 )

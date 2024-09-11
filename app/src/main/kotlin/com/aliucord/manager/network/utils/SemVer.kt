@@ -1,8 +1,16 @@
 package com.aliucord.manager.network.utils
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+
 /**
  * Parses a Semantic version in the format of `v1.0.0` (v[major].[minor].[patch])
  */
+@Serializable(SemVer.Serializer::class)
 data class SemVer(
     val major: Int,
     val minor: Int,
@@ -43,18 +51,29 @@ data class SemVer(
     }
 
     companion object {
-        fun parse(version: String, vPrefix: Boolean = false): SemVer? {
-            if (vPrefix && version.getOrNull(0) != 'v')
-                return null
+        fun parse(version: String): SemVer = parseOrNull(version)
+            ?: throw IllegalArgumentException("Invalid semver string $version")
 
-            val str = if (vPrefix) version.substring(1) else version
-            val parts = str
+        fun parseOrNull(version: String): SemVer? {
+            val versionStr = version.removePrefix("v")
+            val parts = versionStr
                 .split(".")
                 .mapNotNull { it.toIntOrNull() }
                 .takeIf { it.size == 3 }
                 ?: return null
 
-            return SemVer(parts[0], parts[1], parts[2])
+            return SemVer(parts[0], parts[1], parts[2], version[0] == 'v')
+        }
+    }
+
+    object Serializer : KSerializer<SemVer> {
+        override val descriptor = PrimitiveSerialDescriptor("SemVer", PrimitiveKind.STRING)
+
+        override fun deserialize(decoder: Decoder) =
+            parse(decoder.decodeString())
+
+        override fun serialize(encoder: Encoder, value: SemVer) {
+            encoder.encodeString(value.toString())
         }
     }
 }
