@@ -2,6 +2,7 @@ package com.aliucord.manager.manager
 
 import android.content.Context
 import android.os.Environment
+import com.aliucord.manager.network.utils.SemVer
 import java.io.File
 
 /**
@@ -58,7 +59,7 @@ class PathManager(context: Context) {
     /**
      * Resolve a specific path for a cached injector.
      */
-    fun cachedInjectorDex(aliucordHash: String) = externalCacheDir
+    fun cachedInjectorDex(aliucordHash: SemVer) = externalCacheDir
         .resolve("injector").apply { mkdirs() }
         .resolve("$aliucordHash.dex")
 
@@ -68,6 +69,13 @@ class PathManager(context: Context) {
     fun cachedAliuhookAAR(version: String) = externalCacheDir
         .resolve("aliuhook").apply { mkdirs() }
         .resolve("$version.aar")
+
+    /**
+     * Resolve a specific path for a versioned smali patches archive.
+     */
+    fun cachedSmaliPatches(version: SemVer) = externalCacheDir
+        .resolve("patches").apply { mkdirs() }
+        .resolve("$version.zip")
 
     /**
      * Singular Kotlin file of the most up-to-date version

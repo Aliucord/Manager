@@ -33,4 +33,9 @@ data class InstallMetadata(
      * Version of the injector build that was injected into the APK.
      */
     val injectorVersion: SemVer,
+
+    /**
+     * Version of the smali patches that were applied onto the APK.
+     */
+    val patchesVersion: SemVer,
 )

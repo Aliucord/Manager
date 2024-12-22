@@ -14,12 +14,14 @@ compose = "1.5.4"
 compose-compiler = "1.5.8"
 compose-tracing = "1.0.0-beta01"
 compose-material3 = "1.2.0-rc01"
+diff = "4.12"
 koin = "3.5.3"
 kotlin = "1.9.22"
 kotlinx-immutable = "0.3.7"
 kotlinx-serialization = "1.5.0"
 ktor = "2.3.7"
 microg = "0.3.2.240913"
+smali = "3.0.7"
 voyager = "1.0.0"
 zip = "2.1.1"
 
@@ -73,7 +75,10 @@ axml = { module = "com.aliucord:axml", version.ref = "axml" }
 binaryResources = { module = "com.aliucord:binary-resources", version.ref = "binary-resources" }
 bouncycastle = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+diff = { module = "io.github.java-diff-utils:java-diff-utils", version.ref = "diff" }
 microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "microg" }
+smali = { module = "com.android.tools.smali:smali", version.ref = "smali" }
+baksmali = { module = "com.android.tools.smali:smali-baksmali", version.ref = "smali" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" } # Only use the "aar" artifact
 
 [bundles]

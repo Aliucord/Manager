@@ -31,13 +31,15 @@ class SaveMetadataStep(private val options: PatchOptions) : Step() {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
         val aliuhook = container.getStep<DownloadAliuhookStep>()
         val injector = container.getStep<DownloadInjectorStep>()
+        val patches = container.getStep<DownloadPatchesStep>()
 
         val metadata = InstallMetadata(
             options = options,
             customManager = IS_CUSTOM_BUILD,
             managerVersion = SemVer.parse(BuildConfig.VERSION_NAME),
             aliuhookVersion = aliuhook.targetVersion,
-            injectorVersion = SemVer.parse(injector.targetVersion),
+            injectorVersion = injector.targetVersion,
+            patchesVersion = patches.targetVersion,
         )
 
         ZipWriter(apk, /* append = */ true).use {

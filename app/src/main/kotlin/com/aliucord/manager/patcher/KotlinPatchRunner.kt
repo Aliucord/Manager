@@ -22,9 +22,11 @@ class KotlinPatchRunner(options: PatchOptions) : StepRunner() {
         DownloadInjectorStep(),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
+        DownloadPatchesStep(),
         CopyDependenciesStep(),
 
         // Patch
+        SmaliPatchStep(),
         ReplaceIconStep(options),
         PatchManifestStep(options),
         ReorganizeDexStep(),

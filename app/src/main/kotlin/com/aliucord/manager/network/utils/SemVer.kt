@@ -1,5 +1,6 @@
 package com.aliucord.manager.network.utils
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -10,6 +11,7 @@ import kotlinx.serialization.encoding.Encoder
 /**
  * Parses a Semantic version in the format of `v1.0.0` (v[major].[minor].[patch])
  */
+@Immutable
 @Serializable(SemVer.Serializer::class)
 data class SemVer(
     val major: Int,

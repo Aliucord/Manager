@@ -2,23 +2,22 @@ package com.aliucord.manager.patcher.steps.download
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.OverlayManager
 import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
-import com.aliucord.manager.patcher.steps.base.IDexProvider
-import com.aliucord.manager.patcher.steps.patch.ReorganizeDexStep
 import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Download a compiled dex file to be injected into the APK as the first `classes.dex` to override an entry point class.
- * Provides [ReorganizeDexStep] with the dex through the [IDexProvider] implementation.
+ * Download a zip of all the smali patches to be applied to the APK during patching.
  */
 @Stable
-class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
+class DownloadPatchesStep : DownloadStep(), KoinComponent {
     private val paths: PathManager by inject()
+    private val overlays: OverlayManager by inject()
 
     /**
      * This is populated right before the download starts (ref: [execute])
@@ -26,14 +25,13 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
     lateinit var targetVersion: SemVer
         private set
 
-    override val localizedName = R.string.patch_step_dl_injector
-    override val targetUrl = URL
-    override val targetFile
-        get() = paths.cachedInjectorDex(targetVersion)
+    override val localizedName = R.string.patch_step_dl_smali
+    override val targetUrl get() = URL
+    override val targetFile get() = paths.cachedSmaliPatches(targetVersion)
 
     override suspend fun execute(container: StepRunner) {
         targetVersion = container.getStep<FetchInfoStep>()
-            .data.injectorVersion
+            .data.patchesVersion
 
         super.execute(container)
     }
@@ -42,10 +40,6 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
         const val ORG = "Aliucord"
         const val MAIN_REPO = "Aliucord"
 
-        const val URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/Injector.dex"
+        const val URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/patches.zip"
     }
-
-    override val dexCount = 1
-    override val dexPriority = 3
-    override fun getDexFiles() = listOf(targetFile.readBytes())
 }

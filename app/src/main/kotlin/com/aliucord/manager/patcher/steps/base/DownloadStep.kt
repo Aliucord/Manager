@@ -83,6 +83,7 @@ abstract class DownloadStep : Step(), KoinComponent {
                         context.showToast(R.string.installer_dl_verify_fail)
                     }
 
+                    targetFile.delete()
                     throw t
                 }
             }
