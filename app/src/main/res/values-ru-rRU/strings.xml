@@ -95,11 +95,13 @@
   <string name="patch_step_dl_kotlin">Скачивание библиотеки Kotlin</string>
   <string name="patch_step_dl_injector">Скачивание инжектора Aluicord</string>
   <string name="patch_step_dl_aliuhook">Скачивание библиотеки Aliuhook</string>
+  <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Копирование зависимостей</string>
   <string name="patch_step_patch_manifests">Патч манифестов пакета</string>
   <string name="patch_step_patch_icon">Патч значка приложения</string>
   <string name="patch_step_add_injector">Добавление инжектора Aliucord</string>
   <string name="patch_step_add_aliuhook">Добавление библиотеки Aliuhook</string>
+  <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Добавление .dex файлов в APK</string>
   <string name="patch_step_save_metadata">Хранить метаданные</string>
   <string name="patch_step_alignment">Выравнивание APK</string>

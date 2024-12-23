@@ -95,11 +95,13 @@
   <string name="patch_step_dl_kotlin">Baixando biblioteca Kotlin</string>
   <string name="patch_step_dl_injector">Baixando injetor</string>
   <string name="patch_step_dl_aliuhook">Baixando biblioteca Aliuhook</string>
+  <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Copiando dependências</string>
   <string name="patch_step_patch_manifests">Modificando manifestos do apk</string>
   <string name="patch_step_patch_icon">Modificando ícone do app</string>
   <string name="patch_step_add_injector">Adicionando injetor Aliucord</string>
   <string name="patch_step_add_aliuhook">Adicionando biblioteca do Aliuhook</string>
+  <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adicionando arquivos .dex à APK</string>
   <string name="patch_step_save_metadata">Armazenando metadados</string>
   <string name="patch_step_alignment">Assinando APKs</string>

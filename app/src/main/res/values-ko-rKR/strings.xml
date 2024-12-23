@@ -95,11 +95,13 @@
   <string name="patch_step_dl_kotlin">Kotlin 라이브러리 다운로드 중</string>
   <string name="patch_step_dl_injector">인젝터 다운로드 중</string>
   <string name="patch_step_dl_aliuhook">Aliuhook 라이브러리 다운로드 중</string>
+  <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Copying dependencies</string>
   <string name="patch_step_patch_manifests">APK manifests 패치 중</string>
   <string name="patch_step_patch_icon">Patching app icon</string>
   <string name="patch_step_add_injector">Adding Aliucord injector</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
+  <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">Store metadata</string>
   <string name="patch_step_alignment">Aligning APKs</string>

@@ -95,11 +95,13 @@
   <string name="patch_step_dl_kotlin">正在下载 Kotlin Stdlib</string>
   <string name="patch_step_dl_injector">正在下载 Aliucord 注入器</string>
   <string name="patch_step_dl_aliuhook">正在下载 Aliuhook 库</string>
+  <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">正在复制依赖项</string>
   <string name="patch_step_patch_manifests">正在修补 APK 清单</string>
   <string name="patch_step_patch_icon">正在修补应用程序图标</string>
   <string name="patch_step_add_injector">正在添加 Aliucord 注入器</string>
   <string name="patch_step_add_aliuhook">正在添加 Aliuhook 库</string>
+  <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">存储元数据</string>
   <string name="patch_step_alignment">正在对齐 APK</string>

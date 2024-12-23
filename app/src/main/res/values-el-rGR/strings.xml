@@ -95,11 +95,13 @@
   <string name="patch_step_dl_kotlin">Λήψη βιβλιοθήκης Kotlin</string>
   <string name="patch_step_dl_injector">Λήψη Injector</string>
   <string name="patch_step_dl_aliuhook">Λήψη βιβλιοθήκης Aliuhook</string>
+  <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Αντιγραφή εξαρτήσεων</string>
   <string name="patch_step_patch_manifests">Ενημέρωση των apk manifests</string>
   <string name="patch_step_patch_icon">Ενημέρωση εικονιδίων εφαρμογής</string>
   <string name="patch_step_add_injector">Προσθήκη Aliucord injector</string>
   <string name="patch_step_add_aliuhook">Προσθήκη βιβλιοθήκης Aliuhook</string>
+  <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">Store metadata</string>
   <string name="patch_step_alignment">Ευθυγράμμιση APKs</string>
