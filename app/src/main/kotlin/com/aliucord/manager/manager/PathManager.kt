@@ -73,9 +73,14 @@ class PathManager(context: Context) {
     /**
      * Resolve a specific path for a versioned smali patches archive.
      */
-    fun cachedSmaliPatches(version: SemVer) = externalCacheDir
+    fun cachedSmaliPatches(version: SemVer, custom: Boolean = false) = externalCacheDir
         .resolve("patches").apply { mkdirs() }
-        .resolve("$version.zip")
+        .resolve("$version${if (custom) ".custom" else ""}.zip")
+
+    /**
+     * Get all the versions of custom smali bundles.
+     */
+    fun customSmaliPatches() = listCustomFiles(externalCacheDir.resolve("patches"))
 
     /**
      * Singular Kotlin file of the most up-to-date version
@@ -89,4 +94,19 @@ class PathManager(context: Context) {
      */
     fun patchingWorkingDir() = externalCacheDir
         .resolve("patched")
+
+    private companion object {
+        /**
+         * List all the files that follow the ```[SemVer].custom.*``` naming scheme.
+         */
+        private fun listCustomFiles(dir: File): List<SemVer> {
+            val files = dir.listFiles() ?: return emptyList()
+            val customVersions = files
+                .map { it.nameWithoutExtension }
+                .filter { it.endsWith(".custom") }
+                .map { it.removeSuffix(".custom") }
+
+            return customVersions.mapNotNull(SemVer::parseOrNull)
+        }
+    }
 }
