@@ -17,6 +17,10 @@ dependencyResolutionManagement {
             name = "aliucord"
             url = uri("https://maven.aliucord.com/snapshots")
         }
+        maven { // TODO: remove, refer to libs.versions.toml
+            name = "jitpack"
+            url = uri("https://jitpack.io")
+        }
     }
 }
 

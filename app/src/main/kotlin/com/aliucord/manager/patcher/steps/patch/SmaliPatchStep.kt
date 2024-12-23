@@ -80,7 +80,7 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
                         /* dexFile = */ dexFile,
                         /* outputDir = */ smaliDir,
                         /* jobs = */ coreCount - 1,
-                        /* options = */ BaksmaliOptions(),
+                        /* options = */ BaksmaliOptions().apply { localsDirective = true },
                         /* classes = */ patches.map { "L${it.fullClassName};" },
                     )
                 } catch (t: Throwable) {
