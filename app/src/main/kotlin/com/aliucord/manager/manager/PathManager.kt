@@ -59,9 +59,14 @@ class PathManager(context: Context) {
     /**
      * Resolve a specific path for a cached injector.
      */
-    fun cachedInjectorDex(aliucordHash: SemVer) = externalCacheDir
+    fun cachedInjectorDex(version: SemVer, custom: Boolean = false) = externalCacheDir
         .resolve("injector").apply { mkdirs() }
-        .resolve("$aliucordHash.dex")
+        .resolve("$version${if (custom) ".custom" else ""}.dex")
+
+    /**
+     * Get all the versions of custom injector builds.
+     */
+    fun customInjectorDexs() = listCustomFiles(externalCacheDir.resolve("injector"))
 
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
