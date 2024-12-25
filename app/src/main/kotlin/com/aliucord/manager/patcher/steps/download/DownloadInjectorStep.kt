@@ -34,7 +34,7 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
     override val localizedName = R.string.patch_step_dl_injector
     override val targetUrl = URL
     override val targetFile
-        get() = paths.cachedInjectorDex(targetVersion)
+        get() = paths.cachedInjectorDex(targetVersion, custom = isCustomVersion)
 
     override suspend fun execute(container: StepRunner) {
         var customVersions = mutableListOf<SemVer>()
