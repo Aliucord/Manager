@@ -2,6 +2,7 @@ package com.aliucord.manager.patcher.steps.download
 
 import android.util.Log
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateListOf
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.OverlayManager
@@ -37,7 +38,7 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
         get() = paths.cachedInjectorDex(targetVersion, custom = isCustomVersion)
 
     override suspend fun execute(container: StepRunner) {
-        var customVersions = mutableListOf<SemVer>()
+        var customVersions = mutableStateListOf<SemVer>()
             .apply { addAll(paths.customInjectorDexs()) }
 
         // Prompt to select or manage custom versions instead of downloading

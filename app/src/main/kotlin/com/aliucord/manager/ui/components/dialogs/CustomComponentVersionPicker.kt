@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -19,7 +20,7 @@ import com.aliucord.manager.network.utils.SemVer
 @Composable
 fun CustomComponentVersionPicker(
     componentTitle: String,
-    versions: List<SemVer>,
+    versions: SnapshotStateList<SemVer>,
     onConfirm: (SemVer) -> Unit,
     onDelete: (SemVer) -> Unit,
     onCancel: () -> Unit,
