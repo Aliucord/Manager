@@ -47,6 +47,8 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
 
                 val lines = zip.openEntry(patchFile)!!.read()
                     .decodeToString()
+                    .replace("\r\n", "\n") // Replace CRLF endings with LF endings to be sure here
+                    .trimEnd { it == '\n' } // Remove trailing new lines to work with diff output properly
                     .split('\n')
 
                 try {
