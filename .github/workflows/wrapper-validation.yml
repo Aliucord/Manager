@@ -1,0 +1,20 @@
+name: "Validate Gradle Wrapper"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - gradle/**
+      - gradlew.*
+  pull_request:
+    paths:
+      - gradle/**
+      - gradlew*
+
+jobs:
+  validation:
+    name: "Validate Authenticity of Gradle Wrapper"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v4
