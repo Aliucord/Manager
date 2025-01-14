@@ -7,12 +7,14 @@ package com.aliucord.manager.patcher.util
 
 import android.Manifest
 import android.os.Build
+import com.aliucord.manager.util.isGrapheneOS
 import pxb.android.axml.*
 
 object ManifestPatcher {
     private const val ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android"
     private const val DEBUGGABLE = "debuggable"
     private const val VM_SAFE_MODE = "vmSafeMode"
+    private const val USE_EMBEDDED_DEX = "useEmbeddedDex"
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
     private const val NETWORK_SECURITY_CONFIG = "networkSecurityConfig"
     private const val LABEL = "label"
@@ -94,12 +96,14 @@ object ManifestPatcher {
                             ) {
                                 private var addDebuggable = debuggable
                                 private var addLegacyStorage = true
-                                private var useVmSafeMode = true
+                                private var addVmSafeMode = true
+                                private var addUseEmbeddedDex = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == NETWORK_SECURITY_CONFIG) return
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
-                                    if (name == VM_SAFE_MODE) useVmSafeMode = false
+                                    if (name == VM_SAFE_MODE) addVmSafeMode = false
+                                    if (name == USE_EMBEDDED_DEX) addUseEmbeddedDex = false
                                     if (name == DEBUGGABLE) addDebuggable = false
                                     super.attr(ns, name, resourceId, type, value)
                                 }
@@ -137,8 +141,16 @@ object ManifestPatcher {
                                         TYPE_INT_BOOLEAN,
                                         1
                                     )
-                                    if (useVmSafeMode) super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
                                     if (addDebuggable) super.attr(ANDROID_NAMESPACE, DEBUGGABLE, android.R.attr.debuggable, TYPE_INT_BOOLEAN, 1)
+
+                                    // Disable AOT (Necessary for AOSP Android 15)
+                                    if (Build.VERSION.SDK_INT >= 29 && addUseEmbeddedDex) {
+                                        super.attr(ANDROID_NAMESPACE, USE_EMBEDDED_DEX, android.R.attr.useEmbeddedDex, TYPE_INT_BOOLEAN, 1)
+                                    }
+                                    // GrapheneOS also forces AOT, disable it in a worse way if below API 29
+                                    else if (isGrapheneOS() && addVmSafeMode) {
+                                        super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
+                                    }
 
                                     super.end()
                                 }

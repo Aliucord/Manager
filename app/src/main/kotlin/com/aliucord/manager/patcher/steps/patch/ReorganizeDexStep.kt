@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.aliucord.manager.patcher.steps.patch
 
 import com.aliucord.manager.R
@@ -88,5 +86,5 @@ class ReorganizeDexStep : Step(), KoinComponent {
         }
     }
 
-    private inline fun getDexName(idx: Int) = "classes${if (idx == 0) "" else (idx + 1)}.dex"
+    private fun getDexName(idx: Int) = "classes${if (idx == 0) "" else (idx + 1)}.dex"
 }
