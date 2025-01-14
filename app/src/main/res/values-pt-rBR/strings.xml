@@ -78,6 +78,7 @@
   <string name="installer_uninstall_aborted">Desinstalação cancelada</string>
   <string name="installer_dl_verify_fail">Falha ao verificar o download</string>
   <string name="installer_minimization_warning">Uma vez que as otimizações da bateria não foram desativadas, minimizar esta tela poderá abortar o processo de instalação!</string>
+  <string name="installer_gos_warning">"This device seems to be running GrapheneOS! A workaround will be applied that significantly reduces performance. Using a different ROM will avoid this."</string>
   <string name="install_error_unknown">Falha ao instalar (Razão desconhecida)</string>
   <string name="install_error_blocked">A instalação foi bloqueada</string>
   <string name="install_error_invalid">Um ou mais APKs eram inválidos ou corruptos</string>

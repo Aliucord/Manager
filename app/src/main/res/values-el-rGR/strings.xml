@@ -78,6 +78,7 @@
   <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
   <string name="installer_dl_verify_fail">Αποτυχία επαλήθευσης λήψης</string>
   <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
+  <string name="installer_gos_warning">"This device seems to be running GrapheneOS! A workaround will be applied that significantly reduces performance. Using a different ROM will avoid this."</string>
   <string name="install_error_unknown">Αποτυχία εγκατάστασης (Άγνωστος λόγος)</string>
   <string name="install_error_blocked">Η εγκατάσταση αποκλείστηκε</string>
   <string name="install_error_invalid">Ένα ή περισσότερα APK δεν ήταν έγκυρα ή κατεστραμμένα</string>
