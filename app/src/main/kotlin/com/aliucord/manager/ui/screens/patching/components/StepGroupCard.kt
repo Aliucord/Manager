@@ -58,7 +58,7 @@ fun StepGroupCard(
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

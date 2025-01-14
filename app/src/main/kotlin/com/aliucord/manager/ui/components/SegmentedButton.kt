@@ -24,7 +24,7 @@ fun RowScope.SegmentedButton(
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         modifier = Modifier
             .clickable(onClick = onClick)
-            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(LocalAbsoluteTonalElevation.current + 2.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .weight(1f)
             .padding(12.dp)
     ) {

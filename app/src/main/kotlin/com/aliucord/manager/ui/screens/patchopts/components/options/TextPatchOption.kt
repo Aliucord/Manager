@@ -24,18 +24,15 @@ fun TextPatchOption(
         description = description,
         modifier = modifier,
     ) {
-        val containerColor = MaterialTheme.colorScheme
-            .surfaceColorAtElevation(LocalAbsoluteTonalElevation.current + .5.dp)
-
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             isError = valueIsError,
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = containerColor,
-                focusedContainerColor = containerColor,
-                errorContainerColor = containerColor,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                errorContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             ),
             trailingIcon = {
                 ResetToDefaultButton(
