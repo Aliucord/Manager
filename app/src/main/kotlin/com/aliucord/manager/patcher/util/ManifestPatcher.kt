@@ -11,7 +11,6 @@ import pxb.android.axml.*
 
 object ManifestPatcher {
     private const val ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android"
-    private const val USES_CLEARTEXT_TRAFFIC = "usesCleartextTraffic"
     private const val DEBUGGABLE = "debuggable"
     private const val VM_SAFE_MODE = "vmSafeMode"
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
@@ -90,21 +89,18 @@ object ManifestPatcher {
                                 mapOf(
                                     LABEL to appName,
                                     DEBUGGABLE to debuggable,
-                                    USES_CLEARTEXT_TRAFFIC to true,
                                     REQUEST_LEGACY_EXTERNAL_STORAGE to true
                                 )
                             ) {
                                 private var addDebuggable = debuggable
                                 private var addLegacyStorage = true
                                 private var useVmSafeMode = true
-                                private var addUseClearTextTraffic = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == NETWORK_SECURITY_CONFIG) return
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
                                     if (name == VM_SAFE_MODE) useVmSafeMode = false
                                     if (name == DEBUGGABLE) addDebuggable = false
-                                    if (name == USES_CLEARTEXT_TRAFFIC) addUseClearTextTraffic = false
                                     super.attr(ns, name, resourceId, type, value)
                                 }
 
@@ -143,13 +139,7 @@ object ManifestPatcher {
                                     )
                                     if (useVmSafeMode) super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
                                     if (addDebuggable) super.attr(ANDROID_NAMESPACE, DEBUGGABLE, android.R.attr.debuggable, TYPE_INT_BOOLEAN, 1)
-                                    if (addUseClearTextTraffic) super.attr(
-                                        ANDROID_NAMESPACE,
-                                        USES_CLEARTEXT_TRAFFIC,
-                                        android.R.attr.usesCleartextTraffic,
-                                        TYPE_INT_BOOLEAN,
-                                        1
-                                    )
+
                                     super.end()
                                 }
                             }
