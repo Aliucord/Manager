@@ -76,6 +76,15 @@ android {
 
             // okhttp3 is used by some lib (no cookies so publicsuffixes.gz can be dropped)
             excludes += "/okhttp3/**"
+
+            // Remnants of smali/baksmali lib
+            excludes += "/*.properties"
+            excludes += "/org/antlr/**"
+            excludes += "/com/android/tools/smali/**"
+            excludes += "/org/eclipse/jgit/**"
+
+            // Other
+            excludes += "/org/bouncycastle/**"
         }
         jniLibs {
             // x86 is dead
