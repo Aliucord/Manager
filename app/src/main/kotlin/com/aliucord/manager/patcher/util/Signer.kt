@@ -7,6 +7,7 @@ package com.aliucord.manager.patcher.util
 
 import com.aliucord.manager.manager.PathManager
 import com.android.apksig.ApkSigner
+import com.android.apksig.KeyConfig
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.cert.X509v3CertificateBuilder
@@ -43,7 +44,7 @@ object Signer : KoinComponent {
 
         ApkSigner.SignerConfig.Builder(
             "Aliucord Manager signer",
-            keyStore.getKey(alias, password) as PrivateKey,
+            KeyConfig.Jca(keyStore.getKey(alias, password) as PrivateKey),
             listOf(certificate)
         ).build()
     }

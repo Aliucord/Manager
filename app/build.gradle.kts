@@ -1,7 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import java.io.ByteArrayOutputStream
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -9,6 +7,11 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
 }
+
+val gitCurrentBranch = providers.execIgnoreCode("git", "symbolic-ref", "--short", "HEAD")
+val gitLatestCommit = providers.execIgnoreCode("git", "rev-parse", "--short", "HEAD")
+val gitHasLocalCommits = providers.execIgnoreCode("git", "log", "origin/$gitCurrentBranch..HEAD").isNotEmpty()
+val gitHasHasLocalChanges = providers.execIgnoreCode("git", "status", "-s").isNotEmpty()
 
 android {
     namespace = "com.aliucord.manager"
@@ -29,10 +32,10 @@ android {
 
         buildConfigField("String", "BACKEND_URL", "\"https://aliucord.com/\"")
 
-        buildConfigField("String", "GIT_BRANCH", "\"${getCurrentBranch()}\"")
-        buildConfigField("String", "GIT_COMMIT", "\"${getLatestCommit()}\"")
-        buildConfigField("boolean", "GIT_LOCAL_COMMITS", "${gitHasLocalCommits()}")
-        buildConfigField("boolean", "GIT_LOCAL_CHANGES", "${gitHasLocalChanges()}")
+        buildConfigField("String", "GIT_BRANCH", "\"$gitCurrentBranch\"")
+        buildConfigField("String", "GIT_COMMIT", "\"$gitLatestCommit\"")
+        buildConfigField("boolean", "GIT_LOCAL_COMMITS", "$gitHasLocalCommits")
+        buildConfigField("boolean", "GIT_LOCAL_CHANGES", "$gitHasHasLocalChanges")
     }
 
     signingConfigs {
@@ -104,7 +107,6 @@ android {
 
         jvmTarget = "11"
         freeCompilerArgs += listOf(
-            "-Xcontext-receivers",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
@@ -150,38 +152,15 @@ dependencies {
     implementation(variantOf(libs.zip) { artifactType("aar") })
 }
 
-fun getCurrentBranch(): String? =
-    exec("git", "symbolic-ref", "--short", "HEAD")
-
-fun getLatestCommit(): String? =
-    exec("git", "rev-parse", "--short", "HEAD")
-
-fun gitHasLocalCommits(): Boolean {
-    val branch = getCurrentBranch() ?: return false
-    return exec("git", "log", "origin/$branch..HEAD")?.isNotEmpty() ?: false
-}
-
-fun gitHasLocalChanges(): Boolean =
-    exec("git", "status", "-s")?.isNotEmpty() ?: false
-
-fun exec(vararg command: String): String? {
-    return try {
-        val stdout = ByteArrayOutputStream()
-        val errout = ByteArrayOutputStream()
-
-        exec {
-            commandLine = command.toList()
-            standardOutput = stdout
-            errorOutput = errout
-            isIgnoreExitValue = true
-        }
-
-        if (errout.size() > 0)
-            throw Error(errout.toString(Charsets.UTF_8))
-
-        stdout.toString(Charsets.UTF_8).trim()
-    } catch (t: Throwable) {
-        t.printStackTrace()
-        null
+fun ProviderFactory.execIgnoreCode(vararg command: String): String = run {
+    val result = exec {
+        commandLine = command.toList()
+        isIgnoreExitValue = true
     }
+
+    val stderr = result.standardError.asText.get()
+    if (stderr.isNotEmpty())
+        throw RuntimeException(stderr)
+
+    result.standardOutput.asText.get().trim()
 }

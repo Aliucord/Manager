@@ -7,7 +7,6 @@ package com.aliucord.manager.ui.components.plugins
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.model.Plugin
 import com.aliucord.manager.ui.util.annotatingStringResource
-import com.aliucord.manager.ui.util.joinToAnnotatedString
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -63,38 +61,30 @@ fun PluginCard(
                     }
                 )
 
-                // TODO: make this translatable
                 // Authors
                 val authors = buildAnnotatedString {
                     withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        plugin.manifest.authors.joinToAnnotatedString(
-                            prefix = {
-                                withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
-                                    append("By ")
-                                }
-                            }
-                        ) { author ->
-                            val start = this@joinToAnnotatedString.length
-                            withStyle(
-                                SpanStyle(
-                                    textDecoration = TextDecoration.Underline
+                        for ((idx, author) in plugin.manifest.authors.withIndex()) {
+                            if (idx > 0) append(", ")
+
+                            pushLink(
+                                LinkAnnotation.Url(
+                                    url = "https://discord.com/users/${author.id}",
+                                    styles = TextLinkStyles(
+                                        SpanStyle(
+                                            textDecoration = TextDecoration.Underline,
+                                        )
+                                    ),
                                 )
-                            ) {
-                                append(author.name)
-                            }
-                            addStringAnnotation("authorId", author.id.toString(), start, start + author.name.length)
+                            )
+                            append(author.name)
+                            pop()
                         }
                     }
                 }
-
-                ClickableText(
+                Text(
                     text = authors,
                     style = MaterialTheme.typography.labelMedium,
-                    onClick = { offset ->
-                        authors.getStringAnnotations("authorId", offset, offset)
-                            .firstOrNull()
-                            ?.let { (id) -> uriHandler.openUri("https://discord.com/users/$id") }
-                    }
                 )
             }
 

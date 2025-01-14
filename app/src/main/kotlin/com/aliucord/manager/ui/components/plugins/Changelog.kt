@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
@@ -31,7 +29,7 @@ private val hyperLinkPattern = Regex("\\[(.+?)]\\((.+?\\))")
 private val headerStylePattern = Regex("\\{(improved|added|fixed)( marginTop)?\\}")
 
 @Composable
-private fun AnnotatedString.Builder.hyperlink(content: String) {
+private fun AnnotatedString.Builder.MarkdownHyperlink(content: String) {
     var idx = 0
 
     with(hyperLinkPattern.toPattern().matcher(content)) {
@@ -43,16 +41,17 @@ private fun AnnotatedString.Builder.hyperlink(content: String) {
 
             append(content.substring(idx, start))
 
-            withStyle(
-                SpanStyle(
+            // @formatter:off
+            pushLink(LinkAnnotation.Url(
+                url,
+                TextLinkStyles(SpanStyle(
                     color = MaterialTheme.colorScheme.primary,
                     textDecoration = TextDecoration.Underline
-                )
-            ) {
-                pushStringAnnotation(title, url)
-                append(title)
-                pop()
-            }
+                ))
+            ))
+            append(title)
+            pop()
+            // @formatter:on
 
             idx = end
         }
@@ -107,9 +106,9 @@ fun Changelog(
                                 }
 
                                 '*' -> {
-                                    LinkText(
+                                    Text(
                                         modifier = Modifier.padding(bottom = 2.dp),
-                                        annotatedString = buildAnnotatedString {
+                                        text = buildAnnotatedString {
                                             withStyle(
                                                 SpanStyle(
                                                     color = MaterialTheme.colorScheme.primary,
@@ -119,7 +118,7 @@ fun Changelog(
                                                 append("● ")
                                             }
 
-                                            hyperlink(line.substring(1))
+                                            MarkdownHyperlink(line.substring(1))
                                         }
                                     )
                                 }
@@ -139,11 +138,9 @@ fun Changelog(
 
                                         line.all { c -> c == '=' } -> {} // Discord ignores =======
                                         else -> {
-                                            LinkText(
-                                                annotatedString = buildAnnotatedString {
-                                                    hyperlink(line)
-                                                }
-                                            )
+                                            Text(buildAnnotatedString {
+                                                MarkdownHyperlink(line)
+                                            })
                                         }
                                     }
                                 }
@@ -156,25 +153,6 @@ fun Changelog(
         confirmButton = {
             Button(onClick = onDismiss) {
                 Text(stringResource(R.string.action_close))
-            }
-        }
-    )
-}
-
-@Composable
-private fun LinkText(
-    modifier: Modifier = Modifier,
-    annotatedString: AnnotatedString,
-) {
-    val urlHandler = LocalUriHandler.current
-
-    ClickableText(
-        modifier = modifier,
-        text = annotatedString,
-        style = TextStyle(color = LocalContentColor.current),
-        onClick = { offset ->
-            annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.let {
-                urlHandler.openUri(it.item)
             }
         }
     )
