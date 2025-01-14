@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
@@ -126,7 +126,7 @@ private fun UserEntry(name: String, roles: String, username: String = name) {
         modifier = Modifier
             .clickable(
                 onClick = { uriHandler.openUri("https://github.com/$username") },
-                indication = rememberRipple(bounded = false, radius = 90.dp),
+                indication = ripple(bounded = false, radius = 90.dp),
                 interactionSource = remember { MutableInteractionSource() }
             )
             .widthIn(min = 100.dp)

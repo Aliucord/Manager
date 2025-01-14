@@ -43,7 +43,7 @@ class HomeScreen : Screen {
         val model = getScreenModel<HomeModel>()
 
         // Refresh installations list when the screen changes or activity resumes
-        LifecycleResumeEffect {
+        LifecycleResumeEffect(key1 = "INSTALLATIONS_REFRESH") {
             model.fetchInstallations()
 
             onPauseOrDispose {}

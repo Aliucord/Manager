@@ -15,7 +15,7 @@ fun PaddingValues.exclude(sides: PaddingValuesSides): PaddingValues =
     ExcludePaddingValues(this, sides)
 
 @Stable
-@Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
+@Suppress("INVISIBLE_REFERENCE")
 private class ExcludePaddingValues(
     private val values: PaddingValues,
     private val excludeSides: PaddingValuesSides,

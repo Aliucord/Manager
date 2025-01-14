@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
@@ -11,11 +12,11 @@ plugins {
 
 android {
     namespace = "com.aliucord.manager"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "0.0.1"
 
@@ -117,10 +118,6 @@ android {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
     lint {
         disable += "ModifierParameter"
     }
@@ -129,6 +126,7 @@ android {
 dependencies {
     implementation(libs.bundles.accompanist)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.coil)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
@@ -145,7 +143,6 @@ dependencies {
     implementation(libs.axml)
     implementation(libs.bouncycastle)
     implementation(libs.binaryResources)
-    implementation(libs.coil)
     implementation(libs.diff)
     implementation(libs.microg)
     implementation(libs.smali)

@@ -6,8 +6,8 @@ import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.util.toPrecision
 import kotlinx.coroutines.*
-import org.koin.core.time.measureTimedValue
 import kotlin.math.roundToLong
+import kotlin.time.measureTimedValue
 
 /**
  * A base install process step. Steps are single-use
@@ -95,7 +95,7 @@ abstract class Step {
         startTime = System.currentTimeMillis()
 
         // Execute this steps logic while timing it
-        val (error, executionTimeMs) = measureTimedValue {
+        val (error, executionTime) = measureTimedValue {
             try {
                 withContext(Dispatchers.Default) {
                     execute(container)
@@ -111,8 +111,8 @@ abstract class Step {
             }
         }
 
-        totalTimeMs = executionTimeMs.roundToLong()
-        durationSecs.floatValue = executionTimeMs.toFloat() / 1000f
+        totalTimeMs = executionTime.inWholeMilliseconds
+        durationSecs.floatValue = executionTime.inWholeMilliseconds / 1000f
 
         return error
     }

@@ -33,6 +33,9 @@ fun ManagerTheme(
         false -> LightCustomColors
     }
 
+    // As usual, Google deprecates accompanist libraries and replaces them with an incomplete and shitty replacement in androidx
+    // enableEdgeToEdge() does not work for our use case.
+    @Suppress("DEPRECATION")
     val systemUiController = rememberSystemUiController()
 
     SideEffect {

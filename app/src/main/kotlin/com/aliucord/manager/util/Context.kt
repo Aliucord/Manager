@@ -50,7 +50,7 @@ fun Context.showToast(@StringRes text: Int, vararg args: Any, length: Int = Toas
 /**
  * @return (versionName, versionCode)
  */
-fun Context.getPackageVersion(pkg: String): Pair<String, Int> {
+fun Context.getPackageVersion(pkg: String): Pair<String?, Int> {
     @Suppress("DEPRECATION")
     return packageManager.getPackageInfo(pkg, 0)
         .let { it.versionName to it.versionCode }

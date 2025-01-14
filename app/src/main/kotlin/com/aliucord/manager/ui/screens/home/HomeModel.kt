@@ -104,30 +104,32 @@ class HomeModel(
                 .asSequence()
                 .filter {
                     val isAliucordPkg = it.packageName == "com.aliucord"
-                    val hasAliucordMeta = it.applicationInfo.metaData?.containsKey("isAliucord") == true
+                    val hasAliucordMeta = it.applicationInfo?.metaData?.containsKey("isAliucord") == true
                     isAliucordPkg || hasAliucordMeta
                 }
 
-            val aliucordInstallations = aliucordPackages.map {
+            val aliucordInstallations = aliucordPackages.mapNotNull {
                 // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
                 @Suppress("DEPRECATION")
                 val versionCode = it.versionCode
+                val versionName = it.versionName ?: return@mapNotNull null
+                val applicationInfo = it.applicationInfo ?: return@mapNotNull null
 
-                val baseVersion = it.applicationInfo.metaData?.getInt("aliucordBaseVersion")
+                val baseVersion = it.applicationInfo?.metaData?.getInt("aliucordBaseVersion")
                 val isBaseUpdated = /* TODO: remote data json instead */ baseVersion == 0
 
                 InstallData(
-                    name = packageManager.getApplicationLabel(it.applicationInfo).toString(),
+                    name = packageManager.getApplicationLabel(applicationInfo).toString(),
                     packageName = it.packageName,
                     baseUpdated = isBaseUpdated,
                     icon = packageManager
-                        .getApplicationIcon(it.applicationInfo)
+                        .getApplicationIcon(applicationInfo)
                         .toBitmap()
                         .asImageBitmap()
                         .let(::BitmapPainter),
                     version = DiscordVersion.Existing(
                         type = DiscordVersion.parseVersionType(versionCode),
-                        name = it.versionName.split("-")[0].trim(),
+                        name = versionName.split("-")[0].trim(),
                         code = versionCode,
                     ),
                 )

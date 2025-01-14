@@ -170,7 +170,7 @@ private fun PluginSearch(
                 )
             }
         },
-        keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
+        keyboardOptions = KeyboardOptions(autoCorrectEnabled = false, imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions { focusManager.clearFocus() },
         modifier = modifier,
     )
