@@ -192,6 +192,7 @@ class PatchingScreenModel(
             R.string.fun_fact_9,
             R.string.fun_fact_10,
             R.string.fun_fact_11,
+            R.string.fun_fact_12,
         )
     }
 }
