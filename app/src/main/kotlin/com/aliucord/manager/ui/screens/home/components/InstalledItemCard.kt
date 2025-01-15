@@ -8,7 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.*
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,12 +36,7 @@ fun InstalledItemCard(
             defaultElevation = 3.dp,
         ),
         modifier = modifier
-            .width(IntrinsicSize.Max)
-            .shadow(
-                clip = false,
-                elevation = 2.dp,
-                shape = MaterialTheme.shapes.medium,
-            )
+            .width(IntrinsicSize.Max),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(24.dp),

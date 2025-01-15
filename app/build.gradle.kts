@@ -149,6 +149,7 @@ dependencies {
     implementation(libs.microg)
     implementation(libs.smali)
     implementation(libs.baksmali)
+    implementation(libs.compose.shimmer)
     implementation(variantOf(libs.zip) { artifactType("aar") })
 }
 

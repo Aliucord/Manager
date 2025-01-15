@@ -20,6 +20,7 @@ kotlinx-immutable = "0.3.8"
 kotlinx-serialization = "1.8.0"
 ktor = "3.0.3"
 microg = "0.3.6.244735"
+shimmer = "1.3.1"
 smali = "3.0.9"
 voyager = "1.0.1"
 zip = "2.1.1"
@@ -83,6 +84,9 @@ microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "mic
 smali = { module = "com.android.tools.smali:smali", version.ref = "smali" }
 baksmali = { module = "com.android.tools.smali:smali-baksmali", version.ref = "smali" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" } # Only use the "aar" artifact
+
+# Other
+compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "shimmer" }
 
 [bundles]
 accompanist = [

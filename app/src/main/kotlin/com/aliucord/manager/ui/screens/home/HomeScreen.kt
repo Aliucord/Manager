@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +34,7 @@ import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
+import kotlin.math.*
 
 class HomeScreen : Screen {
     override val key = "Home"
@@ -42,6 +44,7 @@ class HomeScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<HomeModel>()
 
+        // FIXME: not refreshing after completing install?
         // Refresh installations list when the screen changes or activity resumes
         LifecycleResumeEffect(key1 = "INSTALLATIONS_REFRESH") {
             model.fetchInstallations()
@@ -76,16 +79,15 @@ class HomeScreen : Screen {
             topBar = { HomeAppBar() },
         ) { padding ->
             when (model.installations) {
-                is InstallsState.Fetching,
-                is InstallsState.Fetched,
-                -> PresentInstallsContent(
+                is InstallsState.Fetched -> PresentInstallsContent(
                     model = model,
                     padding = padding,
                     onClickInstall = onClickInstall,
                 )
 
+                InstallsState.Fetching -> LoadingInstallsContent(padding = padding)
+
                 InstallsState.None -> NoInstallsContent(
-                    supportedVersion = model.supportedVersion,
                     onClickInstall = onClickInstall,
                     modifier = Modifier
                         .padding(padding.exclude(PaddingValuesSides.Bottom)),
@@ -105,6 +107,19 @@ class HomeScreen : Screen {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun LoadingInstallsContent(padding: PaddingValues) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+    ) {
+        ProjectHeader()
     }
 }
 
@@ -134,7 +149,6 @@ fun PresentInstallsContent(
                 onClick = onClickInstall,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp)
             )
         }
 
@@ -171,7 +185,6 @@ fun PresentInstallsContent(
 
 @Composable
 fun NoInstallsContent(
-    supportedVersion: DiscordVersion,
     onClickInstall: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -180,7 +193,7 @@ fun NoInstallsContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            .padding(16.dp),
     ) {
         ProjectHeader()
 
@@ -188,22 +201,18 @@ fun NoInstallsContent(
             secondaryInstall = false,
             onClick = onClickInstall,
             modifier = Modifier
+                .padding(12.dp)
+                .height(height = 50.dp)
                 .fillMaxWidth()
-                .padding(top = 10.dp)
-        )
-
-        AnimatedVersionDisplay(
-            version = supportedVersion,
-            modifier = Modifier.padding(bottom = 30.dp),
         )
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .alpha(.7f)
-                .padding(bottom = 90.dp)
                 .fillMaxSize()
+                .padding(bottom = 80.dp)
         ) {
             Text(
                 text = """ /ᐠﹷ ‸ ﹷ ᐟ\ﾉ""",
@@ -214,6 +223,7 @@ fun NoInstallsContent(
             Text(
                 text = stringResource(R.string.installs_no_installs),
                 style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(start = 10.dp),
             )
         }
     }
