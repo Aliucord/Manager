@@ -1,5 +1,6 @@
 package com.aliucord.manager.patcher.util
 
+import com.aliucord.manager.patcher.util.AxmlUtil.getMainAxmlChunk
 import com.aliucord.manager.util.find
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter

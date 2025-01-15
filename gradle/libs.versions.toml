@@ -73,19 +73,19 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 
-# Other
+# Patching
 apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
 axml = { module = "com.aliucord:axml", version.ref = "axml" }
 binaryResources = { module = "com.aliucord:binary-resources", version.ref = "binary-resources" }
 bouncycastle = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }
 #diff = { module = "io.github.java-diff-utils:java-diff-utils", version.ref = "diff" }
 diff = "com.github.Aliucord:java-diff-utils:a0002d1d40" # TODO: remove when https://github.com/java-diff-utils/java-diff-utils/pull/198 is merged
-microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "microg" }
 smali = { module = "com.android.tools.smali:smali", version.ref = "smali" }
 baksmali = { module = "com.android.tools.smali:smali-baksmali", version.ref = "smali" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" } # Only use the "aar" artifact
 
 # Other
+microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "microg" }
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "shimmer" }
 
 [bundles]

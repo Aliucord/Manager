@@ -11,7 +11,6 @@ import com.aliucord.manager.patcher.steps.download.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import com.github.diamondminer88.zip.ZipWriter
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 /**

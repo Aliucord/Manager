@@ -6,7 +6,6 @@ import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.util.toPrecision
 import kotlinx.coroutines.*
-import kotlin.math.roundToLong
 import kotlin.time.measureTimedValue
 
 /**
