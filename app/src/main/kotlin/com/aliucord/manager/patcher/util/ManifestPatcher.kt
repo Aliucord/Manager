@@ -15,6 +15,7 @@ object ManifestPatcher {
     private const val DEBUGGABLE = "debuggable"
     private const val VM_SAFE_MODE = "vmSafeMode"
     private const val USE_EMBEDDED_DEX = "useEmbeddedDex"
+    private const val EXTRACT_NATIVE_LIBS = "extractNativeLibs"
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
     private const val NETWORK_SECURITY_CONFIG = "networkSecurityConfig"
     private const val LABEL = "label"
@@ -91,19 +92,24 @@ object ManifestPatcher {
                                 mapOf(
                                     LABEL to appName,
                                     DEBUGGABLE to debuggable,
-                                    REQUEST_LEGACY_EXTERNAL_STORAGE to true
+                                    REQUEST_LEGACY_EXTERNAL_STORAGE to true,
+                                    VM_SAFE_MODE to true,
+                                    USE_EMBEDDED_DEX to true,
+                                    EXTRACT_NATIVE_LIBS to true,
                                 )
                             ) {
                                 private var addDebuggable = debuggable
                                 private var addLegacyStorage = true
                                 private var addVmSafeMode = true
                                 private var addUseEmbeddedDex = true
+                                private var addExtractNativeLibs = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == NETWORK_SECURITY_CONFIG) return
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
                                     if (name == VM_SAFE_MODE) addVmSafeMode = false
                                     if (name == USE_EMBEDDED_DEX) addUseEmbeddedDex = false
+                                    if (name == EXTRACT_NATIVE_LIBS) addExtractNativeLibs = false
                                     if (name == DEBUGGABLE) addDebuggable = false
                                     super.attr(ns, name, resourceId, type, value)
                                 }
@@ -151,6 +157,14 @@ object ManifestPatcher {
                                     else if (isGrapheneOS() && addVmSafeMode) {
                                         super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
                                     }
+
+                                    if (addExtractNativeLibs) super.attr(
+                                        ANDROID_NAMESPACE,
+                                        EXTRACT_NATIVE_LIBS,
+                                        android.R.attr.extractNativeLibs,
+                                        TYPE_INT_BOOLEAN,
+                                        1
+                                    )
 
                                     super.end()
                                 }

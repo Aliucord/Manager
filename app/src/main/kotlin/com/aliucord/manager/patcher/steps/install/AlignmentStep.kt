@@ -6,14 +6,13 @@ import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
-import com.aliucord.manager.patcher.steps.base.StepState
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
 import com.github.diamondminer88.zip.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Align certain files in the APK to the respective boundaries.
+ * Align certain files in the APK to the necessary boundaries.
  */
 class AlignmentStep : Step(), KoinComponent {
     private val paths: PathManager by inject()
@@ -24,12 +23,8 @@ class AlignmentStep : Step(), KoinComponent {
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
-        if (Build.VERSION.SDK_INT < 29) {
-            state = StepState.Skipped
-            return
-        }
-
         var resourcesArscBytes: ByteArray? = null
+        var nativeLibPaths: List<String>? = null
         var dexCount: Int = -1
 
         // Align resources.arsc due to targeting API 30 for silent install
@@ -54,6 +49,18 @@ class AlignmentStep : Step(), KoinComponent {
             }
         }
 
+        // Align native libs due to using extractNativeLibs
+        nativeLibPaths = ZipReader(apk).use { zip ->
+            val libPaths = zip.entryNames.filter { it.endsWith(".so") }
+            for ((idx, path) in libPaths.withIndex()) {
+                // Index is just used as a placeholder id to cache on disk
+                val bytes = zip.openEntry(path)!!.read()
+                val file = paths.patchingWorkingDir().resolve("$idx.so")
+                file.writeBytes(bytes)
+            }
+            libPaths
+        }
+
         ZipWriter(apk, /* append = */ true).use { zip ->
             // Delete all the unaligned files from APK
             if (resourcesArscBytes != null)
@@ -61,6 +68,9 @@ class AlignmentStep : Step(), KoinComponent {
 
             for (i in 0..<dexCount)
                 zip.deleteEntry(getDexName(i))
+
+            for (path in nativeLibPaths)
+                zip.deleteEntry(path)
 
             // Write all the files back aligned this time
             if (resourcesArscBytes != null)
@@ -70,6 +80,13 @@ class AlignmentStep : Step(), KoinComponent {
                 val file = paths.patchingWorkingDir().resolve(getDexName(idx))
                 val bytes = file.readBytes()
                 zip.writeEntry(getDexName(idx), bytes, ZipCompression.NONE, 4)
+            }
+
+            // Write back native libraries aligned to 16KiB page boundary
+            for ((idx, path) in nativeLibPaths.withIndex()) {
+                val file = paths.patchingWorkingDir().resolve("$idx.so")
+                val bytes = file.readBytes()
+                zip.writeEntry(path, bytes, ZipCompression.NONE, 16384)
             }
         }
     }
