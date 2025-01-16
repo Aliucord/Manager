@@ -55,7 +55,7 @@ object ManifestPatcher {
                         val nv = super.child(ns, name)
 
                         // Add MANAGE_EXTERNAL_STORAGE when necessary
-                        if (addExternalStoragePerm) {
+                        if (addExternalStoragePerm && Build.VERSION.SDK_INT >= 30) {
                             super
                                 .child(null, "uses-permission")
                                 .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
@@ -76,16 +76,12 @@ object ManifestPatcher {
                                 }
                             }
 
-                            "uses-sdk" -> object : NodeVisitor(nv) {
-                                override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
-                                    if (name == "targetSdkVersion") {
-                                        val version = if (Build.VERSION.SDK_INT >= 31) 30 else 28
-                                        super.attr(ns, name, resourceId, type, version)
-                                    } else {
-                                        super.attr(ns, name, resourceId, type, value)
-                                    }
-                                }
-                            }
+                            "uses-sdk" -> ReplaceAttrsVisitor(
+                                nv,
+                                mapOf(
+                                    "targetSdkVersion" to if (Build.VERSION.SDK_INT >= 31) 30 else 28,
+                                )
+                            )
 
                             "application" -> object : ReplaceAttrsVisitor(
                                 nv,
@@ -158,7 +154,7 @@ object ManifestPatcher {
                                         super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
                                     }
 
-                                    if (addExtractNativeLibs) super.attr(
+                                    if (addExtractNativeLibs && Build.VERSION.SDK_INT >= 23) super.attr(
                                         ANDROID_NAMESPACE,
                                         EXTRACT_NATIVE_LIBS,
                                         android.R.attr.extractNativeLibs,
@@ -175,24 +171,6 @@ object ManifestPatcher {
                     }
                 }
         })
-
-        return writer.toByteArray()
-    }
-
-    fun renamePackage(
-        manifestBytes: ByteArray,
-        packageName: String,
-    ): ByteArray {
-        val reader = AxmlReader(manifestBytes)
-        val writer = AxmlWriter()
-
-        reader.accept(
-            object : AxmlVisitor(writer) {
-                override fun child(ns: String?, name: String?): ReplaceAttrsVisitor {
-                    return ReplaceAttrsVisitor(super.child(ns, name), mapOf("package" to packageName))
-                }
-            }
-        )
 
         return writer.toByteArray()
     }

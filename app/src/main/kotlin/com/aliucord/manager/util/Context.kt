@@ -75,6 +75,8 @@ fun Context.findActivity(): Activity? {
 }
 
 fun Context.isIgnoringBatteryOptimizations(): Boolean {
+    if (Build.VERSION.SDK_INT < 23) return false
+
     val power = applicationContext.getSystemService(PowerManager::class.java)
     val name = applicationContext.packageName
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -88,6 +90,8 @@ fun Context.isIgnoringBatteryOptimizations(): Boolean {
  */
 @SuppressLint("BatteryLife")
 fun Context.requestNoBatteryOptimizations() {
+    if (Build.VERSION.SDK_INT < 23) return
+
     val intent = Intent(
         /* action = */ Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
         /* uri = */ Uri.fromParts("package", this.packageName, null)
@@ -103,7 +107,7 @@ fun Context.requestNoBatteryOptimizations() {
     startActivity(intent)
 }
 
-/*
+/**
  * Get the raw bytes for a resource.
  * @param id The resource identifier
  * @return The resource's raw bytes as stored inside the APK

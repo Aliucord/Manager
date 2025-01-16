@@ -18,7 +18,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 21
         targetSdk = 35
         versionCode = 1
         versionName = "0.0.1"
@@ -91,21 +91,24 @@ android {
             excludes += "/org/bouncycastle/**"
         }
         jniLibs {
+            // For extractNativeLibs=false
+            useLegacyPackaging = false
+
             // x86 is dead
             excludes += "/lib/x86/*.so"
         }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
         val reportsDir = layout.buildDirectory.asFile.get()
             .resolve("reports").absolutePath
 
-        jvmTarget = "11"
+        jvmTarget = "1.8"
         freeCompilerArgs += listOf(
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",

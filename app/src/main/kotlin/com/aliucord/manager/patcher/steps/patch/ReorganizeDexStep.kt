@@ -7,6 +7,7 @@ import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
+import com.github.diamondminer88.zip.ZipCompression
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
 import org.koin.core.component.KoinComponent
@@ -59,7 +60,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
                 if (dexProvider.dexPriority <= 0) continue
 
                 for (dexBytes in dexProvider.getDexFiles()) {
-                    zip.writeEntry(getDexName(idx++), dexBytes)
+                    zip.writeEntry(getDexName(idx++), dexBytes, ZipCompression.NONE)
                 }
             }
 
@@ -70,7 +71,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
 
                 val file = paths.patchingWorkingDir().resolve(getDexName(idx))
                 val bytes = file.readBytes()
-                zip.writeEntry(getDexName(dexCount + idx), bytes)
+                zip.writeEntry(getDexName(dexCount + idx), bytes, ZipCompression.NONE)
             }
 
             dexCount += idx
@@ -80,7 +81,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
                 if (dexProvider.dexPriority > 0) continue
 
                 for (dexBytes in dexProvider.getDexFiles()) {
-                    zip.writeEntry(getDexName(dexCount++), dexBytes)
+                    zip.writeEntry(getDexName(dexCount++), dexBytes, ZipCompression.NONE)
                 }
             }
         }

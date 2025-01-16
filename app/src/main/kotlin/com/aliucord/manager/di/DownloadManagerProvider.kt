@@ -2,15 +2,15 @@ package com.aliucord.manager.di
 
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.manager.download.*
-import com.aliucord.manager.patcher.util.Signer.getKoin
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
 import org.koin.core.annotation.KoinInternalApi
+import org.koin.core.component.KoinComponent
 import kotlin.reflect.KClass
 
 /**
  * Handle providing the correct install manager based on preferences and device type.
  */
-class DownloadManagerProvider(private val prefs: PreferencesManager) {
+class DownloadManagerProvider(private val prefs: PreferencesManager) : KoinComponent {
     fun getActiveDownloader(): IDownloadManager =
         getDownloader(prefs.downloader)
 

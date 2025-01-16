@@ -6,6 +6,7 @@
 
 package com.aliucord.manager.ui.screens.home
 
+import android.os.Build
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -215,7 +216,13 @@ fun NoInstallsContent(
                 .padding(bottom = 80.dp)
         ) {
             Text(
-                text = """ /ᐠﹷ ‸ ﹷ ᐟ\ﾉ""",
+                text = if (Build.VERSION.SDK_INT >= 23) {
+                    """ /ᐠﹷ ‸ ﹷ ᐟ\ﾉ"""
+                } else {
+                    // Removed U+141F and U+1420 (not rendered on API <23)
+                    // May look weird in code editor but is correct
+                    "/ ﹷ ‸ ﹷ  \\ﾉ"
+                },
                 style = MaterialTheme.typography.labelLarge
                     .copy(fontSize = 38.sp),
             )
