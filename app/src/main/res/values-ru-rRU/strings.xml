@@ -78,7 +78,6 @@
   <string name="installer_uninstall_aborted">Удаление отменено</string>
   <string name="installer_dl_verify_fail">Не удалось верифицировать скачивание</string>
   <string name="installer_minimization_warning">Поскольку оптимизация работы аккумулятора не была отключена, сворачивание этого приложения может прервать процесс установки!</string>
-  <string name="installer_gos_warning">"This device seems to be running GrapheneOS! A workaround will be applied that significantly reduces performance. Using a different ROM will avoid this."</string>
   <string name="install_error_unknown">Не удалось установить (неизвестная причина)</string>
   <string name="install_error_blocked">Установка заблокирована</string>
   <string name="install_error_invalid">Один или несколько APK были недействительными или поврежденными</string>

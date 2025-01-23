@@ -78,7 +78,6 @@
   <string name="installer_uninstall_aborted">已取消卸载</string>
   <string name="installer_dl_verify_fail">无法验证下载</string>
   <string name="installer_minimization_warning">由于电池优化未被禁用，最小化此屏幕可能会中止安装过程！</string>
-  <string name="installer_gos_warning">"This device seems to be running GrapheneOS! A workaround will be applied that significantly reduces performance. Using a different ROM will avoid this."</string>
   <string name="install_error_unknown">安装程序失败（未知原因）</string>
   <string name="install_error_blocked">安装被阻止</string>
   <string name="install_error_invalid">一个或多个 APK 无效或损坏</string>
