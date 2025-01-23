@@ -166,7 +166,7 @@ class PatchingScreenModel(
 
             Android API: ${Build.VERSION.SDK_INT}
             Emulator: $IS_PROBABLY_EMULATOR (guess)
-            ROM: Android ${Build.VERSION.RELEASE} (Patch ${Build.VERSION.SECURITY_PATCH})
+            ROM: Android ${Build.VERSION.RELEASE} (Patch ${if (Build.VERSION.SDK_INT >= 23) Build.VERSION.SECURITY_PATCH else "<none>"})
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
             Device: ${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE})
             Play Protect: $playProtect

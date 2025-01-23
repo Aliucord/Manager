@@ -2,6 +2,8 @@ package com.aliucord.manager.manager
 
 import android.content.Context
 import android.os.Environment
+import android.util.Log
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.network.utils.SemVer
 import java.io.File
 
@@ -30,23 +32,27 @@ class PathManager(context: Context) {
      */
     val keystoreFile = aliucordDir.resolve("ks.keystore")
 
-    private val externalCacheDir = context.externalCacheDir
-        ?: throw Error("External cache directory isn't supported")
+    private val cacheDir = run {
+        if (context.externalCacheDir == null)
+            Log.i(BuildConfig.TAG, "No external cache directory, resorting to internal cache!")
+
+        context.externalCacheDir ?: context.cacheDir
+    }
 
     /**
      * Standard path: `~/Android/data/com.aliucord.manager/cache`
      */
-    private val discordApkCache = externalCacheDir
+    private val discordApkCache = cacheDir
         .resolve("discord")
 
     /**
      * Delete the entire cache dir and recreate it.
      */
     fun clearCache() {
-        if (!externalCacheDir.deleteRecursively())
+        if (!cacheDir.deleteRecursively())
             throw IllegalStateException("Failed to delete cache")
 
-        externalCacheDir.mkdirs()
+        cacheDir.mkdirs()
     }
 
     /**
@@ -59,45 +65,45 @@ class PathManager(context: Context) {
     /**
      * Resolve a specific path for a cached injector.
      */
-    fun cachedInjectorDex(version: SemVer, custom: Boolean = false) = externalCacheDir
+    fun cachedInjectorDex(version: SemVer, custom: Boolean = false) = cacheDir
         .resolve("injector").apply { mkdirs() }
         .resolve("$version${if (custom) ".custom" else ""}.dex")
 
     /**
      * Get all the versions of custom injector builds.
      */
-    fun customInjectorDexs() = listCustomFiles(externalCacheDir.resolve("injector"))
+    fun customInjectorDexs() = listCustomFiles(cacheDir.resolve("injector"))
 
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
      */
-    fun cachedAliuhookAAR(version: String) = externalCacheDir
+    fun cachedAliuhookAAR(version: String) = cacheDir
         .resolve("aliuhook").apply { mkdirs() }
         .resolve("$version.aar")
 
     /**
      * Resolve a specific path for a versioned smali patches archive.
      */
-    fun cachedSmaliPatches(version: SemVer, custom: Boolean = false) = externalCacheDir
+    fun cachedSmaliPatches(version: SemVer, custom: Boolean = false) = cacheDir
         .resolve("patches").apply { mkdirs() }
         .resolve("$version${if (custom) ".custom" else ""}.zip")
 
     /**
      * Get all the versions of custom smali bundles.
      */
-    fun customSmaliPatches() = listCustomFiles(externalCacheDir.resolve("patches"))
+    fun customSmaliPatches() = listCustomFiles(cacheDir.resolve("patches"))
 
     /**
      * Singular Kotlin file of the most up-to-date version
      * since the stdlib is backwards compatible.
      */
-    fun cachedKotlinDex() = externalCacheDir
+    fun cachedKotlinDex() = cacheDir
         .resolve("kotlin.dex")
 
     /**
      * The temporary working directory of a currently executing patching process.
      */
-    fun patchingWorkingDir() = externalCacheDir
+    fun patchingWorkingDir() = cacheDir
         .resolve("patched")
 
     private companion object {

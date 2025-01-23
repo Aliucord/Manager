@@ -2,10 +2,10 @@ package com.aliucord.manager.patcher.steps.install
 
 import com.aliucord.manager.R
 import com.aliucord.manager.patcher.StepRunner
+import com.aliucord.manager.patcher.signing.ApkSigSigner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
-import com.aliucord.manager.patcher.util.Signer
 import org.koin.core.component.KoinComponent
 
 /**
@@ -18,6 +18,6 @@ class SigningStep : Step(), KoinComponent {
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
-        Signer.signApk(apk)
+        ApkSigSigner.signApk(apk)
     }
 }
