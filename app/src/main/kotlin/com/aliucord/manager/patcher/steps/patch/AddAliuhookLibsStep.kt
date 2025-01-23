@@ -8,6 +8,7 @@ import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
 import com.aliucord.manager.patcher.steps.download.DownloadAliuhookStep
+import com.github.diamondminer88.zip.ZipCompression
 import com.github.diamondminer88.zip.ZipReader
 import com.github.diamondminer88.zip.ZipWriter
 import org.koin.core.component.KoinComponent
@@ -31,7 +32,7 @@ class AddAliuhookLibsStep : Step(), KoinComponent {
                     val bytes = aliuhook.openEntry("jni/$currentDeviceArch/$libFile")?.read()
                         ?: throw IllegalStateException("Failed to read $libFile from aliuhook aar")
 
-                    patchedApk.writeEntry("lib/$currentDeviceArch/$libFile", bytes)
+                    patchedApk.writeEntry("lib/$currentDeviceArch/$libFile", bytes, ZipCompression.NONE)
                 }
             }
         }
