@@ -76,14 +76,6 @@ fun isMiui(): Boolean {
         ?.isNotEmpty() ?: false
 }
 
-
-/**
- * Checks whether this device is possibly running GrapheneOS.
- */
-fun isGrapheneOS(): Boolean {
-    return Build.USER == "grapheneos" || Build.HOST == "grapheneos"
-}
-
 /**
  * Gets a system property from build.prop
  */

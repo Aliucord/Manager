@@ -7,7 +7,6 @@ package com.aliucord.manager.patcher.util
 
 import android.Manifest
 import android.os.Build
-import com.aliucord.manager.util.isGrapheneOS
 import pxb.android.axml.*
 
 object ManifestPatcher {
@@ -100,14 +99,12 @@ object ManifestPatcher {
                             ) {
                                 private var addDebuggable = debuggable
                                 private var addLegacyStorage = true
-                                private var addVmSafeMode = true
                                 private var addUseEmbeddedDex = true
                                 private var addExtractNativeLibs = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == NETWORK_SECURITY_CONFIG) return
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
-                                    if (name == VM_SAFE_MODE) addVmSafeMode = false
                                     if (name == USE_EMBEDDED_DEX) addUseEmbeddedDex = false
                                     if (name == EXTRACT_NATIVE_LIBS) addExtractNativeLibs = false
                                     if (name == DEBUGGABLE) addDebuggable = false
@@ -153,10 +150,6 @@ object ManifestPatcher {
                                     if (Build.VERSION.SDK_INT >= 29 && addUseEmbeddedDex) {
                                         super.attr(ANDROID_NAMESPACE, USE_EMBEDDED_DEX, android.R.attr.useEmbeddedDex, TYPE_INT_BOOLEAN, 1)
                                     }
-                                    // GrapheneOS also forces AOT, disable it in a worse way if below API 29
-                                    else if (isGrapheneOS() && addVmSafeMode) {
-                                        super.attr(ANDROID_NAMESPACE, VM_SAFE_MODE, android.R.attr.vmSafeMode, TYPE_INT_BOOLEAN, 1)
-                                    }
 
                                     if (addExtractNativeLibs) super.attr(
                                         ANDROID_NAMESPACE,
@@ -175,24 +168,6 @@ object ManifestPatcher {
                     }
                 }
         })
-
-        return writer.toByteArray()
-    }
-
-    fun renamePackage(
-        manifestBytes: ByteArray,
-        packageName: String,
-    ): ByteArray {
-        val reader = AxmlReader(manifestBytes)
-        val writer = AxmlWriter()
-
-        reader.accept(
-            object : AxmlVisitor(writer) {
-                override fun child(ns: String?, name: String?): ReplaceAttrsVisitor {
-                    return ReplaceAttrsVisitor(super.child(ns, name), mapOf("package" to packageName))
-                }
-            }
-        )
 
         return writer.toByteArray()
     }
