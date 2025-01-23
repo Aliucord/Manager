@@ -5,7 +5,6 @@
 
 package com.aliucord.manager.ui.screens.patching
 
-import android.os.Build
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
@@ -38,7 +37,6 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import com.aliucord.manager.ui.util.thenIf
-import com.aliucord.manager.util.isGrapheneOS
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.filter
@@ -153,22 +151,6 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                         BannerSection(visible = showMinimizationWarning && !state.isFinished) {
                             TextBanner(
                                 text = stringResource(R.string.installer_minimization_warning),
-                                icon = painterResource(R.drawable.ic_warning),
-                                iconColor = MaterialTheme.customColors.onWarningContainer,
-                                outlineColor = MaterialTheme.customColors.warning,
-                                containerColor = MaterialTheme.customColors.warningContainer,
-                                modifier = Modifier
-                                    .padding(bottom = VERTICAL_PADDING)
-                                    .fillMaxWidth(),
-                            )
-                        }
-                    }
-
-                    item(key = "GOS_WARNING") {
-                        // Refer to ManifestPatcher for more information
-                        BannerSection(visible = remember { Build.VERSION.SDK_INT < 29 && isGrapheneOS() }) {
-                            TextBanner(
-                                text = stringResource(R.string.installer_gos_warning),
                                 icon = painterResource(R.drawable.ic_warning),
                                 iconColor = MaterialTheme.customColors.onWarningContainer,
                                 outlineColor = MaterialTheme.customColors.warning,
