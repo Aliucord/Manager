@@ -7,9 +7,7 @@ import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
-import com.github.diamondminer88.zip.ZipCompression
-import com.github.diamondminer88.zip.ZipReader
-import com.github.diamondminer88.zip.ZipWriter
+import com.github.diamondminer88.zip.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

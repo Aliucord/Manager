@@ -29,7 +29,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.ui.TextBanner
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.screens.patching.components.*

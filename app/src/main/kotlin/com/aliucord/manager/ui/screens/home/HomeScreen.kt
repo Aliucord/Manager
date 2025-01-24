@@ -44,9 +44,8 @@ class HomeScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<HomeModel>()
 
-        // FIXME: not refreshing after completing install?
         // Refresh installations list when the screen changes or activity resumes
-        LifecycleResumeEffect(key1 = "INSTALLATIONS_REFRESH") {
+        LifecycleResumeEffect(Unit) {
             model.fetchInstallations()
 
             onPauseOrDispose {}

@@ -125,6 +125,12 @@ android {
     }
 }
 
+kotlin {
+    sourceSets.all {
+        languageSettings.enableLanguageFeature("ExplicitBackingFields")
+    }
+}
+
 dependencies {
     implementation(libs.bundles.accompanist)
     implementation(libs.bundles.androidx)

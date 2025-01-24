@@ -22,12 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.BackButton
-import com.aliucord.manager.ui.components.plugins.Changelog
-import com.aliucord.manager.ui.components.plugins.PluginCard
+import com.aliucord.manager.ui.screens.plugins.components.Changelog
+import com.aliucord.manager.ui.screens.plugins.components.PluginCard
 
 class PluginsScreen : Screen {
     override val key = "Plugins"
@@ -35,20 +36,26 @@ class PluginsScreen : Screen {
     @Composable
     override fun Content() {
         val model = getScreenModel<PluginsModel>()
+        val plugins = model.filteredPlugins.collectAsState()
 
-        if (model.showUninstallDialog) {
-            val plugin = model.selectedPlugin!!
+        // Refresh plugins list on activity resume or when this initially opens
+        LifecycleResumeEffect(Unit) {
+            model.refreshData()
 
+            onPauseOrDispose {}
+        }
+
+        model.showUninstallDialog?.let { plugin ->
             UninstallPluginDialog(
                 pluginName = plugin.manifest.name,
-                onConfirm = { model.uninstallPlugin(plugin) },
+                onConfirm = { model.uninstallPlugin(plugin.path) },
                 onDismiss = model::hideUninstallDialog
             )
         }
 
-        if (model.showChangelogDialog) {
+        model.showChangelogDialog?.let { plugin ->
             Changelog(
-                plugin = model.selectedPlugin!!,
+                plugin = plugin,
                 onDismiss = model::hideChangelogDialog
             )
         }
@@ -69,8 +76,8 @@ class PluginsScreen : Screen {
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 PluginSearch(
-                    currentFilter = model.search,
-                    onFilterChange = model::search,
+                    currentFilter = model.searchText.collectAsState().value,
+                    onFilterChange = model::setSearchText,
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -94,27 +101,17 @@ class PluginsScreen : Screen {
                             )
                         }
                     }
-                } else if (model.plugins.isNotEmpty()) {
+                } else if (plugins.value.isNotEmpty()) {
                     LazyColumn(
                         contentPadding = PaddingValues(bottom = 15.dp, top = 6.dp),
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
-                        items(
-                            // TODO: remember {} this
-                            model.plugins.filter { plugin ->
-                                plugin.manifest.run {
-                                    name.contains(model.search, true)
-                                        || description.contains(model.search, true)
-                                        || authors.any { (name) -> name.contains(model.search, true) }
-                                }
-                            }
-                        ) { plugin ->
+                        items(items = plugins.value) { plugin ->
                             PluginCard(
                                 plugin = plugin,
-                                enabled = model.enabled[plugin.manifest.name] ?: true,
                                 onClickDelete = { model.showUninstallDialog(plugin) },
                                 onClickShowChangelog = { model.showChangelogDialog(plugin) },
-                                onSetEnabled = { model.setPluginEnabled(plugin.manifest.name, it) }
+                                onSetEnabled = { model.setPluginEnabled(pluginName = plugin.manifest.name, it) }
                             )
                         }
                     }

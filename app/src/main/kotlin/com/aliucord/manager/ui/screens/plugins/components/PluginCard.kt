@@ -3,7 +3,7 @@
  * Licensed under the Open Software License version 3.0
  */
 
-package com.aliucord.manager.ui.components.plugins
+package com.aliucord.manager.ui.screens.plugins.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,14 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
-import com.aliucord.manager.domain.model.Plugin
+import com.aliucord.manager.ui.screens.plugins.model.PluginItem
 import com.aliucord.manager.ui.util.annotatingStringResource
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun PluginCard(
-    plugin: Plugin,
-    enabled: Boolean,
+    plugin: PluginItem,
     onClickDelete: () -> Unit,
     onClickShowChangelog: () -> Unit,
     onSetEnabled: (Boolean) -> Unit,
@@ -40,7 +39,7 @@ fun PluginCard(
         // Header
         Row(
             modifier = Modifier
-                .clickable { onSetEnabled(!enabled) }
+                .clickable { onSetEnabled(!plugin.enabled) }
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -69,7 +68,7 @@ fun PluginCard(
 
                             if (author.hyperlink) pushLink(
                                 LinkAnnotation.Url(
-                                    url = "https://discord.com/users/${author.id}",
+                                    url = author.discordUrl,
                                     styles = TextLinkStyles(
                                         SpanStyle(
                                             textDecoration = TextDecoration.Underline,
@@ -84,7 +83,7 @@ fun PluginCard(
                 }
                 Text(
                     text = authors,
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
 
@@ -92,8 +91,8 @@ fun PluginCard(
 
             // Toggle Switch
             Switch(
-                checked = enabled,
-                onCheckedChange = { onSetEnabled(!enabled) }
+                checked = plugin.enabled,
+                onCheckedChange = { onSetEnabled(!plugin.enabled) }
             )
         }
 
