@@ -67,7 +67,7 @@ fun PluginCard(
                         for ((idx, author) in plugin.manifest.authors.withIndex()) {
                             if (idx > 0) append(", ")
 
-                            pushLink(
+                            if (author.hyperlink) pushLink(
                                 LinkAnnotation.Url(
                                     url = "https://discord.com/users/${author.id}",
                                     styles = TextLinkStyles(
@@ -78,7 +78,7 @@ fun PluginCard(
                                 )
                             )
                             append(author.name)
-                            pop()
+                            if (author.hyperlink) pop()
                         }
                     }
                 }

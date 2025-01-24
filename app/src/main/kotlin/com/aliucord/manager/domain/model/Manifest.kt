@@ -24,5 +24,9 @@ data class Manifest(
         .replaceFirst("/builds.*".toRegex(), "")
 
     @Serializable
-    data class Author(val name: String, val id: Long)
+    data class Author(
+        val name: String,
+        val id: Long,
+        val hyperlink: Boolean = true,
+    )
 }
