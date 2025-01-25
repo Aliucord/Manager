@@ -10,18 +10,19 @@ import com.aliucord.manager.util.debounce
 import kotlinx.coroutines.launch
 
 class PatchOptionsModel(
+    prefilledOptions: PatchOptions,
     private val context: Context,
     private val prefs: PreferencesManager,
 ) : ScreenModel {
     // ---------- Package name state ----------
-    var packageName by mutableStateOf("com.aliucord")
+    var packageName by mutableStateOf(prefilledOptions.packageName)
         private set
 
     var packageNameState by mutableStateOf(PackageNameState.Ok)
         private set
 
     val packageNameIsDefault by derivedStateOf {
-        packageName == "com.aliucord"
+        packageName == PatchOptions.Default.packageName
     }
 
     fun changePackageName(newPackageName: String) {
@@ -30,18 +31,18 @@ class PatchOptionsModel(
     }
 
     fun resetPackageName() {
-        changePackageName("com.aliucord")
+        changePackageName(PatchOptions.Default.packageName)
     }
 
     // ---------- App name state ----------
-    var appName by mutableStateOf("Aliucord")
+    var appName by mutableStateOf(prefilledOptions.appName)
         private set
 
     var appNameIsError by mutableStateOf(false)
         private set
 
     val appNameIsDefault by derivedStateOf {
-        appName == "Aliucord"
+        appName == PatchOptions.Default.appName
     }
 
     fun changeAppName(newAppName: String) {
@@ -50,11 +51,11 @@ class PatchOptionsModel(
     }
 
     fun resetAppName() {
-        appName = "Aliucord"
+        appName = PatchOptions.Default.appName
     }
 
     // ---------- Icon patching state ----------
-    var replaceIcon by mutableStateOf(true)
+    var replaceIcon by mutableStateOf(prefilledOptions.iconReplacement == PatchOptions.IconReplacement.Aliucord)
         private set
 
     fun changeReplaceIcon(value: Boolean) {
@@ -62,7 +63,7 @@ class PatchOptionsModel(
     }
 
     // ---------- Debuggable state ----------
-    var debuggable by mutableStateOf(false)
+    var debuggable by mutableStateOf(prefilledOptions.debuggable)
         private set
 
     fun changeDebuggable(value: Boolean) {

@@ -29,8 +29,10 @@ import com.aliucord.manager.ui.util.*
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import com.aliucord.manager.util.requestNoBatteryOptimizations
 import kotlinx.coroutines.delay
+import org.koin.core.parameter.parametersOf
 
 class PatchOptionsScreen(
+    private val prefilledOptions: PatchOptions = PatchOptions.Default,
     private val supportedVersion: DiscordVersion = DiscordVersion.None,
 ) : Screen {
     override val key = "PatchOptions"
@@ -39,7 +41,7 @@ class PatchOptionsScreen(
     override fun Content() {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
-        val model = getScreenModel<PatchOptionsModel>()
+        val model = getScreenModel<PatchOptionsModel>() { parametersOf(prefilledOptions) }
 
         LaunchedEffect(Unit) {
             // Ensure that when popping this screen off the stack that permission requests don't get triggered

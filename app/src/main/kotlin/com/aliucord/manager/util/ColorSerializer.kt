@@ -23,6 +23,6 @@ object ColorSerializer : KSerializer<Color> {
 
     override fun deserialize(decoder: Decoder): Color {
         val string = decoder.decodeString()
-        return Color(string.toInt(16))
+        return Color(string.toLong(16))
     }
 }

@@ -57,16 +57,17 @@ class HomeScreen : Screen {
                 if (model.isNetworkDangerous()) {
                     showNetworkWarningDialog = true
                 } else {
-                    navigator.push(PatchOptionsScreen(model.supportedVersion))
+                    navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion))
                 }
             }
         }
 
+        // TODO: trigger this for updates too?
         if (showNetworkWarningDialog) {
             NetworkWarningDialog(
                 onConfirm = {
                     showNetworkWarningDialog = false
-                    navigator.push(PatchOptionsScreen(model.supportedVersion))
+                    navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion))
                 },
                 onDismiss = {
                     showNetworkWarningDialog = false
@@ -171,7 +172,7 @@ fun PresentInstallsContent(
 
                 InstalledItemCard(
                     data = it,
-                    onUpdate = ::TODO, // TODO: prefilled install options screen
+                    onUpdate = { model.updateAliucord(it, navigator) },
                     onOpenApp = { model.launchApp(it.packageName) },
                     onOpenInfo = { model.openAppInfo(it.packageName) },
                     onOpenPlugins = { navigator.push(PluginsScreen()) }, // TODO: install-specific plugins

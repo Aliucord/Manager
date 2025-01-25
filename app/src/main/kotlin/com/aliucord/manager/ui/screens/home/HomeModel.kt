@@ -16,12 +16,15 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.dto.BuildInfo
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.patcher.InstallMetadata
+import com.aliucord.manager.ui.screens.patchopts.PatchOptions
+import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
@@ -151,6 +154,31 @@ class HomeModel(
             Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
             installations = InstallsState.Error
         }
+    }
+
+    // Launches the patching screen with prefilled options according to the existing APK
+    fun updateAliucord(data: InstallData, navigator: Navigator) = screenModelScope.launchBlock {
+        val metadata = try {
+            val applicationInfo = application.packageManager.getApplicationInfo(data.packageName, 0)
+            val metadataFile = ZipReader(applicationInfo.publicSourceDir)
+                .use { it.openEntry("aliucord.json")?.read() }
+
+            @OptIn(ExperimentalSerializationApi::class)
+            metadataFile?.let { json.decodeFromStream<InstallMetadata>(it.inputStream()) }
+        } catch (t: Throwable) {
+            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package ${data.packageName}", t)
+            null
+        }
+
+        val patchOptions = metadata?.options
+            ?: PatchOptions.Default.copy(packageName = data.packageName)
+
+        navigator.push(
+            PatchOptionsScreen(
+                prefilledOptions = patchOptions,
+                supportedVersion = supportedVersion,
+            )
+        )
     }
 
     private fun fetchSupportedVersion() = screenModelScope.launchBlock {

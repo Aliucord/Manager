@@ -88,4 +88,14 @@ data class PatchOptions(
             val Aliucord = CustomColor(Color(0xFF00C853))
         }
     }
+
+    companion object {
+        val Default = PatchOptions(
+            appName = "Aliucord",
+            packageName = "com.aliucord",
+            debuggable = false,
+            iconReplacement = IconReplacement.Aliucord,
+            monochromeIcon = true,
+        )
+    }
 }
