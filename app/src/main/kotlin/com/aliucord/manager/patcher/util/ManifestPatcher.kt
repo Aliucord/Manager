@@ -101,6 +101,7 @@ object ManifestPatcher {
                                 private var addLegacyStorage = true
                                 private var addUseEmbeddedDex = true
                                 private var addExtractNativeLibs = true
+                                private var addMetadata = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == NETWORK_SECURITY_CONFIG) return
@@ -113,6 +114,15 @@ object ManifestPatcher {
 
                                 override fun child(ns: String?, name: String): NodeVisitor {
                                     val visitor = super.child(ns, name)
+
+                                    // Adds a <meta-data> tag to make multi-install detection by HomeScreen work
+                                    if (addMetadata) {
+                                        addMetadata = false
+                                        super.child(ANDROID_NAMESPACE, "meta-data").apply {
+                                            attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, "isAliucord")
+                                            attr(ANDROID_NAMESPACE, "value", android.R.attr.value, TYPE_INT_BOOLEAN, 1)
+                                        }
+                                    }
 
                                     return when (name) {
                                         "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to appName))

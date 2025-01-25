@@ -103,7 +103,7 @@ class HomeModel(
             val aliucordPackages = installedPackages
                 .asSequence()
                 .filter {
-                    val isAliucordPkg = it.packageName == "com.aliucord"
+                    val isAliucordPkg = it.packageName == "com.aliucord" // Legacy installer builds do not have isAliucord metadata marker
                     val hasAliucordMeta = it.applicationInfo?.metaData?.containsKey("isAliucord") == true
                     isAliucordPkg || hasAliucordMeta
                 }
