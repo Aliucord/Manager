@@ -111,7 +111,7 @@ fun InstalledItemCard(
                     onClick = onOpenInfo,
                 )
 
-                if (data.baseUpdated) {
+                if (data.isUpToDate) {
                     SegmentedButton(
                         icon = painterResource(R.drawable.ic_launch),
                         text = stringResource(R.string.action_launch),

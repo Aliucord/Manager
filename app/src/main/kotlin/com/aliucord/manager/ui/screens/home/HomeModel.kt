@@ -2,6 +2,7 @@ package com.aliucord.manager.ui.screens.home
 
 import android.app.Application
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.provider.Settings
@@ -18,21 +19,30 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.GithubRepository
+import com.aliucord.manager.network.dto.BuildInfo
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.patcher.InstallMetadata
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
+import com.github.diamondminer88.zip.ZipReader
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 
 class HomeModel(
     private val application: Application,
     private val github: GithubRepository,
+    private val json: Json,
 ) : ScreenModel {
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
     var installations by mutableStateOf<InstallsState>(InstallsState.Fetching)
         private set
+
+    private var remoteDataJson: BuildInfo? = null
 
     init {
         // fetchInstallations() is called from UI
@@ -115,13 +125,10 @@ class HomeModel(
                 val versionName = it.versionName ?: return@mapNotNull null
                 val applicationInfo = it.applicationInfo ?: return@mapNotNull null
 
-                val baseVersion = it.applicationInfo?.metaData?.getInt("aliucordBaseVersion")
-                val isBaseUpdated = /* TODO: remote data json instead */ baseVersion == 0
-
                 InstallData(
                     name = packageManager.getApplicationLabel(applicationInfo).toString(),
                     packageName = it.packageName,
-                    baseUpdated = isBaseUpdated,
+                    isUpToDate = isInstallationUpToDate(it),
                     icon = packageManager
                         .getApplicationIcon(applicationInfo)
                         .toBitmap()
@@ -162,5 +169,35 @@ class HomeModel(
                 supportedVersion = DiscordVersion.Error
             }
         )
+    }
+
+    private fun isInstallationUpToDate(pkg: PackageInfo): Boolean {
+        // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
+        @Suppress("DEPRECATION")
+        val versionCode = pkg.versionCode
+
+        // Check if the base APK version is a mismatch
+        val supportedVersion = (supportedVersion as? DiscordVersion.Existing) ?: return true
+        if (supportedVersion.rawCode != versionCode) return false
+
+        // Try to parse install metadata. If none present, install was made via legacy installer.
+        val apkPath = pkg.applicationInfo?.publicSourceDir ?: return false
+        val installMetadata = try {
+            val metadataFile = ZipReader(apkPath).use { it.openEntry("aliucord.json")?.read() }
+                ?: return false
+
+            @OptIn(ExperimentalSerializationApi::class)
+            json.decodeFromStream<InstallMetadata>(metadataFile.inputStream())
+        } catch (t: Throwable) {
+            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package ${pkg.packageName}", t)
+            return false
+        }
+
+        // Check that all the installation components are up-to-date
+        val remoteBuildData = remoteDataJson ?: return true
+
+        // TODO: check for aliuhook version too once aliuhook starts using semver
+        return remoteBuildData.injectorVersion > installMetadata.injectorVersion ||
+            remoteBuildData.patchesVersion > installMetadata.patchesVersion
     }
 }
