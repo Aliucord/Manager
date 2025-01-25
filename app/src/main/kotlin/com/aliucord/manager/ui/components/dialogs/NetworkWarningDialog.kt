@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.window.DialogProperties
 import com.aliucord.manager.R
 
 @Composable
@@ -14,6 +15,9 @@ fun NetworkWarningDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            dismissOnClickOutside = false,
+        ),
         confirmButton = {
             FilledTonalButton(
                 onClick = onConfirm,

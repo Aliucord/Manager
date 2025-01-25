@@ -27,7 +27,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.ProjectHeader
-import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.home.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
@@ -51,30 +50,6 @@ class HomeScreen : Screen {
             onPauseOrDispose {}
         }
 
-        var showNetworkWarningDialog by remember { mutableStateOf(false) }
-        val onClickInstall: () -> Unit = remember {
-            {
-                if (model.isNetworkDangerous()) {
-                    showNetworkWarningDialog = true
-                } else {
-                    navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion))
-                }
-            }
-        }
-
-        // TODO: trigger this for updates too?
-        if (showNetworkWarningDialog) {
-            NetworkWarningDialog(
-                onConfirm = {
-                    showNetworkWarningDialog = false
-                    navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion))
-                },
-                onDismiss = {
-                    showNetworkWarningDialog = false
-                },
-            )
-        }
-
         Scaffold(
             topBar = { HomeAppBar() },
         ) { padding ->
@@ -82,13 +57,13 @@ class HomeScreen : Screen {
                 is InstallsState.Fetched -> PresentInstallsContent(
                     model = model,
                     padding = padding,
-                    onClickInstall = onClickInstall,
+                    onClickInstall = { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) },
                 )
 
                 InstallsState.Fetching -> LoadingInstallsContent(padding = padding)
 
                 InstallsState.None -> NoInstallsContent(
-                    onClickInstall = onClickInstall,
+                    onClickInstall = { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) },
                     modifier = Modifier
                         .padding(padding.exclude(PaddingValuesSides.Bottom)),
                 )

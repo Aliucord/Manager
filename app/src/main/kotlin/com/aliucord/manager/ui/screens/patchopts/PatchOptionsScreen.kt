@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -20,6 +21,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.TextDivider
+import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameState
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
@@ -52,6 +54,17 @@ class PatchOptionsScreen(
 
             if (!context.isIgnoringBatteryOptimizations())
                 context.requestNoBatteryOptimizations()
+        }
+
+        var showNetworkWarningDialog by rememberSaveable { mutableStateOf(model.isNetworkDangerous()) }
+        if (showNetworkWarningDialog) {
+            NetworkWarningDialog(
+                onConfirm = { showNetworkWarningDialog = false },
+                onDismiss = {
+                    showNetworkWarningDialog = false
+                    navigator.pop()
+                },
+            )
         }
 
         Scaffold(
