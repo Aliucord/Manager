@@ -13,7 +13,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
@@ -57,7 +56,11 @@ fun InstalledItemCard(
 
                 Column {
                     Text(
-                        text = "\"${data.name}\"",
+                        text = if (data.name.contains(' ')) {
+                            stringResource(R.string.installs_item_quoted_title, data.name)
+                        } else {
+                            data.name
+                        },
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .94f),
                     )
@@ -76,24 +79,13 @@ fun InstalledItemCard(
 
                 Spacer(Modifier.weight(1f, fill = true))
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalAlignment = Alignment.End,
+                VersionDisplay(
+                    version = data.version,
+                    prefix = { append("v") },
                     modifier = Modifier
                         .alpha(.6f)
                         .padding(end = 4.dp),
-                ) {
-                    VersionDisplay(
-                        version = data.version,
-                        prefix = { append("v") },
-                    )
-
-                    // TODO: display install core commit version
-                    // Text(
-                    //     text = data.commit,
-                    //     style = MaterialTheme.typography.labelLarge,
-                    // )
-                }
+                )
             }
 
             Row(
@@ -131,25 +123,4 @@ fun InstalledItemCard(
             }
         }
     }
-}
-
-@Composable
-private fun LabelTextItem(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = buildAnnotatedString {
-            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                append("• ")
-                append(label)
-            }
-            append(" ")
-            append(value)
-        },
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .9f),
-        modifier = modifier,
-    )
 }
