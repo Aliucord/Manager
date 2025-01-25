@@ -1,12 +1,6 @@
 name: Sync Crowdin
 
 on:
-  push:
-    branches:
-      - 'main'
-    paths:
-      - 'app/src/main/res/values/strings.xml'
-      - '.github/workflows/crowdin.yml'
   schedule:
     - cron: "0 17 * * 6" # "At 17:00 on Saturday."
   workflow_dispatch:
