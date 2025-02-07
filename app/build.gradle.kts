@@ -87,7 +87,8 @@ android {
             excludes += "/com/android/tools/smali/**"
             excludes += "/org/eclipse/jgit/**"
 
-            // Other
+            // bouncycastle
+            excludes += "/META-INF/versions/9/OSGI-INF/MANIFEST.MF"
             excludes += "/org/bouncycastle/**"
         }
         jniLibs {
