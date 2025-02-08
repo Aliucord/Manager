@@ -142,7 +142,7 @@ object AxmlUtil {
                     /* parent = */ xmlChunk,
                 )
                 val endChunk = XmlEndElementChunk(
-                    /* namespaceIndex = */ namespaceIdx,
+                    /* namespaceIndex = */ -1,
                     /* nameIndex = */ monochromeIdx,
                     /* parent = */ xmlChunk,
                 )
