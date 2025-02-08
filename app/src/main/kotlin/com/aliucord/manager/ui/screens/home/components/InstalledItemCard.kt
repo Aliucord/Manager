@@ -56,11 +56,7 @@ fun InstalledItemCard(
 
                 Column {
                     Text(
-                        text = if (data.name.contains(' ')) {
-                            stringResource(R.string.installs_item_quoted_title, data.name)
-                        } else {
-                            data.name
-                        },
+                        text = data.name,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .94f),
                     )
