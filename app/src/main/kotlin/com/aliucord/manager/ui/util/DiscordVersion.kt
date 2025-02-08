@@ -22,7 +22,8 @@ sealed interface DiscordVersion : Comparable<DiscordVersion>, Parcelable {
         val name: String,
         val code: Int,
     ) : DiscordVersion {
-        val rawCode: Int
+        /** The code without the release type. (ie. 126021 -> 12621) */
+        val typelessCode: Int
             get() = (code / 1000 * 100) + code % 100
     }
 
@@ -32,7 +33,7 @@ sealed interface DiscordVersion : Comparable<DiscordVersion>, Parcelable {
             is None -> 0
             is Existing -> {
                 if (other is Existing) {
-                    other.rawCode.compareTo(rawCode)
+                    other.typelessCode.compareTo(typelessCode)
                 } else {
                     0
                 }

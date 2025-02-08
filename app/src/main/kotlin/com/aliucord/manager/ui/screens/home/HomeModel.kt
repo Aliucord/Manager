@@ -27,6 +27,7 @@ import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
 import com.github.diamondminer88.zip.ZipReader
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -45,8 +46,12 @@ class HomeModel(
     private var remoteDataJson: BuildInfo? = null
 
     init {
-        // fetchInstallations() is called from UI
-        fetchSupportedVersion()
+        // fetchInstallations() is also called from UI first to ensure fast TTI
+
+        screenModelScope.launch {
+            fetchSupportedVersion()
+            fetchInstallations() // Re-fetch installations to set the up-to-date statuses
+        }
     }
 
     fun launchApp(packageName: String) {
@@ -147,11 +152,16 @@ class HomeModel(
         )
     }
 
-    private fun fetchSupportedVersion() = screenModelScope.launchBlock {
+    suspend fun fetchSupportedVersion() {
         github.getDataJson().fold(
             success = {
-                val versionCode = it.discordVersionCode.toIntOrNull() ?: return@fold
+                val versionCode = it.discordVersionCode.toIntOrNull()
+                if (versionCode == null) {
+                    supportedVersion = DiscordVersion.Error
+                    return
+                }
 
+                remoteDataJson = it
                 supportedVersion = DiscordVersion.Existing(
                     type = DiscordVersion.parseVersionType(versionCode),
                     name = it.discordVersionName.split("-")[0].trim(),
@@ -166,13 +176,14 @@ class HomeModel(
     }
 
     private fun isInstallationUpToDate(pkg: PackageInfo): Boolean {
+        val remoteBuildData = remoteDataJson ?: return true
+
         // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
         @Suppress("DEPRECATION")
         val versionCode = pkg.versionCode
 
         // Check if the base APK version is a mismatch
-        val supportedVersion = (supportedVersion as? DiscordVersion.Existing) ?: return true
-        if (supportedVersion.rawCode != versionCode) return false
+        if (remoteBuildData.discordVersionCode.toIntOrNull() != versionCode) return false
 
         // Try to parse install metadata. If none present, install was made via legacy installer.
         val apkPath = pkg.applicationInfo?.publicSourceDir ?: return false
@@ -188,10 +199,8 @@ class HomeModel(
         }
 
         // Check that all the installation components are up-to-date
-        val remoteBuildData = remoteDataJson ?: return true
-
         // TODO: check for aliuhook version too once aliuhook starts using semver
-        return remoteBuildData.injectorVersion > installMetadata.injectorVersion ||
-            remoteBuildData.patchesVersion > installMetadata.patchesVersion
+        return remoteBuildData.injectorVersion == installMetadata.injectorVersion &&
+            remoteBuildData.patchesVersion == installMetadata.patchesVersion
     }
 }
