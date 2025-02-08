@@ -6,6 +6,7 @@
 
 package com.aliucord.manager.ui.screens.home
 
+import android.os.Parcelable
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,9 +34,13 @@ import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import kotlin.math.*
 
-class HomeScreen : Screen {
+@Parcelize
+class HomeScreen : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "Home"
 
     @Composable

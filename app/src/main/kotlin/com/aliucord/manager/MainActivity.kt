@@ -12,9 +12,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.navigator.*
 import cafe.adriel.voyager.transitions.ScreenTransition
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.*
@@ -47,38 +49,43 @@ class MainActivity : ComponentActivity() {
                     UpdaterDialog()
                 }
 
-                Navigator(
-                    screen = HomeScreen(),
-                    onBackPressed = null,
-                ) { navigator ->
-                    BackHandler {
-                        navigator.back(this@MainActivity)
-                    }
-
-                    ScreenTransition(
-                        navigator = navigator,
-                        transition = block@{
-                            val fadeIn = fadeIn(tween(durationMillis = 300))
-                            val fadeOut = fadeOut(tween(durationMillis = 750, delayMillis = 200))
-
-                            when {
-                                // Going from Home -> InstallOptions
-                                initialState is HomeScreen && targetState is PatchOptionsScreen ->
-                                    slideInVertically { (it * 1.5).toInt() } + fadeIn togetherWith fadeOut
-                                // Going from InstallOptions -> Home
-                                initialState is PatchOptionsScreen && targetState is HomeScreen ->
-                                    fadeIn togetherWith slideOutVertically { it * 2 } + fadeOut
-                                // Going from InstallOptions -> Install
-                                initialState is PatchOptionsScreen && targetState is PatchingScreen ->
-                                    slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
-                                // Going from Install -> InstallOptions
-                                initialState is PatchingScreen && targetState is PatchOptionsScreen ->
-                                    fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
-
-                                else -> fadeIn togetherWith fadeOut
-                            }
+                @OptIn(ExperimentalVoyagerApi::class)
+                CompositionLocalProvider(
+                    LocalNavigatorSaver provides parcelableNavigatorSaver(),
+                ) {
+                    Navigator(
+                        screen = HomeScreen(),
+                        onBackPressed = null,
+                    ) { navigator ->
+                        BackHandler {
+                            navigator.back(this@MainActivity)
                         }
-                    )
+
+                        ScreenTransition(
+                            navigator = navigator,
+                            transition = block@{
+                                val fadeIn = fadeIn(tween(durationMillis = 300))
+                                val fadeOut = fadeOut(tween(durationMillis = 750, delayMillis = 200))
+
+                                when {
+                                    // Going from Home -> InstallOptions
+                                    initialState is HomeScreen && targetState is PatchOptionsScreen ->
+                                        slideInVertically { (it * 1.5).toInt() } + fadeIn togetherWith fadeOut
+                                    // Going from InstallOptions -> Home
+                                    initialState is PatchOptionsScreen && targetState is HomeScreen ->
+                                        fadeIn togetherWith slideOutVertically { it * 2 } + fadeOut
+                                    // Going from InstallOptions -> Install
+                                    initialState is PatchOptionsScreen && targetState is PatchingScreen ->
+                                        slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
+                                    // Going from Install -> InstallOptions
+                                    initialState is PatchingScreen && targetState is PatchOptionsScreen ->
+                                        fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
+
+                                    else -> fadeIn togetherWith fadeOut
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }

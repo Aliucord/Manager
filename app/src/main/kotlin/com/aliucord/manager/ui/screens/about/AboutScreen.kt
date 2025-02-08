@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.ui.screens.about
 
+import android.os.Parcelable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -28,8 +29,12 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
-class AboutScreen : Screen {
+@Parcelize
+class AboutScreen : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "About"
 
     @Composable

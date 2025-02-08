@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.ui.screens.plugins
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,8 +30,12 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.screens.plugins.components.Changelog
 import com.aliucord.manager.ui.screens.plugins.components.PluginCard
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
-class PluginsScreen : Screen {
+@Parcelize
+class PluginsScreen : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "Plugins"
 
     @Composable

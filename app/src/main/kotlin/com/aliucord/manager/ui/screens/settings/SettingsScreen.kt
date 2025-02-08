@@ -5,6 +5,7 @@
 
 package com.aliucord.manager.ui.screens.settings
 
+import android.os.Parcelable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -23,8 +24,12 @@ import com.aliucord.manager.di.DownloaderSetting
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.ui.components.settings.*
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
-class SettingsScreen : Screen {
+@Parcelize
+class SettingsScreen : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "Settings"
 
     @Composable

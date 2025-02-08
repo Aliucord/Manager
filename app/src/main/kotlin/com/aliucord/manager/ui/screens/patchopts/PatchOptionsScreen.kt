@@ -1,5 +1,6 @@
 package com.aliucord.manager.ui.screens.patchopts
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -31,12 +32,16 @@ import com.aliucord.manager.ui.util.*
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import com.aliucord.manager.util.requestNoBatteryOptimizations
 import kotlinx.coroutines.delay
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
 
+@Parcelize
 class PatchOptionsScreen(
     private val prefilledOptions: PatchOptions = PatchOptions.Default,
     private val supportedVersion: DiscordVersion = DiscordVersion.None,
-) : Screen {
+) : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "PatchOptions"
 
     @Composable
