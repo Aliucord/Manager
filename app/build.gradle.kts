@@ -52,11 +52,13 @@ android {
     }
 
     buildTypes {
+        val hasReleaseSigning = System.getenv("SIGNING_STORE_PASSWORD")?.isNotEmpty() == true
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             isCrunchPngs = true
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName(if (hasReleaseSigning) "release" else "debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
