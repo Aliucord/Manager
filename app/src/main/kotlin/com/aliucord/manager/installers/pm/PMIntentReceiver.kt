@@ -42,7 +42,7 @@ class PMIntentReceiver : BroadcastReceiver() {
     private fun handleSessionIntent(context: Context, intent: Intent, sessionId: Int) {
         val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)
 
-        // Launch the user action intent and forward it to PMResultReceiver to keep relaunching it
+        // Launch the user action intent
         if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
             @Suppress("DEPRECATION")
             val confirmationIntent = intent
@@ -50,15 +50,6 @@ class PMIntentReceiver : BroadcastReceiver() {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             context.startActivity(confirmationIntent)
-
-            if (intent.getBooleanExtra(EXTRA_RELAY_ENABLED, false)) {
-                val relayIntent = Intent(PMResultReceiver.ACTION_RECEIVE_INTENT)
-                    .setPackage(BuildConfig.APPLICATION_ID)
-                    .putExtra(PMResultReceiver.EXTRA_SESSION_ID, sessionId)
-                    .putExtra(PMResultReceiver.EXTRA_USER_ACTION_INTENT, confirmationIntent)
-
-                context.sendBroadcast(relayIntent)
-            }
 
             return
         }
