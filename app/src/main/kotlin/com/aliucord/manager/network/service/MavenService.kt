@@ -14,13 +14,4 @@ class MavenService(
             url("$baseUrl/${coords}/maven-metadata.xml")
         }
     }
-
-    companion object {
-        fun getAARUrl(baseUrl: String, coords: String): String {
-            val parts = coords.split("[:.]".toRegex())
-            val artifact = parts[parts.lastIndex - 1]
-            val version = parts.last()
-            return "$baseUrl/${parts.joinToString("/")}/$artifact-$version.aar"
-        }
-    }
 }

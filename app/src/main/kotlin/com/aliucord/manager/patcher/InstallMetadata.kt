@@ -27,7 +27,7 @@ data class InstallMetadata(
     /**
      * Version (commit hash) of the Aliuhook build that was injected into the APK.
      */
-    val aliuhookVersion: String,
+    val aliuhookVersion: SemVer,
 
     /**
      * Version of the injector build that was injected into the APK.

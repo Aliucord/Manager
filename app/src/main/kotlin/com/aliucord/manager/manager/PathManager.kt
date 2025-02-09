@@ -71,7 +71,7 @@ class PathManager(context: Context) {
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
      */
-    fun cachedAliuhookAAR(version: String) = externalCacheDir
+    fun cachedAliuhookAAR(version: SemVer) = externalCacheDir
         .resolve("aliuhook").apply { mkdirs() }
         .resolve("$version.aar")
 

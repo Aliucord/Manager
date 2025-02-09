@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
@@ -25,11 +26,11 @@ class DownloadAliuhookStep : DownloadStep(), IDexProvider, KoinComponent {
     /**
      * This is populated right before the download starts (ref: [execute])
      */
-    lateinit var targetVersion: String
+    lateinit var targetVersion: SemVer
         private set
 
     override val localizedName = R.string.patch_step_dl_aliuhook
-    override val targetUrl get() = AliucordMavenRepository.getAliuhookUrl(targetVersion)
+    override val targetUrl get() = AliucordMavenRepository.getAliuhookUrl(targetVersion.toString())
     override val targetFile get() = paths.cachedAliuhookAAR(targetVersion)
 
     override suspend fun execute(container: StepRunner) {
