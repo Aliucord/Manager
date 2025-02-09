@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -137,21 +136,20 @@ class PatchOptionsScreen(
                     )
                 }
 
-                TextDivider(
-                    text = stringResource(R.string.patchopts_divider_advanced),
-                    modifier = Modifier.padding(top = 12.dp),
-                )
+                if (model.isDevMode) {
+                    TextDivider(
+                        text = stringResource(R.string.patchopts_divider_advanced),
+                        modifier = Modifier.padding(top = 12.dp),
+                    )
 
-                SwitchPatchOption(
-                    icon = painterResource(R.drawable.ic_bug),
-                    name = stringResource(R.string.patchopts_debuggable_title),
-                    description = stringResource(R.string.patchopts_debuggable_desc),
-                    value = model.debuggable,
-                    onValueChange = model::changeDebuggable,
-                    enabled = model.isDevMode,
-                    modifier = Modifier
-                        .thenIf(!model.isDevMode) { alpha(.6f) }
-                )
+                    SwitchPatchOption(
+                        icon = painterResource(R.drawable.ic_bug),
+                        name = stringResource(R.string.patchopts_debuggable_title),
+                        description = stringResource(R.string.patchopts_debuggable_desc),
+                        value = model.debuggable,
+                        onValueChange = model::changeDebuggable,
+                    )
+                }
 
                 Spacer(Modifier.weight(1f))
 
