@@ -128,6 +128,8 @@ fun PresentInstallsContent(
                 secondaryInstall = true,
                 onClick = onClickInstall,
                 modifier = Modifier
+                    .padding(top = 10.dp)
+                    .height(50.dp)
                     .fillMaxWidth()
             )
         }
