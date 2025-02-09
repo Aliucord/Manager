@@ -176,6 +176,7 @@ class HomeModel(
     }
 
     private fun isInstallationUpToDate(pkg: PackageInfo): Boolean {
+        // Assume up-to-date when remote data hasn't been fetched yet
         val remoteBuildData = remoteDataJson ?: return true
 
         // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`

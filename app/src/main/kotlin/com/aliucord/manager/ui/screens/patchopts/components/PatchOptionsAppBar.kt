@@ -11,10 +11,12 @@ import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.screens.settings.SettingsScreen
 
 @Composable
-fun PatchOptionsAppBar() {
+fun PatchOptionsAppBar(
+    isUpdate: Boolean = false,
+) {
     TopAppBar(
         navigationIcon = { BackButton() },
-        title = { Text(stringResource(R.string.action_add_install)) },
+        title = { Text(stringResource(if (!isUpdate) R.string.action_add_install else R.string.action_update_install)) },
         actions = {
             val navigator = LocalNavigator.currentOrThrow
 
