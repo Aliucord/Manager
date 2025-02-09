@@ -5,12 +5,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextDivider(
     text: String,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -23,7 +25,7 @@ fun TextDivider(
 
         Text(
             text = text,
-            style = MaterialTheme.typography.bodySmall,
+            style = style,
             color = MaterialTheme.colorScheme.outline,
             fontWeight = FontWeight.SemiBold,
         )

@@ -22,7 +22,7 @@ fun SettingsItem(
         modifier = modifier
             .heightIn(min = 64.dp)
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 4.dp),
+            .padding(horizontal = 18.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

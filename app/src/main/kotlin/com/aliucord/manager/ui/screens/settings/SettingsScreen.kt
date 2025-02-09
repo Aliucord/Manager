@@ -5,13 +5,13 @@
 
 package com.aliucord.manager.ui.screens.settings
 
+import android.os.Build
 import android.os.Parcelable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,8 +22,8 @@ import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.di.DownloaderSetting
 import com.aliucord.manager.ui.components.BackButton
-import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.ui.components.settings.*
+import com.aliucord.manager.ui.screens.settings.components.ThemeDialog
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -71,18 +71,23 @@ class SettingsScreen : Screen, Parcelable {
                     }
                 }
 
-                SettingsSwitch(
-                    label = stringResource(R.string.setting_dynamic_color),
-                    pref = preferences.dynamicColor,
-                    icon = { Icon(painterResource(R.drawable.ic_palette), null) }
-                ) {
-                    preferences.dynamicColor = it
+                // Material You theming on Android 12+
+                if (Build.VERSION.SDK_INT >= 31) {
+                    SettingsSwitch(
+                        label = stringResource(R.string.setting_dynamic_color),
+                        secondaryLabel = stringResource(R.string.setting_dynamic_color_desc),
+                        pref = preferences.dynamicColor,
+                        icon = { Icon(painterResource(R.drawable.ic_palette), null) }
+                    ) {
+                        preferences.dynamicColor = it
+                    }
                 }
 
                 SettingsHeader(stringResource(R.string.settings_advanced))
 
                 SettingsSwitch(
                     label = stringResource(R.string.settings_developer_options),
+                    secondaryLabel = stringResource(R.string.settings_developer_options_desc),
                     pref = preferences.devMode,
                     icon = { Icon(painterResource(R.drawable.ic_code), null) }
                 ) {
@@ -96,8 +101,6 @@ class SettingsScreen : Screen, Parcelable {
                     pref = preferences.keepPatchedApks,
                     onPrefChange = { preferences.keepPatchedApks = it },
                 )
-
-                Spacer(modifier = Modifier.height(14.dp))
 
                 SettingsSwitch(
                     label = stringResource(R.string.setting_alt_downloader),
@@ -113,12 +116,17 @@ class SettingsScreen : Screen, Parcelable {
                     }
                 )
 
+                var clearedCache by rememberSaveable { mutableStateOf(false) }
                 Button(
+                    shape = ShapeDefaults.Large,
+                    enabled = !clearedCache,
+                    onClick = {
+                        clearedCache = true
+                        model.clearCacheDir()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(18.dp),
-                    shape = ShapeDefaults.Large,
-                    onClick = model::clearCacheDir
                 ) {
                     Text(
                         text = stringResource(R.string.setting_clear_cache),
@@ -128,58 +136,4 @@ class SettingsScreen : Screen, Parcelable {
             }
         }
     }
-}
-
-@Composable
-fun ThemeDialog(
-    currentTheme: Theme,
-    onDismissRequest: () -> Unit,
-    onConfirm: (Theme) -> Unit,
-) {
-    var selectedTheme by rememberSaveable { mutableStateOf(currentTheme) }
-
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        icon = {
-            Icon(
-                painter = painterResource(R.drawable.ic_brush),
-                contentDescription = stringResource(R.string.settings_theme)
-            )
-        },
-        title = { Text(stringResource(R.string.settings_theme)) },
-        text = {
-            Column {
-                Theme.entries.forEach { theme ->
-                    Row(
-                        modifier = Modifier
-                            .clickable { selectedTheme = theme }
-                            .padding(start = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = theme.toDisplayName(),
-                            style = MaterialTheme.typography.labelLarge
-                        )
-
-                        Spacer(Modifier.weight(1f, true))
-
-                        RadioButton(
-                            selected = theme == selectedTheme,
-                            onClick = { selectedTheme = theme }
-                        )
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onConfirm(selectedTheme)
-                    onDismissRequest()
-                }
-            ) {
-                Text(stringResource(R.string.action_apply))
-            }
-        }
-    )
 }
