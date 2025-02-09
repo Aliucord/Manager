@@ -30,7 +30,7 @@
   <string name="action_open_info">Abrir informações</string>
   <string name="action_reset_default">Restaurar</string>
   <string name="permissions_grant_title">Conceder permissões</string>
-  <string name="permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
+  <string name="storage_permissions_grant_body">Para o Gerenciador do Aliucord funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_theme">Tema</string>

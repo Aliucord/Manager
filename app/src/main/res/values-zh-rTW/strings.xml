@@ -30,7 +30,7 @@
   <string name="action_open_info">開啟資訊</string>
   <string name="action_reset_default">重設為預設植</string>
   <string name="permissions_grant_title">授予權限</string>
-  <string name="permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
+  <string name="storage_permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 啟動失敗</string>
   <string name="settings_theme">主題</string>

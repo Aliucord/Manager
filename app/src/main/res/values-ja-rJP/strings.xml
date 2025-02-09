@@ -30,7 +30,7 @@
   <string name="action_open_info">情報を表示</string>
   <string name="action_reset_default">既定値に戻す</string>
   <string name="permissions_grant_title">権限を付与</string>
-  <string name="permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
+  <string name="storage_permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
 ~/Aliucordに共有データが保存されるため、Managerを機能させるためには権限が必要です。</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucordの起動に失敗しました</string>

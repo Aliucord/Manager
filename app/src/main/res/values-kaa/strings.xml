@@ -30,7 +30,7 @@
   <string name="action_open_info">Open info</string>
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Ruqsat beriw</string>
-  <string name="permissions_grant_body">In order for Aliucord Manager to function, file permissions are required. Since shared data is stored in ~/Aliucord, permissions are required in order to access it.</string>
+  <string name="storage_permissions_grant_body">In order for Aliucord Manager to function, file permissions are required. Since shared data is stored in ~/Aliucord, permissions are required in order to access it.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucordtı iske túsiriw ámelge aspadı</string>
   <string name="settings_theme">Tema</string>

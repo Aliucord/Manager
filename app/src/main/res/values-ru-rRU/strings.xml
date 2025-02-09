@@ -30,7 +30,7 @@
   <string name="action_open_info">Открыть инфо</string>
   <string name="action_reset_default">Сброс по умолчанию</string>
   <string name="permissions_grant_title">Предоставление разрешений</string>
-  <string name="permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
+  <string name="storage_permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
   <string name="installs_no_installs">Установки не найдены!</string>
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
   <string name="settings_theme">Тема</string>

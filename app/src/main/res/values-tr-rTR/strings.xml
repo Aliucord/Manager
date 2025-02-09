@@ -30,7 +30,7 @@
   <string name="action_open_info">Open info</string>
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">İzinleri Ver</string>
-  <string name="permissions_grant_body">Aliucord Yöneticisinin düzgün çalışması için, dosya izinleri vermeniz gerekli. Paylaşılan uygulama verileri ~/Aliucord\'ta depolandığı için, yöneticinin çalışması izin gerektirir.</string>
+  <string name="storage_permissions_grant_body">Aliucord Yöneticisinin düzgün çalışması için, dosya izinleri vermeniz gerekli. Paylaşılan uygulama verileri ~/Aliucord\'ta depolandığı için, yöneticinin çalışması izin gerektirir.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord başlatılamadı</string>
   <string name="settings_theme">Tema</string>

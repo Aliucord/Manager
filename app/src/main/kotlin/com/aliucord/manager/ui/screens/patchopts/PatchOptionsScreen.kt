@@ -22,6 +22,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.AnimatedVersionDisplay
 import com.aliucord.manager.ui.components.TextDivider
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
+import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameState
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
@@ -70,6 +71,8 @@ class PatchOptionsScreen(
                 },
             )
         }
+
+        UnknownSourcesPermissionDialog()
 
         Scaffold(
             topBar = { PatchOptionsAppBar(isUpdate = prefilledOptions != null) },

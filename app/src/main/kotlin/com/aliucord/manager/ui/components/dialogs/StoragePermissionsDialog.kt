@@ -52,7 +52,7 @@ private fun ManageStorageDialog() {
                 }
             },
             title = { Text(stringResource(R.string.permissions_grant_title)) },
-            text = { Text(stringResource(R.string.permissions_grant_body)) },
+            text = { Text(stringResource(R.string.storage_permissions_grant_body)) },
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false
@@ -75,7 +75,7 @@ private fun ExternalStorageDialog() {
                 }
             },
             title = { Text(stringResource(R.string.permissions_grant_title)) },
-            text = { Text(stringResource(R.string.permissions_grant_body)) },
+            text = { Text(stringResource(R.string.storage_permissions_grant_body)) },
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false

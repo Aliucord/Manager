@@ -30,7 +30,7 @@
   <string name="action_open_info">Mở thông tin</string>
   <string name="action_reset_default">Khôi phục về mặc định</string>
   <string name="permissions_grant_title">Cấp phép truy cập</string>
-  <string name="permissions_grant_body">Để trình quản lý Aliucord hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
+  <string name="storage_permissions_grant_body">Để trình quản lý Aliucord hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
   <string name="settings_theme">Chủ đề</string>

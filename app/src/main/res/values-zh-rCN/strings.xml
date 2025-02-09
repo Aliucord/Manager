@@ -30,7 +30,7 @@
   <string name="action_open_info">打开信息</string>
   <string name="action_reset_default">重置为默认</string>
   <string name="permissions_grant_title">授予权限</string>
-  <string name="permissions_grant_body">为了使 Aliucord 管理器正常运行，需要文件权限。由于共享数据存储在 ~/Aliucord 中，因此需要权限才能访问它。</string>
+  <string name="storage_permissions_grant_body">为了使 Aliucord 管理器正常运行，需要文件权限。由于共享数据存储在 ~/Aliucord 中，因此需要权限才能访问它。</string>
   <string name="installs_no_installs">未找到任何安装！</string>
   <string name="launch_aliucord_fail">无法启动 Aliucord</string>
   <string name="settings_theme">主题</string>
