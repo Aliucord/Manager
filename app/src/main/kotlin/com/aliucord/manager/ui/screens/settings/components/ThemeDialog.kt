@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.Theme
 
@@ -49,9 +50,18 @@ fun ThemeDialog(
                             .clip(MaterialTheme.shapes.medium)
                             .padding(horizontal = 6.dp, vertical = 8.dp),
                     ) {
+                        Icon(
+                            painter = theme.toPainter(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(end = 14.dp)
+                                .size(26.dp),
+                        )
+
                         Text(
                             text = theme.toDisplayName(),
-                            style = MaterialTheme.typography.labelLarge,
+                            style = MaterialTheme.typography.labelLarge
+                                .copy(fontSize = 14.sp)
                         )
 
                         Spacer(Modifier.Companion.weight(1f, true))

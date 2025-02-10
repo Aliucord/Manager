@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -66,5 +67,12 @@ enum class Theme {
         SYSTEM -> stringResource(R.string.theme_system)
         LIGHT -> stringResource(R.string.theme_light)
         DARK -> stringResource(R.string.theme_dark)
+    }
+
+    @Composable
+    fun toPainter() = when (this) {
+        SYSTEM -> painterResource(R.drawable.ic_sync)
+        LIGHT -> painterResource(R.drawable.ic_light)
+        DARK -> painterResource(R.drawable.ic_night)
     }
 }
