@@ -61,7 +61,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
         val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
 
         // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
-        var showAbortWarning by remember(model.state.collectAsState()) { mutableStateOf(false) }
+        var showAbortWarning by remember(model.state.collectAsState().value) { mutableStateOf(false) }
 
         // The currently expanded step group on this screen
         var expandedGroup by remember { mutableStateOf<StepGroup?>(StepGroup.Prepare) }
