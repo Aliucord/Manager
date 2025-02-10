@@ -61,7 +61,7 @@ class PatchOptionsScreen(
                 context.requestNoBatteryOptimizations()
         }
 
-        var showNetworkWarningDialog by rememberSaveable { mutableStateOf(model.isNetworkDangerous()) }
+        var showNetworkWarningDialog by remember { mutableStateOf(model.isNetworkDangerous()) }
         if (showNetworkWarningDialog) {
             NetworkWarningDialog(
                 onConfirm = { showNetworkWarningDialog = false },
@@ -92,7 +92,7 @@ class PatchOptionsScreen(
                     textAlign = TextAlign.Center,
                 )
 
-                var animatedVersion by remember { mutableStateOf<DiscordVersion>(DiscordVersion.None) }
+                var animatedVersion by rememberSaveable { mutableStateOf<DiscordVersion>(DiscordVersion.None) }
                 LaunchedEffect(Unit) {
                     animatedVersion = supportedVersion
                 }

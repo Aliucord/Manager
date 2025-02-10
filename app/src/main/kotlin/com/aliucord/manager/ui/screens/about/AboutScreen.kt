@@ -131,7 +131,7 @@ private fun UserEntry(name: String, roles: String, username: String = name) {
             .clickable(
                 onClick = { uriHandler.openUri("https://github.com/$username") },
                 indication = ripple(bounded = false, radius = 90.dp),
-                interactionSource = remember { MutableInteractionSource() }
+                interactionSource = remember(::MutableInteractionSource)
             )
             .widthIn(min = 100.dp)
     ) {

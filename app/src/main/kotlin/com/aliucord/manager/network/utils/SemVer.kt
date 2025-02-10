@@ -1,6 +1,8 @@
 package com.aliucord.manager.network.utils
 
+import android.os.Parcelable
 import androidx.compose.runtime.Immutable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -12,13 +14,14 @@ import kotlinx.serialization.encoding.Encoder
  * Parses a Semantic version in the format of `v1.0.0` (v[major].[minor].[patch])
  */
 @Immutable
+@Parcelize
 @Serializable(SemVer.Serializer::class)
 data class SemVer(
     val major: Int,
     val minor: Int,
     val patch: Int,
     private val vPrefix: Boolean = false,
-) : Comparable<SemVer> {
+) : Comparable<SemVer>, Parcelable {
     override fun compareTo(other: SemVer): Int {
         val pairs = arrayOf(
             major to other.major,

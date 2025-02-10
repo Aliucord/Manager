@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,7 @@ fun CustomComponentVersionPicker(
     onDelete: (SemVer) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var selectedVersion by remember { mutableStateOf<SemVer?>(null) }
+    var selectedVersion by rememberSaveable { mutableStateOf<SemVer?>(null) }
 
     AlertDialog(
         properties = DialogProperties(

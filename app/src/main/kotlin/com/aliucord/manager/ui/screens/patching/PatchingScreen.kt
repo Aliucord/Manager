@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -61,10 +62,10 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
         val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
 
         // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
-        var showAbortWarning by remember(model.state.collectAsState().value) { mutableStateOf(false) }
+        var showAbortWarning by rememberSaveable(model.state.collectAsState().value) { mutableStateOf(false) }
 
         // The currently expanded step group on this screen
-        var expandedGroup by remember { mutableStateOf<StepGroup?>(StepGroup.Prepare) }
+        var expandedGroup by rememberSaveable { mutableStateOf<StepGroup?>(StepGroup.Prepare) }
 
         // Only show exit warning if currently working
         val onTryExit: () -> Unit = remember {
@@ -210,7 +211,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                     }
 
                     item(key = "BUTTONS") {
-                        var cacheCleared by remember { mutableStateOf(false) }
+                        var cacheCleared by rememberSaveable { mutableStateOf(false) }
                         val filteredState by remember { model.state.filter { it.isProgressChange } }
                             .collectAsState(initial = PatchingScreenState.Working)
 
