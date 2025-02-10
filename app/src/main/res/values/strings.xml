@@ -34,7 +34,7 @@
 
   <string name="permissions_grant_title">Grant Permissions</string>
   <string name="storage_permissions_grant_body">In order for Aliucord Manager to function, file permissions are required. Since shared data is stored in ~/Aliucord, permissions are required in order to access it.</string>
-  <string name="install_permissions_grant_body">Installing Aliucord requires permissions to install apps from unknown sources.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
 
   <string name="installs_no_installs">No installations found!</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>

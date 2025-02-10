@@ -8,9 +8,14 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
@@ -51,8 +56,20 @@ private fun ManageStorageDialog() {
                     Text(stringResource(R.string.action_open_settings))
                 }
             },
+            icon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_tools),
+                    contentDescription = null,
+                    modifier = Modifier.size(32.dp),
+                )
+            },
             title = { Text(stringResource(R.string.permissions_grant_title)) },
-            text = { Text(stringResource(R.string.storage_permissions_grant_body)) },
+            text = {
+                Text(
+                    text = stringResource(R.string.storage_permissions_grant_body),
+                    textAlign = TextAlign.Center,
+                )
+            },
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false

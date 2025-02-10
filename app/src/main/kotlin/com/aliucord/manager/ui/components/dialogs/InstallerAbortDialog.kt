@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import com.aliucord.manager.R
 
 @Composable
@@ -39,7 +40,10 @@ fun InstallerAbortDialog(
             Text(stringResource(R.string.installer_abort_title))
         },
         text = {
-            Text(stringResource(R.string.installer_abort_body))
+            Text(
+                text = stringResource(R.string.installer_abort_body),
+                textAlign = TextAlign.Center,
+            )
         },
         icon = {
             Icon(Icons.Filled.Warning, contentDescription = null)

@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.DialogProperties
 import com.aliucord.manager.R
 
@@ -40,7 +41,12 @@ fun NetworkWarningDialog(
             }
         },
         title = { Text(stringResource(R.string.network_warning_title)) },
-        text = { Text(stringResource(R.string.network_warning_body)) },
+        text = {
+            Text(
+                text = stringResource(R.string.network_warning_body),
+                textAlign = TextAlign.Center,
+            )
+        },
         icon = { Icon(Icons.Filled.Warning, contentDescription = null) },
         containerColor = MaterialTheme.colorScheme.errorContainer,
         iconContentColor = MaterialTheme.colorScheme.onErrorContainer,
