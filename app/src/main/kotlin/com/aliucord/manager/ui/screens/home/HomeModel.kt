@@ -16,8 +16,10 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.domain.repository.AliucordMavenRepository
 import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.network.dto.BuildInfo
+import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.patcher.InstallMetadata
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
@@ -35,6 +37,7 @@ import kotlinx.serialization.json.decodeFromStream
 class HomeModel(
     private val application: Application,
     private val github: GithubRepository,
+    private val maven: AliucordMavenRepository,
     private val json: Json,
 ) : ScreenModel {
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
@@ -44,12 +47,13 @@ class HomeModel(
         private set
 
     private var remoteDataJson: BuildInfo? = null
+    private var latestAliuhookVersion: SemVer? = null
 
     init {
         // fetchInstallations() is also called from UI first to ensure fast TTI
 
         screenModelScope.launch {
-            fetchSupportedVersion()
+            fetchRemoteData()
             fetchInstallations() // Re-fetch installations to set the up-to-date statuses
         }
     }
@@ -152,7 +156,7 @@ class HomeModel(
         )
     }
 
-    suspend fun fetchSupportedVersion() {
+    suspend fun fetchRemoteData() {
         github.getDataJson().fold(
             success = {
                 val versionCode = it.discordVersionCode.toIntOrNull()
@@ -169,15 +173,24 @@ class HomeModel(
                 )
             },
             fail = {
-                Log.e(BuildConfig.TAG, Log.getStackTraceString(it))
+                Log.w(BuildConfig.TAG, "Failed to fetch remote build data", it)
                 supportedVersion = DiscordVersion.Error
-            }
+            },
+        )
+
+        maven.getAliuhookVersion().fold(
+            success = { latestAliuhookVersion = it },
+            fail = {
+                Log.w(BuildConfig.TAG, "Failed to fetch latest Aliuhook version", it)
+                supportedVersion = DiscordVersion.Error
+            },
         )
     }
 
     private fun isInstallationUpToDate(pkg: PackageInfo): Boolean {
         // Assume up-to-date when remote data hasn't been fetched yet
         val remoteBuildData = remoteDataJson ?: return true
+        val latestAliuhookVersion = latestAliuhookVersion ?: return true
 
         // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
         @Suppress("DEPRECATION")
@@ -200,8 +213,8 @@ class HomeModel(
         }
 
         // Check that all the installation components are up-to-date
-        // TODO: check for aliuhook version too once aliuhook starts using semver
-        return remoteBuildData.injectorVersion == installMetadata.injectorVersion &&
-            remoteBuildData.patchesVersion == installMetadata.patchesVersion
+        return remoteBuildData.injectorVersion == installMetadata.injectorVersion
+            && remoteBuildData.patchesVersion == installMetadata.patchesVersion
+            && latestAliuhookVersion == installMetadata.aliuhookVersion
     }
 }
