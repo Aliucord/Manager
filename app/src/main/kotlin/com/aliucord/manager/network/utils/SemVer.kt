@@ -11,7 +11,8 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 /**
- * Parses a Semantic version in the format of `v1.0.0` (v[major].[minor].[patch])
+ * Parses a Semantic version in the format of `v1.0.0` or `1.0.0`.
+ * This always gets serialized and stringified without the `v` prefix.
  */
 @Immutable
 @Parcelize
@@ -20,19 +21,17 @@ data class SemVer(
     val major: Int,
     val minor: Int,
     val patch: Int,
-    private val vPrefix: Boolean = false,
 ) : Comparable<SemVer>, Parcelable {
     override fun compareTo(other: SemVer): Int {
-        val pairs = arrayOf(
-            major to other.major,
-            minor to other.minor,
-            patch to other.patch
-        )
+        var cmp = 0
+        if (0 != major.compareTo(other.major).also { cmp = it })
+            return cmp
+        if (0 != minor.compareTo(other.minor).also { cmp = it })
+            return cmp
+        if (0 != patch.compareTo(other.patch).also { cmp = it })
+            return cmp
 
-        return pairs
-            .map { (first, second) -> first.compareTo(second) }
-            .find { it != 0 }
-            ?: 0
+        return 0
     }
 
     override fun equals(other: Any?): Boolean {
@@ -45,7 +44,7 @@ data class SemVer(
     }
 
     override fun toString(): String {
-        return "${if (vPrefix) "v" else ""}$major.$minor.$patch"
+        return "$major.$minor.$patch"
     }
 
     override fun hashCode(): Int {
@@ -60,14 +59,16 @@ data class SemVer(
             ?: throw IllegalArgumentException("Invalid semver string $version")
 
         fun parseOrNull(version: String): SemVer? {
-            val versionStr = version.removePrefix("v")
-            val parts = versionStr
-                .split(".")
-                .mapNotNull { it.toIntOrNull() }
-                .takeIf { it.size == 3 }
-                ?: return null
+            val parts = version.removePrefix("v").split(".")
 
-            return SemVer(parts[0], parts[1], parts[2], version[0] == 'v')
+            if (parts.size != 3)
+                return null
+
+            val major = parts[0].toIntOrNull() ?: return null
+            val minor = parts[1].toIntOrNull() ?: return null
+            val patch = parts[2].toIntOrNull() ?: return null
+
+            return SemVer(major, minor, patch)
         }
     }
 
