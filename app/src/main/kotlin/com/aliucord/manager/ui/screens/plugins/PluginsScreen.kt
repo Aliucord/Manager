@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -96,7 +94,7 @@ class PluginsScreen : Screen, Parcelable {
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Warning,
+                                painter = painterResource(R.drawable.ic_warning),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.error,
                             )
@@ -161,13 +159,13 @@ private fun PluginSearch(
             if (!isFilterBlank) {
                 IconButton(onClick = { onFilterChange("") }) {
                     Icon(
-                        imageVector = Icons.Default.Close,
+                        painter = painterResource(R.drawable.ic_close),
                         contentDescription = stringResource(R.string.action_clear)
                     )
                 }
             } else {
                 Icon(
-                    imageVector = Icons.Default.Search,
+                    painter = painterResource(R.drawable.ic_search),
                     contentDescription = stringResource(R.string.plugins_search)
                 )
             }
@@ -188,7 +186,7 @@ private fun UninstallPluginDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
-                imageVector = Icons.Default.Delete,
+                painter = painterResource(R.drawable.ic_delete_forever),
                 contentDescription = stringResource(R.string.action_uninstall)
             )
         },

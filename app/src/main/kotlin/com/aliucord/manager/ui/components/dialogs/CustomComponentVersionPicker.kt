@@ -56,7 +56,13 @@ fun CustomComponentVersionPicker(
             }
         },
         title = { Text("Custom Component") },
-        icon = { Icon(painterResource(R.drawable.ic_download), contentDescription = null) },
+        icon = {
+            Icon(
+                painter = painterResource(R.drawable.ic_download),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+            )
+        },
         text = {
             Column {
                 Text(

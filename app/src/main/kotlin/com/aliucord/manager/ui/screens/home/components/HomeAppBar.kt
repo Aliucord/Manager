@@ -1,7 +1,5 @@
 package com.aliucord.manager.ui.screens.home.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
@@ -21,7 +19,7 @@ fun HomeAppBar() {
 
             IconButton(onClick = { navigator.push(AboutScreen()) }) {
                 Icon(
-                    imageVector = Icons.Default.Info,
+                    painter = painterResource(R.drawable.ic_info),
                     contentDescription = stringResource(R.string.navigation_about)
                 )
             }

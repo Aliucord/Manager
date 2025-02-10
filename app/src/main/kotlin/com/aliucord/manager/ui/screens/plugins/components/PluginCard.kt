@@ -7,8 +7,6 @@ package com.aliucord.manager.ui.screens.plugins.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -147,7 +145,7 @@ fun PluginCard(
                 IconButton(modifier = Modifier.size(25.dp), onClick = onClickDelete) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
-                        imageVector = Icons.Default.Delete,
+                        painter = painterResource(R.drawable.ic_delete_forever),
                         contentDescription = stringResource(R.string.action_uninstall),
                         tint = MaterialTheme.colorScheme.error
                     )
