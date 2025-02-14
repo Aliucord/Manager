@@ -8,7 +8,10 @@ import java.io.File
 /**
  * A central place to provide all system paths that are used.
  */
-class PathManager(context: Context) {
+class PathManager(
+    private val context: Context,
+    private val prefs: PreferencesManager,
+) {
     /**
      * The Aliucord folder in which plugins/settings/themes are stored.
      * Standard path: `~/Aliucord`
@@ -30,14 +33,16 @@ class PathManager(context: Context) {
      */
     val keystoreFile = aliucordDir.resolve("ks.keystore")
 
-    private val externalCacheDir = context.externalCacheDir
-        ?: throw Error("External cache directory isn't supported")
-
     /**
-     * Standard path: `~/Android/data/com.aliucord.manager/cache`
+     * Use the external cache directory (`/storage/emulated/0/Android/data/com.aliucord.manager/cache`)
+     * when dev mode or preserving APKs is enabled. Otherwise, default to internal app cache.
      */
-    private val discordApkCache = externalCacheDir
-        .resolve("discord")
+    private val externalCacheDir
+        get() = when (prefs.devMode || prefs.keepPatchedApks) {
+            false -> context.cacheDir
+            true -> context.externalCacheDir
+                ?: throw Error("External cache directory isn't supported")
+        }
 
     /**
      * Delete the entire cache dir and recreate it.
@@ -52,7 +57,8 @@ class PathManager(context: Context) {
     /**
      * Create a new subfolder in the Discord APK cache for a specific version.
      */
-    fun discordApkVersionCache(version: Int): File = discordApkCache
+    fun discordApkVersionCache(version: Int): File = externalCacheDir
+        .resolve("discord")
         .resolve(version.toString())
         .apply { mkdirs() }
 
