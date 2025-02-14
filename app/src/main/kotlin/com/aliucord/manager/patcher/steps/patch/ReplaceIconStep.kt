@@ -39,7 +39,13 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
     override val localizedName = R.string.patch_step_patch_icon
 
     override suspend fun execute(container: StepRunner) {
-        if (Build.VERSION.SDK_INT < 26 || (!options.monochromeIcon && options.iconReplacement is IconReplacement.Original)) {
+        val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
+        val isMonochromeIconsAvailable = Build.VERSION.SDK_INT >= 31
+
+        // Adaptive icons are available starting with Android 8
+        // Monochrome icons are always patched starting with Android 12
+        // Skip if adaptive icons are unavailable or { not patching main icon AND monochrome icons are unavailable }
+        if (!isAdaptiveIconsAvailable || (!isMonochromeIconsAvailable && options.iconReplacement is IconReplacement.Original)) {
             state = StepState.Skipped
             return
         }
@@ -56,7 +62,7 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
         var monochromeIcon: BinaryResourceIdentifier? = null
 
         // Add the monochrome resource and add the resource file later
-        if (options.monochromeIcon) {
+        if (isMonochromeIconsAvailable) {
             val filePathIdx = arsc.getMainArscChunk().stringPool
                 .addString("res/ic_aliucord_monochrome.xml")
 
@@ -100,7 +106,7 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
         }
 
         ZipWriter(apk, /* append = */ true).use {
-            if (options.monochromeIcon) {
+            if (isMonochromeIconsAvailable) {
                 it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
             }
 

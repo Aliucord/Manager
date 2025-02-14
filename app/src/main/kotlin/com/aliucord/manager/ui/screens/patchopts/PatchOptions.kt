@@ -33,12 +33,6 @@ data class PatchOptions(
      * Replacement of the user-facing launcher icon.
      */
     val iconReplacement: IconReplacement,
-
-    /**
-     * Adding a monochrome variant to the launcher icon.
-     * This is independent of [PatchOptions.iconReplacement]
-     */
-    val monochromeIcon: Boolean,
 ) : Parcelable {
     @Immutable
     @Parcelize
@@ -95,7 +89,6 @@ data class PatchOptions(
             packageName = "com.aliucord",
             debuggable = false,
             iconReplacement = IconReplacement.Aliucord,
-            monochromeIcon = true,
         )
     }
 }

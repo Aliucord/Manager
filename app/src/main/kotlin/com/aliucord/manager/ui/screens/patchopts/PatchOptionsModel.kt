@@ -92,7 +92,6 @@ class PatchOptionsModel(
             debuggable = debuggable,
             // TODO: advanced icon options
             iconReplacement = if (replaceIcon) PatchOptions.IconReplacement.Aliucord else PatchOptions.IconReplacement.Original,
-            monochromeIcon = true,
         )
     }
 
