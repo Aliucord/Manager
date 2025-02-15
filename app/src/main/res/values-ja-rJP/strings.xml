@@ -15,6 +15,7 @@
   <string name="action_install">インストール</string>
   <string name="action_uninstall">アンインストール</string>
   <string name="action_add_install">Add Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">アップデート</string>
   <string name="action_clear">クリア</string>
   <string name="action_launch">開く</string>
@@ -32,14 +33,17 @@
   <string name="permissions_grant_title">権限を付与</string>
   <string name="storage_permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
 ~/Aliucordに共有データが保存されるため、Managerを機能させるためには権限が必要です。</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucordの起動に失敗しました</string>
   <string name="settings_theme">テーマ</string>
   <string name="settings_advanced">高度な設定</string>
   <string name="settings_appearance">外観</string>
   <string name="settings_developer_options">開発者向けオプション</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">キャッシュを消去</string>
   <string name="setting_dynamic_color">ダイナミックカラー</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">パッチを適用した APK を維持</string>
   <string name="setting_keep_patched_apks_desc">インストール後にパッチ適用された APK を削除しないでください(手動でインストールする場合)</string>
   <string name="setting_alt_downloader">代替ダウンローダー</string>
@@ -124,11 +128,11 @@
   <string name="downloader_err_storage_space">ダウンロードに失敗しました（スペースが不足しています）</string>
   <string name="patchopts_title">Aliucord はインストール時だけにしか適用できないカスタマイぜーションを提供しています。</string>
   <string name="patchopts_pkgname_title">パッケージ名</string>
-  <string name="patchopts_pkgname_desc">The package name is a unique identifier for all apps. Using different ones can allow for multiple installations of Aliucord.</string>
-  <string name="patchopts_pkgname_invalid">Invalid package name!</string>
-  <string name="patchopts_pkgname_taken">Target app will be overwritten!</string>
-  <string name="patchopts_pkgname_ok">Valid package name!</string>
-  <string name="patchopts_appname_title">App Name</string>
+  <string name="patchopts_pkgname_desc">パッケージ名はアプリの一意の識別子です。別の名前を使用すると、Aliucordを複数インストールできます。</string>
+  <string name="patchopts_pkgname_invalid">無効なパッケージ名です！</string>
+  <string name="patchopts_pkgname_taken">対象のアプリは上書きされます！</string>
+  <string name="patchopts_pkgname_ok">有効なパッケージ名です！</string>
+  <string name="patchopts_appname_title">アプリ名</string>
   <string name="patchopts_appname_desc">The app name is what\'s displayed in your home launcher. This should be changed on secondary installations for ease of use.</string>
   <string name="patchopts_debuggable_title">Debuggable</string>
   <string name="patchopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>

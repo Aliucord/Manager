@@ -15,6 +15,7 @@
   <string name="action_install">安装</string>
   <string name="action_uninstall">卸载</string>
   <string name="action_add_install">添加安装</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
   <string name="action_launch">启动</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">重置为默认</string>
   <string name="permissions_grant_title">授予权限</string>
   <string name="storage_permissions_grant_body">为了使 Aliucord 管理器正常运行，需要文件权限。由于共享数据存储在 ~/Aliucord 中，因此需要权限才能访问它。</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">未找到任何安装！</string>
   <string name="launch_aliucord_fail">无法启动 Aliucord</string>
   <string name="settings_theme">主题</string>
   <string name="settings_advanced">高级</string>
   <string name="settings_appearance">外观</string>
   <string name="settings_developer_options">开发者选项</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">清除缓存</string>
   <string name="setting_dynamic_color">动态颜色</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
   <string name="setting_keep_patched_apks_desc">安装后不删除已修补的 APK（供手动安装）</string>
   <string name="setting_alt_downloader">备用下载器</string>

@@ -15,6 +15,7 @@
   <string name="action_install">Install</string>
   <string name="action_uninstall">Copot pemasangan</string>
   <string name="action_add_install">Add Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Pembaruan</string>
   <string name="action_clear">Hapus</string>
   <string name="action_launch">Jalankan</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Berikan izin</string>
   <string name="storage_permissions_grant_body">Untuk Manajer Aliucord berfungsi dengan baik, Anda perlu memberikan izin untuk mengakses file. Karena datanya disimpan di ~/Aliucord, perizinan diperlukan agar Manajer berfungsi.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Canggih</string>
   <string name="settings_appearance">Tampilan</string>
   <string name="settings_developer_options">Opsi Pengembang</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Bersihkan cache</string>
   <string name="setting_dynamic_color">Warna dinamis</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Simpan APK yang ditambal</string>
   <string name="setting_keep_patched_apks_desc">Jangan hapus APK yang sudah ditambal setelah memasang (untuk memasang secara manual)</string>
   <string name="setting_alt_downloader">Alternative downloader</string>

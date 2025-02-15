@@ -15,6 +15,7 @@
   <string name="action_install">Install</string>
   <string name="action_uninstall">Desinstalar</string>
   <string name="action_add_install">Add Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Atualizar</string>
   <string name="action_clear">Limpar</string>
   <string name="action_launch">Iniciar</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Conceder permissões</string>
   <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Falha ao iniciar Aliucord</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Avançado</string>
   <string name="settings_appearance">Aparência</string>
   <string name="settings_developer_options">Opções de programador</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Limpar cache</string>
   <string name="setting_dynamic_color">Cor dinâmica</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Não apague APKs modificados após a sua instalação (para instalação manualmente)</string>
   <string name="setting_alt_downloader">Alternative downloader</string>

@@ -15,6 +15,7 @@
   <string name="action_install">Install</string>
   <string name="action_uninstall">Verwijder</string>
   <string name="action_add_install">Add Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Bijwerken</string>
   <string name="action_clear">Wis</string>
   <string name="action_launch">Starten</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Toestemmingen verlenen</string>
   <string name="storage_permissions_grant_body">Om Aliucord Manager te laten functioneren, zijn bestandsrechten vereist. Omdat gedeelde gegevens zijn opgeslagen in ~/Aliucord, zijn machtigingen vereist voor toegang.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Kon Aliucord niet opstarten</string>
   <string name="settings_theme">Thema</string>
   <string name="settings_advanced">Geavanceerd</string>
   <string name="settings_appearance">Appearance</string>
   <string name="settings_developer_options">Developer options</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Clear cache</string>
   <string name="setting_dynamic_color">Dynamic color</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Don\'t delete patched APKs after installing (for installing manually)</string>
   <string name="setting_alt_downloader">Alternative downloader</string>

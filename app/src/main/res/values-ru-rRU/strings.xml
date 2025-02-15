@@ -15,6 +15,7 @@
   <string name="action_install">Установить</string>
   <string name="action_uninstall">Удалить</string>
   <string name="action_add_install">Создать установку</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Обновить</string>
   <string name="action_clear">Стереть</string>
   <string name="action_launch">Запустить</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Сброс по умолчанию</string>
   <string name="permissions_grant_title">Предоставление разрешений</string>
   <string name="storage_permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">Установки не найдены!</string>
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
   <string name="settings_theme">Тема</string>
   <string name="settings_advanced">Дополнительные</string>
   <string name="settings_appearance">Внешний вид</string>
   <string name="settings_developer_options">Настройки для разработчиков</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Очистить кеш</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
   <string name="setting_keep_patched_apks_desc">Не удалять пропатченные APK после установки (для ручной установки)</string>
   <string name="setting_alt_downloader">Альтернативный загрузчик</string>

@@ -15,6 +15,7 @@
   <string name="action_install">Install</string>
   <string name="action_uninstall">Kaldır</string>
   <string name="action_add_install">Add Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Güncelle</string>
   <string name="action_clear">Temizle</string>
   <string name="action_launch">Başlat</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">İzinleri Ver</string>
   <string name="storage_permissions_grant_body">Aliucord Yöneticisinin düzgün çalışması için, dosya izinleri vermeniz gerekli. Paylaşılan uygulama verileri ~/Aliucord\'ta depolandığı için, yöneticinin çalışması izin gerektirir.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord başlatılamadı</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Gelişmiş</string>
   <string name="settings_appearance">Görünüm</string>
   <string name="settings_developer_options">Geliştirici seçenekleri</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Önbelleği temizle</string>
   <string name="setting_dynamic_color">Dinamik renk</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Don\'t delete patched APKs after installing (for installing manually)</string>
   <string name="setting_alt_downloader">Alternative downloader</string>

@@ -15,6 +15,7 @@
   <string name="action_install">安裝</string>
   <string name="action_uninstall">解除安裝</string>
   <string name="action_add_install">新增安裝</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
   <string name="action_launch">啟動</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">重設為預設植</string>
   <string name="permissions_grant_title">授予權限</string>
   <string name="storage_permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 啟動失敗</string>
   <string name="settings_theme">主題</string>
   <string name="settings_advanced">進階</string>
   <string name="settings_appearance">外觀</string>
   <string name="settings_developer_options">開發人員選項</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">清除快取</string>
   <string name="setting_dynamic_color">動態色彩</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">保持補丁 APKs</string>
   <string name="setting_keep_patched_apks_desc">安裝後不刪除已安裝補丁的 APK（用於手動安裝）</string>
   <string name="setting_alt_downloader">Alternative downloader</string>

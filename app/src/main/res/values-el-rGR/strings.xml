@@ -15,6 +15,7 @@
   <string name="action_install">Εγκατάσταση</string>
   <string name="action_uninstall">Απεγκατάσταση</string>
   <string name="action_add_install">Προσθήκη Εγκατάστασης</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Ενημέρωση</string>
   <string name="action_clear">Εκκαθάριση</string>
   <string name="action_launch">Έναρξη</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Επαναφορά προεπιλογών</string>
   <string name="permissions_grant_title">Εκχώρηση αδειών</string>
   <string name="storage_permissions_grant_body">Για να λειτουργήσει σωστά ο Aliucord Manager, πρέπει να εκχωρήσετε δικαιώματα αρχείου. Δεδομένου ότι τα κοινόχρηστα δεδομένα αποθηκεύονται στο ~/Aliucord, απαιτούνται δικαιώματα για να λειτουργήσει ο Manager.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Αποτυχία εκκίνησης του Aliucord</string>
   <string name="settings_theme">Θέμα</string>
   <string name="settings_advanced">Προηγμένες επιλογές</string>
   <string name="settings_appearance">Εμφάνιση</string>
   <string name="settings_developer_options">Επιλογές προγραμματιστών</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Εκκαθάριση προσωρινής μνήμης</string>
   <string name="setting_dynamic_color">Δυναμικό χρώμα</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Διατήρηση patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Μη διαγράψετε patched APKs μετά την εγκατάσταση (για χειροκίνητη εγκατάσταση)</string>
   <string name="setting_alt_downloader">Alternative downloader</string>

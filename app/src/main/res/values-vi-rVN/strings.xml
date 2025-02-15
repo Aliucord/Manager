@@ -15,6 +15,7 @@
   <string name="action_install">Cài đặt</string>
   <string name="action_uninstall">Gỡ cài đặt</string>
   <string name="action_add_install">Thêm Cài đặt</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Cập nhật</string>
   <string name="action_clear">Xoá</string>
   <string name="action_launch">Khởi động</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Khôi phục về mặc định</string>
   <string name="permissions_grant_title">Cấp phép truy cập</string>
   <string name="storage_permissions_grant_body">Để trình quản lý Aliucord hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
   <string name="settings_theme">Chủ đề</string>
   <string name="settings_advanced">Nâng cao</string>
   <string name="settings_appearance">Giao diện</string>
   <string name="settings_developer_options">Tùy chọn nhà phát triển</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Xoá bộ nhớ đệm</string>
   <string name="setting_dynamic_color">Màu động</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Giữ lại các bản vá APKs</string>
   <string name="setting_keep_patched_apks_desc">Không xóa bỏ các bản vá APKs sau khi cài đặt (dành cho cài đặt thủ công)</string>
   <string name="setting_alt_downloader">Trình tải xuống thay thế</string>

@@ -15,6 +15,7 @@
   <string name="action_install">Instalar</string>
   <string name="action_uninstall">Desinstalar</string>
   <string name="action_add_install">Añadir instalación</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Actualizar</string>
   <string name="action_clear">Limpiar</string>
   <string name="action_launch">Abrir</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">Restablecer al valor predeterminado</string>
   <string name="permissions_grant_title">Otorgar permisos</string>
   <string name="storage_permissions_grant_body">Para que Aliucord Manager funcione correctamente, necesitas darle permisos de almacenamiento. Pues, por el hecho de que los datos compartidos se guardan en ~/Aliucord, se necesitan estos permisos para que Aliucord Manager funcione.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">¡No se encontraron instalaciones!</string>
   <string name="launch_aliucord_fail">Error al abrir Aliucord</string>
   <string name="settings_theme">Tema</string>
   <string name="settings_advanced">Avanzado</string>
   <string name="settings_appearance">Apariencia</string>
   <string name="settings_developer_options">Opciones de desarrollador</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">Limpiar caché</string>
   <string name="setting_dynamic_color">Colores dinámicos</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Mantener los APK parcheados</string>
   <string name="setting_keep_patched_apks_desc">No eliminar los APK parcheados después de la instalación (para instalar manualmente)</string>
   <string name="setting_alt_downloader">Descargador alternativo</string>

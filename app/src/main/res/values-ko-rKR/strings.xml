@@ -15,6 +15,7 @@
   <string name="action_install">설치</string>
   <string name="action_uninstall">설치 삭제</string>
   <string name="action_add_install">Add Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">업데이트</string>
   <string name="action_clear">초기화</string>
   <string name="action_launch">실행</string>
@@ -31,14 +32,17 @@
   <string name="action_reset_default">기본값으로 재설정</string>
   <string name="permissions_grant_title">권한 부여</string>
   <string name="storage_permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
+  <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
   <string name="settings_theme">테마</string>
   <string name="settings_advanced">고급 설정</string>
   <string name="settings_appearance">외관</string>
   <string name="settings_developer_options">개발자 옵션</string>
+  <string name="settings_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_clear_cache">캐시 지우기</string>
   <string name="setting_dynamic_color">동적 색상</string>
+  <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
   <string name="setting_keep_patched_apks_desc">설치 후 패치된 APK를 삭제하지 않아요 (수동 설치용)</string>
   <string name="setting_alt_downloader">대체 다운로더</string>
