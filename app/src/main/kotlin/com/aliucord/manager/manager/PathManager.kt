@@ -34,14 +34,13 @@ class PathManager(
     val keystoreFile = aliucordDir.resolve("ks.keystore")
 
     /**
-     * Use the external cache directory (`/storage/emulated/0/Android/data/com.aliucord.manager/cache`)
+     * Uses the external cache directory (`/storage/emulated/0/Android/data/com.aliucord.manager/cache`)
      * when dev mode or preserving APKs is enabled. Otherwise, default to internal app cache.
      */
-    private val cacheDir
+    val cacheDir: File
         get() = when (prefs.devMode || prefs.keepPatchedApks) {
             false -> context.cacheDir
-            true -> context.externalCacheDir
-                ?: throw Error("External cache directory isn't supported")
+            true -> context.externalCacheDir ?: context.cacheDir
         }
 
     /**

@@ -98,7 +98,7 @@ class SettingsScreen : Screen, Parcelable {
                     secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
                     icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
                     pref = preferences.keepPatchedApks,
-                    onPrefChange = { preferences.keepPatchedApks = it },
+                    onPrefChange = model::setKeepPatchedApks,
                 )
 
                 var clearedCache by rememberSaveable { mutableStateOf(false) }

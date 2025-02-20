@@ -9,6 +9,8 @@ import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SettingsModel(
     private val application: Application,
@@ -27,6 +29,19 @@ class SettingsModel(
 
     fun setTheme(theme: Theme) {
         preferences.theme = theme
+    }
+
+    fun setKeepPatchedApks(value: Boolean) {
+        // Disallow setting keep APKs if externalCacheDir doesn't exist (some ROMs)
+        if (value && application.externalCacheDir == null) {
+            screenModelScope.launch {
+                delay(300)
+                preferences.keepPatchedApks = false
+                application.showToast(R.string.setting_keep_patched_apks_error)
+            }
+        }
+
+        preferences.keepPatchedApks = value
     }
 
     fun clearCacheDir() = screenModelScope.launchBlock {

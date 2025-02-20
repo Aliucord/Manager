@@ -49,6 +49,7 @@
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installing for debugging.</string>
+  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
 
   <string name="theme_system">System</string>
   <string name="theme_dark">Dark</string>

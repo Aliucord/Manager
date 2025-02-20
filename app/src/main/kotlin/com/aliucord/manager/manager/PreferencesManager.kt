@@ -1,9 +1,11 @@
 package com.aliucord.manager.manager
 
 import android.content.SharedPreferences
+import androidx.compose.runtime.Stable
 import com.aliucord.manager.manager.base.BasePreferenceManager
 import com.aliucord.manager.ui.components.Theme
 
+@Stable
 class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager(preferences) {
     var theme by enumPreference("theme", Theme.DARK)
     var dynamicColor by booleanPreference("dynamic_color", false)
