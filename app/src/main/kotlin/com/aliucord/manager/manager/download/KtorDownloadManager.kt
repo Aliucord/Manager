@@ -1,6 +1,7 @@
 package com.aliucord.manager.manager.download
 
 import com.aliucord.manager.manager.download.IDownloadManager.Result
+import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.prepareGet
@@ -28,7 +29,9 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
             val httpStmt = http.prepareGet(url) {
                 // Disable compression due to bug on emulators
                 // This header cannot be set with Android's DownloadManager
-                header(HttpHeaders.AcceptEncoding, null)
+                if (IS_PROBABLY_EMULATOR) {
+                    header(HttpHeaders.AcceptEncoding, null)
+                }
             }
 
             httpStmt.execute { resp ->

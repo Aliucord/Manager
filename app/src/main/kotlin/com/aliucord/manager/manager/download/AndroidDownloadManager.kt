@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import androidx.core.content.getSystemService
+import androidx.core.net.toUri
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.download.IDownloadManager.ProgressListener
@@ -34,7 +35,7 @@ class AndroidDownloadManager(application: Application) : IDownloadManager {
         out.parentFile?.mkdirs()
 
         // Create and start a download in the system DownloadManager
-        val downloadId = DownloadManager.Request(Uri.parse(url))
+        val downloadId = DownloadManager.Request(url.toUri())
             .setTitle("Aliucord Manager")
             .setDescription("Downloading ${out.name}...")
             .setDestinationUri(Uri.fromFile(out))

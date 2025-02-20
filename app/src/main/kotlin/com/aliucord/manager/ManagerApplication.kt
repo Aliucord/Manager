@@ -70,7 +70,6 @@ class ManagerApplication : Application() {
                 singleOf(::InstallerManager)
                 singleOf(::OverlayManager)
 
-                singleOf(::DownloadManagerProvider)
                 singleOf(::AndroidDownloadManager)
                 singleOf(::KtorDownloadManager)
             })

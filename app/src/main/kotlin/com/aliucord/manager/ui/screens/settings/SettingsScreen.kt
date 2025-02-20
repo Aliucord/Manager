@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
-import com.aliucord.manager.di.DownloaderSetting
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.settings.*
 import com.aliucord.manager.ui.screens.settings.components.ThemeDialog
@@ -100,20 +99,6 @@ class SettingsScreen : Screen, Parcelable {
                     icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
                     pref = preferences.keepPatchedApks,
                     onPrefChange = { preferences.keepPatchedApks = it },
-                )
-
-                SettingsSwitch(
-                    label = stringResource(R.string.setting_alt_downloader),
-                    secondaryLabel = stringResource(R.string.setting_alt_downloader_desc),
-                    icon = { Icon(painterResource(R.drawable.ic_download), null) },
-                    pref = preferences.downloader == DownloaderSetting.Ktor,
-                    onPrefChange = {
-                        preferences.downloader = if (it) {
-                            DownloaderSetting.Ktor
-                        } else {
-                            DownloaderSetting.Android
-                        }
-                    }
                 )
 
                 var clearedCache by rememberSaveable { mutableStateOf(false) }
