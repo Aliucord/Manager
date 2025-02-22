@@ -45,8 +45,7 @@
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Não apague APKs modificados após a sua instalação (para instalação manualmente)</string>
-  <string name="setting_alt_downloader">Alternative downloader</string>
-  <string name="setting_alt_downloader_desc">Use a custom HTTP client instead of the system DownloadManager. May fix errors on some devices</string>
+  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>
@@ -149,8 +148,6 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -&gt; \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
-  <string name="alt_downloader_dialog_title">Alternative Downloader</string>
-  <string name="alt_downloader_dialog_desc">This download failed with a specific error that may indicate issues with the system\'s DownloadManager. Would you like to retry with the the alternative downloader implementation?</string>
   <string name="fun_fact_prefix">Fun Fact: %s</string>
   <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>
   <string name="fun_fact_2">Did you know Aliucord with 150+ plugins somehow runs better than Discord\'s new app?</string>

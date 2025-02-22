@@ -45,8 +45,7 @@
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
   <string name="setting_keep_patched_apks_desc">Не удалять пропатченные APK после установки (для ручной установки)</string>
-  <string name="setting_alt_downloader">Альтернативный загрузчик</string>
-  <string name="setting_alt_downloader_desc">Используйте пользовательский HTTP-клиент вместо системного DownloadManager. Может исправить ошибки на некоторых устройствах</string>
+  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
   <string name="theme_light">Светлая</string>
@@ -149,8 +148,6 @@
   <string name="play_protect_warning_desc">Похоже, на вашем устройстве включена функция Google Play Protect. Она может попытаться помешать новой установке из-за использования уникального ключа подписи. Вы можете отключить ее в настройках Play Protect.\n\nЕсли появится предупреждение, нажмите\n «Подробнее» -&gt; «Установить в любом случае»</string>
   <string name="play_protect_warning_ok">Продолжить</string>
   <string name="play_protect_warning_open_gpp">Открыть защиту Play</string>
-  <string name="alt_downloader_dialog_title">Альтернативный загрузчик</string>
-  <string name="alt_downloader_dialog_desc">Загрузка не удалась со специфической ошибкой, которая может указывать на проблемы с менеджером загрузки в системе. Не хотите ли вы повторить попытку с альтернативной реализацией загрузчика?</string>
   <string name="fun_fact_prefix">Забавный факт: %s</string>
   <string name="fun_fact_1">Знаете ли вы, что Google Play Protect бесполезен?</string>
   <string name="fun_fact_2">Знаете ли вы, что Aliucord с 150+ плагинами работает лучше, чем новое приложение Discord?</string>
