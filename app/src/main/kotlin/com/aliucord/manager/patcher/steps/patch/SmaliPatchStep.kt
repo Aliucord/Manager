@@ -21,8 +21,6 @@ import com.github.difflib.patch.Patch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.FileNotFoundException
-import kotlin.io.path.Path
-import kotlin.io.path.writeLines
 
 class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
     private val paths: PathManager by inject()
@@ -106,7 +104,9 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
                 throw Error("Failed to smali patch $fullClassName", t)
             }
 
-            Path(smaliFile.absolutePath).writeLines(patched)
+            smaliFile.bufferedWriter().use { writer ->
+                patched.forEach(writer::appendLine)
+            }
         }
 
         // Assemble the patched classes back into a single dex
