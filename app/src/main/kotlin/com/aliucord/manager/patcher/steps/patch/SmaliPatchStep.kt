@@ -99,7 +99,7 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
             }
 
             val patched = try {
-                DiffUtils.patch(smaliFile.readText().split('\n'), patch)
+                DiffUtils.patch(smaliFile.readLines(), patch)
             } catch (t: Throwable) {
                 throw Error("Failed to smali patch $fullClassName", t)
             }

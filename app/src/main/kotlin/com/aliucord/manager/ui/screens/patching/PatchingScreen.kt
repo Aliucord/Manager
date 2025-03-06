@@ -246,24 +246,24 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                             icon = painterResource(R.drawable.ic_refresh),
                                             onClick = model::restart,
                                         )
-
-                                        MainActionButton(
-                                            text = stringResource(R.string.setting_clear_cache),
-                                            icon = painterResource(R.drawable.ic_delete_forever),
-                                            enabled = !cacheCleared,
-                                            colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.error,
-                                            ),
-                                            onClick = {
-                                                cacheCleared = true
-                                                model.clearCache()
-                                            },
-                                            modifier = Modifier
-                                                .padding(top = 14.dp)
-                                                .fillMaxWidth()
-                                        )
                                     }
                                 }
+
+                                MainActionButton(
+                                    text = stringResource(R.string.setting_clear_cache),
+                                    icon = painterResource(R.drawable.ic_delete_forever),
+                                    enabled = !cacheCleared,
+                                    colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.error,
+                                    ),
+                                    onClick = {
+                                        cacheCleared = true
+                                        model.clearCache()
+                                    },
+                                    modifier = Modifier
+                                        .padding(top = 14.dp)
+                                        .fillMaxWidth()
+                                )
                             }
                         }
                     }

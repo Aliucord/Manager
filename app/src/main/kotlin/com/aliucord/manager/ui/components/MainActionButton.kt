@@ -1,4 +1,4 @@
-package com.aliucord.manager.ui.screens.patching.components
+package com.aliucord.manager.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

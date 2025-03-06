@@ -14,9 +14,10 @@ fun SettingsSwitch(
     icon: @Composable () -> Unit = {},
     pref: Boolean,
     onPrefChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     SettingsItem(
-        modifier = Modifier.clickable(enabled = !disabled) { onPrefChange(!pref) },
+        modifier = modifier.clickable(enabled = !disabled) { onPrefChange(!pref) },
         text = { Text(text = label, softWrap = true) },
         icon = icon,
         secondaryText = {

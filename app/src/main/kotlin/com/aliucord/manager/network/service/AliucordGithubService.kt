@@ -21,9 +21,11 @@ class AliucordGithubService(
     suspend fun getManagerReleases() = github.getReleases(ORG, MANAGER_REPO)
     suspend fun getContributors() = github.getContributors(ORG, MAIN_REPO)
 
-    private companion object {
+    companion object {
         const val ORG = "Aliucord"
         const val MAIN_REPO = "Aliucord"
         const val MANAGER_REPO = "Manager"
+
+        const val PATCHED_APKS_INFO_URL = "https://github.com/$ORG/$MANAGER_REPO/blob/main/INFO.md#obtaining-patched-apks"
     }
 }
