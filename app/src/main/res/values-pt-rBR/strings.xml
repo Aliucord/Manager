@@ -46,6 +46,7 @@
   <string name="setting_keep_patched_apks">Manter APKs patcheadas</string>
   <string name="setting_keep_patched_apks_desc">Não excluir APKs patcheadas após a instalação (para instalação manual)</string>
   <string name="setting_keep_patched_apks_error">Este dispositivo não suporta diretórios de cache externos!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>

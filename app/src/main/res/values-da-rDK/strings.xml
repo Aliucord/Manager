@@ -46,6 +46,7 @@
   <string name="setting_keep_patched_apks">Behold patchede APK\'er</string>
   <string name="setting_keep_patched_apks_desc">Slet ikke patchede APK\'er efter installation (til manuel installation)</string>
   <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Mørk</string>
   <string name="theme_light">Lys</string>

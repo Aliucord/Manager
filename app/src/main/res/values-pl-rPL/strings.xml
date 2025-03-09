@@ -46,6 +46,7 @@
   <string name="setting_keep_patched_apks">Zachowaj zpatchowane APK</string>
   <string name="setting_keep_patched_apks_desc">Nie usuwaj skasowanych APK po instalacji (dla instalacji ręcznej)</string>
   <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Ciemny</string>
   <string name="theme_light">Jasny</string>

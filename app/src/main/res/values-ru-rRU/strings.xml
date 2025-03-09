@@ -46,6 +46,7 @@
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
   <string name="setting_keep_patched_apks_desc">Не удалять пропатченные APK после установки (для ручной установки)</string>
   <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
   <string name="theme_light">Светлая</string>

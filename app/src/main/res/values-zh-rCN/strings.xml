@@ -46,6 +46,7 @@
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
   <string name="setting_keep_patched_apks_desc">安装后不删除已修补的 APK（供手动安装）</string>
   <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
   <string name="theme_light">浅色</string>

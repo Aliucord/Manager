@@ -46,6 +46,7 @@
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
   <string name="setting_keep_patched_apks_desc">설치 후 패치된 APK를 삭제하지 않아요 (수동 설치용)</string>
   <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어두운 테마</string>
   <string name="theme_light">밝은 테마</string>

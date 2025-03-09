@@ -47,6 +47,7 @@
   <string name="setting_keep_patched_apks">パッチを適用した APK を維持</string>
   <string name="setting_keep_patched_apks_desc">インストール後にパッチ適用された APK を削除しないでください(手動でインストールする場合)</string>
   <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
+  <string name="setting_see_patched_apks">See patched APKs</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>
   <string name="theme_light">ライト</string>
