@@ -16,9 +16,9 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.domain.repository.GithubRepository
-import com.aliucord.manager.network.dto.BuildInfo
+import com.aliucord.manager.network.models.BuildInfo
+import com.aliucord.manager.network.services.AliucordGithubService
+import com.aliucord.manager.network.services.AliucordMavenService
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.patcher.InstallMetadata
@@ -36,8 +36,8 @@ import kotlinx.serialization.json.decodeFromStream
 
 class HomeModel(
     private val application: Application,
-    private val github: GithubRepository,
-    private val maven: AliucordMavenRepository,
+    private val github: AliucordGithubService,
+    private val maven: AliucordMavenService,
     private val json: Json,
 ) : ScreenModel {
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)

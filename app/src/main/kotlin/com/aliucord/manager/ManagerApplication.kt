@@ -2,13 +2,11 @@ package com.aliucord.manager
 
 import android.app.Application
 import com.aliucord.manager.di.*
-import com.aliucord.manager.domain.repository.AliucordMavenRepository
-import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.manager.*
 import com.aliucord.manager.manager.download.AndroidDownloadManager
 import com.aliucord.manager.manager.download.KtorDownloadManager
-import com.aliucord.manager.network.service.*
+import com.aliucord.manager.network.services.*
 import com.aliucord.manager.ui.screens.about.AboutModel
 import com.aliucord.manager.ui.screens.home.HomeModel
 import com.aliucord.manager.ui.screens.patching.PatchingScreenModel
@@ -42,14 +40,8 @@ class ManagerApplication : Application() {
             modules(module {
                 singleOf(::HttpService)
                 singleOf(::GithubService)
-                singleOf(::MavenService)
                 singleOf(::AliucordGithubService)
-            })
-
-            // Repositories
-            modules(module {
-                singleOf(::GithubRepository)
-                singleOf(::AliucordMavenRepository)
+                singleOf(::AliucordMavenService)
             })
 
             // UI Models

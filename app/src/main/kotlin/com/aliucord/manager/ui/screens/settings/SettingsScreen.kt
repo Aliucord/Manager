@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
-import com.aliucord.manager.network.service.AliucordGithubService
+import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.MainActionButton
 import com.aliucord.manager.ui.components.settings.*

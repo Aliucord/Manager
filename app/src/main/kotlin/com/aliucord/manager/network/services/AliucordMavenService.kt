@@ -1,14 +1,14 @@
-package com.aliucord.manager.domain.repository
+package com.aliucord.manager.network.services
 
-import com.aliucord.manager.network.service.MavenService
 import com.aliucord.manager.network.utils.*
+import io.ktor.client.request.url
 import io.ktor.http.HttpStatusCode
 
-class AliucordMavenRepository(
-    private val maven: MavenService,
-) {
+class AliucordMavenService(private val http: HttpService) {
     suspend fun getAliuhookVersion(): ApiResponse<SemVer> {
-        return maven.getArtifactMetadata(BASE_URL, ALIUHOOK).transform {
+        val metadataResponse = http.request<String> { url(ALIUHOOK_METADATA_URL) }
+
+        return metadataResponse.transform {
             val versionString = "<release>(.+?)</release>".toRegex()
                 .find(it)
                 ?.groupValues?.get(1)
@@ -21,7 +21,7 @@ class AliucordMavenRepository(
 
     companion object {
         private const val BASE_URL = "https://maven.aliucord.com/snapshots"
-        private const val ALIUHOOK = "com.aliucord:Aliuhook"
+        private const val ALIUHOOK_METADATA_URL = "$BASE_URL/com/aliucord/Aliuhook/maven-metadata.xml"
 
         fun getAliuhookUrl(version: String): String =
             "$BASE_URL/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"

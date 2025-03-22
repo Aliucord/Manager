@@ -2,8 +2,8 @@ package com.aliucord.manager.patcher.steps.prepare
 
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
-import com.aliucord.manager.network.dto.BuildInfo
-import com.aliucord.manager.network.service.AliucordGithubService
+import com.aliucord.manager.network.models.BuildInfo
+import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup

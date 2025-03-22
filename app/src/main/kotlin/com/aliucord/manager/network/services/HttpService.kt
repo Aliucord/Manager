@@ -1,4 +1,4 @@
-package com.aliucord.manager.network.service
+package com.aliucord.manager.network.services
 
 import android.util.Log
 import com.aliucord.manager.BuildConfig

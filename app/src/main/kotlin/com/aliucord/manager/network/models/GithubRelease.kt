@@ -1,4 +1,4 @@
-package com.aliucord.manager.network.dto
+package com.aliucord.manager.network.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

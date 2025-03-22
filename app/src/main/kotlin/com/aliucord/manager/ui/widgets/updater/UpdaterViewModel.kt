@@ -5,17 +5,17 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.domain.repository.GithubRepository
 import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.manager.InstallerSetting
 import com.aliucord.manager.manager.download.KtorDownloadManager
+import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class UpdaterViewModel(
-    private val github: GithubRepository,
+    private val github: AliucordGithubService,
     private val downloader: KtorDownloadManager,
     private val installers: InstallerManager,
     private val application: Application,

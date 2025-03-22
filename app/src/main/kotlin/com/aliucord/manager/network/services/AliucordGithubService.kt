@@ -1,6 +1,6 @@
-package com.aliucord.manager.network.service
+package com.aliucord.manager.network.services
 
-import com.aliucord.manager.network.dto.BuildInfo
+import com.aliucord.manager.network.models.BuildInfo
 import com.aliucord.manager.network.utils.ApiResponse
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,6 @@ class AliucordGithubService(
     }
 
     suspend fun getManagerReleases() = github.getReleases(ORG, MANAGER_REPO)
-    suspend fun getContributors() = github.getContributors(ORG, MAIN_REPO)
 
     companion object {
         const val ORG = "Aliucord"

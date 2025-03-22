@@ -3,7 +3,7 @@
  * Licensed under the Open Software License version 3.0
  */
 
-package com.aliucord.manager.network.dto
+package com.aliucord.manager.network.models
 
 import com.aliucord.manager.network.utils.SemVer
 import kotlinx.serialization.SerialName
