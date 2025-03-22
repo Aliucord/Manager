@@ -77,7 +77,7 @@ class AboutScreen : Screen, Parcelable {
                     }
 
                     if (model.contributors.isNotEmpty()) {
-                        items(model.contributors, key = { "user-${it.name}" }) { user ->
+                        items(model.contributors, key = { it.username }) { user ->
                             ContributorCommitsItem(user)
                         }
                     } else {

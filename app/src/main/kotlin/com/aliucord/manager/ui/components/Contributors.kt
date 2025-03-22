@@ -19,11 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.aliucord.manager.R
-import com.aliucord.manager.network.dto.GithubUser
+import com.aliucord.manager.network.models.Contributor
 
 @Composable
 fun ContributorCommitsItem(
-    user: GithubUser,
+    user: Contributor,
     modifier: Modifier = Modifier,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -31,7 +31,7 @@ fun ContributorCommitsItem(
     Row(
         modifier = modifier
             .clickable {
-                uriHandler.openUri("https://github.com/${user.name}")
+                uriHandler.openUri("https://github.com/${user.username}")
             }
             .padding(horizontal = 16.dp, vertical = 10.dp)
             .fillMaxWidth(),
@@ -39,8 +39,8 @@ fun ContributorCommitsItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = "https://github.com/${user.name}.png",
-            contentDescription = user.name,
+            model = user.avatarUrl,
+            contentDescription = user.username,
             Modifier
                 .size(45.dp)
                 .clip(CircleShape)
@@ -48,7 +48,7 @@ fun ContributorCommitsItem(
 
         Column {
             Text(
-                text = user.name,
+                text = user.username,
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
