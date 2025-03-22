@@ -11,11 +11,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.aliucord.manager.R
@@ -29,19 +29,17 @@ fun ContributorCommitsItem(
     val uriHandler = LocalUriHandler.current
 
     Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
-            .clickable {
-                uriHandler.openUri("https://github.com/${user.username}")
-            }
+            .clickable { uriHandler.openUri("https://github.com/${user.username}") }
             .padding(horizontal = 16.dp, vertical = 10.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = user.avatarUrl,
             contentDescription = user.username,
             Modifier
+                .padding(top = 6.dp)
                 .size(45.dp)
                 .clip(CircleShape)
         )
@@ -52,10 +50,18 @@ fun ContributorCommitsItem(
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = stringResource(R.string.contributors_contributions, user.contributions),
+                text = stringResource(R.string.contributors_contributions, user.commits),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
+            )
+
+            Text(
+                text = user.repositories.joinToString { it.name },
+                fontStyle = FontStyle.Italic,
+                style = MaterialTheme.typography.bodySmall
+                    .copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)),
+                modifier = Modifier.padding(top = 4.dp),
             )
         }
     }
