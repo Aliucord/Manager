@@ -20,15 +20,15 @@ fun ProjectHeader(modifier: Modifier = Modifier) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier,
     ) {
         Image(
             painter = painterResource(R.drawable.ic_aliucord_logo),
             contentDescription = null,
             modifier = Modifier
-                .size(88.dp)
-                .padding(bottom = 8.dp),
+                .padding(bottom = 6.dp)
+                .size(88.dp),
         )
 
         Text(

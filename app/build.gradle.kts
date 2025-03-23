@@ -71,15 +71,14 @@ android {
                 add("/kotlin-tooling-metadata.json")
                 // Kotlin debugging (https://github.com/Kotlin/kotlinx.coroutines/issues/2274)
                 add("/DebugProbesKt.bin")
+                // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
+                add("/**/*.kotlin_builtins")
             }
         }
     }
 
     packaging {
         resources {
-            // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
-            excludes += "/**/*.kotlin_builtins"
-
             // okhttp3 is used by some lib (no cookies so publicsuffixes.gz can be dropped)
             excludes += "/okhttp3/**"
 

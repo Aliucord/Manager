@@ -1,34 +1,29 @@
 package com.aliucord.manager.ui.screens.about
 
-import androidx.compose.runtime.*
-import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.network.models.Contributor
 import com.aliucord.manager.network.services.HttpService
 import com.aliucord.manager.network.utils.fold
+import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.launchBlock
 import io.ktor.client.request.url
 
 class AboutModel(
     private val http: HttpService,
-) : ScreenModel {
-    val contributors = mutableStateListOf<Contributor>()
-    var fetchError by mutableStateOf(false)
-
+) : StateScreenModel<AboutScreenState>(AboutScreenState.Loading) {
     init {
         fetchContributors()
     }
 
     fun fetchContributors() = screenModelScope.launchBlock {
+        mutableState.value = AboutScreenState.Loading
+
         val response = http.request<List<Contributor>> { url(CONTRIBUTORS_API_URL) }
 
-        response.fold(
-            success = {
-                contributors.clear()
-                contributors.addAll(it)
-                fetchError = false
-            },
-            fail = { fetchError = true },
+        mutableState.value = response.fold(
+            success = { AboutScreenState.Loaded(it.toUnsafeImmutable()) },
+            fail = { AboutScreenState.Failure },
         )
     }
 
