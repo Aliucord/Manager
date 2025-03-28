@@ -8,11 +8,13 @@ package com.aliucord.manager.ui.screens.home
 
 import android.os.Parcelable
 import androidx.compose.animation.*
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,6 +34,7 @@ import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -43,7 +46,9 @@ class HomeScreen : Screen, Parcelable {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val scope = rememberCoroutineScope()
         val model = getScreenModel<HomeModel>()
+        val onClickInstall = remember { { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) } }
 
         // Refresh installations list when the screen changes or activity resumes
         LifecycleResumeEffect(Unit) {
@@ -55,29 +60,37 @@ class HomeScreen : Screen, Parcelable {
         Scaffold(
             topBar = { HomeAppBar() },
         ) { padding ->
-            when (model.installations) {
-                is InstallsState.Fetched -> LoadedContent(
-                    model = model,
+            when (val state = model.state) {
+                is InstallsState.Fetched -> HomeScreenLoadedContent(
+                    state = state,
+                    supportedVersion = model.supportedVersion,
                     padding = padding,
-                    onClickInstall = { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) },
+                    onClickInstall = onClickInstall,
+                    onUpdate = {
+                        scope.launch {
+                            navigator.push(model.createPrefilledPatchOptsScreen(it))
+                        }
+                    },
+                    onOpenApp = model::openApp,
+                    onOpenAppInfo = model::openAppInfo,
+                    onOpenPlugins = { navigator.push(PluginsScreen()) }, // TODO: install-specific plugins
                 )
 
-                InstallsState.Fetching -> LoadingContent(padding = padding)
+                InstallsState.Fetching -> HomeScreenLoadingContent(padding = padding)
 
-                InstallsState.None -> NoInstallsContent(
-                    onClickInstall = { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) },
-                    modifier = Modifier
-                        .padding(padding.exclude(PaddingValuesSides.Bottom)),
+                InstallsState.None -> HomeScreenNoneContent(
+                    padding = padding,
+                    onClickInstall = onClickInstall,
                 )
 
-                InstallsState.Error -> FailureContent(padding = padding)
+                InstallsState.Error -> HomeScreenFailureContent(padding = padding)
             }
         }
     }
 }
 
 @Composable
-private fun LoadingContent(padding: PaddingValues) {
+fun HomeScreenLoadingContent(padding: PaddingValues) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -86,14 +99,32 @@ private fun LoadingContent(padding: PaddingValues) {
             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
         ProjectHeader()
+
+        AnimatedVisibility(
+            visibleState = remember { MutableTransitionState(false) }.apply { targetState = true },
+            enter = fadeIn(animationSpec = tween(durationMillis = 800)),
+            exit = ExitTransition.None,
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                content = { CircularProgressIndicator() },
+                modifier = Modifier
+                    .fillMaxSize(),
+            )
+        }
     }
 }
 
 @Composable
-private fun LoadedContent(
-    model: HomeModel,
+fun HomeScreenLoadedContent(
+    state: InstallsState.Fetched,
+    supportedVersion: DiscordVersion,
     padding: PaddingValues,
     onClickInstall: () -> Unit,
+    onUpdate: (packageName: String) -> Unit,
+    onOpenApp: (packageName: String) -> Unit,
+    onOpenAppInfo: (packageName: String) -> Unit,
+    onOpenPlugins: (packageName: String) -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -122,28 +153,26 @@ private fun LoadedContent(
 
         item(key = "SUPPORTED_VERSION") {
             AnimatedVersionDisplay(
-                version = model.supportedVersion,
+                version = supportedVersion,
                 modifier = Modifier.padding(bottom = 30.dp),
             )
         }
 
-        val installations = (model.installations as? InstallsState.Fetched)?.data
+        val installations = (state as? InstallsState.Fetched)?.data
             ?: return@LazyColumn
 
         items(installations, key = { it.packageName }) {
             AnimatedVisibility(
                 enter = fadeIn() + slideInHorizontally { it * -2 },
                 exit = fadeOut() + slideOutHorizontally { it * 2 },
-                visible = model.supportedVersion !is DiscordVersion.None,
+                visible = supportedVersion !is DiscordVersion.None,
             ) {
-                val navigator = LocalNavigator.currentOrThrow
-
                 InstalledItemCard(
                     data = it,
-                    onUpdate = { model.updateAliucord(it, navigator) },
-                    onOpenApp = { model.launchApp(it.packageName) },
-                    onOpenInfo = { model.openAppInfo(it.packageName) },
-                    onOpenPlugins = { navigator.push(PluginsScreen()) }, // TODO: install-specific plugins
+                    onUpdate = { onUpdate(it.packageName) },
+                    onOpenApp = { onOpenApp(it.packageName) },
+                    onOpenInfo = { onOpenAppInfo(it.packageName) },
+                    onOpenPlugins = { onOpenPlugins(it.packageName) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -152,7 +181,8 @@ private fun LoadedContent(
 }
 
 @Composable
-private fun NoInstallsContent(
+fun HomeScreenNoneContent(
+    padding: PaddingValues,
     onClickInstall: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -160,8 +190,9 @@ private fun NoInstallsContent(
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .padding(padding)
+            .padding(16.dp)
+            .fillMaxSize(),
     ) {
         ProjectHeader()
 
@@ -198,7 +229,7 @@ private fun NoInstallsContent(
 }
 
 @Composable
-fun FailureContent(
+fun HomeScreenFailureContent(
     padding: PaddingValues,
 ) {
     Column(

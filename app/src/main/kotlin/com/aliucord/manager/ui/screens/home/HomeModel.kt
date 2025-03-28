@@ -13,7 +13,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.network.models.BuildInfo
@@ -43,7 +42,7 @@ class HomeModel(
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
-    var installations by mutableStateOf<InstallsState>(InstallsState.Fetching)
+    var state by mutableStateOf<InstallsState>(InstallsState.Fetching)
         private set
 
     private var remoteDataJson: BuildInfo? = null
@@ -58,7 +57,7 @@ class HomeModel(
         }
     }
 
-    fun launchApp(packageName: String) {
+    fun openApp(packageName: String) {
         val launchIntent = application.packageManager
             .getLaunchIntentForPackage(packageName)
 
@@ -78,7 +77,7 @@ class HomeModel(
     }
 
     fun fetchInstallations() = screenModelScope.launchBlock {
-        installations = InstallsState.Fetching
+        state = InstallsState.Fetching
 
         try {
             val packageManager = application.packageManager
@@ -120,39 +119,40 @@ class HomeModel(
                 )
             }.toImmutableList()
 
-            installations = if (aliucordInstallations.isNotEmpty()) {
+            state = if (aliucordInstallations.isNotEmpty()) {
                 InstallsState.Fetched(data = aliucordInstallations)
             } else {
                 InstallsState.None
             }
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
-            installations = InstallsState.Error
+            state = InstallsState.Error
         }
     }
 
-    // Launches the patching screen with prefilled options according to the existing APK
-    fun updateAliucord(data: InstallData, navigator: Navigator) = screenModelScope.launchBlock {
+    /**
+     * Creates a [PatchOptionsScreen] that can be navigated to,
+     * with prefilled options from an existing installation.
+     */
+    fun createPrefilledPatchOptsScreen(packageName: String): PatchOptionsScreen {
         val metadata = try {
-            val applicationInfo = application.packageManager.getApplicationInfo(data.packageName, 0)
+            val applicationInfo = application.packageManager.getApplicationInfo(packageName, 0)
             val metadataFile = ZipReader(applicationInfo.publicSourceDir)
                 .use { it.openEntry("aliucord.json")?.read() }
 
             @OptIn(ExperimentalSerializationApi::class)
             metadataFile?.let { json.decodeFromStream<InstallMetadata>(it.inputStream()) }
         } catch (t: Throwable) {
-            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package ${data.packageName}", t)
+            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package ${packageName}", t)
             null
         }
 
         val patchOptions = metadata?.options
-            ?: PatchOptions.Default.copy(packageName = data.packageName)
+            ?: PatchOptions.Default.copy(packageName = packageName)
 
-        navigator.push(
-            PatchOptionsScreen(
-                prefilledOptions = patchOptions,
-                supportedVersion = supportedVersion,
-            )
+        return PatchOptionsScreen(
+            prefilledOptions = patchOptions,
+            supportedVersion = supportedVersion,
         )
     }
 
