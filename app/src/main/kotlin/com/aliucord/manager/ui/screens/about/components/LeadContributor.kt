@@ -13,7 +13,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun LeadContributor(
@@ -35,12 +36,21 @@ fun LeadContributor(
             )
             .widthIn(min = 100.dp)
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(71.dp)
-                .clip(CircleShape),
+        SubcomposeAsyncImage(
             model = "https://github.com/$username.png",
-            contentDescription = username
+            contentDescription = username,
+            error = {
+                Surface(
+                    content = {},
+                    tonalElevation = 2.dp,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .shimmer(),
+                )
+            },
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape),
         )
 
         Column(

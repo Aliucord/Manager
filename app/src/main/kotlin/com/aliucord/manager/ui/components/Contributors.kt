@@ -8,8 +8,7 @@ package com.aliucord.manager.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,9 +16,10 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.network.models.Contributor
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun ContributorCommitsItem(
@@ -32,13 +32,22 @@ fun ContributorCommitsItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
             .clickable { uriHandler.openUri("https://github.com/${user.username}") }
-            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = user.avatarUrl,
             contentDescription = user.username,
-            Modifier
+            error = {
+                Surface(
+                    content = {},
+                    tonalElevation = 2.dp,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .shimmer(),
+                )
+            },
+            modifier = Modifier
                 .padding(top = 6.dp)
                 .size(45.dp)
                 .clip(CircleShape)
