@@ -82,7 +82,7 @@
   <string name="installer_uninstall_success">Aliucordの削除に成功しました</string>
   <string name="installer_uninstall_aborted">Aliucordの削除が中断されました</string>
   <string name="installer_dl_verify_fail">ダウンロードの確認に失敗しました</string>
-  <string name="installer_minimization_warning">バッテリーの最適化が無効になっていないため、この画面を最小化するとインストールプロセスが中断される可能性があります！</string>
+  <string name="installer_banner_minimization">バッテリーの最適化が無効になっていないため、この画面を最小化するとインストールプロセスが中断される可能性があります！</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">インストールはブロックされました</string>
   <string name="install_error_invalid">一つまたは複数のAPKが無効または破損しています</string>

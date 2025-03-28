@@ -10,6 +10,7 @@
 
   <string name="action_cancel">Cancel</string>
   <string name="action_retry">Retry</string>
+  <string name="action_retry_install">Retry Installation</string>
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>
   <string name="action_dismiss">Dismiss</string>
@@ -20,6 +21,7 @@
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
   <string name="action_launch">Launch</string>
+  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">Close</string>
   <string name="action_open_settings">Open settings</string>
   <string name="action_search">Search</string>
@@ -93,7 +95,9 @@
   <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
   <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
-  <string name="installer_minimization_warning">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
+  <string name="installer_banner_minimization">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
+  <string name="installer_banner_failure">Installation failed! You can either retry or click this banner to open the Aliucord server for help.</string>
+  <string name="installer_banner_success">Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.</string>
 
   <string name="install_error_unknown">Installer failure (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>
@@ -171,6 +175,9 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -> \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
+
+  <string name="custom_component_picker_title">Custom Component</string>
+  <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
 
   <string name="fun_fact_prefix">Fun Fact: %s</string>
   <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>

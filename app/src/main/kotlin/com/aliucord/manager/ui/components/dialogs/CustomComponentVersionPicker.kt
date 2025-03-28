@@ -56,7 +56,7 @@ fun CustomComponentVersionPicker(
                 Text(stringResource(R.string.action_dismiss))
             }
         },
-        title = { Text("Custom Component") },
+        title = { Text(stringResource(R.string.custom_component_picker_title)) },
         icon = {
             Icon(
                 painter = painterResource(R.drawable.ic_download),
@@ -67,7 +67,7 @@ fun CustomComponentVersionPicker(
         text = {
             Column {
                 Text(
-                    text = "A custom local version for a patching component ($componentTitle) has been found. Would you like to use it?",
+                    text = stringResource(R.string.custom_component_picker_desc, componentTitle),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(bottom = 6.dp),
                 )

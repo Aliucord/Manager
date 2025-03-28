@@ -81,7 +81,7 @@
   <string name="installer_uninstall_success">Aliucord 설치 삭제를 완료했어요</string>
   <string name="installer_uninstall_aborted">설치 삭제를 중단했어요</string>
   <string name="installer_dl_verify_fail">다운로드를 검증하지 못했어요</string>
-  <string name="installer_minimization_warning">배터리 최적화가 꺼져 있지 않아, 화면을 최소화하면 설치 과정이 중단될 수 있어요!</string>
+  <string name="installer_banner_minimization">배터리 최적화가 꺼져 있지 않아, 화면을 최소화하면 설치 과정이 중단될 수 있어요!</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">설치가 차단됐어요</string>
   <string name="install_error_invalid">하나 이상의 APK가 잘못됐거나 손상됐어요</string>

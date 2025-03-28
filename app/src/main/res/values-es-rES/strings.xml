@@ -81,7 +81,7 @@
   <string name="installer_uninstall_success">Aliucord desinstalado con éxito</string>
   <string name="installer_uninstall_aborted">Se abortó la desinstalación de Aliucord</string>
   <string name="installer_dl_verify_fail">Error al verificar la descarga</string>
-  <string name="installer_minimization_warning">¡Dado que las optimizaciones de batería no han sido deshabilitadas, minimizar esta pantalla puede abortar el proceso de instalación!</string>
+  <string name="installer_banner_minimization">¡Dado que las optimizaciones de batería no han sido deshabilitadas, minimizar esta pantalla puede abortar el proceso de instalación!</string>
   <string name="install_error_unknown">Error al instalar (razón desconocida)</string>
   <string name="install_error_blocked">La instalación fue bloqueada</string>
   <string name="install_error_invalid">Uno o más APK no son válidos o están corruptos</string>

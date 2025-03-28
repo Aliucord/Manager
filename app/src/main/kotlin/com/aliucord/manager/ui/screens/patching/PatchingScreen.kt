@@ -150,7 +150,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                     item(key = "MINIMIZATION_WARNING") {
                         BannerSection(visible = showMinimizationWarning && !state.isFinished) {
                             TextBanner(
-                                text = stringResource(R.string.installer_minimization_warning),
+                                text = stringResource(R.string.installer_banner_minimization),
                                 icon = painterResource(R.drawable.ic_warning),
                                 iconColor = MaterialTheme.customColors.onWarningContainer,
                                 outlineColor = MaterialTheme.customColors.warning,
@@ -167,7 +167,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                             val handler = LocalUriHandler.current
 
                             TextBanner(
-                                text = "Installation failed! You can either retry or click this banner to open the Aliucord server for help.",
+                                text = stringResource(R.string.installer_banner_failure),
                                 icon = painterResource(R.drawable.ic_warning),
                                 iconColor = MaterialTheme.colorScheme.error,
                                 outlineColor = null,
@@ -183,7 +183,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                     item(key = "INSTALLED_BANNER") {
                         BannerSection(visible = state is PatchingScreenState.Success) {
                             TextBanner(
-                                text = "Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.",
+                                text = stringResource(R.string.installer_banner_success),
                                 icon = painterResource(R.drawable.ic_check_circle),
                                 iconColor = Color(0xFF59B463),
                                 outlineColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -234,7 +234,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
 
                                     PatchingScreenState.Success -> {
                                         MainActionButton(
-                                            text = "Launch Aliucord",
+                                            text = stringResource(R.string.action_launch_aliucord),
                                             icon = painterResource(R.drawable.ic_launch),
                                             onClick = model::launchApp,
                                         )
@@ -242,7 +242,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
 
                                     is PatchingScreenState.Failed -> {
                                         MainActionButton(
-                                            text = "Retry installation",
+                                            text = stringResource(R.string.action_retry_install),
                                             icon = painterResource(R.drawable.ic_refresh),
                                             onClick = model::restart,
                                         )
@@ -304,6 +304,7 @@ private fun BannerSection(
     }
 }
 
+// TODO: error log
 // item(key = "ERROR_LOG") {
 //     SelectionContainer {
 //         Text(

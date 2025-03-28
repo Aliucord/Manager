@@ -81,7 +81,7 @@
   <string name="installer_uninstall_success">Aliucord успешно удалён</string>
   <string name="installer_uninstall_aborted">Удаление отменено</string>
   <string name="installer_dl_verify_fail">Не удалось верифицировать скачивание</string>
-  <string name="installer_minimization_warning">Поскольку оптимизация работы аккумулятора не была отключена, сворачивание этого приложения может прервать процесс установки!</string>
+  <string name="installer_banner_minimization">Поскольку оптимизация работы аккумулятора не была отключена, сворачивание этого приложения может прервать процесс установки!</string>
   <string name="install_error_unknown">Не удалось установить (неизвестная причина)</string>
   <string name="install_error_blocked">Установка заблокирована</string>
   <string name="install_error_invalid">Один или несколько APK были недействительными или поврежденными</string>
