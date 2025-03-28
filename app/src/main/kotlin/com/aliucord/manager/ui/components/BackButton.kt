@@ -1,10 +1,10 @@
 package com.aliucord.manager.ui.components
 
 import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,7 +19,7 @@ import com.aliucord.manager.ui.screens.home.HomeScreen
 @Composable
 fun BackButton() {
     // Support rendering in @Preview
-    val context = if (LocalInspectionMode.current) null else LocalContext.current as Activity
+    val context = if (LocalInspectionMode.current) null else LocalActivity.current
     val navigator = LocalNavigator.current
 
     IconButton(

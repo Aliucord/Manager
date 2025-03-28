@@ -33,78 +33,82 @@ class AboutScreen : Screen, Parcelable {
     @Composable
     override fun Content() {
         val model = getScreenModel<AboutModel>()
-        val state by model.state.collectAsState()
 
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.navigation_about)) },
-                    navigationIcon = { BackButton() },
+        AboutScreenContent(state = model.state.collectAsState())
+    }
+}
+
+@Composable
+fun AboutScreenContent(state: State<AboutScreenState>) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.navigation_about)) },
+                navigationIcon = { BackButton() },
+            )
+        }
+    ) { paddingValues ->
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = paddingValues
+                .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
+            modifier = Modifier
+                .padding(paddingValues.exclude(PaddingValuesSides.Bottom))
+                .padding(16.dp),
+        ) {
+            item(key = "PROJECT_HEADER") {
+                ProjectHeader()
+            }
+
+            item(key = "HEADER_DIVIDER") {
+                TextDivider(
+                    text = stringResource(R.string.contributors_lead),
+                    modifier = Modifier.padding(top = 18.dp, bottom = 20.dp),
                 )
             }
-        ) { paddingValues ->
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = paddingValues
-                    .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
-                modifier = Modifier
-                    .padding(paddingValues.exclude(PaddingValuesSides.Bottom))
-                    .padding(16.dp),
-            ) {
-                item(key = "PROJECT_HEADER") {
-                    ProjectHeader()
-                }
 
-                item(key = "HEADER_DIVIDER") {
-                    TextDivider(
-                        text = stringResource(R.string.contributors_lead),
-                        modifier = Modifier.padding(top = 18.dp, bottom = 30.dp),
+            item(key = "MAIN_CONTRIBUTORS") {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    LeadContributor("Vendicated", "the ven")
+                    LeadContributor("Juby210", "Fox")
+                    LeadContributor("rushii", "explod", "rushiiMachine")
+                }
+            }
+
+            item(key = "CONTRIBUTORS_DIVIDER") {
+                TextDivider(
+                    text = stringResource(R.string.contributors),
+                    modifier = Modifier.padding(top = 16.dp, bottom = 6.dp)
+                )
+            }
+
+            when (val state = state.value) {
+                AboutScreenState.Loading -> item(key = "CONTRIBUTIONS_LOADING") {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        content = { CircularProgressIndicator() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 38.dp),
                     )
                 }
 
-                item(key = "MAIN_CONTRIBUTORS") {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        LeadContributor("Vendicated", "the ven")
-                        LeadContributor("Juby210", "Fox")
-                        LeadContributor("rushii", "explod", "rushiiMachine")
-                    }
-                }
-
-                item(key = "CONTRIBUTORS_DIVIDER") {
-                    TextDivider(
-                        text = stringResource(R.string.contributors),
-                        modifier = Modifier.padding(vertical = 18.dp)
+                AboutScreenState.Failure -> item(key = "LOAD_FAILURE") {
+                    LoadFailure(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(vertical = 38.dp)
                     )
                 }
 
-                when (val state = state) {
-                    AboutScreenState.Loading -> item(key = "CONTRIBUTIONS_LOADING") {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            content = { CircularProgressIndicator() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 38.dp),
-                        )
-                    }
-
-                    AboutScreenState.Failure -> item(key = "LOAD_FAILURE") {
-                        LoadFailure(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(vertical = 38.dp)
-                        )
-                    }
-
-                    is AboutScreenState.Loaded -> {
-                        items(state.contributors, key = { it.username }) { user ->
-                            ContributorCommitsItem(user)
-                        }
+                is AboutScreenState.Loaded -> {
+                    items(state.contributors, key = { it.username }) { user ->
+                        ContributorCommitsItem(user)
                     }
                 }
             }

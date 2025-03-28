@@ -14,7 +14,7 @@ import com.aliucord.manager.ui.util.DiscordVersion
 import io.ktor.util.decodeBase64Bytes
 import kotlinx.collections.immutable.persistentListOf
 
-// This preview has animations that cannot be properly viewed from an IDE
+// This preview has animations that cannot be properly viewed from an IDE preview
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

@@ -8,7 +8,7 @@ import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.home.HomeScreenLoadingContent
 import com.aliucord.manager.ui.screens.home.components.HomeAppBar
 
-// This preview cannot be properly viewed from an IDE
+// This preview cannot be properly viewed from an IDE preview
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
