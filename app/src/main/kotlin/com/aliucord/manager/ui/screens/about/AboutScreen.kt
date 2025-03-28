@@ -20,7 +20,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.about.components.LeadContributor
-import com.aliucord.manager.ui.screens.about.components.LoadFailure
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
 import kotlinx.parcelize.IgnoredOnParcel

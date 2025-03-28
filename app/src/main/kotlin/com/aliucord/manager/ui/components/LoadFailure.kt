@@ -1,4 +1,4 @@
-package com.aliucord.manager.ui.screens.about.components
+package com.aliucord.manager.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -27,7 +27,7 @@ fun LoadFailure(modifier: Modifier = Modifier) {
             text = stringResource(R.string.network_load_fail),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.error,
-            modifier = Modifier.padding(top = 10.dp, bottom = 2.dp),
+            modifier = Modifier.padding(top = 4.dp, bottom = 2.dp),
         )
     }
 }

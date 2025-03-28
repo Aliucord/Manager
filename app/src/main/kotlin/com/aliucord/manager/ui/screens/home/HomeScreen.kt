@@ -25,8 +25,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.AnimatedVersionDisplay
-import com.aliucord.manager.ui.components.ProjectHeader
+import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.home.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
@@ -57,13 +56,13 @@ class HomeScreen : Screen, Parcelable {
             topBar = { HomeAppBar() },
         ) { padding ->
             when (model.installations) {
-                is InstallsState.Fetched -> PresentInstallsContent(
+                is InstallsState.Fetched -> LoadedContent(
                     model = model,
                     padding = padding,
                     onClickInstall = { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) },
                 )
 
-                InstallsState.Fetching -> LoadingInstallsContent(padding = padding)
+                InstallsState.Fetching -> LoadingContent(padding = padding)
 
                 InstallsState.None -> NoInstallsContent(
                     onClickInstall = { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) },
@@ -71,25 +70,14 @@ class HomeScreen : Screen, Parcelable {
                         .padding(padding.exclude(PaddingValuesSides.Bottom)),
                 )
 
-                InstallsState.Error -> {
-                    // This is ugly asf but it should never happen
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.padding(padding),
-                    ) {
-                        Text(
-                            text = "Failed to fetch installations",
-                            style = MaterialTheme.typography.labelMedium,
-                        )
-                    }
-                }
+                InstallsState.Error -> FailureContent(padding = padding)
             }
         }
     }
 }
 
 @Composable
-fun LoadingInstallsContent(padding: PaddingValues) {
+private fun LoadingContent(padding: PaddingValues) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -102,7 +90,7 @@ fun LoadingInstallsContent(padding: PaddingValues) {
 }
 
 @Composable
-fun PresentInstallsContent(
+private fun LoadedContent(
     model: HomeModel,
     padding: PaddingValues,
     onClickInstall: () -> Unit,
@@ -164,7 +152,7 @@ fun PresentInstallsContent(
 }
 
 @Composable
-fun NoInstallsContent(
+private fun NoInstallsContent(
     onClickInstall: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -206,5 +194,22 @@ fun NoInstallsContent(
                 modifier = Modifier.padding(start = 10.dp),
             )
         }
+    }
+}
+
+@Composable
+fun FailureContent(
+    padding: PaddingValues,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(padding)
+            .padding(16.dp)
+            .fillMaxSize(),
+    ) {
+        ProjectHeader()
+        LoadFailure(modifier = Modifier.fillMaxSize())
     }
 }
