@@ -23,7 +23,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.TextDivider
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
-import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreen
+import com.aliucord.manager.ui.screens.iconopts.*
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
@@ -40,15 +40,21 @@ import org.koin.core.parameter.parametersOf
 @Parcelize
 class PatchOptionsScreen(
     private val prefilledOptions: PatchOptions? = null,
-) : Screen, Parcelable {
+) : Screen, Parcelable, IconOptionsScreenParent {
     @IgnoredOnParcel
     override val key = "PatchOptions"
+
+    @Composable
+    override fun getIconModel(): IconOptionsModel {
+        return getScreenModel<IconOptionsModel>()
+    }
 
     @Composable
     override fun Content() {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
         val model = getScreenModel<PatchOptionsModel> { parametersOf(prefilledOptions ?: PatchOptions.Default) }
+        val iconModel = getScreenModel<IconOptionsModel> { parametersOf((prefilledOptions ?: PatchOptions.Default).iconReplacement) }
 
         LaunchedEffect(Unit) {
             // Ensure that when popping this screen off the stack that permission requests don't get triggered
@@ -81,8 +87,7 @@ class PatchOptionsScreen(
             debuggable = model.debuggable,
             setDebuggable = model::changeDebuggable,
 
-            // TODO: actual filled in options
-            onOpenIconOptions = { navigator.push(IconOptionsScreen(PatchOptions.Default.iconReplacement)) },
+            onOpenIconOptions = { navigator.push(IconOptionsScreen(this@PatchOptionsScreen)) },
 
             appName = model.appName,
             appNameIsError = model.appNameIsError,
@@ -93,7 +98,11 @@ class PatchOptionsScreen(
             setPackageName = model::changePackageName,
 
             isConfigValid = model.isConfigValid,
-            onInstall = { navigator.push(PatchingScreen(model.generateConfig())) },
+            onInstall = {
+                val iconConfig = iconModel.generateConfig()
+                val patchConfig = model.generateConfig(iconConfig)
+                navigator.push(PatchingScreen(patchConfig))
+            },
         )
     }
 }

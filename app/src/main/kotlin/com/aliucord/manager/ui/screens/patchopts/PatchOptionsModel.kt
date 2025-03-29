@@ -59,15 +59,14 @@ class PatchOptionsModel(
         invalidChecks.none { it }
     }
 
-    fun generateConfig(): PatchOptions {
+    fun generateConfig(icon: PatchOptions.IconReplacement): PatchOptions {
         if (!isConfigValid) error("invalid config state")
 
         return PatchOptions(
             appName = appName,
             packageName = packageName,
             debuggable = debuggable,
-            // TODO: advanced icon options
-            iconReplacement = PatchOptions.IconReplacement.Aliucord,
+            iconReplacement = icon,
         )
     }
 

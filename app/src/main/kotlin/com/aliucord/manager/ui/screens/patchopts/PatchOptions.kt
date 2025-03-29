@@ -80,6 +80,11 @@ data class PatchOptions(
              * The default icon replacement option.
              */
             val Aliucord = CustomColor(Color(0xFF00C853))
+
+            /**
+             * The Discord icon color.
+             */
+            val Discord = CustomColor(Color(0xFF7289DA))
         }
     }
 

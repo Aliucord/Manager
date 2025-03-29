@@ -9,6 +9,7 @@ import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.network.services.*
 import com.aliucord.manager.ui.screens.about.AboutModel
 import com.aliucord.manager.ui.screens.home.HomeModel
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsModel
 import com.aliucord.manager.ui.screens.patching.PatchingScreenModel
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsModel
 import com.aliucord.manager.ui.screens.plugins.PluginsModel
@@ -52,6 +53,7 @@ class ManagerApplication : Application() {
                 factoryOf(::PatchingScreenModel)
                 factoryOf(::SettingsModel)
                 factoryOf(::PatchOptionsModel)
+                factoryOf(::IconOptionsModel)
                 viewModelOf(::UpdaterViewModel)
             })
 

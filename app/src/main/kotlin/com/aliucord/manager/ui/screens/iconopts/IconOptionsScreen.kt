@@ -1,31 +1,44 @@
 package com.aliucord.manager.ui.screens.iconopts
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.aliucord.manager.ui.screens.iconopts.components.IconOptionsAppBar
-import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 import dev.zt64.compose.pipette.CircularColorPicker
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
+interface IconOptionsScreenParent : Parcelable {
+    /**
+     * The screen model is elevated outside of this screen
+     * in order to share the state with the parent screen.
+     */
+    @Composable
+    fun getIconModel(): IconOptionsModel
+}
+
+@Parcelize
 class IconOptionsScreen(
-    private val prefilledOptions: IconReplacement,
-) : Screen {
+    private val parent: IconOptionsScreenParent,
+) : Screen, Parcelable {
+    @IgnoredOnParcel
     override val key = "IconOptions"
 
     @Composable
     override fun Content() {
-        var (color, setColor) = remember { mutableStateOf(IconReplacement.Aliucord.color) }
+        val model = parent.getIconModel()
 
         IconOptionsScreenContent(
-            selectedColor = color,
-            setSelectedColor = setColor,
+            selectedColor = model.selectedColor,
+            setSelectedColor = model::changeSelectedColor,
         )
     }
 }
