@@ -24,17 +24,9 @@ class PatchOptionsModel(
     var packageNameState by mutableStateOf(PackageNameState.Ok)
         private set
 
-    val packageNameIsDefault by derivedStateOf {
-        packageName == PatchOptions.Default.packageName
-    }
-
     fun changePackageName(newPackageName: String) {
         packageName = newPackageName
         fetchPkgNameStateDebounced()
-    }
-
-    fun resetPackageName() {
-        changePackageName(PatchOptions.Default.packageName)
     }
 
     // ---------- App name state ----------
@@ -44,17 +36,9 @@ class PatchOptionsModel(
     var appNameIsError by mutableStateOf(false)
         private set
 
-    val appNameIsDefault by derivedStateOf {
-        appName == PatchOptions.Default.appName
-    }
-
     fun changeAppName(newAppName: String) {
         appName = newAppName
         appNameIsError = newAppName.length !in (1..150)
-    }
-
-    fun resetAppName() {
-        appName = PatchOptions.Default.appName
     }
 
     // ---------- Icon patching state ----------

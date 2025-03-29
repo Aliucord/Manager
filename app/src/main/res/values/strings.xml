@@ -16,8 +16,8 @@
   <string name="action_dismiss">Dismiss</string>
   <string name="action_install">Install</string>
   <string name="action_uninstall">Uninstall</string>
-  <string name="action_add_install">New Aliucord Installation</string>
-  <string name="action_update_install">Update Aliucord Installation</string>
+  <string name="action_add_install">New install</string>
+  <string name="action_update_install">Update install</string>
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
   <string name="action_launch">Launch</string>
