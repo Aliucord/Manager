@@ -48,7 +48,7 @@ class HomeScreen : Screen, Parcelable {
         val navigator = LocalNavigator.currentOrThrow
         val scope = rememberCoroutineScope()
         val model = getScreenModel<HomeModel>()
-        val onClickInstall = remember { { navigator.push(PatchOptionsScreen(supportedVersion = model.supportedVersion)) } }
+        val onClickInstall = remember { { navigator.push(PatchOptionsScreen()) } }
 
         // Refresh installations list when the screen changes or activity resumes
         LifecycleResumeEffect(Unit) {

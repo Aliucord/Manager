@@ -150,10 +150,7 @@ class HomeModel(
         val patchOptions = metadata?.options
             ?: PatchOptions.Default.copy(packageName = packageName)
 
-        return PatchOptionsScreen(
-            prefilledOptions = patchOptions,
-            supportedVersion = supportedVersion,
-        )
+        return PatchOptionsScreen(prefilledOptions = patchOptions)
     }
 
     suspend fun fetchRemoteData() {

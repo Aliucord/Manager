@@ -8,14 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -23,7 +19,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.TextDivider
-import com.aliucord.manager.ui.components.VersionDisplay
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
@@ -42,7 +37,6 @@ import org.koin.core.parameter.parametersOf
 @Parcelize
 class PatchOptionsScreen(
     private val prefilledOptions: PatchOptions? = null,
-    private val supportedVersion: DiscordVersion = DiscordVersion.None,
 ) : Screen, Parcelable {
     @IgnoredOnParcel
     override val key = "PatchOptions"
@@ -80,7 +74,6 @@ class PatchOptionsScreen(
         PatchOptionsScreenContent(
             isUpdate = prefilledOptions != null,
             isDevMode = model.isDevMode,
-            supportedVersion = supportedVersion,
 
             debuggable = model.debuggable,
             setDebuggable = model::changeDebuggable,
@@ -106,7 +99,6 @@ class PatchOptionsScreen(
 fun PatchOptionsScreenContent(
     isUpdate: Boolean,
     isDevMode: Boolean,
-    supportedVersion: DiscordVersion,
 
     debuggable: Boolean,
     setDebuggable: (Boolean) -> Unit,
@@ -203,20 +195,6 @@ fun PatchOptionsScreenContent(
                     onValueChange = setDebuggable,
                 )
             }
-
-            VersionDisplay(
-                version = supportedVersion,
-                prefix = {
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(stringResource(R.string.version_supported))
-                        append(" ")
-                    }
-                },
-                modifier = Modifier
-                    .alpha(.5f)
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 20.dp)
-            )
 
             Spacer(Modifier.weight(1f))
 
