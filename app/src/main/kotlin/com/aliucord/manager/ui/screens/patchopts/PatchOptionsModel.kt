@@ -41,14 +41,6 @@ class PatchOptionsModel(
         appNameIsError = newAppName.length !in (1..150)
     }
 
-    // ---------- Icon patching state ----------
-    var replaceIcon by mutableStateOf(prefilledOptions.iconReplacement == PatchOptions.IconReplacement.Aliucord)
-        private set
-
-    fun changeReplaceIcon(value: Boolean) {
-        replaceIcon = value
-    }
-
     // ---------- Debuggable state ----------
     var debuggable by mutableStateOf(prefilledOptions.debuggable)
         private set
@@ -75,7 +67,7 @@ class PatchOptionsModel(
             packageName = packageName,
             debuggable = debuggable,
             // TODO: advanced icon options
-            iconReplacement = if (replaceIcon) PatchOptions.IconReplacement.Aliucord else PatchOptions.IconReplacement.Original,
+            iconReplacement = PatchOptions.IconReplacement.Aliucord,
         )
     }
 

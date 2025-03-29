@@ -22,6 +22,7 @@ import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreen
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
@@ -77,6 +78,12 @@ class MainActivity : ComponentActivity() {
                                     // Going from InstallOptions -> Install
                                     initialState is PatchOptionsScreen && targetState is PatchingScreen ->
                                         slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
+                                    // Going from PatchOptions -> IconOptions
+                                    initialState is PatchOptionsScreen && targetState is IconOptionsScreen ->
+                                        slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
+                                    // Going from IconOptions -> PatchOptions
+                                    initialState is IconOptionsScreen && targetState is PatchOptionsScreen ->
+                                        fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
                                     // Going from Install -> InstallOptions
                                     initialState is PatchingScreen && targetState is PatchOptionsScreen ->
                                         fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut

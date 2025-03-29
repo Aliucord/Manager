@@ -1,16 +1,18 @@
 package com.aliucord.manager.ui.screens.patchopts
 
 import android.os.Parcelable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -21,12 +23,13 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.TextDivider
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreen
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
-import com.aliucord.manager.ui.screens.patchopts.components.options.SwitchPatchOption
-import com.aliucord.manager.ui.screens.patchopts.components.options.TextPatchOption
-import com.aliucord.manager.ui.util.*
+import com.aliucord.manager.ui.screens.patchopts.components.options.*
+import com.aliucord.manager.ui.util.InstallNotifications
+import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import com.aliucord.manager.util.requestNoBatteryOptimizations
 import kotlinx.coroutines.delay
@@ -58,7 +61,7 @@ class PatchOptionsScreen(
                 context.requestNoBatteryOptimizations()
         }
 
-        var showNetworkWarningDialog by remember { mutableStateOf(model.isNetworkDangerous()) }
+        var showNetworkWarningDialog by rememberSaveable { mutableStateOf(model.isNetworkDangerous()) }
         if (showNetworkWarningDialog) {
             NetworkWarningDialog(
                 onConfirm = { showNetworkWarningDialog = false },
@@ -78,8 +81,8 @@ class PatchOptionsScreen(
             debuggable = model.debuggable,
             setDebuggable = model::changeDebuggable,
 
-            replaceIcon = model.replaceIcon,
-            setReplaceIcon = model::changeReplaceIcon,
+            // TODO: actual filled in options
+            onOpenIconOptions = { navigator.push(IconOptionsScreen(PatchOptions.Default.iconReplacement)) },
 
             appName = model.appName,
             appNameIsError = model.appNameIsError,
@@ -103,8 +106,7 @@ fun PatchOptionsScreenContent(
     debuggable: Boolean,
     setDebuggable: (Boolean) -> Unit,
 
-    replaceIcon: Boolean,
-    setReplaceIcon: (Boolean) -> Unit,
+    onOpenIconOptions: () -> Unit,
 
     appName: String,
     appNameIsError: Boolean,
@@ -137,14 +139,29 @@ fun PatchOptionsScreenContent(
 
             TextDivider(text = stringResource(R.string.patchopts_divider_basic))
 
-            SwitchPatchOption(
+            IconPatchOption(
                 icon = painterResource(R.drawable.ic_app_shortcut),
                 name = stringResource(R.string.patchopts_icon_title),
                 description = stringResource(R.string.patchopts_icon_desc),
-                value = replaceIcon,
-                onValueChange = setReplaceIcon,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        interactionSource = remember(::MutableInteractionSource),
+                        onClick = onOpenIconOptions,
+                        indication = null,
+                        role = Role.Switch,
+                    )
+                    .padding(bottom = 8.dp),
+            ) {
+                // TODO: selected icon options preview
+                // Icon(
+                //     painter = painterResource(R.drawable.ic_discord),
+                //     contentDescription = null,
+                //     modifier = Modifier
+                //         .padding(start = 4.dp, end = 14.dp)
+                //         .size(26.dp),
+                // )
+            }
 
             val appNameIsDefault by remember {
                 derivedStateOf {

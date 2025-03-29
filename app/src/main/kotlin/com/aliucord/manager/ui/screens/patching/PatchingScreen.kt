@@ -59,7 +59,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
 
         val state by model.state.collectAsState()
         val listState = rememberLazyListState()
-        val showMinimizationWarning = remember { !context.isIgnoringBatteryOptimizations() }
+        val showMinimizationWarning = rememberSaveable { !context.isIgnoringBatteryOptimizations() }
 
         // Exit warning dialog (dismiss itself if install process state changes, esp. for Success)
         var showAbortWarning by rememberSaveable(model.state.collectAsState().value) { mutableStateOf(false) }

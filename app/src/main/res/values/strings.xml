@@ -16,8 +16,8 @@
   <string name="action_dismiss">Dismiss</string>
   <string name="action_install">Install</string>
   <string name="action_uninstall">Uninstall</string>
-  <string name="action_add_install">New install</string>
-  <string name="action_update_install">Update install</string>
+  <string name="action_add_install">New Install</string>
+  <string name="action_update_install">Update Install</string>
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
   <string name="action_launch">Launch</string>
@@ -160,9 +160,11 @@
   <string name="patchopts_debuggable_title">Debuggable</string>
   <string name="patchopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
   <string name="patchopts_icon_title">Replace app icon</string>
-  <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
+
+  <string name="iconopts_screen_title">Icon Replacement</string>
 
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
