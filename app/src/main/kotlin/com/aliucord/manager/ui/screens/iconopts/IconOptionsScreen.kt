@@ -7,8 +7,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.InteractiveSlider
-import com.aliucord.manager.ui.screens.iconopts.components.IconOptionsAppBar
-import com.aliucord.manager.ui.screens.iconopts.components.RadioSelectorItem
+import com.aliucord.manager.ui.screens.iconopts.components.*
 import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
+import com.aliucord.manager.ui.util.ColorSaver
 import dev.zt64.compose.pipette.CircularColorPicker
+import dev.zt64.compose.pipette.util.*
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -109,15 +110,19 @@ fun IconOptionsScreenContent(
 
 @Composable
 private fun CustomColorOptions(color: HSVColorState) {
+    // This color is separated from the live color and intentionally lags behind while the RGBTextField is being edited.
+    // When this changes, then the text inside the RGBTextField is reset to the fully formatted color.
+    // As such, this only happens when the color is changed via the other color pickers.
+    var initialRGBFieldColor by rememberSaveable(stateSaver = ColorSaver) { mutableStateOf(color.toARGB()) }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(horizontal = 15.dp)
     ) {
         PatchOption(
-            name = "Hue & Saturation",
-            description = "The main color components",
-            modifier = Modifier.fillMaxWidth()
+            name = stringResource(R.string.iconopts_colorpicker_title),
+            description = stringResource(R.string.iconopts_colorpicker_desc),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             CircularColorPicker(
                 hue = color.hue,
@@ -126,21 +131,25 @@ private fun CustomColorOptions(color: HSVColorState) {
                 onColorChange = { hue, saturation ->
                     color.hue = hue
                     color.saturation = saturation
+                    initialRGBFieldColor = color.toARGB()
                 },
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(top = 12.dp)
                     .size(260.dp)
                     .align(Alignment.CenterHorizontally)
             )
         }
 
         PatchOption(
-            name = "Lightness",
-            description = "The brightness component of the color",
+            name = stringResource(R.string.iconopts_lightness_title),
+            description = stringResource(R.string.iconopts_lightness_desc),
         ) {
             InteractiveSlider(
                 value = color.value,
-                onValueChange = { color.value = it },
+                onValueChange = {
+                    color.value = it
+                    initialRGBFieldColor = color.toARGB()
+                },
                 valueRange = 0f..1f,
                 brush = Brush.horizontalGradient(
                     listOf(
@@ -149,6 +158,21 @@ private fun CustomColorOptions(color: HSVColorState) {
                     ),
                 ),
                 thumbColor = color.toARGB(),
+            )
+        }
+
+        PatchOption(
+            name = stringResource(R.string.iconopts_hex_title),
+            description = stringResource(R.string.iconopts_hex_desc),
+        ) {
+            RGBTextField(
+                initialColor = initialRGBFieldColor,
+                setColor = {
+                    color.hue = it.hue
+                    color.saturation = it.saturation
+                    color.value = it.hsvValue
+                },
+                modifier = Modifier.padding(top = 12.dp),
             )
         }
     }

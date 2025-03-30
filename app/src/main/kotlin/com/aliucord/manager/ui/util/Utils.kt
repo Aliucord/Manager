@@ -5,8 +5,10 @@ package com.aliucord.manager.ui.util
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import kotlinx.collections.immutable.ImmutableList
@@ -64,3 +66,11 @@ inline fun annotatingStringResource(
 @Stable
 inline fun Modifier.mirrorVertically(): Modifier =
     scale(scaleX = -1f, scaleY = 1f)
+
+/**
+ * Allow using compose [Color] in [androidx.compose.runtime.saveable.rememberSaveable]
+ */
+val ColorSaver = Saver<Color, Long>(
+    save = { it.value.toLong() },
+    restore = { Color(it.toULong()) },
+)
