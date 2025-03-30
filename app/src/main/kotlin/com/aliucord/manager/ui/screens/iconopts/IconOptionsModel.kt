@@ -8,21 +8,56 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 class IconOptionsModel(
     prefilledOptions: IconReplacement,
 ) : ScreenModel {
-    var selectedColor by mutableStateOf<Color>(((prefilledOptions as? IconReplacement.CustomColor) ?: IconReplacement.Discord).color)
+    // ---------- Icon patching mode ---------- //
+    var mode by mutableStateOf(IconOptionsMode.Original)
         private set
 
+    fun changeMode(mode: IconOptionsMode) {
+        this.mode = mode
+    }
+
+    // ---------- Replacement color ---------- //
+    var selectedColorValue by mutableLongStateOf(0)
+    val selectedColor: Color
+        inline get() = Color(selectedColorValue.toULong())
+
     fun changeSelectedColor(color: Color) {
-        this.selectedColor = color
+        selectedColorValue = color.value.toLong()
     }
 
-    fun generateConfig(): IconReplacement {
-        // TODO: other branches
-        return IconReplacement.CustomColor(color = selectedColor)
+    // ---------- Other ---------- //
+    init {
+        when (prefilledOptions) {
+            is IconReplacement.CustomColor if prefilledOptions.color == IconReplacement.Aliucord.color -> {
+                changeMode(IconOptionsMode.Aliucord)
+                changeSelectedColor(IconReplacement.Aliucord.color)
+            }
+
+            is IconReplacement.CustomColor -> {
+                changeMode(IconOptionsMode.CustomColor)
+                changeSelectedColor(prefilledOptions.color)
+            }
+
+            is IconReplacement.CustomImage -> {
+                changeMode(IconOptionsMode.CustomImage)
+                TODO()
+            }
+
+            IconReplacement.Original -> changeMode(IconOptionsMode.Original)
+        }
     }
 
-    enum class Mode {
-        Original,
-        ReplaceColor,
-        ReplaceForeground,
+    fun generateConfig(): IconReplacement = when (mode) {
+        IconOptionsMode.Original -> IconReplacement.Original
+        IconOptionsMode.Aliucord -> IconReplacement.Aliucord
+        IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor)
+        IconOptionsMode.CustomImage -> TODO()
     }
+}
+
+enum class IconOptionsMode {
+    Original,
+    Aliucord,
+    CustomColor,
+    CustomImage,
 }

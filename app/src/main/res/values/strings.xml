@@ -165,6 +165,10 @@
   <string name="patchopts_divider_advanced">Advanced</string>
 
   <string name="iconopts_screen_title">Icon Replacement</string>
+  <string name="iconopts_variant_title_color">Custom Color</string>
+  <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
+  <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
+  <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
 
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>

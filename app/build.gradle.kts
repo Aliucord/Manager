@@ -133,6 +133,7 @@ android {
 kotlin {
     sourceSets.all {
         languageSettings.enableLanguageFeature("ExplicitBackingFields")
+        languageSettings.enableLanguageFeature("WhenGuards")
     }
 }
 
