@@ -11,13 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.components.InteractiveSlider
 import com.aliucord.manager.ui.screens.iconopts.components.IconOptionsAppBar
 import com.aliucord.manager.ui.screens.iconopts.components.RadioSelectorItem
+import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
 import dev.zt64.compose.pipette.CircularColorPicker
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -46,7 +49,6 @@ class IconOptionsScreen(
             mode = model.mode,
             setMode = model::changeMode,
             selectedColor = model.selectedColor,
-            setSelectedColor = model::changeSelectedColor,
         )
     }
 }
@@ -55,8 +57,7 @@ class IconOptionsScreen(
 fun IconOptionsScreenContent(
     mode: IconOptionsMode,
     setMode: (IconOptionsMode) -> Unit,
-    selectedColor: Color,
-    setSelectedColor: (Color) -> Unit,
+    selectedColor: HSVColorState,
 ) {
     Scaffold(
         topBar = { IconOptionsAppBar() },
@@ -100,12 +101,55 @@ fun IconOptionsScreenContent(
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically { -it / 10 },
             ) {
-                CircularColorPicker(
-                    color = selectedColor,
-                    onColorChange = setSelectedColor,
-                    modifier = Modifier.size(230.dp),
-                )
+                CustomColorOptions(selectedColor)
             }
+        }
+    }
+}
+
+@Composable
+private fun CustomColorOptions(color: HSVColorState) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(horizontal = 15.dp)
+    ) {
+        PatchOption(
+            name = "Hue & Saturation",
+            description = "The main color components",
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            CircularColorPicker(
+                hue = color.hue,
+                saturation = color.saturation,
+                value = color.value,
+                onColorChange = { hue, saturation ->
+                    color.hue = hue
+                    color.saturation = saturation
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .size(260.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
+        PatchOption(
+            name = "Lightness",
+            description = "The brightness component of the color",
+        ) {
+            InteractiveSlider(
+                value = color.value,
+                onValueChange = { color.value = it },
+                valueRange = 0f..1f,
+                brush = Brush.horizontalGradient(
+                    listOf(
+                        Color.Black,
+                        Color.hsv(color.hue, color.saturation, 1f)
+                    ),
+                ),
+                thumbColor = color.toARGB(),
+            )
         }
     }
 }

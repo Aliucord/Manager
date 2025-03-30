@@ -1,8 +1,7 @@
 package com.aliucord.manager.ui.screens.home.components
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -73,6 +72,7 @@ fun InstallButton(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(end = 10.dp),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_add),

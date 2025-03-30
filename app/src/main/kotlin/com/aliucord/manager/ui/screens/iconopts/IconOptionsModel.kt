@@ -17,12 +17,11 @@ class IconOptionsModel(
     }
 
     // ---------- Replacement color ---------- //
-    var selectedColorValue by mutableLongStateOf(0)
-    val selectedColor: Color
-        inline get() = Color(selectedColorValue.toULong())
+    var selectedColor by mutableStateOf<HSVColorState>(IconReplacement.Aliucord.color.toHSVState())
+        private set
 
-    fun changeSelectedColor(color: Color) {
-        selectedColorValue = color.value.toLong()
+    fun initSelectedColor(color: Color) {
+        selectedColor = color.toHSVState()
     }
 
     // ---------- Other ---------- //
@@ -30,12 +29,12 @@ class IconOptionsModel(
         when (prefilledOptions) {
             is IconReplacement.CustomColor if prefilledOptions.color == IconReplacement.Aliucord.color -> {
                 changeMode(IconOptionsMode.Aliucord)
-                changeSelectedColor(IconReplacement.Aliucord.color)
+                initSelectedColor(IconReplacement.Aliucord.color)
             }
 
             is IconReplacement.CustomColor -> {
                 changeMode(IconOptionsMode.CustomColor)
-                changeSelectedColor(prefilledOptions.color)
+                initSelectedColor(prefilledOptions.color)
             }
 
             is IconReplacement.CustomImage -> {
@@ -50,14 +49,7 @@ class IconOptionsModel(
     fun generateConfig(): IconReplacement = when (mode) {
         IconOptionsMode.Original -> IconReplacement.Original
         IconOptionsMode.Aliucord -> IconReplacement.Aliucord
-        IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor)
+        IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toARGB())
         IconOptionsMode.CustomImage -> TODO()
     }
-}
-
-enum class IconOptionsMode {
-    Original,
-    Aliucord,
-    CustomColor,
-    CustomImage,
 }
