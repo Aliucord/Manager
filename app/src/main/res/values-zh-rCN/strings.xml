@@ -9,6 +9,7 @@
   <string name="installer">安装程序</string>
   <string name="action_cancel">取消</string>
   <string name="action_retry">重试</string>
+  <string name="action_retry_install">Retry Installation</string>
   <string name="action_apply">应用</string>
   <string name="action_confirm">确定</string>
   <string name="action_dismiss">放弃</string>
@@ -19,6 +20,7 @@
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
   <string name="action_launch">启动</string>
+  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">关闭</string>
   <string name="action_open_settings">打开设置</string>
   <string name="action_search">搜索</string>
@@ -61,6 +63,7 @@
   <string name="navigation_back">返回</string>
   <string name="navigation_about">关于</string>
   <string name="navigation_settings">设置</string>
+  <string name="contributors_lead">Lead</string>
   <string name="contributors">贡献者</string>
   <string name="contributors_contributions">%o 项贡献</string>
   <string name="network_load_fail">无法加载</string>
@@ -82,6 +85,8 @@
   <string name="installer_uninstall_aborted">已取消卸载</string>
   <string name="installer_dl_verify_fail">无法验证下载</string>
   <string name="installer_banner_minimization">由于电池优化未被禁用，最小化此屏幕可能会中止安装过程！</string>
+  <string name="installer_banner_failure">Installation failed! You can either retry or click this banner to open the Aliucord server for help.</string>
+  <string name="installer_banner_success">Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.</string>
   <string name="install_error_unknown">安装程序失败（未知原因）</string>
   <string name="install_error_blocked">安装被阻止</string>
   <string name="install_error_invalid">一个或多个 APK 无效或损坏</string>
@@ -139,6 +144,25 @@
   <string name="patchopts_icon_desc">将应用的图标更改为使用 Aliucord 品牌，而不是 Discord 自己的品牌。</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">高级</string>
+  <string name="iconopts_screen_title">Icon Replacement</string>
+  <string name="iconopts_variant_title_color">Custom Color</string>
+  <string name="iconopts_variant_title_image">Custom Image</string>
+  <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
+  <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
+  <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
+  <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
+  <string name="iconopts_lightness_title">Lightness</string>
+  <string name="iconopts_lightness_desc">The brightness component of the color.</string>
+  <string name="iconopts_hex_title">Hex Color</string>
+  <string name="iconopts_hex_desc">Manually enter the RGB hex value of the color. Transparency is ignored!</string>
+  <string name="iconopts_failed_image">Failed to open image</string>
+  <string name="iconopts_btn_open_selection">Select Image</string>
+  <string name="iconopts_btn_open_example_image">Example image</string>
+  <string name="iconopts_image_preview_title">Preview</string>
+  <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
+  <string name="iconopts_image_preview_none">No image selected</string>
   <string name="notif_group_install_title">主动安装</string>
   <string name="notif_group_install_desc">最小化安装期间发送的进度通知</string>
   <string name="notif_install_ready_title">Aliucord 安装已就绪！</string>
@@ -149,6 +173,8 @@
   <string name="play_protect_warning_desc">您的设备上似乎启用了 Google Play 保护机制。它可能会尝试干扰使用了唯一的签名密钥的新安装。您可以在 Play 保护机制的设置中将其禁用。\n\n如果显示警告对话框，请点按\n“更多详细信息”-&gt;“仍然安装”</string>
   <string name="play_protect_warning_ok">继续</string>
   <string name="play_protect_warning_open_gpp">打开 Play 保护机制</string>
+  <string name="custom_component_picker_title">Custom Component</string>
+  <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
   <string name="fun_fact_prefix">趣闻：%s</string>
   <string name="fun_fact_1">您知道 Google Play 保护机制是没用的吗？</string>
   <string name="fun_fact_2">您是否知道拥有 150 多个插件的 Aliucord 运行效果比 Discord 的新应用程序更好？</string>

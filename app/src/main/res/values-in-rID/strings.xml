@@ -9,6 +9,7 @@
   <string name="installer">Pemasang</string>
   <string name="action_cancel">Cancel</string>
   <string name="action_retry">Coba lagi</string>
+  <string name="action_retry_install">Retry Installation</string>
   <string name="action_apply">Terapkan</string>
   <string name="action_confirm">Konfirmasi</string>
   <string name="action_dismiss">Tolak</string>
@@ -19,6 +20,7 @@
   <string name="action_update">Pembaruan</string>
   <string name="action_clear">Hapus</string>
   <string name="action_launch">Jalankan</string>
+  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">Tutup</string>
   <string name="action_open_settings">Buka setelan</string>
   <string name="action_search">Cari</string>
@@ -61,6 +63,7 @@
   <string name="navigation_back">Kembali</string>
   <string name="navigation_about">Tentang</string>
   <string name="navigation_settings">Setelan</string>
+  <string name="contributors_lead">Lead</string>
   <string name="contributors">Kontributor</string>
   <string name="contributors_contributions">%o kontribusi</string>
   <string name="network_load_fail">Gagal dimuat</string>
@@ -82,6 +85,8 @@
   <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_banner_minimization">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
+  <string name="installer_banner_failure">Installation failed! You can either retry or click this banner to open the Aliucord server for help.</string>
+  <string name="installer_banner_success">Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
@@ -139,6 +144,25 @@
   <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
+  <string name="iconopts_screen_title">Icon Replacement</string>
+  <string name="iconopts_variant_title_color">Custom Color</string>
+  <string name="iconopts_variant_title_image">Custom Image</string>
+  <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
+  <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
+  <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
+  <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
+  <string name="iconopts_lightness_title">Lightness</string>
+  <string name="iconopts_lightness_desc">The brightness component of the color.</string>
+  <string name="iconopts_hex_title">Hex Color</string>
+  <string name="iconopts_hex_desc">Manually enter the RGB hex value of the color. Transparency is ignored!</string>
+  <string name="iconopts_failed_image">Failed to open image</string>
+  <string name="iconopts_btn_open_selection">Select Image</string>
+  <string name="iconopts_btn_open_example_image">Example image</string>
+  <string name="iconopts_image_preview_title">Preview</string>
+  <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
+  <string name="iconopts_image_preview_none">No image selected</string>
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
   <string name="notif_install_ready_title">Aliucord installation ready!</string>
@@ -149,6 +173,8 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -&gt; \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
+  <string name="custom_component_picker_title">Custom Component</string>
+  <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
   <string name="fun_fact_prefix">Fun Fact: %s</string>
   <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>
   <string name="fun_fact_2">Did you know Aliucord with 150+ plugins somehow runs better than Discord\'s new app?</string>
