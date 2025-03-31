@@ -1,12 +1,22 @@
 package com.aliucord.manager.ui.screens.iconopts
 
+import android.app.Application
+import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
+import com.aliucord.manager.BuildConfig
+import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
+import com.aliucord.manager.util.launchBlock
+import com.aliucord.manager.util.showToast
+import java.io.IOException
 
 class IconOptionsModel(
     prefilledOptions: IconReplacement,
+    private val application: Application,
 ) : ScreenModel {
     // ---------- Icon patching mode ---------- //
     var mode by mutableStateOf(IconOptionsMode.Original)
@@ -24,6 +34,23 @@ class IconOptionsModel(
         selectedColor = color.toHSVState()
     }
 
+    // ---------- Replacement color ---------- //
+    var selectedImage by mutableStateOf<ByteArray?>(null)
+
+    fun changeSelectedImageUri(uri: Uri) = screenModelScope.launchBlock {
+        try {
+            val bytes = application.contentResolver
+                .openInputStream(uri)
+                ?.use { it.readBytes() }
+                ?: throw IOException("Failed to open input stream")
+
+            selectedImage = bytes
+        } catch (t: Throwable) {
+            application.showToast(R.string.iconopts_failed_image)
+            Log.w(BuildConfig.TAG, "Failed to open selected foreground replacement image", t)
+        }
+    }
+
     // ---------- Other ---------- //
     init {
         when (prefilledOptions) {
@@ -39,7 +66,7 @@ class IconOptionsModel(
 
             is IconReplacement.CustomImage -> {
                 changeMode(IconOptionsMode.CustomImage)
-                TODO()
+                selectedImage = prefilledOptions.imageBytes
             }
 
             IconReplacement.Original -> changeMode(IconOptionsMode.Original)
@@ -50,6 +77,8 @@ class IconOptionsModel(
         IconOptionsMode.Original -> IconReplacement.Original
         IconOptionsMode.Aliucord -> IconReplacement.Aliucord
         IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toARGB())
-        IconOptionsMode.CustomImage -> TODO()
+        IconOptionsMode.CustomImage -> IconReplacement.CustomImage(
+            imageBytes = selectedImage ?: throw IllegalStateException("Cannot generate config without a selected image"),
+        )
     }
 }

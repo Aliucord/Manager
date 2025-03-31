@@ -1,23 +1,32 @@
 package com.aliucord.manager.ui.screens.iconopts
 
+import android.net.Uri
 import android.os.Parcelable
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import coil3.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.InteractiveSlider
+import com.aliucord.manager.ui.components.MainActionButton
 import com.aliucord.manager.ui.screens.iconopts.components.*
 import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
 import com.aliucord.manager.ui.util.ColorSaver
@@ -50,6 +59,8 @@ class IconOptionsScreen(
             mode = model.mode,
             setMode = model::changeMode,
             selectedColor = model.selectedColor,
+            selectedImage = { model.selectedImage },
+            setSelectedImage = model::changeSelectedImageUri,
         )
     }
 }
@@ -59,13 +70,14 @@ fun IconOptionsScreenContent(
     mode: IconOptionsMode,
     setMode: (IconOptionsMode) -> Unit,
     selectedColor: HSVColorState,
+    selectedImage: () -> ByteArray?,
+    setSelectedImage: (Uri) -> Unit,
 ) {
     Scaffold(
         topBar = { IconOptionsAppBar() },
     ) { paddingValues ->
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -94,15 +106,32 @@ fun IconOptionsScreenContent(
                 selected = mode == IconOptionsMode.CustomColor,
                 onClick = remember { { setMode(IconOptionsMode.CustomColor) } },
             )
+            RadioSelectorItem(
+                name = stringResource(R.string.iconopts_variant_title_image),
+                description = stringResource(R.string.iconopts_variant_desc_image),
+                selected = mode == IconOptionsMode.CustomImage,
+                onClick = remember { { setMode(IconOptionsMode.CustomImage) } },
+            )
 
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
 
             AnimatedVisibility(
                 visible = mode == IconOptionsMode.CustomColor,
-                enter = fadeIn() + slideInVertically(),
-                exit = fadeOut() + slideOutVertically { -it / 10 },
+                enter = fadeIn(tween(delayMillis = 250)),
+                exit = fadeOut(tween(durationMillis = 200)),
             ) {
                 CustomColorOptions(selectedColor)
+            }
+
+            AnimatedVisibility(
+                visible = mode == IconOptionsMode.CustomImage,
+                enter = fadeIn(tween(delayMillis = 250)),
+                exit = fadeOut(tween(durationMillis = 200)),
+            ) {
+                CustomImageOptions(
+                    selectedImage = selectedImage,
+                    setSelectedImage = setSelectedImage,
+                )
             }
         }
     }
@@ -174,6 +203,76 @@ private fun CustomColorOptions(color: HSVColorState) {
                 },
                 modifier = Modifier.padding(top = 12.dp),
             )
+        }
+    }
+}
+
+@Composable
+private fun CustomImageOptions(
+    selectedImage: () -> ByteArray?,
+    setSelectedImage: (Uri) -> Unit,
+) {
+    val pickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { it?.let(setSelectedImage) }
+    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        modifier = Modifier.padding(horizontal = 15.dp)
+    ) {
+        MainActionButton(
+            text = stringResource(R.string.iconopts_btn_open_selection),
+            icon = painterResource(R.drawable.ic_launch),
+            onClick = { pickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+        )
+
+        val uriHandler = LocalUriHandler.current
+        MainActionButton(
+            text = stringResource(R.string.iconopts_btn_open_example_image),
+            icon = painterResource(R.drawable.ic_launch),
+            onClick = { uriHandler.openUri("https://github.com/Aliucord/Aliucord/blob/fe8b17002ec1ee66ac3eeb2855c9ca2f2f307410/installer/android/app/src/main/assets/icon1.png") },
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            ),
+        )
+
+        PatchOption(
+            name = stringResource(R.string.iconopts_image_preview_title),
+            description = stringResource(R.string.iconopts_image_preview_desc),
+            modifier = Modifier.padding(top = 20.dp),
+        ) {
+            Crossfade(
+                targetState = selectedImage(),
+                label = "Selected image preview fade",
+                animationSpec = tween(durationMillis = 300, delayMillis = 250),
+            ) { image ->
+                if (image == null) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth()
+                            .aspectRatio(1.2f)
+                            .clip(MaterialTheme.shapes.large)
+                            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.iconopts_image_preview_none),
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.alpha(.5f),
+                        )
+                    }
+                } else {
+                    AsyncImage(
+                        model = image,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .clip(MaterialTheme.shapes.large),
+                    )
+                }
+            }
         }
     }
 }

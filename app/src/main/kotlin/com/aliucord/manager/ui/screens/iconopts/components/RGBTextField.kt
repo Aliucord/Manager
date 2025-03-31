@@ -9,7 +9,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.aliucord.manager.R
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -45,7 +47,9 @@ fun RGBTextField(
         value = text,
         onValueChange = { newText ->
             val cleaned = newText.removePrefix("#").uppercase()
-            val newColor = cleaned.toLongOrNull(16)?.let(::Color)?.copy(alpha = 1f)
+            val newColor = cleaned
+                .toLongOrNull(radix = 16)?.let(::Color)
+                ?.copy(alpha = 1f)
 
             text = cleaned
             isError = newColor == null
@@ -54,7 +58,7 @@ fun RGBTextField(
         isError = isError,
         singleLine = true,
         keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
-        label = { Text("Hex Value") },
+        label = { Text(stringResource(R.string.iconopts_hex_title)) },
         prefix = { Text("# ") },
         modifier = modifier
             .widthIn(min = 200.dp, max = 300.dp),
