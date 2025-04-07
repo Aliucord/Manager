@@ -10,7 +10,8 @@
 
   <string name="action_cancel">Cancel</string>
   <string name="action_retry">Retry</string>
-  <string name="action_retry_install">Retry Installation</string>
+  <string name="action_retry_install">Retry installation</string>
+  <string name="action_open_error_log">Open error log</string>
   <string name="action_apply">Apply</string>
   <string name="action_confirm">Confirm</string>
   <string name="action_dismiss">Dismiss</string>
@@ -183,6 +184,14 @@
   <string name="iconopts_image_preview_title">Preview</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">No image selected</string>
+
+  <string name="log_title">Log</string>
+  <string name="log_section_install_info">Installation Info</string>
+  <string name="log_section_env_info">Environment Info</string>
+  <string name="log_section_env_info_desc">Information about your device that may be crucial for debugging.</string>
+  <string name="log_section_error">Error Stacktrace</string>
+  <string name="log_section_log">Installation Log</string>
+  <string name="log_action_export">Export log</string>
 
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>

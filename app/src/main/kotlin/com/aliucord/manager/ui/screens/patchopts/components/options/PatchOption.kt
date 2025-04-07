@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 
+// TODO: rename this to a generic titled component
 @Composable
 fun PatchOption(
     name: String,
@@ -17,7 +18,7 @@ fun PatchOption(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.Start,
         modifier = modifier,
     ) {

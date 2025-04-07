@@ -17,6 +17,7 @@ compose-pipette = "1.0.0-beta01"
 #diff = "4.12"
 koin = "4.0.2"
 kotlin = "2.1.10"
+kotlinx-datetime = "0.6.2"
 kotlinx-immutable = "0.3.8"
 kotlinx-serialization = "1.8.0"
 ktor = "3.0.3"
@@ -63,8 +64,9 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
 # KotlinX
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-immutable" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 # Ktor
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

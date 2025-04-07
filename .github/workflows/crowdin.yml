@@ -36,4 +36,4 @@ jobs:
           git add *
           git merge l10n
           git push
-          git push origin --delete l10n
+          git push origin --delete l10n || true

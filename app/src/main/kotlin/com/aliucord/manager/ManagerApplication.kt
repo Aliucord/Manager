@@ -10,6 +10,7 @@ import com.aliucord.manager.network.services.*
 import com.aliucord.manager.ui.screens.about.AboutModel
 import com.aliucord.manager.ui.screens.home.HomeModel
 import com.aliucord.manager.ui.screens.iconopts.IconOptionsModel
+import com.aliucord.manager.ui.screens.log.LogScreenModel
 import com.aliucord.manager.ui.screens.patching.PatchingScreenModel
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsModel
 import com.aliucord.manager.ui.screens.plugins.PluginsModel
@@ -54,6 +55,7 @@ class ManagerApplication : Application() {
                 factoryOf(::SettingsModel)
                 factoryOf(::PatchOptionsModel)
                 factoryOf(::IconOptionsModel)
+                factoryOf(::LogScreenModel)
                 viewModelOf(::UpdaterViewModel)
             })
 
@@ -63,6 +65,7 @@ class ManagerApplication : Application() {
                 singleOf(::PathManager)
                 singleOf(::InstallerManager)
                 singleOf(::OverlayManager)
+                singleOf(::InstallLogManager)
 
                 singleOf(::AndroidDownloadManager)
                 singleOf(::KtorDownloadManager)

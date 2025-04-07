@@ -220,12 +220,13 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                             enter = fadeIn() + slideInVertically(),
                             exit = fadeOut() + slideOutVertically { it * -2 },
                         ) {
-                            Column {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(VERTICAL_PADDING / 2),
+                            ) {
                                 HorizontalDivider(
                                     thickness = 1.dp,
                                     modifier = Modifier
-                                        .padding(vertical = 4.dp)
-                                        .padding(bottom = VERTICAL_PADDING)
+                                        .padding(bottom = VERTICAL_PADDING / 2)
                                 )
 
                                 when (filteredState) {
@@ -244,7 +245,13 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                         MainActionButton(
                                             text = stringResource(R.string.action_retry_install),
                                             icon = painterResource(R.drawable.ic_refresh),
-                                            onClick = model::restart,
+                                            onClick = model::launchApp,
+                                        )
+
+                                        MainActionButton(
+                                            text = stringResource(R.string.action_open_error_log),
+                                            icon = painterResource(R.drawable.ic_launch),
+                                            onClick = { model.openLog(navigator) },
                                         )
                                     }
                                 }
@@ -260,9 +267,6 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                         cacheCleared = true
                                         model.clearCache()
                                     },
-                                    modifier = Modifier
-                                        .padding(top = 14.dp)
-                                        .fillMaxWidth()
                                 )
                             }
                         }
@@ -303,21 +307,3 @@ private fun BannerSection(
         }
     }
 }
-
-// TODO: error log
-// item(key = "ERROR_LOG") {
-//     SelectionContainer {
-//         Text(
-//             text = failureLog,
-//             style = MaterialTheme.typography.labelSmall,
-//             fontFamily = FontFamily.Monospace,
-//             softWrap = false,
-//             modifier = Modifier
-//                 .padding(top = VERTICAL_PADDING)
-//                 .clip(RoundedCornerShape(10.dp))
-//                 .background(MaterialTheme.colorScheme.surfaceColorAtElevation(10.dp))
-//                 .padding(24.dp)
-//                 .horizontalScroll(rememberScrollState())
-//         )
-//     }
-// }

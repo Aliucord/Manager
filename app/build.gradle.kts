@@ -150,8 +150,9 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.runtime.tracing)
 
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.immutable)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.apksig)
     implementation(libs.axml)

@@ -2,39 +2,42 @@ package com.aliucord.manager.ui.screens.patching
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.os.Build
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.manager.PathManager
-import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.manager.*
 import com.aliucord.manager.patcher.KotlinPatchRunner
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
 import com.aliucord.manager.patcher.steps.install.InstallStep
+import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
-import com.aliucord.manager.util.*
+import com.aliucord.manager.util.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.Date
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 class PatchingScreenModel(
-    private val application: Application,
-    private val paths: PathManager,
     private val options: PatchOptions,
+    private val paths: PathManager,
     private val prefs: PreferencesManager,
+    private val application: Application,
+    private val installLogs: InstallLogManager,
 ) : StateScreenModel<PatchingScreenState>(PatchingScreenState.Working) {
-    private var startTime: Date? = null
+    private var installId: String? = null
+    private var startTime: Instant? = null
     private var runnerJob: Job? = null
     private var stepRunner: StepRunner? = null
 
@@ -73,26 +76,6 @@ class PatchingScreenModel(
         }
     }
 
-    fun copyDebugToClipboard() {
-        val content = (state.value as? PatchingScreenState.Failed)?.failureLog
-            ?: return
-
-        application.copyToClipboard(content)
-        application.showToast(R.string.action_copied)
-    }
-
-    fun saveFailureLog() {
-        val startTime = startTime ?: return
-        val failureLog = (state.value as? PatchingScreenState.Failed)?.failureLog
-            ?: return
-
-        @SuppressLint("SimpleDateFormat")
-        val formattedDate = SimpleDateFormat("yyyy-MM-dd hh-mm-s a").format(startTime)
-        val fileName = "Aliucord Manager $formattedDate.log"
-
-        application.saveFile(fileName, failureLog)
-    }
-
     fun clearCache() {
         screenModelScope.launch { paths.clearCache() }
         application.showToast(R.string.action_cleared_cache)
@@ -102,10 +85,14 @@ class PatchingScreenModel(
         runnerJob?.cancel("Manual cancellation")
         steps = null
 
-        startTime = Date()
+        @SuppressLint("MemberExtensionConflict")
+        installId = UUID.randomUUID().toString()
+        startTime = Clock.System.now()
         mutableState.value = PatchingScreenState.Working
 
         runnerJob = screenModelScope.launch {
+            Log.i(BuildConfig.TAG, "Starting installation with environment:\n" + installLogs.getEnvironmentInfo())
+
             try {
                 startPatchRunner()
             } catch (_: CancellationException) {
@@ -113,9 +100,20 @@ class PatchingScreenModel(
                 mutableState.value = PatchingScreenState.CloseScreen
             } catch (error: Throwable) {
                 Log.e(BuildConfig.TAG, "Failed to orchestrate patch runner", error)
-                mutableState.value = PatchingScreenState.Failed(failureLog = getFailureInfo(error))
+                mutableState.value = PatchingScreenState.Failed(installId = installId!!)
+                installLogs.storeInstallData(
+                    id = installId!!,
+                    installDate = startTime!!,
+                    options = options,
+                    error = error,
+                )
             }
         }
+    }
+
+    fun openLog(navigator: Navigator) {
+        val id = installId ?: return
+        navigator.push(LogScreen(installId = id))
     }
 
     private suspend fun startPatchRunner() {
@@ -141,39 +139,26 @@ class PatchingScreenModel(
                 // At this point, the installation has successfully completed
                 else {
                     mutableState.value = PatchingScreenState.Success
+                    installLogs.storeInstallData(
+                        id = installId!!,
+                        installDate = startTime!!,
+                        options = options,
+                        error = null,
+                    )
                 }
             }
 
             else -> {
                 Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
-                mutableState.value = PatchingScreenState.Failed(failureLog = getFailureInfo(error))
+                mutableState.value = PatchingScreenState.Failed(installId = installId!!)
+                installLogs.storeInstallData(
+                    id = installId!!,
+                    installDate = startTime!!,
+                    options = options,
+                    error = error,
+                )
             }
         }
-    }
-
-    private suspend fun getFailureInfo(stacktrace: Throwable): String {
-        val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
-        val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unavailable"
-        val playProtect = when (application.isPlayProtectEnabled()) {
-            null -> "Unavailable"
-            true -> "Enabled"
-            false -> "Disabled"
-        }
-
-        val header = """
-            Aliucord Manager v${BuildConfig.VERSION_NAME}
-            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
-
-            Android API: ${Build.VERSION.SDK_INT}
-            Emulator: $IS_PROBABLY_EMULATOR (guess)
-            ROM: Android ${Build.VERSION.RELEASE} (Patch ${Build.VERSION.SECURITY_PATCH})
-            Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
-            Device: ${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE})
-            Play Protect: $playProtect
-            SOC: $soc
-        """.trimIndent()
-
-        return header + "\n\n" + Log.getStackTraceString(stacktrace).trimEnd()
     }
 
     private companion object {

@@ -5,7 +5,7 @@ import com.aliucord.manager.ui.screens.patching.PatchingScreenState.CloseScreen
 sealed interface PatchingScreenState {
     data object Working : PatchingScreenState
     data object Success : PatchingScreenState
-    data class Failed(val failureLog: String) : PatchingScreenState
+    data class Failed(val installId: String) : PatchingScreenState
     data object CloseScreen : PatchingScreenState
 }
 
