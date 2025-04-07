@@ -192,6 +192,7 @@
   <string name="log_section_error">Error Stacktrace</string>
   <string name="log_section_log">Installation Log</string>
   <string name="log_action_export">Export log</string>
+  <string name="log_action_share">Share log</string>
 
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>

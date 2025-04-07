@@ -1,17 +1,17 @@
 package com.aliucord.manager.ui.screens.log
 
-import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.*
+import androidx.core.content.FileProvider
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.InstallLogData
 import com.aliucord.manager.manager.InstallLogManager
 import com.aliucord.manager.util.*
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class LogScreenModel(
     private val installId: String,
@@ -34,33 +34,49 @@ class LogScreenModel(
     fun saveLog() = screenModelScope.launchBlock {
         val data = data ?: return@launchBlock
 
-        @SuppressLint("SimpleDateFormat")
-        val formattedDate = SimpleDateFormat("yyyy-MM-dd hh-mm-s a", Locale.ENGLISH)
-            .format(Date(data.installDate.toEpochMilliseconds()))
+        val formattedDate = data.getFormattedInstallDate()
+        val content = data.getLogFileContents()
 
-        val content = buildString {
-            appendLine("////////////////// Installation Info //////////////////")
-            append("Install ID: ")
-            appendLine(data.id)
-            append("Install time: ")
-            appendLine(formattedDate)
-            append("Result: ")
-            appendLine(if (data.isError) "Failure" else "Success")
+        application.saveFile("Aliucord Install $formattedDate.log", content)
+    }
 
-            append("\n\n")
-            appendLine("////////////////// Environment Info //////////////////")
-            appendLine(data.environmentInfo)
+    /**
+     * Writes the log to internal cache and launches a share intent of the log file.
+     */
+    fun shareLog() = screenModelScope.launchBlock {
+        val data = data ?: return@launchBlock
+        val formattedDate = data.getFormattedInstallDate()
+        val formattedName = "Aliucord Install $formattedDate.log"
+        val content = data.getLogFileContents()
 
-            append("\n\n")
-            appendLine("////////////////// Error Stacktrace //////////////////")
-            appendLine(data.errorStacktrace ?: "None")
+        val file = application.cacheDir.resolve(formattedName)
+        val fileUri = FileProvider.getUriForFile(
+            /* context = */ application,
+            /* authority = */ "${BuildConfig.APPLICATION_ID}.provider",
+            /* file = */ file,
+            /* displayName = */ formattedName,
+        )
 
-            append("\n\n")
-            appendLine("////////////////// Installation Log //////////////////")
-            appendLine(data.installationLog)
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/*")
+            .putExtra(Intent.EXTRA_STREAM, fileUri)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            .let {
+                Intent.createChooser(
+                    /* target = */ it,
+                    /* title = */ application.getString(R.string.log_action_share),
+                )
+            }
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        try {
+            file.writeText(content)
+            file.deleteOnExit()
+            application.startActivity(intent)
+        } catch (t: Throwable) {
+            Log.w(BuildConfig.TAG, "Failed to share log", t)
+            application.showToast(R.string.status_failed)
         }
-
-        application.saveFile("Aliucord Manager $formattedDate.log", content)
     }
 
     private fun loadLogData() = screenModelScope.launchBlock {

@@ -1,5 +1,6 @@
 package com.aliucord.manager.manager
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import android.util.Log
@@ -13,6 +14,9 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * Central manager for storing all attempted installations and
@@ -103,4 +107,35 @@ data class InstallLogData(
 ) {
     val isError: Boolean
         get() = errorStacktrace != null
+
+    fun getFormattedInstallDate(): String {
+        @SuppressLint("SimpleDateFormat")
+        return SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.ENGLISH)
+            .format(Date(installDate.toEpochMilliseconds()))
+    }
+
+    fun getLogFileContents(): String = buildString {
+        appendLine("////////////////// Environment Info //////////////////")
+        appendLine(environmentInfo)
+
+        append("\n\n")
+        appendLine("////////////////// Installation Info //////////////////")
+        appendLine()
+        append("Install ID: ")
+        appendLine(id)
+        append("Install time: ")
+        appendLine(getFormattedInstallDate())
+        append("Result: ")
+        appendLine(if (isError) "Failure" else "Success")
+
+        append("\n\n")
+        appendLine("////////////////// Error Stacktrace //////////////////")
+        appendLine()
+        appendLine(errorStacktrace ?: "None")
+
+        append("\n\n")
+        appendLine("////////////////// Installation Log //////////////////")
+        appendLine()
+        appendLine(installationLog)
+    }
 }

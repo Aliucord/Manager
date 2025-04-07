@@ -3,10 +3,9 @@ package com.aliucord.manager.ui.screens.log
 import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -16,7 +15,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.InstallLogData
-import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.components.back
+import com.aliucord.manager.ui.screens.log.components.LogAppBar
 import com.aliucord.manager.ui.screens.log.components.SelectableTextArea
 import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
 import kotlinx.parcelize.IgnoredOnParcel
@@ -41,7 +41,8 @@ class LogScreen(private val installId: String) : Screen, Parcelable {
         model.data?.let {
             LogScreenContent(
                 data = it,
-                onSaveLog = model::saveLog,
+                onExportLog = model::saveLog,
+                onShareLog = model::shareLog,
             )
         }
     }
@@ -50,13 +51,14 @@ class LogScreen(private val installId: String) : Screen, Parcelable {
 @Composable
 fun LogScreenContent(
     data: InstallLogData,
-    onSaveLog: () -> Unit,
+    onExportLog: () -> Unit,
+    onShareLog: () -> Unit,
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.log_title)) },
-                navigationIcon = { BackButton() },
+            LogAppBar(
+                onExportLog = onExportLog,
+                onShareLog = onShareLog,
             )
         },
     ) { paddingValues ->
@@ -118,15 +120,6 @@ fun LogScreenContent(
             //         )
             //     }
             // }
-
-            item("SAVE_BUTTON") {
-                MainActionButton(
-                    text = stringResource(R.string.log_action_export),
-                    icon = painterResource(R.drawable.ic_download),
-                    onClick = onSaveLog,
-                    modifier = Modifier.padding(top = 10.dp),
-                )
-            }
         }
     }
 }
