@@ -47,9 +47,7 @@ class PathManager(
      * Delete the entire cache dir and recreate it.
      */
     fun clearCache() {
-        if (!cacheDir.deleteRecursively())
-            throw IllegalStateException("Failed to delete cache")
-
+        cacheDir.deleteRecursively()
         cacheDir.mkdirs()
     }
 
