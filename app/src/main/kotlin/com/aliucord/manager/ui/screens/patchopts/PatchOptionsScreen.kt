@@ -6,7 +6,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -67,12 +66,11 @@ class PatchOptionsScreen(
                 context.requestNoBatteryOptimizations()
         }
 
-        var showNetworkWarningDialog by rememberSaveable { mutableStateOf(model.isNetworkDangerous()) }
-        if (showNetworkWarningDialog) {
+        if (model.showNetworkWarningDialog) {
             NetworkWarningDialog(
-                onConfirm = { showNetworkWarningDialog = false },
+                onConfirm = model::hideNetworkWarning,
                 onDismiss = {
-                    showNetworkWarningDialog = false
+                    model.hideNetworkWarning()
                     navigator.pop()
                 },
             )

@@ -49,6 +49,15 @@ class PatchOptionsModel(
         debuggable = value
     }
 
+    // ---------- Other ----------
+    var showNetworkWarningDialog by mutableStateOf(!alreadyShownNetworkWarning && isNetworkDangerous())
+        private set
+
+    fun hideNetworkWarning() {
+        showNetworkWarningDialog = false
+        alreadyShownNetworkWarning = true
+    }
+
     // ---------- Config generation ----------
     val isConfigValid by derivedStateOf {
         val invalidChecks = arrayOf(
@@ -127,6 +136,9 @@ class PatchOptionsModel(
     }
 
     companion object {
+        // Global state to avoid showing the warning more than once per launch
+        private var alreadyShownNetworkWarning = false
+
         private val PACKAGE_REGEX = """^[a-z]\w*(\.[a-z]\w*)+$"""
             .toRegex(RegexOption.IGNORE_CASE)
     }
