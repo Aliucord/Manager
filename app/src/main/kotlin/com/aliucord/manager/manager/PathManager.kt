@@ -107,8 +107,12 @@ class PathManager(
         /**
          * List all the files that follow the ```[SemVer].custom.*``` naming scheme.
          */
-        private fun listCustomFiles(dir: File): List<SemVer> {
-            val files = dir.listFiles() ?: return emptyList()
+        private fun listCustomFiles(dir: File): List<SemVer>? {
+            if (!dir.exists()) return null
+
+            val files = dir.listFiles()
+                ?: throw Error("Failed to list directory")
+
             val customVersions = files
                 .map { it.nameWithoutExtension }
                 .filter { it.endsWith(".custom") }

@@ -39,7 +39,7 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         val customVersions = mutableStateListOf<SemVer>()
-            .apply { addAll(paths.customInjectorDexs()) }
+        customVersions += paths.customInjectorDexs() ?: emptyList()
 
         // Prompt to select or manage custom versions instead of downloading
         if (customVersions.isNotEmpty()) {
