@@ -15,10 +15,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.InstallLogData
+import com.aliucord.manager.ui.components.Label
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.screens.log.components.LogAppBar
 import com.aliucord.manager.ui.screens.log.components.SelectableTextArea
-import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
@@ -69,7 +69,7 @@ fun LogScreenContent(
                 .padding(vertical = 10.dp, horizontal = 22.dp)
         ) {
             item("INSTALL_INFO") {
-                PatchOption(
+                Label(
                     name = stringResource(R.string.log_section_install_info),
                     description = null,
                 ) {
@@ -84,7 +84,7 @@ fun LogScreenContent(
             }
 
             item("ENVIRONMENT_INFO") {
-                PatchOption(
+                Label(
                     name = stringResource(R.string.log_section_env_info),
                     description = null,
                 ) {
@@ -97,7 +97,7 @@ fun LogScreenContent(
 
             if (data.errorStacktrace != null) {
                 item("ERROR_STACKTRACE") {
-                    PatchOption(
+                    Label(
                         name = stringResource(R.string.log_section_error),
                         description = null,
                     ) {
@@ -110,7 +110,7 @@ fun LogScreenContent(
             }
 
             item("LOG") {
-                PatchOption(
+                Label(
                     name = stringResource(R.string.log_section_log),
                     description = null,
                 ) {

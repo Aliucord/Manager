@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.aliucord.manager.ui.components.Label
 import com.aliucord.manager.ui.components.ResetToDefaultButton
 
 @Composable
@@ -19,7 +20,7 @@ fun TextPatchOption(
     modifier: Modifier = Modifier,
     extra: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
-    PatchOption(
+    Label(
         name = name,
         description = description,
         modifier = modifier,

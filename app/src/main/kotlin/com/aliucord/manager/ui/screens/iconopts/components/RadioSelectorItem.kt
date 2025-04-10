@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
+import com.aliucord.manager.ui.components.Label
 
 @Composable
 fun RadioSelectorItem(
@@ -39,7 +39,7 @@ fun RadioSelectorItem(
             interactionSource = interactionSource,
         )
 
-        PatchOption(
+        Label(
             name = name,
             description = description,
             content = {},

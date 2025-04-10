@@ -25,10 +25,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import coil3.compose.AsyncImage
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.InteractiveSlider
-import com.aliucord.manager.ui.components.MainActionButton
+import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.iconopts.components.*
-import com.aliucord.manager.ui.screens.patchopts.components.options.PatchOption
 import com.aliucord.manager.ui.util.ColorSaver
 import dev.zt64.compose.pipette.CircularColorPicker
 import dev.zt64.compose.pipette.util.*
@@ -148,7 +146,7 @@ private fun CustomColorOptions(color: HSVColorState) {
         verticalArrangement = Arrangement.spacedBy(30.dp),
         modifier = Modifier.padding(horizontal = 15.dp)
     ) {
-        PatchOption(
+        Label(
             name = stringResource(R.string.iconopts_colorpicker_title),
             description = stringResource(R.string.iconopts_colorpicker_desc),
             modifier = Modifier.fillMaxWidth(),
@@ -169,7 +167,7 @@ private fun CustomColorOptions(color: HSVColorState) {
             )
         }
 
-        PatchOption(
+        Label(
             name = stringResource(R.string.iconopts_lightness_title),
             description = stringResource(R.string.iconopts_lightness_desc),
         ) {
@@ -190,7 +188,7 @@ private fun CustomColorOptions(color: HSVColorState) {
             )
         }
 
-        PatchOption(
+        Label(
             name = stringResource(R.string.iconopts_hex_title),
             description = stringResource(R.string.iconopts_hex_desc),
         ) {
@@ -237,7 +235,7 @@ private fun CustomImageOptions(
             ),
         )
 
-        PatchOption(
+        Label(
             name = stringResource(R.string.iconopts_image_preview_title),
             description = stringResource(R.string.iconopts_image_preview_desc),
             modifier = Modifier.padding(top = 20.dp),
