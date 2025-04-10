@@ -140,7 +140,7 @@
   <string name="status_failed">Failed</string>
 
   <string name="installer_abort_title">Really exit?</string>
-  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation?</string>
 
   <string name="updater_body">A new update has been released for Aliucord Manager! It may be required in order to function properly. Would you like to update?</string>
   <string name="updater_title">Update to %1$s</string>

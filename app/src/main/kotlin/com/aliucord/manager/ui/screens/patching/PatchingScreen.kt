@@ -109,7 +109,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                 onDismiss = { showAbortWarning = false },
                 onConfirm = {
                     navigator.back(currentActivity = null)
-                    model.clearCache()
+                    model.cancelInstall()
                 },
             )
         } else {
@@ -265,7 +265,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                     ),
                                     onClick = {
                                         cacheCleared = true
-                                        model.clearCache()
+                                        model.cancelInstall()
                                     },
                                 )
                             }

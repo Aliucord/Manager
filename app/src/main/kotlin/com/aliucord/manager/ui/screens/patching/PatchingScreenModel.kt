@@ -14,12 +14,12 @@ import com.aliucord.manager.manager.*
 import com.aliucord.manager.patcher.KotlinPatchRunner
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.patcher.steps.base.Step
-import com.aliucord.manager.patcher.steps.base.StepState
+import com.aliucord.manager.patcher.steps.base.*
 import com.aliucord.manager.patcher.steps.install.InstallStep
 import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
+import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -76,9 +76,15 @@ class PatchingScreenModel(
         }
     }
 
-    fun clearCache() {
-        screenModelScope.launch { paths.clearCache() }
-        application.showToast(R.string.action_cleared_cache)
+    fun cancelInstall() = screenModelScope.launchBlock(Dispatchers.IO) {
+        runnerJob?.cancel("Manual cancellation")
+
+        val incompleteDownloadStep = stepRunner?.steps
+            ?.filterIsInstance<DownloadStep>()
+            ?.lastOrNull { it.state == StepState.Running }
+
+        incompleteDownloadStep?.targetFile?.delete()
+        paths.patchingWorkingDir().deleteRecursively()
     }
 
     fun install() = screenModelScope.launch {
