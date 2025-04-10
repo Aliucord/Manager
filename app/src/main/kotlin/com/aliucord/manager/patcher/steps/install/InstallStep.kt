@@ -46,6 +46,8 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
                 title = R.string.notif_install_ready_title,
                 description = R.string.notif_install_ready_desc,
             )
+
+            container.log("Waiting until manager is resumed to continue installation")
         }
 
         // Wait until app resumed
@@ -53,24 +55,32 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
 
         // Show [PlayProtectDialog] and wait until it gets dismissed
         if (!context.isPackageInstalled(options.packageName) && context.isPlayProtectEnabled() == true) {
+            container.log("Showing play protect warning dialog")
             overlays.startComposableForResult { callback ->
                 PlayProtectDialog(onDismiss = { callback(Unit) })
             }
         }
 
+        container.log("Installing ${apk.absolutePath}, silent: ${!prefs.devMode}")
         val result = installers.getActiveInstaller().waitInstall(
             apks = listOf(apk),
             silent = !prefs.devMode,
         )
 
         when (result) {
-            is InstallerResult.Error -> throw Error("Failed to install APKs: ${result.getDebugReason()}")
+            is InstallerResult.Error -> {
+                container.log("Installation failed")
+                throw Error("Failed to install APKs: ${result.getDebugReason()}")
+            }
+
             is InstallerResult.Cancelled -> {
                 // The install screen is automatically closed immediately once cleanup finishes
                 state = StepState.Skipped
+                container.log("Installation was cancelled by user")
             }
 
-            else -> {}
+            InstallerResult.Success ->
+                container.log("Installation successful")
         }
     }
 }

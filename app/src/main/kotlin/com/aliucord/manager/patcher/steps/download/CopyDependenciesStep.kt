@@ -27,11 +27,13 @@ class CopyDependenciesStep : Step(), KoinComponent {
     override suspend fun execute(container: StepRunner) {
         val dir = paths.patchingWorkingDir()
 
+        container.log("Clearing patched directory")
         if (!dir.deleteRecursively())
             throw Error("Failed to clear existing patched dir")
 
         val srcApk = container.getStep<DownloadDiscordStep>().targetFile
 
+        container.log("Copying patched apk from ${srcApk.absolutePath} to ${patchedApk.absolutePath}")
         srcApk.copyTo(patchedApk)
     }
 }

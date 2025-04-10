@@ -245,7 +245,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                         MainActionButton(
                                             text = stringResource(R.string.action_retry_install),
                                             icon = painterResource(R.drawable.ic_refresh),
-                                            onClick = model::launchApp,
+                                            onClick = model::install,
                                         )
 
                                         MainActionButton(

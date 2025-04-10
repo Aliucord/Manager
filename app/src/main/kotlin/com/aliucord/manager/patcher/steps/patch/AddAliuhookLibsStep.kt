@@ -27,10 +27,14 @@ class AddAliuhookLibsStep : Step(), KoinComponent {
         ZipWriter(apk, /* append = */ true).use { patchedApk ->
             ZipReader(aliuhook).use { aliuhook ->
                 for (libFile in arrayOf("libaliuhook.so", "libc++_shared.so", "liblsplant.so")) {
-                    val bytes = aliuhook.openEntry("jni/$currentDeviceArch/$libFile")?.read()
+                    container.log("Reading aliuhook lib $libFile with arch $currentDeviceArch")
+
+                    val apkLibPath = "lib/$currentDeviceArch/$libFile"
+                    val libBytes = aliuhook.openEntry("jni/$currentDeviceArch/$libFile")?.read()
                         ?: throw IllegalStateException("Failed to read $libFile from aliuhook aar")
 
-                    patchedApk.writeEntry("lib/$currentDeviceArch/$libFile", bytes, ZipCompression.NONE)
+                    container.log("Writing to $apkLibPath in APK unaligned uncompressed")
+                    patchedApk.writeEntry(apkLibPath, libBytes, ZipCompression.NONE)
                 }
             }
         }

@@ -41,18 +41,22 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
     override suspend fun execute(container: StepRunner) {
         val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
         val isMonochromeIconsAvailable = Build.VERSION.SDK_INT >= 31
+        container.log("isAdaptiveIconsAvailable: $isAdaptiveIconsAvailable, isMonochromeIconsAvailable: $isMonochromeIconsAvailable")
 
         // Adaptive icons are available starting with Android 8
         // Monochrome icons are always patched starting with Android 12
         // Skip if adaptive icons are unavailable or { not patching main icon AND monochrome icons are unavailable }
         if (!isAdaptiveIconsAvailable || (!isMonochromeIconsAvailable && options.iconReplacement is IconReplacement.Original)) {
+            container.log("No patching necessary, skipping step")
             state = StepState.Skipped
             return
         }
 
+        container.log("Parsing resources.arsc")
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
         val arsc = ArscUtil.readArsc(apk)
 
+        container.log("Parsing AndroidManifest.xml and obtaining adaptive square/round icon file paths")
         val iconRscIds = AxmlUtil.readManifestIconInfo(apk)
         val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
         val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
@@ -63,6 +67,8 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
 
         // Add the monochrome resource and add the resource file later
         if (isMonochromeIconsAvailable) {
+            container.log("Adding monochrome icon resource to arsc")
+
             val filePathIdx = arsc.getMainArscChunk().stringPool
                 .addString("res/ic_aliucord_monochrome.xml")
 
@@ -77,12 +83,16 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
 
         // Add a new color resource to use
         if (options.iconReplacement is IconReplacement.CustomColor) {
+            container.log("Adding icon color resource to arsc")
+
             backgroundIcon = arsc.getPackageChunk()
-                .addColorResource("aliucord", options.iconReplacement.color)
+                .addColorResource("icon_background_replacement", options.iconReplacement.color)
         }
 
         // Add a new mipmap resource and the file to be added later
         if (options.iconReplacement is IconReplacement.CustomImage) {
+            container.log("Adding custom icon foreground to arsc")
+
             val iconPathIdx = arsc.getMainArscChunk().stringPool
                 .addString("res/ic_foreground_replacement.png")
 
@@ -96,6 +106,7 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
         }
 
         for (rscFile in setOf(squareIconFile, roundIconFile)) { // setOf to not possibly patch same file twice
+            container.log("Patching and writing adaptive icon AXML at $rscFile")
             AxmlUtil.patchAdaptiveIcon(
                 apk = apk,
                 resourcePath = rscFile,
@@ -105,16 +116,21 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
             )
         }
 
+        container.log("Writing other patched files back to apk")
         ZipWriter(apk, /* append = */ true).use {
             if (isMonochromeIconsAvailable) {
+                container.log("Writing monochrome icon AXML to apk")
                 it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
             }
 
             if (options.iconReplacement is IconReplacement.CustomImage) {
+                container.log("Writing custom icon foreground to apk")
                 it.writeEntry("res/ic_foreground_replacement.png", options.iconReplacement.imageBytes)
             }
 
+            container.log("Writing resources unaligned compressed")
             it.deleteEntry("resources.arsc")
+            // This doesn't need to be aligned and uncompressed here, since it that is done during AlignmentSte
             it.writeEntry("resources.arsc", arsc.toByteArray())
         }
     }

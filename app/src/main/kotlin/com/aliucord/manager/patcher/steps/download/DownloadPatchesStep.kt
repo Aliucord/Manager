@@ -36,11 +36,12 @@ class DownloadPatchesStep : DownloadStep(), KoinComponent {
     override val targetFile get() = paths.cachedSmaliPatches(targetVersion, isCustomVersion)
 
     override suspend fun execute(container: StepRunner) {
-        var customVersions = mutableStateListOf<SemVer>()
+        val customVersions = mutableStateListOf<SemVer>()
             .apply { addAll(paths.customSmaliPatches()) }
 
         // Prompt to select or manage custom versions instead of downloading
         if (customVersions.isNotEmpty()) {
+            container.log("Custom versions present, waiting for selection: ${customVersions.joinToString()}")
             val selectedVersion = overlays.startComposableForResult { callback ->
                 CustomComponentVersionPicker(
                     componentTitle = "Smali Patches",
@@ -61,16 +62,21 @@ class DownloadPatchesStep : DownloadStep(), KoinComponent {
                     onCancel = { callback(null) },
                 )
             }
+
             if (selectedVersion != null) {
                 isCustomVersion = true
                 targetVersion = selectedVersion
                 state = StepState.Skipped
+                container.log("Using local custom patches version $selectedVersion")
                 return
+            } else {
+                container.log("Selection dialog cancelled, continuing as normal")
             }
         }
 
         targetVersion = container.getStep<FetchInfoStep>()
             .data.patchesVersion
+        container.log("Downloading patches version $targetVersion")
 
         super.execute(container)
     }

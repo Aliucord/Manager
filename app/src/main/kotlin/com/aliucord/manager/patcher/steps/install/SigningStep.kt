@@ -18,6 +18,7 @@ class SigningStep : Step(), KoinComponent {
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
+        container.log("Signing apk at ${apk.absolutePath}")
         Signer.signApk(apk)
     }
 }

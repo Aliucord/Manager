@@ -20,10 +20,12 @@ class PatchManifestStep(private val options: PatchOptions) : Step() {
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
+        container.log("Reading manifest from apk")
         val manifest = ZipReader(apk)
             .use { zip -> zip.openEntry("AndroidManifest.xml")?.read() }
             ?: throw IllegalArgumentException("No manifest found in APK")
 
+        container.log("Patching manifest")
         val patchedManifest = ManifestPatcher.patchManifest(
             manifestBytes = manifest,
             packageName = options.packageName,
@@ -31,6 +33,7 @@ class PatchManifestStep(private val options: PatchOptions) : Step() {
             debuggable = options.debuggable,
         )
 
+        container.log("Writing patched manifest to apk unaligned compressed")
         ZipWriter(apk, /* append = */ true).use {
             it.deleteEntry("AndroidManifest.xml")
             it.writeEntry("AndroidManifest.xml", patchedManifest)

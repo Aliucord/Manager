@@ -25,11 +25,11 @@ class AlignmentStep : Step(), KoinComponent {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
 
         var resourcesArscBytes: ByteArray? = null
-        var nativeLibPaths: List<String>? = null
         var dexCount: Int = -1
 
         // Align resources.arsc due to targeting API 30 for silent install
         if (Build.VERSION.SDK_INT >= 30) {
+            container.log("Extracting resources.arsc to be aligned later")
             resourcesArscBytes = ZipReader(apk)
                 .use { it.openEntry("resources.arsc")?.read() }
                 ?: throw IllegalArgumentException("APK is missing resources.arsc")
@@ -37,6 +37,7 @@ class AlignmentStep : Step(), KoinComponent {
 
         // Align dex files due to using useEmbeddedDex (ref. ManifestPatcher)
         if (Build.VERSION.SDK_INT >= 29) {
+            container.log("Extracting all dex files to be aligned later")
             ZipReader(apk).use { zip ->
                 // Count the amount of dex files currently in the apk
                 dexCount = zip.entryNames.count { it.endsWith(".dex") }
@@ -48,42 +49,54 @@ class AlignmentStep : Step(), KoinComponent {
                     file.writeBytes(bytes)
                 }
             }
+            container.log("Extracted $dexCount dex files")
         }
 
         // Align native libs due to using extractNativeLibs
-        nativeLibPaths = ZipReader(apk).use { zip ->
+        container.log("Extracting native libraries to be aligned later")
+        val nativeLibPaths = ZipReader(apk).use { zip ->
             val libPaths = zip.entryNames.filter { it.endsWith(".so") }
 
             // Extract to disk temporarily
             for ((idx, path) in libPaths.withIndex()) {
                 // Ignore lib architectures that don't match this device
-                if (!path.startsWith("lib/$currentDeviceArch"))
+                if (!path.startsWith("lib/$currentDeviceArch")) {
+                    container.log("Skipping native lib $path due to incompatible architecture")
                     continue
+                }
 
                 // Index is just used as a placeholder id to cache on disk
                 val bytes = zip.openEntry(path)!!.read()
                 val file = paths.patchingWorkingDir().resolve("$idx.so")
                 file.writeBytes(bytes)
+                container.log("Extracted native lib $file")
             }
 
             libPaths
         }
 
+        container.log("Writing entries back aligned")
         ZipWriter(apk, /* append = */ true).use { zip ->
             // Delete all the unaligned files from APK
+            container.log("Deleting resources.arsc")
             if (resourcesArscBytes != null)
                 zip.deleteEntry("resources.arsc")
 
+            container.log("Deleting $dexCount dex files")
             for (i in 0..<dexCount)
                 zip.deleteEntry(getDexName(i))
 
+            container.log("Deleting native libraries: $nativeLibPaths")
             for (path in nativeLibPaths)
                 zip.deleteEntry(path)
 
             // Write all the files back aligned this time
-            if (resourcesArscBytes != null)
+            if (resourcesArscBytes != null) {
+                container.log("Writing resources.arsc uncompressed aligned to 4 bytes")
                 zip.writeEntry("resources.arsc", resourcesArscBytes, ZipCompression.NONE, 4)
+            }
 
+            container.log("Writing dex files uncompressed aligned to 4 bytes")
             for (idx in 0..<dexCount) {
                 val file = paths.patchingWorkingDir().resolve(getDexName(idx))
                 val bytes = file.readBytes()
@@ -98,6 +111,8 @@ class AlignmentStep : Step(), KoinComponent {
 
                 val file = paths.patchingWorkingDir().resolve("$idx.so")
                 val bytes = file.readBytes()
+
+                container.log("Writing $path uncompressed aligned to 16KiB")
                 zip.writeEntry(path, bytes, ZipCompression.NONE, 16384)
             }
         }

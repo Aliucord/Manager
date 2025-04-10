@@ -24,6 +24,7 @@ import java.util.Locale
  */
 class InstallLogManager(
     private val application: Application,
+    private val prefs: PreferencesManager,
     private val json: Json,
 ) {
     val logsDir = application.filesDir.resolve("install-logs").apply { mkdir() }
@@ -51,6 +52,7 @@ class InstallLogManager(
         id: String,
         installDate: Instant,
         options: PatchOptions,
+        log: String,
         error: Throwable?,
     ) {
         val path = logsDir.resolve("$id.json")
@@ -60,7 +62,7 @@ class InstallLogManager(
             installDate = installDate,
             installOptions = options,
             environmentInfo = getEnvironmentInfo(),
-            installationLog = "", // TODO: install log
+            installationLog = log,
             errorStacktrace = error?.let { Log.getStackTraceString(it).trimEnd() },
         )
 
@@ -83,12 +85,13 @@ class InstallLogManager(
         return """
             Aliucord Manager v${BuildConfig.VERSION_NAME}
             Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
+            Developer mode: ${if (prefs.devMode) "On" else "Off"}
 
             Android API: ${Build.VERSION.SDK_INT}
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
             ROM: Android ${Build.VERSION.RELEASE} (Patch ${Build.VERSION.SECURITY_PATCH})
             Device: ${Build.MANUFACTURER} ${Build.MODEL} (${Build.DEVICE})
-            Emulator: $IS_PROBABLY_EMULATOR (guess)
+            Emulator: ${if (IS_PROBABLY_EMULATOR) "Yes" else "No"} (guess)
             Play Protect: $playProtect
             SOC: $soc
         """.trimIndent()

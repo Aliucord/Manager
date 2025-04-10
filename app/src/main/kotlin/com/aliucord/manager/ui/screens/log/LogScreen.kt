@@ -86,7 +86,7 @@ fun LogScreenContent(
             item("ENVIRONMENT_INFO") {
                 PatchOption(
                     name = stringResource(R.string.log_section_env_info),
-                    description = stringResource(R.string.log_section_env_info_desc),
+                    description = null,
                 ) {
                     SelectableTextArea(
                         text = data.environmentInfo,
@@ -109,17 +109,17 @@ fun LogScreenContent(
                 }
             }
 
-            // item("LOG") {
-            //     PatchOption(
-            //         name = stringResource(R.string.log_section_log),
-            //         description = null,
-            //     ) {
-            //         SelectableTextArea(
-            //             text = data.installationLog,
-            //             modifier = Modifier.fillMaxWidth(),
-            //         )
-            //     }
-            // }
+            item("LOG") {
+                PatchOption(
+                    name = stringResource(R.string.log_section_log),
+                    description = null,
+                ) {
+                    SelectableTextArea(
+                        text = data.installationLog,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
         }
     }
 }

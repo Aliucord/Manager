@@ -38,11 +38,12 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
         get() = paths.cachedInjectorDex(targetVersion, custom = isCustomVersion)
 
     override suspend fun execute(container: StepRunner) {
-        var customVersions = mutableStateListOf<SemVer>()
+        val customVersions = mutableStateListOf<SemVer>()
             .apply { addAll(paths.customInjectorDexs()) }
 
         // Prompt to select or manage custom versions instead of downloading
         if (customVersions.isNotEmpty()) {
+            container.log("Custom versions present, waiting for selection: ${customVersions.joinToString()}")
             val selectedVersion = overlays.startComposableForResult { callback ->
                 CustomComponentVersionPicker(
                     componentTitle = "Injector",
@@ -63,16 +64,21 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
                     onCancel = { callback(null) },
                 )
             }
+
             if (selectedVersion != null) {
                 isCustomVersion = true
                 targetVersion = selectedVersion
                 state = StepState.Skipped
+                container.log("Using local custom injector version $selectedVersion")
                 return
+            } else {
+                container.log("Selection dialog cancelled, continuing as normal")
             }
         }
 
         targetVersion = container.getStep<FetchInfoStep>()
             .data.injectorVersion
+        container.log("Downloading injector version $targetVersion")
 
         super.execute(container)
     }

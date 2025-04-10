@@ -51,7 +51,7 @@ class PatchingScreenModel(
         private set
 
     init {
-        restart()
+        install()
 
         // Rotate fun facts every so often
         screenModelScope.launch {
@@ -81,7 +81,7 @@ class PatchingScreenModel(
         application.showToast(R.string.action_cleared_cache)
     }
 
-    fun restart() {
+    fun install() = screenModelScope.launch {
         runnerJob?.cancel("Manual cancellation")
         steps = null
 
@@ -105,6 +105,7 @@ class PatchingScreenModel(
                     id = installId!!,
                     installDate = startTime!!,
                     options = options,
+                    log = "- Failed to initialize patch runner",
                     error = error,
                 )
             }
@@ -124,9 +125,9 @@ class PatchingScreenModel(
             .mapValues { it.value.toUnsafeImmutable() }
             .toUnsafeImmutable()
 
-        // Intentionally delay to show the state change of the first step in UI when it runs
-        // without it, on a fast internet it just immediately shows as "Success"
-        delay(600)
+        // Intentionally delay to show the state change of the first step when it runs in the UI.
+        // Without this, on a fast internet connection the step just immediately shows as "Success".
+        delay(400)
 
         // Execute all the steps and catch any errors
         when (val error = runner.executeAll()) {
@@ -143,6 +144,7 @@ class PatchingScreenModel(
                         id = installId!!,
                         installDate = startTime!!,
                         options = options,
+                        log = runner.getLog(),
                         error = null,
                     )
                 }
@@ -155,6 +157,7 @@ class PatchingScreenModel(
                     id = installId!!,
                     installDate = startTime!!,
                     options = options,
+                    log = runner.getLog(),
                     error = error,
                 )
             }

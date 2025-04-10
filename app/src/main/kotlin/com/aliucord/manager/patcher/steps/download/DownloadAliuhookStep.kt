@@ -34,7 +34,9 @@ class DownloadAliuhookStep : DownloadStep(), IDexProvider, KoinComponent {
     override val targetFile get() = paths.cachedAliuhookAAR(targetVersion)
 
     override suspend fun execute(container: StepRunner) {
+        container.log("Obtaining latest aliuhook version")
         targetVersion = maven.getAliuhookVersion().getOrThrow()
+        container.log("Fetched aliuhook version: $targetVersion")
 
         super.execute(container)
     }

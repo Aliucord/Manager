@@ -12,19 +12,19 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import com.github.diamondminer88.zip.ZipWriter
 import kotlinx.serialization.json.Json
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * Store the install options and additional data inside the APK for future use,
  * for example checking what library versions were used, or performing "updates" while
  * maintaining the same install options as what was used upon first install.
  */
-class SaveMetadataStep(private val options: PatchOptions) : Step() {
+class SaveMetadataStep(private val options: PatchOptions) : Step(), KoinComponent {
+    private val json: Json by inject()
+
     override val group = StepGroup.Patch
     override val localizedName = R.string.patch_step_save_metadata
-
-    private val json = Json {
-        prettyPrint = true
-    }
 
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
@@ -41,6 +41,7 @@ class SaveMetadataStep(private val options: PatchOptions) : Step() {
             patchesVersion = patches.targetVersion,
         )
 
+        container.log("Writing serialized install metadata to APK")
         ZipWriter(apk, /* append = */ true).use {
             it.writeEntry("aliucord.json", json.encodeToString<InstallMetadata>(metadata))
         }

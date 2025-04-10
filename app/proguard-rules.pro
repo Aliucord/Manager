@@ -32,6 +32,9 @@
     static <1>$$serializer INSTANCE;
 }
 
+# Keep class names of patching steps since they're used via reflection
+-keepnames com.aliucord.manager.patcher.steps.**
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 -keepattributes SourceFile,LineNumberTable

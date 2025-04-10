@@ -22,8 +22,10 @@ class CleanupStep : Step(), KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         if (prefs.keepPatchedApks) {
+            container.log("keepPatchedApks enabled, skipping...")
             state = StepState.Skipped
         } else {
+            container.log("Deleting patching working dir")
             if (!paths.patchingWorkingDir().deleteRecursively())
                 throw IllegalStateException("Failed to delete patching working dir")
         }

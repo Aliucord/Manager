@@ -188,7 +188,6 @@
   <string name="log_title">Log</string>
   <string name="log_section_install_info">Installation Info</string>
   <string name="log_section_env_info">Environment Info</string>
-  <string name="log_section_env_info_desc">Information about your device that may be crucial for debugging.</string>
   <string name="log_section_error">Error Stacktrace</string>
   <string name="log_section_log">Installation Log</string>
   <string name="log_action_export">Export log</string>

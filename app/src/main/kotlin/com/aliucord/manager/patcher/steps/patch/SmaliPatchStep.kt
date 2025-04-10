@@ -39,8 +39,10 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
         val patches = mutableListOf<LoadedPatch>()
 
         // Load and parse all the patches from the smali patch archive
+        container.log("Loading patches from smali patch archive: ${patchesZip.absolutePath}")
         ZipReader(patchesZip).use { zip ->
             for (patchFile in zip.entryNames) {
+                container.log("Parsing patch file $patchFile")
                 if (!patchFile.endsWith(".patch")) continue
 
                 val lines = zip.openEntry(patchFile)!!.read()
@@ -55,6 +57,7 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
                         patch = UnifiedDiffUtils.parseUnifiedDiff(lines),
                     )
                     patches.add(patch)
+                    container.log("Loaded patch file for class ${patch.fullClassName}")
                 } catch (t: Throwable) {
                     throw Error("Failed to parse patch file $patchFile", t)
                 }
@@ -62,9 +65,11 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
         }
 
         // Disassemble all the classes we have patches for from all the dex files
+        container.log("Disassembling target classes in APK")
         ZipReader(apk).use { zip ->
             for (file in zip.entryNames) {
                 if (!file.endsWith(".dex")) continue
+                container.log("Disassembling dex $file")
 
                 val dexFile = try {
                     DexBackedDexFile(
@@ -88,11 +93,15 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
                 }
 
                 assert(result) { "Failed to disassemble dex $file (unknown reason)" }
+                container.log("Disassembled dex file for potential target classes")
             }
         }
 
         // Apply all the patches to the smali files
+        container.log("Applying smali patches to disassembled files")
         for ((fullClassName, patch) in patches) {
+            container.log("Applying patch to class $fullClassName")
+
             val smaliFile = smaliDir.resolve("$fullClassName.smali")
             if (!smaliFile.exists()) {
                 throw FileNotFoundException("Target smali file $fullClassName.smali not found for patching!")
@@ -110,6 +119,7 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
         }
 
         // Assemble the patched classes back into a single dex
+        container.log("Reassembling patches smali classes into new dex")
         smaliDir.mkdir()
         Smali.assemble(
             SmaliOptions().apply {

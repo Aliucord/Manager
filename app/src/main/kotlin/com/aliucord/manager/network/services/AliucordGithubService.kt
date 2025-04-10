@@ -12,9 +12,7 @@ class AliucordGithubService(
 ) {
     suspend fun getDataJson(): ApiResponse<BuildInfo> {
         return withContext(Dispatchers.IO) {
-            http.request {
-                url("https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/data.json")
-            }
+            http.request { url(DATA_JSON_URL) }
         }
     }
 
@@ -25,6 +23,7 @@ class AliucordGithubService(
         const val MAIN_REPO = "Aliucord"
         const val MANAGER_REPO = "Manager"
 
+        const val DATA_JSON_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/data.json"
         const val PATCHED_APKS_INFO_URL = "https://github.com/$ORG/$MANAGER_REPO/blob/main/INFO.md#obtaining-patched-apks"
     }
 }

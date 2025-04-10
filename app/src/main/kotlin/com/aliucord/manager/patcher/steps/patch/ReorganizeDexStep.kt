@@ -26,17 +26,24 @@ class ReorganizeDexStep : Step(), KoinComponent {
             .filter { it.dexPriority > 0 }
             .sumOf { it.dexCount }
 
+        container.log("dexProviders: " + dexProviders.joinToString { it.javaClass.simpleName })
+        container.log("priorityDexCount: $priorityDexCount")
+
         var dexCount = 0
 
         ZipReader(apk).use { zip ->
             // Count the amount of dex files currently in the apk
             dexCount = zip.entryNames.count { it.endsWith(".dex") }
+            container.log("Existing dex files in apk: $dexCount")
 
-            // Copy all the dex files that need to be moved out of the apk
+            // Copy all the dex files that need to be moved out of the apk,
+            // to ensure there's space for our higher priority dex files
+            container.log("Copying dex files out of apk to be moved to a lesser priority")
             for (idx in 0..<priorityDexCount) {
                 // Not enough dex files to move
                 if (idx + 1 > dexCount) break
 
+                container.log("Extracting ${getDexName(idx)} from apk")
                 val bytes = zip.openEntry(getDexName(idx))!!.read()
                 val file = paths.patchingWorkingDir().resolve(getDexName(idx))
                 file.writeBytes(bytes)
@@ -44,11 +51,13 @@ class ReorganizeDexStep : Step(), KoinComponent {
         }
 
         ZipWriter(apk, /* append = */ true).use { zip ->
+            container.log("Deleting dex files to be replaced with a higher priorty dex file")
             // Delete all the old dex files from the apk
             for (idx in 0..<priorityDexCount) {
                 // Not enough dex files to move
                 if (idx + 1 > dexCount) break
 
+                container.log("Deleting ${getDexName(idx)} from apk")
                 zip.deleteEntry(getDexName(idx))
             }
 
@@ -57,7 +66,13 @@ class ReorganizeDexStep : Step(), KoinComponent {
             for (dexProvider in dexProviders) {
                 if (dexProvider.dexPriority <= 0) continue
 
+                container.log(
+                    "Writing custom high priority dex files from step: " +
+                        "${dexProvider.javaClass.simpleName} with priority of ${dexProvider.dexPriority}"
+                )
+
                 for (dexBytes in dexProvider.getDexFiles()) {
+                    container.log("Writing dex file ${getDexName(idx)} unaligned uncompressed")
                     zip.writeEntry(getDexName(idx++), dexBytes, ZipCompression.NONE)
                 }
             }
@@ -66,6 +81,8 @@ class ReorganizeDexStep : Step(), KoinComponent {
             for (idx in 0..<priorityDexCount) {
                 // Not enough dex files to move
                 if (idx + 1 > dexCount) break
+
+                container.log("Moving old low priority dex file back into apk unaligned uncompressed: " + getDexName(dexCount + idx))
 
                 val file = paths.patchingWorkingDir().resolve(getDexName(idx))
                 val bytes = file.readBytes()
@@ -78,7 +95,13 @@ class ReorganizeDexStep : Step(), KoinComponent {
             for (dexProvider in dexProviders) {
                 if (dexProvider.dexPriority > 0) continue
 
+                container.log(
+                    "Writing remaining low priority dex files into apk from step:" +
+                        "${dexProvider.javaClass.simpleName} with priority of ${dexProvider.dexPriority}"
+                )
+
                 for (dexBytes in dexProvider.getDexFiles()) {
+                    container.log("Writing dex file ${getDexName(idx)} unaligned uncompressed")
                     zip.writeEntry(getDexName(dexCount++), dexBytes, ZipCompression.NONE)
                 }
             }
