@@ -8,6 +8,7 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.cache.storage.FileStorage
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
@@ -64,6 +65,10 @@ fun Scope.provideHttpClient() = HttpClient(OkHttp) {
     install(HttpCache) {
         val dir = application.cacheDir.resolve("ktor")
         publicStorage(FileStorage(dir))
+    }
+
+    install(HttpCookies) {
+        // Default storage is in-memory
     }
 
     // Custom plugin to allow overriding response cache headers, and force caching
