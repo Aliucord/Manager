@@ -27,6 +27,8 @@ import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.util.UUID
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class PatchingScreenModel(
@@ -110,6 +112,7 @@ class PatchingScreenModel(
                 installLogs.storeInstallData(
                     id = installId!!,
                     installDate = startTime!!,
+                    installDuration = Duration.ZERO,
                     options = options,
                     log = "- Failed to initialize patch runner",
                     error = error,
@@ -149,6 +152,7 @@ class PatchingScreenModel(
                     installLogs.storeInstallData(
                         id = installId!!,
                         installDate = startTime!!,
+                        installDuration = runner.steps.sumOf { it.getDuration() }.milliseconds,
                         options = options,
                         log = runner.getLog(),
                         error = null,
@@ -162,6 +166,7 @@ class PatchingScreenModel(
                 installLogs.storeInstallData(
                     id = installId!!,
                     installDate = startTime!!,
+                    installDuration = runner.steps.sumOf { it.getDuration() }.milliseconds,
                     options = options,
                     log = runner.getLog(),
                     error = error,

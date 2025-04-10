@@ -17,6 +17,7 @@ import kotlinx.serialization.json.decodeFromStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.time.Duration
 
 /**
  * Central manager for storing all attempted installations and
@@ -51,6 +52,7 @@ class InstallLogManager(
     suspend fun storeInstallData(
         id: String,
         installDate: Instant,
+        installDuration: Duration,
         options: PatchOptions,
         log: String,
         error: Throwable?,
@@ -60,6 +62,7 @@ class InstallLogManager(
         val data = InstallLogData(
             id = id,
             installDate = installDate,
+            installDuration = installDuration,
             installOptions = options,
             environmentInfo = getEnvironmentInfo(),
             installationLog = log,
@@ -103,6 +106,7 @@ class InstallLogManager(
 data class InstallLogData(
     val id: String,
     val installDate: Instant,
+    val installDuration: Duration,
     val installOptions: PatchOptions,
     val environmentInfo: String,
     val installationLog: String,
