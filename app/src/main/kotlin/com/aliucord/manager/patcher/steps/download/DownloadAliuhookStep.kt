@@ -35,7 +35,7 @@ class DownloadAliuhookStep : DownloadStep(), IDexProvider, KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         container.log("Obtaining latest aliuhook version")
-        targetVersion = maven.getAliuhookVersion().getOrThrow()
+        targetVersion = maven.getAliuhookVersion(force = true).getOrThrow()
         container.log("Fetched aliuhook version: $targetVersion")
 
         super.execute(container)

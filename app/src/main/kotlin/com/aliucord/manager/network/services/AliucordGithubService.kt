@@ -2,17 +2,23 @@ package com.aliucord.manager.network.services
 
 import com.aliucord.manager.network.models.BuildInfo
 import com.aliucord.manager.network.utils.ApiResponse
+import io.ktor.client.request.header
 import io.ktor.client.request.url
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.ktor.http.HttpHeaders
 
 class AliucordGithubService(
     val github: GithubService,
     val http: HttpService,
 ) {
-    suspend fun getDataJson(): ApiResponse<BuildInfo> {
-        return withContext(Dispatchers.IO) {
-            http.request { url(DATA_JSON_URL) }
+    /**
+     * Fetches the build data of Aliucord (excluding Aliuhook).
+     * @param force Whether to force Ktor to refetch/revalidate cache.
+     */
+    suspend fun getBuildData(force: Boolean = false): ApiResponse<BuildInfo> = http.request {
+        url(DATA_JSON_URL)
+
+        if (force) {
+            header(HttpHeaders.CacheControl, "no-cache")
         }
     }
 

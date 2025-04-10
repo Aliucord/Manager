@@ -27,6 +27,8 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
 
         try {
             val httpStmt = http.prepareGet(url) {
+                header(HttpHeaders.CacheControl, "no-cache, no-store")
+
                 // Disable compression due to bug on emulators
                 // This header cannot be set with Android's DownloadManager
                 if (IS_PROBABLY_EMULATOR) {

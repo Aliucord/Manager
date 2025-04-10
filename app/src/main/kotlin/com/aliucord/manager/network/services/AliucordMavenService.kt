@@ -1,12 +1,22 @@
 package com.aliucord.manager.network.services
 
+import com.aliucord.manager.di.cacheControl
 import com.aliucord.manager.network.utils.*
+import io.ktor.client.request.header
 import io.ktor.client.request.url
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 
 class AliucordMavenService(private val http: HttpService) {
-    suspend fun getAliuhookVersion(): ApiResponse<SemVer> {
-        val metadataResponse = http.request<String> { url(ALIUHOOK_METADATA_URL) }
+    suspend fun getAliuhookVersion(force: Boolean = false): ApiResponse<SemVer> {
+        val metadataResponse = http.request<String> {
+            url(ALIUHOOK_METADATA_URL)
+
+            if (!force) {
+                cacheControl(CacheControl.MaxAge(maxAgeSeconds = 60 * 30)) // 30 min
+            } else {
+                header(HttpHeaders.CacheControl, "no-cache")
+            }
+        }
 
         return metadataResponse.transform {
             val versionString = "<release>(.+?)</release>".toRegex()

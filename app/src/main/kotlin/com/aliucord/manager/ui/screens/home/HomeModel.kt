@@ -154,7 +154,7 @@ class HomeModel(
     }
 
     suspend fun fetchRemoteData() {
-        github.getDataJson().fold(
+        github.getBuildData().fold(
             success = {
                 val versionCode = it.discordVersionCode.toIntOrNull()
                 if (versionCode == null) {

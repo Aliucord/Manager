@@ -26,7 +26,7 @@ class FetchInfoStep : Step(), KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         container.log("Fetching ${AliucordGithubService.DATA_JSON_URL}")
-        data = github.getDataJson().getOrThrow()
+        data = github.getBuildData(force = true).getOrThrow()
         container.log("Fetched build data: $data")
     }
 }
