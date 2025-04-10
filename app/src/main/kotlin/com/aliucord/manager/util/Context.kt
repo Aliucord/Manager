@@ -103,7 +103,7 @@ fun Context.requestNoBatteryOptimizations() {
     startActivity(intent)
 }
 
-/*
+/**
  * Get the raw bytes for a resource.
  * @param id The resource identifier
  * @return The resource's raw bytes as stored inside the APK

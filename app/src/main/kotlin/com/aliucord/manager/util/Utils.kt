@@ -28,7 +28,7 @@ inline fun <E> ObjectList<E>.find(block: (E) -> Boolean): E? {
 /**
  * Whether this manager build is not an official release.
  */
-@Suppress("KotlinConstantConditions")
+@Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
 val IS_CUSTOM_BUILD by lazy {
     BuildConfig.GIT_BRANCH != "release"
         || BuildConfig.GIT_LOCAL_CHANGES

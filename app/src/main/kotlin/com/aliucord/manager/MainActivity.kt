@@ -16,15 +16,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.stack.StackEvent
 import cafe.adriel.voyager.navigator.*
 import cafe.adriel.voyager.transitions.ScreenTransition
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
-import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreen
-import com.aliucord.manager.ui.screens.patching.PatchingScreen
-import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import org.koin.android.ext.android.inject
@@ -64,37 +62,26 @@ class MainActivity : ComponentActivity() {
 
                         ScreenTransition(
                             navigator = navigator,
-                            transition = block@{
-                                val fadeIn = fadeIn(tween(durationMillis = 300))
-                                val fadeOut = fadeOut(tween(durationMillis = 750, delayMillis = 200))
-
-                                when {
-                                    // Going from Home -> InstallOptions
-                                    initialState is HomeScreen && targetState is PatchOptionsScreen ->
-                                        slideInVertically { (it * 1.5).toInt() } + fadeIn togetherWith fadeOut
-                                    // Going from InstallOptions -> Home
-                                    initialState is PatchOptionsScreen && targetState is HomeScreen ->
-                                        fadeIn togetherWith slideOutVertically { it * 2 } + fadeOut
-                                    // Going from InstallOptions -> Install
-                                    initialState is PatchOptionsScreen && targetState is PatchingScreen ->
-                                        slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
-                                    // Going from PatchOptions -> IconOptions
-                                    initialState is PatchOptionsScreen && targetState is IconOptionsScreen ->
-                                        slideInHorizontally { it * 2 } + fadeIn togetherWith fadeOut
-                                    // Going from IconOptions -> PatchOptions
-                                    initialState is IconOptionsScreen && targetState is PatchOptionsScreen ->
-                                        fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
-                                    // Going from Install -> InstallOptions
-                                    initialState is PatchingScreen && targetState is PatchOptionsScreen ->
-                                        fadeIn togetherWith slideOutHorizontally { it * 2 } + fadeOut
-
-                                    else -> fadeIn togetherWith fadeOut
-                                }
-                            }
+                            transition = { unifiedScreenTransition(navigator.lastEvent) }
                         )
                     }
                 }
             }
         }
+    }
+
+    private fun unifiedScreenTransition(lastEvent: StackEvent): ContentTransform = when (lastEvent) {
+        StackEvent.Push, StackEvent.Replace -> ContentTransform(
+            targetContentEnter = slideInHorizontally { it * 2 } + fadeIn(tween(durationMillis = 400)),
+            initialContentExit = fadeOut(tween(durationMillis = 400, delayMillis = 300)),
+        )
+
+        StackEvent.Pop -> ContentTransform(
+            targetContentEnter = EnterTransition.None,
+            targetContentZIndex = -1f,
+            initialContentExit = slideOutHorizontally { it * 2 } + fadeOut(tween(durationMillis = 400, delayMillis = 300)),
+        )
+
+        StackEvent.Idle -> fadeIn() togetherWith fadeOut()
     }
 }

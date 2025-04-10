@@ -33,7 +33,7 @@
 }
 
 # Keep class names of patching steps since they're used via reflection
--keepnames com.aliucord.manager.patcher.steps.**
+-keepnames class com.aliucord.manager.patcher.steps.**
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
