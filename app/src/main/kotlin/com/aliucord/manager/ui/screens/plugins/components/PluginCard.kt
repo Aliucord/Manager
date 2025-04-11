@@ -36,10 +36,10 @@ fun PluginCard(
     ElevatedCard {
         // Header
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable { onSetEnabled(!plugin.enabled) }
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 14.dp),
-            verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
                 // Name
@@ -107,21 +107,19 @@ fun PluginCard(
         ) {
             // Description
             Text(
+                text = plugin.manifest.description,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .heightIn(max = 150.dp, min = 40.dp)
                     .padding(bottom = 20.dp),
-                text = plugin.manifest.description,
-                style = MaterialTheme.typography.bodyMedium
             )
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 IconButton(
+                    onClick = { uriHandler.openUri(plugin.manifest.repositoryUrl) },
                     modifier = Modifier.size(25.dp),
-                    onClick = {
-                        uriHandler.openUri(plugin.manifest.repositoryUrl)
-                    }
                 ) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
@@ -131,10 +129,13 @@ fun PluginCard(
                 }
 
                 if (plugin.manifest.changelog != null) {
-                    IconButton(modifier = Modifier.size(25.dp), onClick = onClickShowChangelog) {
+                    IconButton(
+                        onClick = onClickShowChangelog,
+                        modifier = Modifier.size(25.dp),
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_history),
-                            contentDescription = stringResource(R.string.plugins_view_changelog, plugin.manifest.name),
+                            contentDescription = stringResource(R.string.plugins_view_changelog),
                             modifier = Modifier.fillMaxSize(),
                         )
                     }
@@ -142,7 +143,10 @@ fun PluginCard(
 
                 Spacer(Modifier.weight(1f, true))
 
-                IconButton(modifier = Modifier.size(25.dp), onClick = onClickDelete) {
+                IconButton(
+                    onClick = onClickDelete,
+                    modifier = Modifier.size(25.dp),
+                ) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
                         painter = painterResource(R.drawable.ic_delete_forever),

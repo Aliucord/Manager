@@ -92,7 +92,7 @@ class PluginsModel(
         val deleteSuccess = try {
             File(pluginPath).delete()
         } catch (t: Throwable) {
-            t.printStackTrace()
+            Log.e(BuildConfig.TAG, "Failed to delete plugin", t)
             false
         }
 
