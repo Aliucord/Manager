@@ -52,7 +52,7 @@ class HomeScreen : Screen, Parcelable {
 
         // Refresh installations list when the screen changes or activity resumes
         LifecycleResumeEffect(Unit) {
-            model.fetchInstallations()
+            model.refresh()
 
             onPauseOrDispose {}
         }
@@ -60,7 +60,7 @@ class HomeScreen : Screen, Parcelable {
         Scaffold(
             topBar = { HomeAppBar() },
         ) { padding ->
-            when (val state = model.state) {
+            when (val state = model.installsState) {
                 is InstallsState.Fetched -> HomeScreenLoadedContent(
                     state = state,
                     supportedVersion = model.supportedVersion,

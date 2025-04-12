@@ -7,7 +7,6 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.*
@@ -16,7 +15,6 @@ import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.*
 import com.aliucord.manager.patcher.steps.install.InstallStep
-import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.launchBlock
@@ -63,6 +61,8 @@ class PatchingScreenModel(
             }
         }
     }
+
+    fun getCurrentInstallId(): String? = installId
 
     fun launchApp() {
         if (state.value !is PatchingScreenState.Success)
@@ -119,11 +119,6 @@ class PatchingScreenModel(
                 )
             }
         }
-    }
-
-    fun openLog(navigator: Navigator) {
-        val id = installId ?: return
-        navigator.push(LogScreen(installId = id))
     }
 
     private suspend fun startPatchRunner() {

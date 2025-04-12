@@ -99,7 +99,8 @@ fun InstalledItemCard(
                     onClick = onOpenInfo,
                 )
 
-                if (data.isUpToDate) {
+                // If the up-to-date status cannot be determined, assume it is up-to-date
+                if (data.isUpToDate ?: true) {
                     SegmentedButton(
                         icon = painterResource(R.drawable.ic_launch),
                         text = stringResource(R.string.action_launch),

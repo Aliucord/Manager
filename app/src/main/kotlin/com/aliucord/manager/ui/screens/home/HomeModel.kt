@@ -24,11 +24,14 @@ import com.aliucord.manager.patcher.InstallMetadata
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
+import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
 import com.github.diamondminer88.zip.ZipReader
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -42,18 +45,33 @@ class HomeModel(
     var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
         private set
 
-    var state by mutableStateOf<InstallsState>(InstallsState.Fetching)
+    var installsState by mutableStateOf<InstallsState>(InstallsState.Fetching)
         private set
 
+    private val refreshingLock = Mutex()
     private var remoteDataJson: BuildInfo? = null
     private var latestAliuhookVersion: SemVer? = null
 
     init {
-        // fetchInstallations() is also called from UI first to ensure fast TTI
+        refresh()
+    }
 
-        screenModelScope.launch {
-            fetchRemoteData()
-            fetchInstallations() // Re-fetch installations to set the up-to-date statuses
+    fun refresh() = screenModelScope.launchBlock {
+        if (refreshingLock.isLocked) return@launchBlock
+
+        refreshingLock.withLock {
+            val packages = fetchAliucordPackages()
+
+            val jobs = listOf(
+                screenModelScope.launch { fetchInstallations(packages) },
+                screenModelScope.launch {
+                    if (remoteDataJson == null || latestAliuhookVersion == null)
+                        fetchRemoteData()
+                }
+            )
+
+            jobs.joinAll()
+            refreshInstallationsUpToDate(packages)
         }
     }
 
@@ -74,60 +92,6 @@ class HomeModel(
             .setData("package:$packageName".toUri())
 
         application.startActivity(launchIntent)
-    }
-
-    fun fetchInstallations() = screenModelScope.launchBlock {
-        state = InstallsState.Fetching
-
-        try {
-            val packageManager = application.packageManager
-
-            val installedPackages = packageManager
-                .getInstalledPackages(PackageManager.GET_META_DATA)
-                .takeIf { it.isNotEmpty() }
-                ?: throw IllegalStateException("Failed to fetch installed packages (returned none)")
-
-            val aliucordPackages = installedPackages
-                .asSequence()
-                .filter {
-                    val isAliucordPkg = it.packageName == "com.aliucord" // Legacy installer builds do not have isAliucord metadata marker
-                    val hasAliucordMeta = it.applicationInfo?.metaData?.containsKey("isAliucord") == true
-                    isAliucordPkg || hasAliucordMeta
-                }
-
-            val aliucordInstallations = aliucordPackages.mapNotNull {
-                // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
-                @Suppress("DEPRECATION")
-                val versionCode = it.versionCode
-                val versionName = it.versionName ?: return@mapNotNull null
-                val applicationInfo = it.applicationInfo ?: return@mapNotNull null
-
-                InstallData(
-                    name = packageManager.getApplicationLabel(applicationInfo).toString(),
-                    packageName = it.packageName,
-                    isUpToDate = isInstallationUpToDate(it),
-                    icon = packageManager
-                        .getApplicationIcon(applicationInfo)
-                        .toBitmap()
-                        .asImageBitmap()
-                        .let(::BitmapPainter),
-                    version = DiscordVersion.Existing(
-                        type = DiscordVersion.parseVersionType(versionCode),
-                        name = versionName.split("-")[0].trim(),
-                        code = versionCode,
-                    ),
-                )
-            }.toImmutableList()
-
-            state = if (aliucordInstallations.isNotEmpty()) {
-                InstallsState.Fetched(data = aliucordInstallations)
-            } else {
-                InstallsState.None
-            }
-        } catch (t: Throwable) {
-            Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
-            state = InstallsState.Error
-        }
     }
 
     /**
@@ -153,7 +117,68 @@ class HomeModel(
         return PatchOptionsScreen(prefilledOptions = patchOptions)
     }
 
-    suspend fun fetchRemoteData() {
+    private fun fetchInstallations(packages: List<PackageInfo>) {
+        installsState = InstallsState.Fetching
+
+        try {
+            val packageManager = application.packageManager
+            val aliucordInstallations = packages.mapNotNull { pkg ->
+                // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
+                @Suppress("DEPRECATION")
+                val versionCode = pkg.versionCode
+                val versionName = pkg.versionName ?: return@mapNotNull null
+                val applicationInfo = pkg.applicationInfo ?: return@mapNotNull null
+
+                InstallData(
+                    name = packageManager.getApplicationLabel(applicationInfo).toString(),
+                    packageName = pkg.packageName,
+                    isUpToDate = isInstallationUpToDate(pkg),
+                    icon = packageManager
+                        .getApplicationIcon(applicationInfo)
+                        .toBitmap()
+                        .asImageBitmap()
+                        .let(::BitmapPainter),
+                    version = DiscordVersion.Existing(
+                        type = DiscordVersion.parseVersionType(versionCode),
+                        name = versionName.split("-")[0].trim(),
+                        code = versionCode,
+                    ),
+                )
+            }
+
+            installsState = if (aliucordInstallations.isNotEmpty()) {
+                InstallsState.Fetched(data = aliucordInstallations.toUnsafeImmutable())
+            } else {
+                InstallsState.None
+            }
+        } catch (t: Throwable) {
+            Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
+            installsState = InstallsState.Error
+        }
+    }
+
+    private fun refreshInstallationsUpToDate(packages: List<PackageInfo>) {
+        val installations = (installsState as? InstallsState.Fetched)?.data
+            ?: return
+
+        try {
+            val newInstallations = installations.map { data ->
+                val packageInfo = packages.find { it.packageName == data.packageName }
+                    ?: throw IllegalStateException("Checking up-to-date status for package that has not been fetched")
+
+                data.copy(isUpToDate = isInstallationUpToDate(packageInfo))
+            }
+
+            installsState = InstallsState.Fetched(data = newInstallations.toUnsafeImmutable())
+        } catch (t: Throwable) {
+            Log.e(BuildConfig.TAG, "Failed to check installations up-to-date", t)
+            installsState = InstallsState.Error
+        }
+    }
+
+    // FIXME: Properly show state when one of these fetches fail,
+    //        to ensure the people know that the up-to-date check does not work
+    private suspend fun fetchRemoteData() {
         github.getBuildData().fold(
             success = {
                 val versionCode = it.discordVersionCode.toIntOrNull()
@@ -184,10 +209,29 @@ class HomeModel(
         )
     }
 
-    private fun isInstallationUpToDate(pkg: PackageInfo): Boolean {
+    /**
+     * Obtains all installed packages on the device that are an Aliucord installation.
+     */
+    private fun fetchAliucordPackages(): List<PackageInfo> {
+        return application.packageManager
+            .getInstalledPackages(PackageManager.GET_META_DATA)
+            .filter {
+                // Packages installed via the legacy Installer do not have the metadata marker
+                val isAliucordPkg = it.packageName == "com.aliucord"
+                val hasAliucordMeta = it.applicationInfo?.metaData?.containsKey("isAliucord") == true
+                isAliucordPkg || hasAliucordMeta
+            }
+    }
+
+    /**
+     * Attempts to determine whether the Aliucord installation is up-to-date.
+     * If `null` is returned, then the build data was not fetched, and as such
+     * the status cannot be determined.
+     */
+    private fun isInstallationUpToDate(pkg: PackageInfo): Boolean? {
         // Assume up-to-date when remote data hasn't been fetched yet
-        val remoteBuildData = remoteDataJson ?: return true
-        val latestAliuhookVersion = latestAliuhookVersion ?: return true
+        val remoteBuildData = remoteDataJson ?: return null
+        val latestAliuhookVersion = latestAliuhookVersion ?: return null
 
         // `longVersionCode` is unnecessary since Discord doesn't use `versionCodeMajor`
         @Suppress("DEPRECATION")

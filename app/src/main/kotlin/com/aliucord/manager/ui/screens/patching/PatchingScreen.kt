@@ -32,6 +32,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
+import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patching.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.paddings.*
@@ -251,7 +252,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                         MainActionButton(
                                             text = stringResource(R.string.action_open_error_log),
                                             icon = painterResource(R.drawable.ic_launch),
-                                            onClick = { model.openLog(navigator) },
+                                            onClick = { navigator.push(LogScreen(installId = model.getCurrentInstallId()!!)) },
                                         )
                                     }
                                 }

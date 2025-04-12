@@ -10,5 +10,5 @@ data class InstallData(
     val packageName: String,
     val version: DiscordVersion,
     val icon: BitmapPainter,
-    val isUpToDate: Boolean,
+    val isUpToDate: Boolean?,
 )
