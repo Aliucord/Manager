@@ -10,6 +10,7 @@
   <string name="action_cancel">Cancel</string>
   <string name="action_retry">Coba lagi</string>
   <string name="action_retry_install">Retry Installation</string>
+  <string name="action_open_error_log">Open error log</string>
   <string name="action_apply">Terapkan</string>
   <string name="action_confirm">Konfirmasi</string>
   <string name="action_dismiss">Tolak</string>
@@ -54,8 +55,8 @@
   <string name="theme_light">Terang</string>
   <string name="plugins_title">Plugin</string>
   <string name="plugins_view_changelog">Lihat log perubahan untuk %1$s</string>
+  <string name="plugins_delete_plugin">Uninstall %s</string>
   <string name="plugins_delete_plugin_body">Apakah Anda yakin ingin menghapus plugin ini?</string>
-  <string name="plugins_search">Cari Plugin</string>
   <string name="plugins_none_installed">Tidak ada plugin yang terpasang!</string>
   <string name="plugins_changelog_media">Log perubahan Media</string>
   <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
@@ -163,6 +164,13 @@
   <string name="iconopts_image_preview_title">Preview</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">No image selected</string>
+  <string name="log_title">Log</string>
+  <string name="log_section_install_info">Installation Info</string>
+  <string name="log_section_env_info">Environment Info</string>
+  <string name="log_section_error">Error Stacktrace</string>
+  <string name="log_section_log">Installation Log</string>
+  <string name="log_action_export">Export log</string>
+  <string name="log_action_share">Share log</string>
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
   <string name="notif_install_ready_title">Aliucord installation ready!</string>
