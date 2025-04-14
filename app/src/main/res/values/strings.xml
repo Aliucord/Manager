@@ -171,7 +171,7 @@
   <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
   <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
   <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
   <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
   <string name="iconopts_lightness_title">Lightness</string>
@@ -179,6 +179,7 @@
   <string name="iconopts_hex_title">Hex Color</string>
   <string name="iconopts_hex_desc">Manually enter the RGB hex value of the color. Transparency is ignored!</string>
   <string name="iconopts_failed_image">Failed to open image</string>
+  <string name="iconopts_failed_image_too_big">Image size exceeds maximum of 256KiB</string>
   <string name="iconopts_btn_open_selection">Select Image</string>
   <string name="iconopts_btn_open_example_image">Example image</string>
   <string name="iconopts_image_preview_title">Preview</string>

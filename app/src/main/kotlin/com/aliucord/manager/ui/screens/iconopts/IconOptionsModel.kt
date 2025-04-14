@@ -2,6 +2,7 @@ package com.aliucord.manager.ui.screens.iconopts
 
 import android.app.Application
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
@@ -39,6 +40,21 @@ class IconOptionsModel(
 
     fun changeSelectedImageUri(uri: Uri) = screenModelScope.launchBlock {
         try {
+            // Check file size first
+            val query = application.contentResolver.query(uri, null, null, null, null)
+                ?: throw IOException("Failed to query selected image uri")
+
+            val size = query.use { cursor ->
+                cursor.moveToFirst()
+                cursor.getLong(cursor.getColumnIndexOrThrow(OpenableColumns.SIZE))
+            }
+
+            if (size > 1024 * 256) { // 256KiB
+                application.showToast(R.string.iconopts_failed_image_too_big)
+                return@launchBlock
+            }
+
+            // Read file bytes
             val bytes = application.contentResolver
                 .openInputStream(uri)
                 ?.use { it.readBytes() }
