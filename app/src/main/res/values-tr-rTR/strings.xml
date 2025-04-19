@@ -160,6 +160,7 @@ lütfen silin!</string>
   <string name="iconopts_hex_title">Hex Color</string>
   <string name="iconopts_hex_desc">Manually enter the RGB hex value of the color. Transparency is ignored!</string>
   <string name="iconopts_failed_image">Failed to open image</string>
+  <string name="iconopts_failed_image_too_big">Image size exceeds maximum of 256KiB</string>
   <string name="iconopts_btn_open_selection">Select Image</string>
   <string name="iconopts_btn_open_example_image">Example image</string>
   <string name="iconopts_image_preview_title">Preview</string>
