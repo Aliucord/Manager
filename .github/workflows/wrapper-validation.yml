@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - gradle/**
-      - gradlew.*
+      - gradle/wrapper/**
+      - gradlew*
   pull_request:
     paths:
-      - gradle/**
+      - gradle/wrapper/**
       - gradlew*
 
 jobs:

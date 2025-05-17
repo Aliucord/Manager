@@ -2,73 +2,58 @@ name: Publish Release
 
 on:
   push:
-    branches:
-      - 'release'
+    tags: [ "v*.*.*" ]
   workflow_dispatch:
+
+concurrency:
+  group: "release"
+  cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
   publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
         with:
-          persist-credentials: true
-          ref: release
-          path: src
-
-      - name: Check target version
-        id: version
-        run: |
-          cd $GITHUB_WORKSPACE/src
-          version=$(cat app/build.gradle.kts | grep -E 'versionName = "' | cut -d \" -f 2)
-          version="v$version"
-          if git show-ref --tags --quiet --verify -- "refs/tags/$version" >/dev/null; then
-            echo "Git tag $version already exists, failing to publish";
-            exit 1
-          else
-            echo "::set-output name=release_tag::$version"
-          fi
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
-      - name: Setup JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: 17
+          java-version: 21
           distribution: zulu
-          cache: gradle
+          cache: "gradle"
 
       - name: Build Manager
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.keyAlias }}
           SIGNING_KEY_PASSWORD: ${{ secrets.keyPassword }}
           SIGNING_STORE_PASSWORD: ${{ secrets.keystorePassword }}
+          SIGNING_STORE_FILE: ${{ github.workspace }}/release.keystore
         run: |
-          cd $GITHUB_WORKSPACE/src
-          echo "${{ secrets.keystore }}" | base64 -d > ../../release.keystore
+          echo "${{ secrets.keystore }}" | base64 -d > release.keystore
+          chmod +x ./gradlew && ./gradlew :app:packageRelease --stacktrace
+          rm release.keystore
 
-          chmod +x gradlew
-          ./gradlew :app:packageRelease
+      - name: Upload apk as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          if-no-files-found: error
+          path: app/build/outputs/apk/release/app-release.apk
 
-          rm ../../release.keystore
-
-      - name: Release
+      - name: Publish Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd $GITHUB_WORKSPACE/src
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-
-          tag="${{ steps.version.outputs.release_tag }}"
-          git tag "$tag"
-          git push origin "$tag"
-
           apk_file="aliucord-manager-$tag.apk"
-          mv -T ./app/build/outputs/apk/release/app-release.apk "../$apk_file"
+          mv -T ./app/build/outputs/apk/release/app-release.apk "./$apk_file"
 
           gh release create "$tag" \
             --title "Aliucord Manager $tag" \
+            --generate-notes \
+            --verify-tag \
+            --fail-on-no-commits \
             "../$apk_name"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
