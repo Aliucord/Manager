@@ -102,15 +102,16 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
         val reportsDir = layout.buildDirectory.asFile.get()
             .resolve("reports").absolutePath
 
-        jvmTarget = "11"
+        jvmTarget = "1.8"
         freeCompilerArgs += listOf(
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
@@ -165,6 +166,9 @@ dependencies {
     implementation(libs.compose.pipette)
     implementation(libs.compose.shimmer)
     implementation(variantOf(libs.zip) { artifactType("aar") })
+
+    @Suppress("UseTomlInstead")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 }
 
 fun ProviderFactory.execIgnoreCode(vararg command: String): String = run {
