@@ -159,7 +159,7 @@
   <string name="iconopts_hex_title">Hexadecimal da Cor</string>
   <string name="iconopts_hex_desc">Insira manualmente o valor hexadecimal RGB da cor. Transparência é ignorada!</string>
   <string name="iconopts_failed_image">Falha ao abrir imagem</string>
-  <string name="iconopts_failed_image_too_big">Image size exceeds maximum of 256KiB</string>
+  <string name="iconopts_failed_image_too_big">O tamanho da imagem excede o máximo de 256KiB</string>
   <string name="iconopts_btn_open_selection">Selecionar imagem</string>
   <string name="iconopts_btn_open_example_image">Imagem de exemplo</string>
   <string name="iconopts_image_preview_title">Pré-visualizar</string>
