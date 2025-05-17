@@ -29,7 +29,7 @@ import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.iconopts.components.*
 import com.aliucord.manager.ui.util.ColorSaver
 import dev.zt64.compose.pipette.CircularColorPicker
-import dev.zt64.compose.pipette.util.*
+import dev.zt64.compose.pipette.HsvColor
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -57,6 +57,7 @@ class IconOptionsScreen(
             mode = model.mode,
             setMode = model::changeMode,
             selectedColor = model.selectedColor,
+            setSelectedColor = model::changeSelectedColor,
             selectedImage = { model.selectedImage },
             setSelectedImage = model::changeSelectedImageUri,
         )
@@ -67,7 +68,8 @@ class IconOptionsScreen(
 fun IconOptionsScreenContent(
     mode: IconOptionsMode,
     setMode: (IconOptionsMode) -> Unit,
-    selectedColor: HSVColorState,
+    selectedColor: HsvColor,
+    setSelectedColor: (HsvColor) -> Unit,
     selectedImage: () -> ByteArray?,
     setSelectedImage: (Uri) -> Unit,
 ) {
@@ -118,7 +120,10 @@ fun IconOptionsScreenContent(
                 enter = fadeIn(tween(delayMillis = 250)),
                 exit = fadeOut(tween(durationMillis = 200)),
             ) {
-                CustomColorOptions(selectedColor)
+                CustomColorOptions(
+                    color = selectedColor,
+                    setColor = setSelectedColor,
+                )
             }
 
             AnimatedVisibility(
@@ -136,11 +141,14 @@ fun IconOptionsScreenContent(
 }
 
 @Composable
-private fun CustomColorOptions(color: HSVColorState) {
+private fun CustomColorOptions(
+    color: HsvColor,
+    setColor: (HsvColor) -> Unit,
+) {
     // This color is separated from the live color and intentionally lags behind while the RGBTextField is being edited.
     // When this changes, then the text inside the RGBTextField is reset to the fully formatted color.
     // As such, this only happens when the color is changed via the other color pickers.
-    var initialRGBFieldColor by rememberSaveable(stateSaver = ColorSaver) { mutableStateOf(color.toARGB()) }
+    var initialRGBFieldColor by rememberSaveable(stateSaver = ColorSaver) { mutableStateOf(color.toColor()) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(30.dp),
@@ -156,9 +164,10 @@ private fun CustomColorOptions(color: HSVColorState) {
                 saturation = color.saturation,
                 value = color.value,
                 onColorChange = { hue, saturation ->
-                    color.hue = hue
-                    color.saturation = saturation
-                    initialRGBFieldColor = color.toARGB()
+                    color.copy(hue = hue, saturation = saturation).let {
+                        setColor(it)
+                        initialRGBFieldColor = it.toColor()
+                    }
                 },
                 modifier = Modifier
                     .padding(top = 12.dp)
@@ -173,9 +182,11 @@ private fun CustomColorOptions(color: HSVColorState) {
         ) {
             InteractiveSlider(
                 value = color.value,
-                onValueChange = {
-                    color.value = it
-                    initialRGBFieldColor = color.toARGB()
+                onValueChange = { value ->
+                    color.copy(value = value).let {
+                        setColor(it)
+                        initialRGBFieldColor = it.toColor()
+                    }
                 },
                 valueRange = 0f..1f,
                 brush = Brush.horizontalGradient(
@@ -184,7 +195,7 @@ private fun CustomColorOptions(color: HSVColorState) {
                         Color.hsv(color.hue, color.saturation, 1f)
                     ),
                 ),
-                thumbColor = color.toARGB(),
+                thumbColor = color.toColor(),
             )
         }
 
@@ -194,11 +205,7 @@ private fun CustomColorOptions(color: HSVColorState) {
         ) {
             RGBTextField(
                 initialColor = initialRGBFieldColor,
-                setColor = {
-                    color.hue = it.hue
-                    color.saturation = it.saturation
-                    color.value = it.hsvValue
-                },
+                setColor = { setColor(HsvColor(it)) },
                 modifier = Modifier.padding(top = 12.dp),
             )
         }

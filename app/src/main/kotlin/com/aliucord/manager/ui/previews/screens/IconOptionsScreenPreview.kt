@@ -12,8 +12,10 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.core.graphics.drawable.toBitmap
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.ManagerTheme
-import com.aliucord.manager.ui.screens.iconopts.*
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsMode
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreenContent
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
+import dev.zt64.compose.pipette.HsvColor
 import java.io.ByteArrayOutputStream
 
 // This preview has scrollable/interactable content that cannot be properly tested from an IDE preview
@@ -26,11 +28,11 @@ private fun IconOptionsScreenPreview(
     parameters: IconOptionsParameters,
 ) {
     var mode by remember { mutableStateOf(parameters.mode) }
-    var color by remember { mutableStateOf(parameters.selectedColor.toHSVState()) }
+    var color by remember { mutableStateOf(HsvColor(parameters.selectedColor)) }
 
     DisposableEffect(parameters) {
         mode = parameters.mode
-        color = parameters.selectedColor.toHSVState()
+        color = HsvColor(parameters.selectedColor)
 
         onDispose {}
     }
@@ -41,6 +43,7 @@ private fun IconOptionsScreenPreview(
             mode = mode,
             setMode = { mode = it },
             selectedColor = color,
+            setSelectedColor = { color = it },
             selectedImage = { image },
             setSelectedImage = {},
         )

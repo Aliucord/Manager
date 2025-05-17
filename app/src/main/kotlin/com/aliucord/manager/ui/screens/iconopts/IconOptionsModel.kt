@@ -13,6 +13,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 import com.aliucord.manager.util.launchBlock
 import com.aliucord.manager.util.showToast
+import dev.zt64.compose.pipette.HsvColor
 import java.io.IOException
 
 class IconOptionsModel(
@@ -28,11 +29,15 @@ class IconOptionsModel(
     }
 
     // ---------- Replacement color ---------- //
-    var selectedColor by mutableStateOf<HSVColorState>(IconReplacement.Aliucord.color.toHSVState())
+    var selectedColor by mutableStateOf(HsvColor(IconReplacement.Aliucord.color))
         private set
 
-    fun initSelectedColor(color: Color) {
-        selectedColor = color.toHSVState()
+    fun changeSelectedColor(color: HsvColor) {
+        selectedColor = color
+    }
+
+    private fun initSelectedColor(color: Color) {
+        selectedColor = HsvColor(color)
     }
 
     // ---------- Replacement color ---------- //
@@ -92,7 +97,7 @@ class IconOptionsModel(
     fun generateConfig(): IconReplacement = when (mode) {
         IconOptionsMode.Original -> IconReplacement.Original
         IconOptionsMode.Aliucord -> IconReplacement.Aliucord
-        IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toARGB())
+        IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toColor())
         IconOptionsMode.CustomImage -> IconReplacement.CustomImage(
             imageBytes = selectedImage ?: throw IllegalStateException("Cannot generate config without a selected image"),
         )

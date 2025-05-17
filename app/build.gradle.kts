@@ -15,11 +15,11 @@ val gitHasHasLocalChanges = providers.execIgnoreCode("git", "status", "-s").isNo
 
 android {
     namespace = "com.aliucord.manager"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.0.1"
 
