@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
@@ -47,7 +47,7 @@ class HomeScreen : Screen, Parcelable {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val scope = rememberCoroutineScope()
-        val model = getScreenModel<HomeModel>()
+        val model = koinScreenModel<HomeModel>()
         val onClickInstall = remember { { navigator.push(PatchOptionsScreen()) } }
 
         // Refresh installations list when the screen changes or activity resumes

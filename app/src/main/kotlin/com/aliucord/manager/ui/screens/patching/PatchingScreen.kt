@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.BuildConfig
@@ -56,7 +56,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
-        val model = getScreenModel<PatchingScreenModel> { parametersOf(data) }
+        val model = koinScreenModel<PatchingScreenModel> { parametersOf(data) }
 
         val state by model.state.collectAsState()
         val listState = rememberLazyListState()

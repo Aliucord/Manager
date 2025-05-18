@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.ui.screens.log.LogScreen
@@ -31,7 +31,7 @@ class LogsListScreen : Screen, Parcelable {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val model = getScreenModel<LogsListScreenModel>()
+        val model = koinScreenModel<LogsListScreenModel>()
 
         LogsScreenContent(
             logs = model.logEntries,

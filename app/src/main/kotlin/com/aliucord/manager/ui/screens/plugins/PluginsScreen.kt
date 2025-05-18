@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.screens.plugins.components.*
@@ -34,7 +34,7 @@ class PluginsScreen : Screen, Parcelable {
 
     @Composable
     override fun Content() {
-        val model = getScreenModel<PluginsModel>()
+        val model = koinScreenModel<PluginsModel>()
 
         // Refresh plugins list on activity resume or when this initially opens
         LifecycleResumeEffect(Unit) {

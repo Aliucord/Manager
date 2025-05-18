@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.about.components.LeadContributor
@@ -32,7 +32,7 @@ class AboutScreen : Screen, Parcelable {
 
     @Composable
     override fun Content() {
-        val model = getScreenModel<AboutModel>()
+        val model = koinScreenModel<AboutModel>()
 
         AboutScreenContent(state = model.state.collectAsState())
     }

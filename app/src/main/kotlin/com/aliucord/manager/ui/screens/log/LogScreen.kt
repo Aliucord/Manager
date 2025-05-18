@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
@@ -31,7 +31,7 @@ class LogScreen(private val installId: String) : Screen, Parcelable {
 
     @Composable
     override fun Content() {
-        val model = getScreenModel<LogScreenModel> { parametersOf(installId) }
+        val model = koinScreenModel<LogScreenModel> { parametersOf(installId) }
         val navigator = LocalNavigator.currentOrThrow
 
         if (model.shouldCloseScreen) {

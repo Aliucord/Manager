@@ -46,7 +46,7 @@ android {
             enableV4Signing = true
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
-            storeFile = System.getenv("SIGNING_STORE_FILE")?.let { File(it) }
+            storeFile = System.getenv("SIGNING_STORE_FILE")?.let(::File)
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
         }
     }
@@ -60,6 +60,18 @@ android {
             isCrunchPngs = true
             signingConfig = signingConfigs.getByName(if (hasReleaseSigning) "release" else "debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        create("staging") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isCrunchPngs = true
+            signingConfig = signingConfigs.getByName("debug")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+                "proguard-rules-staging.pro",
+            )
         }
     }
 
@@ -136,6 +148,11 @@ kotlin {
         languageSettings.enableLanguageFeature("ExplicitBackingFields")
         languageSettings.enableLanguageFeature("WhenGuards")
     }
+}
+
+tasks.withType<JavaCompile> {
+    // Disable warnings about obsolete target version
+    options.compilerArgs.add("-Xlint:-options")
 }
 
 dependencies {

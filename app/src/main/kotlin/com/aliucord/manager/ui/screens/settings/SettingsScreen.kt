@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.ui.components.BackButton
@@ -35,7 +35,7 @@ class SettingsScreen : Screen, Parcelable {
 
     @Composable
     override fun Content() {
-        val model = getScreenModel<SettingsModel>()
+        val model = koinScreenModel<SettingsModel>()
         var clearedCache by rememberSaveable { mutableStateOf(false) }
 
         Scaffold(

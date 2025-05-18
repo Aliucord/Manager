@@ -15,7 +15,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
@@ -45,15 +45,15 @@ class PatchOptionsScreen(
 
     @Composable
     override fun getIconModel(): IconOptionsModel {
-        return getScreenModel<IconOptionsModel>()
+        return koinScreenModel<IconOptionsModel>()
     }
 
     @Composable
     override fun Content() {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
-        val model = getScreenModel<PatchOptionsModel> { parametersOf(prefilledOptions ?: PatchOptions.Default) }
-        val iconModel = getScreenModel<IconOptionsModel> { parametersOf((prefilledOptions ?: PatchOptions.Default).iconReplacement) }
+        val model = koinScreenModel<PatchOptionsModel> { parametersOf(prefilledOptions ?: PatchOptions.Default) }
+        val iconModel = koinScreenModel<IconOptionsModel> { parametersOf((prefilledOptions ?: PatchOptions.Default).iconReplacement) }
 
         LaunchedEffect(Unit) {
             // Ensure that when popping this screen off the stack that permission requests don't get triggered
@@ -146,6 +146,7 @@ fun PatchOptionsScreenContent(
 
             TextDivider(text = stringResource(R.string.patchopts_divider_basic))
 
+            // TODO: hide when below to Android 8
             IconPatchOption(
                 icon = painterResource(R.drawable.ic_app_shortcut),
                 name = stringResource(R.string.patchopts_icon_title),
