@@ -1,4 +1,4 @@
-package com.aliucord.manager.ui.screens.plugins.components.dialogs
+package com.aliucord.manager.ui.screens.logs.components.dialogs
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -8,8 +8,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.aliucord.manager.R
 
 @Composable
-fun UninstallPluginDialog(
-    pluginName: String,
+fun DeleteLogsDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -21,12 +20,10 @@ fun UninstallPluginDialog(
                 contentDescription = null,
             )
         },
-        title = {
-            Text(stringResource(R.string.plugins_delete_plugin, pluginName))
-        },
+        title = { Text(stringResource(R.string.logs_wipe_title)) },
         text = {
             Text(
-                text = stringResource(R.string.plugins_delete_plugin_body),
+                text = stringResource(R.string.logs_wipe_desc),
                 textAlign = TextAlign.Center,
             )
         },

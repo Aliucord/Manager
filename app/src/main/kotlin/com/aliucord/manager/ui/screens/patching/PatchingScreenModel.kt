@@ -134,40 +134,40 @@ class PatchingScreenModel(
         delay(400)
 
         // Execute all the steps and catch any errors
-        when (val error = runner.executeAll()) {
+        val error = when (val error = runner.executeAll()) {
             null -> {
                 // If install step is marked skipped then the installation was manually aborted
                 // and if so, immediately close install screen
                 if (runner.getStep<InstallStep>().state == StepState.Skipped) {
                     mutableState.value = PatchingScreenState.CloseScreen
+
+                    Error("Installation was aborted or cancelled")
+                        .apply { stackTrace = emptyArray() }
                 }
                 // At this point, the installation has successfully completed
                 else {
                     mutableState.value = PatchingScreenState.Success
-                    installLogs.storeInstallData(
-                        id = installId!!,
-                        installDate = startTime!!,
-                        installDuration = runner.steps.sumOf { it.getDuration() }.milliseconds,
-                        options = options,
-                        log = runner.getLog(),
-                        error = null,
-                    )
+
+                    null
                 }
             }
 
             else -> {
                 Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
                 mutableState.value = PatchingScreenState.Failed(installId = installId!!)
-                installLogs.storeInstallData(
-                    id = installId!!,
-                    installDate = startTime!!,
-                    installDuration = runner.steps.sumOf { it.getDuration() }.milliseconds,
-                    options = options,
-                    log = runner.getLog(),
-                    error = error,
-                )
+
+                error
             }
         }
+
+        installLogs.storeInstallData(
+            id = installId!!,
+            installDate = startTime!!,
+            installDuration = runner.steps.sumOf { it.getDuration() }.milliseconds,
+            options = options,
+            log = runner.getLog(),
+            error = error,
+        )
     }
 
     private companion object {

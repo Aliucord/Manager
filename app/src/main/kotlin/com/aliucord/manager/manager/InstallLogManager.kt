@@ -31,6 +31,19 @@ class InstallLogManager(
     val logsDir = application.filesDir.resolve("install-logs").apply { mkdir() }
 
     /**
+     * Lists all the install data entries that exist on disk, sorted decreasing by
+     * the file creation date.
+     * @return List of installation ids, most recent installation first.
+     */
+    fun fetchInstallDataEntries(): List<String> {
+        val files = logsDir.listFiles { it.extension == "json" } ?: emptyArray()
+
+        return files
+            .sortedByDescending { it.lastModified() }
+            .map { it.nameWithoutExtension }
+    }
+
+    /**
      * Loads the install log from disk, if it exists.
      */
     fun fetchInstallData(id: String): InstallLogData? {
@@ -44,6 +57,11 @@ class InstallLogManager(
             Log.e(BuildConfig.TAG, "Failed to open install log $id", t)
             null
         }
+    }
+
+    fun deleteAllEntries() {
+        logsDir.deleteRecursively()
+        logsDir.mkdir()
     }
 
     /**

@@ -18,7 +18,7 @@ import com.aliucord.manager.manager.InstallLogData
 import com.aliucord.manager.ui.components.Label
 import com.aliucord.manager.ui.components.back
 import com.aliucord.manager.ui.screens.log.components.LogAppBar
-import com.aliucord.manager.ui.screens.log.components.SelectableTextArea
+import com.aliucord.manager.ui.screens.log.components.LogTextArea
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
@@ -73,7 +73,7 @@ fun LogScreenContent(
                     name = stringResource(R.string.log_section_install_info),
                     description = null,
                 ) {
-                    SelectableTextArea(
+                    LogTextArea(
                         text = """
                             Installation ID: ${data.id}
                             Installation Date: ${data.installDate}
@@ -88,7 +88,7 @@ fun LogScreenContent(
                     name = stringResource(R.string.log_section_env_info),
                     description = null,
                 ) {
-                    SelectableTextArea(
+                    LogTextArea(
                         text = data.environmentInfo,
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -101,7 +101,7 @@ fun LogScreenContent(
                         name = stringResource(R.string.log_section_error),
                         description = null,
                     ) {
-                        SelectableTextArea(
+                        LogTextArea(
                             text = data.errorStacktrace,
                             modifier = Modifier.fillMaxWidth(),
                         )
@@ -114,7 +114,7 @@ fun LogScreenContent(
                     name = stringResource(R.string.log_section_log),
                     description = null,
                 ) {
-                    SelectableTextArea(
+                    LogTextArea(
                         text = data.installationLog,
                         modifier = Modifier.fillMaxWidth(),
                     )
