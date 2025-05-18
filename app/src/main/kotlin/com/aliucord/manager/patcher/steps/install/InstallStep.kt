@@ -54,7 +54,7 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
         ProcessLifecycleOwner.get().lifecycle.withResumed {}
 
         // Show [PlayProtectDialog] and wait until it gets dismissed
-        if (!context.isPackageInstalled(options.packageName) && context.isPlayProtectEnabled() == true) {
+        if (!prefs.devMode && !context.isPackageInstalled(options.packageName) && context.isPlayProtectEnabled() == true) {
             container.log("Showing play protect warning dialog")
             overlays.startComposableForResult { callback ->
                 PlayProtectDialog(onDismiss = { callback(Unit) })
