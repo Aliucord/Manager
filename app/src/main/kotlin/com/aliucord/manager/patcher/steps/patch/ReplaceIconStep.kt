@@ -90,7 +90,7 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
         }
 
         // Add a new mipmap resource and the file to be added later
-        if (options.iconReplacement is IconReplacement.CustomImage) {
+        else if (options.iconReplacement is IconReplacement.CustomImage) {
             container.log("Adding custom icon foreground to arsc")
 
             val iconPathIdx = arsc.getMainArscChunk().stringPool

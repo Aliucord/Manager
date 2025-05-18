@@ -54,7 +54,7 @@ object ArscUtil {
         return this.addResource(
             typeName = "color",
             resourceName = name,
-            configurations = { true },
+            configurations = { it.isDefault },
             valueType = BinaryResourceValue.Type.INT_COLOR_ARGB8,
             valueData = color.toArgb(),
         )
