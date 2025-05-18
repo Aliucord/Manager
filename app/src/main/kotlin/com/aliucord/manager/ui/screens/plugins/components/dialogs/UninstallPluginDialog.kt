@@ -1,10 +1,13 @@
 package com.aliucord.manager.ui.screens.plugins.components.dialogs
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 
 @Composable
@@ -19,6 +22,7 @@ fun UninstallPluginDialog(
             Icon(
                 painter = painterResource(R.drawable.ic_delete_forever),
                 contentDescription = null,
+                modifier = Modifier.size(32.dp),
             )
         },
         title = {
@@ -26,7 +30,7 @@ fun UninstallPluginDialog(
         },
         text = {
             Text(
-                text = stringResource(R.string.plugins_delete_plugin_body),
+                text = stringResource(R.string.plugins_delete_plugin_body, pluginName),
                 textAlign = TextAlign.Center,
             )
         },
