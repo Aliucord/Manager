@@ -63,6 +63,7 @@
   <string name="plugins_error">Παρουσιάστηκε σφάλμα κατά την επεξεργασία των plugins!</string>
   <string name="navigation_back">Πίσω</string>
   <string name="navigation_about">Σχετικά με</string>
+  <string name="navigation_logs">Open logs</string>
   <string name="navigation_settings">Ρυθμίσεις</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">Συνεισφέροντες</string>
@@ -172,6 +173,12 @@
   <string name="log_section_log">Installation Log</string>
   <string name="log_action_export">Export log</string>
   <string name="log_action_share">Share log</string>
+  <string name="logs_title">Logs</string>
+  <string name="logs_none">No logs present!</string>
+  <string name="logs_action_delete_all">Delete all logs</string>
+  <string name="logs_status_delete_success">Successfully deleted all logs</string>
+  <string name="logs_wipe_title">Clear Logs</string>
+  <string name="logs_wipe_desc">Are you sure you want to permanently delete all the logs?</string>
   <string name="notif_group_install_title">Ενεργή εγκατάσταση</string>
   <string name="notif_group_install_desc">Ειδοποιήσεις προόδου αποστέλλονται κατά τη διάρκεια μιας ελαχιστοποιημένης εγκατάστασης</string>
   <string name="notif_install_ready_title">Εγκατάσταση Aliucord έτοιμη!</string>

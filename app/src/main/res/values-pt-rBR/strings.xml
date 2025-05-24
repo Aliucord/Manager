@@ -63,6 +63,7 @@
   <string name="plugins_error">Ocorreu um erro ao processar os plugins!</string>
   <string name="navigation_back">Voltar</string>
   <string name="navigation_about">Sobre</string>
+  <string name="navigation_logs">Open logs</string>
   <string name="navigation_settings">Configurações</string>
   <string name="contributors_lead">Líderes do Projeto</string>
   <string name="contributors">Colaboradores</string>
@@ -172,6 +173,12 @@
   <string name="log_section_log">Logs de Instalação</string>
   <string name="log_action_export">Exportar logs</string>
   <string name="log_action_share">Compartilhar logs</string>
+  <string name="logs_title">Logs</string>
+  <string name="logs_none">No logs present!</string>
+  <string name="logs_action_delete_all">Delete all logs</string>
+  <string name="logs_status_delete_success">Successfully deleted all logs</string>
+  <string name="logs_wipe_title">Clear Logs</string>
+  <string name="logs_wipe_desc">Are you sure you want to permanently delete all the logs?</string>
   <string name="notif_group_install_title">Instalação ativa</string>
   <string name="notif_group_install_desc">Notificações de progresso enviadas durante uma instalação minimizada</string>
   <string name="notif_install_ready_title">Instalação do Aliucord pronta!</string>

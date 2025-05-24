@@ -63,6 +63,7 @@
   <string name="plugins_error">处理插件时发生错误！</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">关于</string>
+  <string name="navigation_logs">Open logs</string>
   <string name="navigation_settings">设置</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">贡献者</string>
@@ -172,6 +173,12 @@
   <string name="log_section_log">Installation Log</string>
   <string name="log_action_export">Export log</string>
   <string name="log_action_share">Share log</string>
+  <string name="logs_title">Logs</string>
+  <string name="logs_none">No logs present!</string>
+  <string name="logs_action_delete_all">Delete all logs</string>
+  <string name="logs_status_delete_success">Successfully deleted all logs</string>
+  <string name="logs_wipe_title">Clear Logs</string>
+  <string name="logs_wipe_desc">Are you sure you want to permanently delete all the logs?</string>
   <string name="notif_group_install_title">主动安装</string>
   <string name="notif_group_install_desc">最小化安装期间发送的进度通知</string>
   <string name="notif_install_ready_title">Aliucord 安装已就绪！</string>

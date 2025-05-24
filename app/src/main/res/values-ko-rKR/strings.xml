@@ -63,6 +63,7 @@
   <string name="plugins_error">플러그인을 처리하던 도중 오류가 발생했어요!</string>
   <string name="navigation_back">돌아가기</string>
   <string name="navigation_about">소개</string>
+  <string name="navigation_logs">Open logs</string>
   <string name="navigation_settings">설정</string>
   <string name="contributors_lead">리더</string>
   <string name="contributors">기여자</string>
@@ -172,6 +173,12 @@
   <string name="log_section_log">설치 로그</string>
   <string name="log_action_export">로그 내보내기</string>
   <string name="log_action_share">로그 공유</string>
+  <string name="logs_title">Logs</string>
+  <string name="logs_none">No logs present!</string>
+  <string name="logs_action_delete_all">Delete all logs</string>
+  <string name="logs_status_delete_success">Successfully deleted all logs</string>
+  <string name="logs_wipe_title">Clear Logs</string>
+  <string name="logs_wipe_desc">Are you sure you want to permanently delete all the logs?</string>
   <string name="notif_group_install_title">활성 설치 알림</string>
   <string name="notif_group_install_desc">설치 화면이 최소화 상태일 때 표시되는 알림</string>
   <string name="notif_install_ready_title">Aliucord 설치가 준비됐어요!</string>
