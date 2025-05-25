@@ -61,12 +61,13 @@ class SettingsScreen : Screen, Parcelable {
                     )
                 }
 
-                SettingsHeader(stringResource(R.string.settings_appearance))
+                SettingsHeader(stringResource(R.string.settings_header_appearance))
 
                 SettingsItem(
                     modifier = Modifier.clickable(onClick = model::showThemeDialog),
                     icon = { Icon(painterResource(R.drawable.ic_brush), null) },
-                    text = { Text(stringResource(R.string.settings_theme)) }
+                    text = { Text(stringResource(R.string.setting_theme)) },
+                    secondaryText = { Text(stringResource(R.string.setting_theme_desc)) }
                 ) {
                     FilledTonalButton(onClick = model::showThemeDialog) {
                         Text(preferences.theme.toDisplayName())
@@ -84,11 +85,11 @@ class SettingsScreen : Screen, Parcelable {
                     )
                 }
 
-                SettingsHeader(stringResource(R.string.settings_advanced))
+                SettingsHeader(stringResource(R.string.settings_header_advanced))
 
                 SettingsSwitch(
-                    label = stringResource(R.string.settings_developer_options),
-                    secondaryLabel = stringResource(R.string.settings_developer_options_desc),
+                    label = stringResource(R.string.setting_developer_options),
+                    secondaryLabel = stringResource(R.string.setting_developer_options_desc),
                     pref = preferences.devMode,
                     icon = { Icon(painterResource(R.drawable.ic_code), null) },
                     onPrefChange = { preferences.devMode = it },
@@ -104,7 +105,7 @@ class SettingsScreen : Screen, Parcelable {
                 )
 
                 MainActionButton(
-                    text = stringResource(R.string.setting_clear_cache),
+                    text = stringResource(R.string.settings_clear_cache),
                     icon = painterResource(R.drawable.ic_delete_forever),
                     enabled = !clearedCache,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
@@ -122,7 +123,7 @@ class SettingsScreen : Screen, Parcelable {
                 if (preferences.keepPatchedApks) {
                     val handler = LocalUriHandler.current
                     MainActionButton(
-                        text = stringResource(R.string.setting_see_patched_apks),
+                        text = stringResource(R.string.settings_see_patched_apks),
                         icon = painterResource(R.drawable.ic_launch),
                         onClick = { handler.openUri(AliucordGithubService.PATCHED_APKS_INFO_URL) },
                         modifier = Modifier

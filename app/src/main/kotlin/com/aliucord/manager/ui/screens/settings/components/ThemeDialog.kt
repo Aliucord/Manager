@@ -29,11 +29,11 @@ fun ThemeDialog(
         icon = {
             Icon(
                 painter = painterResource(R.drawable.ic_brush),
-                contentDescription = stringResource(R.string.settings_theme),
+                contentDescription = stringResource(R.string.setting_theme),
                 modifier = Modifier.size(32.dp),
             )
         },
-        title = { Text(stringResource(R.string.settings_theme)) },
+        title = { Text(stringResource(R.string.setting_theme)) },
         text = {
             Column {
                 for (theme in Theme.entries) key(theme) {

@@ -259,7 +259,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                 }
 
                                 MainActionButton(
-                                    text = stringResource(R.string.setting_clear_cache),
+                                    text = stringResource(R.string.settings_clear_cache),
                                     icon = painterResource(R.drawable.ic_delete_forever),
                                     enabled = !cacheCleared,
                                     colors = IconButtonDefaults.filledTonalIconButtonColors(
