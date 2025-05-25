@@ -125,7 +125,7 @@ object ArscUtil {
      *
      * @param resourceId The target resource id.
      * @param configurationName The target configuration variant of the resource. (ex: `anydpi-v26`, `xxhdpi`, `ldtrl-mpi`, etc.)
-     * @return The string value of the resource, which should be a file path inside the apk.
+     * @return The string value of the resource, which should be a file path into the apk.
      */
     fun ResourceTableChunk.getResourceFileName(
         resourceId: BinaryResourceIdentifier,
@@ -151,5 +151,32 @@ object ArscUtil {
         val value = this.stringPool.getString(valueIdx)
 
         return value
+    }
+
+    /**
+     * In an arsc file, for a specific resource in all configurations, get all values.
+     *
+     * @param resourceId The target resource id.
+     * @return The string value of all configuration values of the resource, which should be file paths into the apk.
+     */
+    fun ResourceTableChunk.getResourceFileNames(resourceId: BinaryResourceIdentifier): List<String> {
+        val packageChunk = this.packages.find { it.id == resourceId.packageId() }
+            ?: error("Unable to find target resource")
+
+        val typeChunks = packageChunk.getTypeChunks(resourceId.typeId())
+        val entries = typeChunks.map { typeChunk ->
+            val entry = typeChunk.getEntry(resourceId.entryId())
+                ?: error("Unable to find target resource in type chunk " + typeChunk.configuration)
+
+            if (entry.isComplex || entry.value().type() != BinaryResourceValue.Type.STRING)
+                error("Target resource value type in type chunk ${typeChunk.configuration} is not STRING")
+
+            entry
+        }
+
+        return entries.map { entry ->
+            val valueIdx = entry.value().data()
+            this.stringPool.getString(valueIdx)
+        }
     }
 }

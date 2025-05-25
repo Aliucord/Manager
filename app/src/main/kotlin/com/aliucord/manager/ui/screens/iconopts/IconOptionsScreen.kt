@@ -1,6 +1,7 @@
 package com.aliucord.manager.ui.screens.iconopts
 
 import android.net.Uri
+import android.os.Build
 import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -74,6 +75,8 @@ fun IconOptionsScreenContent(
     selectedImage: () -> ByteArray?,
     setSelectedImage: (Uri) -> Unit,
 ) {
+    val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
+
     Scaffold(
         topBar = { IconOptionsAppBar() },
     ) { paddingValues ->
@@ -107,12 +110,14 @@ fun IconOptionsScreenContent(
                 selected = mode == IconOptionsMode.CustomColor,
                 onClick = remember { { setMode(IconOptionsMode.CustomColor) } },
             )
-            RadioSelectorItem(
-                name = stringResource(R.string.iconopts_variant_title_image),
-                description = stringResource(R.string.iconopts_variant_desc_image),
-                selected = mode == IconOptionsMode.CustomImage,
-                onClick = remember { { setMode(IconOptionsMode.CustomImage) } },
-            )
+            if (isAdaptiveIconsAvailable) {
+                RadioSelectorItem(
+                    name = stringResource(R.string.iconopts_variant_title_image),
+                    description = stringResource(R.string.iconopts_variant_desc_image),
+                    selected = mode == IconOptionsMode.CustomImage,
+                    onClick = remember { { setMode(IconOptionsMode.CustomImage) } },
+                )
+            }
 
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
 
