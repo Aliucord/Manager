@@ -148,6 +148,7 @@
   <string name="updater_title">Update to %1$s</string>
 
   <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">Download failed (Invalid response)</string>
   <string name="downloader_err_file_exists">Download failed (File exists)</string>
   <string name="downloader_err_storage_space">Download failed (Insufficient space)</string>

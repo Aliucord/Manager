@@ -1,5 +1,8 @@
 package com.aliucord.manager.manager.download
 
+import android.content.Context
+import androidx.annotation.StringRes
+import com.aliucord.manager.R
 import com.aliucord.manager.manager.download.IDownloadManager.Result
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
 import io.ktor.client.HttpClient
@@ -11,6 +14,7 @@ import io.ktor.http.contentLength
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.CancellationException
 import java.io.File
+import java.net.SocketTimeoutException
 
 /**
  * Handle downloading remote urls to a path with Ktor.
@@ -65,6 +69,9 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
         } catch (_: CancellationException) {
             tmpOut.delete()
             return Result.Cancelled(systemTriggered = false)
+        } catch (t: SocketTimeoutException) {
+            tmpOut.delete()
+            return Error(t, localizedError = R.string.downloader_err_timeout)
         } catch (t: Throwable) {
             tmpOut.delete()
             return Error(t)
@@ -77,8 +84,14 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
     /**
      * Wrapper around an exception that occurred from invoking Ktor
      */
-    class Error(private val throwable: Throwable) : Result.Error() {
-        override fun getDebugReason(): String = throwable.message ?: "Unknown exception"
-        override fun toString(): String = throwable.stackTraceToString()
+    class Error(
+        private val error: Throwable,
+        @StringRes
+        private val localizedError: Int? = null,
+    ) : Result.Error() {
+        override fun toString(): String = error.stackTraceToString()
+        override fun getDebugReason(): String = error.message ?: "Unknown exception"
+        override fun getLocalizedReason(context: Context): String? =
+            localizedError?.let(context::getString)
     }
 }
