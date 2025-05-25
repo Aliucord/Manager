@@ -64,8 +64,8 @@ fun Scope.provideHttpClient() = HttpClient(OkHttp) {
     }
 
     install(HttpTimeout) {
-        connectTimeoutMillis = 20000
-        requestTimeoutMillis = 60000
+        socketTimeoutMillis = 30000
+        connectTimeoutMillis = 30000
     }
 
     install(HttpCache) {
