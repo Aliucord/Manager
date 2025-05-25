@@ -1,8 +1,17 @@
 package com.aliucord.manager.patcher.steps.patch
 
 import android.content.Context
+import android.graphics.*
+import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.applyCanvas
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.graphics.drawable.toBitmap
 import com.aliucord.manager.R
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
@@ -15,15 +24,17 @@ import com.aliucord.manager.patcher.util.ArscUtil.addResource
 import com.aliucord.manager.patcher.util.ArscUtil.getMainArscChunk
 import com.aliucord.manager.patcher.util.ArscUtil.getPackageChunk
 import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileName
+import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileNames
 import com.aliucord.manager.patcher.util.AxmlUtil
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 import com.aliucord.manager.util.getResBytes
 import com.github.diamondminer88.zip.ZipWriter
-import com.google.devrel.gmscore.tools.apk.arsc.BinaryResourceIdentifier
-import com.google.devrel.gmscore.tools.apk.arsc.BinaryResourceValue
+import com.google.devrel.gmscore.tools.apk.arsc.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 /**
  * Patch the mipmap-v26 launcher icons' background, foreground and monochrome attributes,
@@ -32,21 +43,23 @@ import org.koin.core.component.inject
  * so that this works on pretty much almost any APK.
  */
 @Stable
-class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent {
+class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent {
     private val context: Context by inject()
 
     override val group = StepGroup.Patch
     override val localizedName = R.string.patch_step_patch_icon
 
+    // Adaptive icons are available starting with Android 8
+    private val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
+
+    // Monochrome icons are always patched starting with Android 12
+    private val isMonochromeIconsAvailable = Build.VERSION.SDK_INT >= 31
+
     override suspend fun execute(container: StepRunner) {
-        val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
-        val isMonochromeIconsAvailable = Build.VERSION.SDK_INT >= 31
         container.log("isAdaptiveIconsAvailable: $isAdaptiveIconsAvailable, isMonochromeIconsAvailable: $isMonochromeIconsAvailable")
 
-        // Adaptive icons are available starting with Android 8
-        // Monochrome icons are always patched starting with Android 12
-        // Skip if adaptive icons are unavailable or { not patching main icon AND monochrome icons are unavailable }
-        if (!isAdaptiveIconsAvailable || (!isMonochromeIconsAvailable && options.iconReplacement is IconReplacement.Original)) {
+        // Skip if not patching main icon AND monochrome icons are unavailable
+        if (!isMonochromeIconsAvailable && options.iconReplacement is IconReplacement.Original) {
             container.log("No patching necessary, skipping step")
             state = StepState.Skipped
             return
@@ -56,6 +69,26 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
         val arsc = ArscUtil.readArsc(apk)
 
+        if (isAdaptiveIconsAvailable) {
+            patchAdaptiveIcons(
+                container = container,
+                apk = apk,
+                arsc = arsc,
+            )
+        } else {
+            patchRawIcons(
+                container = container,
+                apk = apk,
+                arsc = arsc,
+            )
+        }
+    }
+
+    private fun patchAdaptiveIcons(
+        container: StepRunner,
+        apk: File,
+        arsc: BinaryResourceFile,
+    ) {
         container.log("Parsing AndroidManifest.xml and obtaining adaptive square/round icon file paths")
         val iconRscIds = AxmlUtil.readManifestIconInfo(apk)
         val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
@@ -130,8 +163,70 @@ class ReplaceIconStep(private val options: PatchOptions) : Step(), KoinComponent
 
             container.log("Writing resources unaligned compressed")
             it.deleteEntry("resources.arsc")
-            // This doesn't need to be aligned and uncompressed here, since it that is done during AlignmentSte
+            // This doesn't need to be aligned and uncompressed here, since it that is done during AlignmentStep
             it.writeEntry("resources.arsc", arsc.toByteArray())
         }
+    }
+
+    private fun patchRawIcons(
+        container: StepRunner,
+        apk: File,
+        arsc: BinaryResourceFile,
+    ) {
+        container.log("Parsing AndroidManifest.xml and obtaining all square/round launcher icon file paths")
+        val iconRscIds = AxmlUtil.readManifestIconInfo(apk)
+        val squareIconFiles = arsc.getMainArscChunk().getResourceFileNames(iconRscIds.squareIcon)
+        val roundIconFiles = arsc.getMainArscChunk().getResourceFileNames(iconRscIds.roundIcon)
+        val allIconFiles = squareIconFiles + roundIconFiles
+
+        val backgroundColor = when (options.iconReplacement) {
+            IconReplacement.Original -> IconReplacement.Aliucord.color
+            is IconReplacement.CustomColor -> options.iconReplacement.color
+            is IconReplacement.CustomImage -> error("Cannot patch custom images below Android 8 (Adaptive Icons are required)")
+        }
+
+        container.log("Generating static launcher icon")
+        val icon = createDiscordLauncherIcon(backgroundColor)
+        val iconBytes = ByteArrayOutputStream().use {
+            icon.compress(Bitmap.CompressFormat.PNG, 0, it)
+            icon.recycle()
+            it.toByteArray()
+        }
+
+        container.log("Writing patched icons back to apk")
+        ZipWriter(apk, /* append = */ true).use {
+            it.deleteEntries(allIconFiles)
+
+            for (path in allIconFiles)
+                it.writeEntry(path, iconBytes)
+        }
+    }
+
+    /**
+     * Draws the Discord icon over a custom colored background and rounds it
+     * to create a launcher icon like Discord's. This is used for devices that
+     * do not support adaptive icons.
+     */
+    private fun createDiscordLauncherIcon(backgroundColor: Color, size: Int = 192): Bitmap {
+        val paint = Paint().apply {
+            style = Paint.Style.FILL
+            setColor(backgroundColor.toArgb())
+        }
+
+        val vectorDrawable = ContextCompat.getDrawable(context, R.drawable.ic_discord)!!
+        val drawable = InsetDrawable(vectorDrawable, (size * .17f).toInt())
+
+        val icon = createBitmap(size, size).applyCanvas {
+            drawRect(Rect(0, 0, width, height), paint)
+            drawable.setBounds(0, 0, width, height)
+            drawable.draw(this)
+        }
+        val iconRound = RoundedBitmapDrawableFactory.create(context.resources, icon).apply {
+            isCircular = true
+            setAntiAlias(true)
+        }.toBitmap()
+
+        icon.recycle()
+        return iconRound
     }
 }

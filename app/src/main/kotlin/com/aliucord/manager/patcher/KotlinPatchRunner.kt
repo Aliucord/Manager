@@ -27,7 +27,7 @@ class KotlinPatchRunner(options: PatchOptions) : StepRunner() {
 
         // Patch
         SmaliPatchStep(),
-        ReplaceIconStep(options),
+        PatchIconsStep(options),
         PatchManifestStep(options),
         ReorganizeDexStep(),
         AddAliuhookLibsStep(),

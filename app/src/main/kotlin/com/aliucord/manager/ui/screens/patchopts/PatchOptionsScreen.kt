@@ -142,7 +142,6 @@ fun PatchOptionsScreenContent(
 
             TextDivider(text = stringResource(R.string.patchopts_divider_basic))
 
-            // TODO: hide when below to Android 8
             IconPatchOption(
                 icon = painterResource(R.drawable.ic_app_shortcut),
                 name = stringResource(R.string.patchopts_icon_title),

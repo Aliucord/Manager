@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-val gitCurrentBranch = providers.execIgnoreCode("git", "symbolic-ref", "--short", "HEAD")
+val gitCurrentBranch = providers.execIgnoreCode("git", "symbolic-ref", "--quiet", "--short", "HEAD").takeIf { it.isNotEmpty() }
 val gitLatestCommit = providers.execIgnoreCode("git", "rev-parse", "--short", "HEAD")
 val gitHasLocalCommits = providers.execIgnoreCode("git", "log", "origin/$gitCurrentBranch..HEAD").isNotEmpty()
 val gitHasHasLocalChanges = providers.execIgnoreCode("git", "status", "-s").isNotEmpty()
