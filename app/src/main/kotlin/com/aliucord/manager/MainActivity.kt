@@ -9,22 +9,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.unit.IntOffset
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
-import cafe.adriel.voyager.core.stack.StackEvent
 import cafe.adriel.voyager.navigator.*
-import cafe.adriel.voyager.transitions.ScreenTransition
+import cafe.adriel.voyager.transitions.SlideTransition
 import com.aliucord.manager.manager.PreferencesManager
-import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.components.ManagerTheme
+import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
+import com.aliucord.manager.util.back
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -60,28 +61,17 @@ class MainActivity : ComponentActivity() {
                             navigator.back(this@MainActivity)
                         }
 
-                        ScreenTransition(
+                        SlideTransition(
                             navigator = navigator,
-                            transition = { unifiedScreenTransition(navigator.lastEvent) }
+                            disposeScreenAfterTransitionEnd = true,
+                            animationSpec = spring(
+                                stiffness = Spring.StiffnessMedium,
+                                visibilityThreshold = IntOffset.VisibilityThreshold,
+                            )
                         )
                     }
                 }
             }
         }
-    }
-
-    private fun unifiedScreenTransition(lastEvent: StackEvent): ContentTransform = when (lastEvent) {
-        StackEvent.Push, StackEvent.Replace -> ContentTransform(
-            targetContentEnter = slideInHorizontally { it * 2 } + fadeIn(tween(durationMillis = 400)),
-            initialContentExit = fadeOut(tween(durationMillis = 400, delayMillis = 300)),
-        )
-
-        StackEvent.Pop -> ContentTransform(
-            targetContentEnter = EnterTransition.None,
-            targetContentZIndex = -1f,
-            initialContentExit = slideOutHorizontally { it * 2 } + fadeOut(tween(durationMillis = 400, delayMillis = 300)),
-        )
-
-        StackEvent.Idle -> fadeIn() togetherWith fadeOut()
     }
 }

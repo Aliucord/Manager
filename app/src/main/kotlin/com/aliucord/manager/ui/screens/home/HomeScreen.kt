@@ -27,7 +27,8 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.components.LoadFailure
+import com.aliucord.manager.ui.components.ProjectHeader
 import com.aliucord.manager.ui.screens.home.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
@@ -145,34 +146,24 @@ fun HomeScreenLoadedContent(
                 secondaryInstall = true,
                 onClick = onClickInstall,
                 modifier = Modifier
-                    .padding(top = 10.dp)
+                    .padding(vertical = 10.dp)
                     .height(50.dp)
                     .fillMaxWidth()
             )
         }
 
-        item(key = "SUPPORTED_VERSION") {
-            AnimatedVersionDisplay(
-                version = supportedVersion,
-                modifier = Modifier.padding(bottom = 30.dp),
-            )
-        }
-
-        val installations = (state as? InstallsState.Fetched)?.data
-            ?: return@LazyColumn
-
-        items(installations, key = { it.packageName }) {
+        items(state.data, key = { it.packageName }) { item ->
             AnimatedVisibility(
                 enter = fadeIn() + slideInHorizontally { it * -2 },
                 exit = fadeOut() + slideOutHorizontally { it * 2 },
                 visible = supportedVersion !is DiscordVersion.None,
             ) {
                 InstalledItemCard(
-                    data = it,
-                    onUpdate = { onUpdate(it.packageName) },
-                    onOpenApp = { onOpenApp(it.packageName) },
-                    onOpenInfo = { onOpenAppInfo(it.packageName) },
-                    onOpenPlugins = { onOpenPlugins(it.packageName) },
+                    data = item,
+                    onUpdate = { onUpdate(item.packageName) },
+                    onOpenApp = { onOpenApp(item.packageName) },
+                    onOpenInfo = { onOpenAppInfo(item.packageName) },
+                    onOpenPlugins = { onOpenPlugins(item.packageName) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }

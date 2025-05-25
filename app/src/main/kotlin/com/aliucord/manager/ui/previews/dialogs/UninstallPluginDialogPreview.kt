@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.aliucord.manager.ui.components.ManagerTheme
-import com.aliucord.manager.ui.screens.logs.components.dialogs.DeleteLogsDialog
 import com.aliucord.manager.ui.screens.plugins.components.dialogs.UninstallPluginDialog
 
 @Composable
