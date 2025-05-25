@@ -1,7 +1,7 @@
 package com.aliucord.manager.ui.screens.plugins.model
 
 import androidx.compose.runtime.Immutable
-import com.aliucord.manager.util.ImmutableListSerializer
+import com.aliucord.manager.util.serialization.ImmutableListSerializer
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.serialization.Serializable
 

@@ -42,9 +42,6 @@ class HomeModel(
     private val maven: AliucordMavenService,
     private val json: Json,
 ) : ScreenModel {
-    var supportedVersion by mutableStateOf<DiscordVersion>(DiscordVersion.None)
-        private set
-
     var installsState by mutableStateOf<InstallsState>(InstallsState.Fetching)
         private set
 
@@ -176,37 +173,25 @@ class HomeModel(
         }
     }
 
-    // FIXME: Properly show state when one of these fetches fail,
-    //        to ensure the people know that the up-to-date check does not work
     private suspend fun fetchRemoteData() {
-        github.getBuildData().fold(
-            success = {
-                val versionCode = it.discordVersionCode.toIntOrNull()
-                if (versionCode == null) {
-                    supportedVersion = DiscordVersion.Error
-                    return
-                }
-
-                remoteDataJson = it
-                supportedVersion = DiscordVersion.Existing(
-                    type = DiscordVersion.parseVersionType(versionCode),
-                    name = it.discordVersionName.split("-")[0].trim(),
-                    code = versionCode,
+        listOf(
+            screenModelScope.launch {
+                github.getBuildData().fold(
+                    success = { remoteDataJson = it },
+                    fail = { Log.w(BuildConfig.TAG, "Failed to fetch remote build data", it) },
                 )
             },
-            fail = {
-                Log.w(BuildConfig.TAG, "Failed to fetch remote build data", it)
-                supportedVersion = DiscordVersion.Error
+            screenModelScope.launch {
+                maven.getAliuhookVersion().fold(
+                    success = { latestAliuhookVersion = it },
+                    fail = { Log.w(BuildConfig.TAG, "Failed to fetch latest Aliuhook version", it) },
+                )
             },
-        )
+        ).joinAll()
 
-        maven.getAliuhookVersion().fold(
-            success = { latestAliuhookVersion = it },
-            fail = {
-                Log.w(BuildConfig.TAG, "Failed to fetch latest Aliuhook version", it)
-                supportedVersion = DiscordVersion.Error
-            },
-        )
+        if (remoteDataJson == null || latestAliuhookVersion == null) {
+            application.showToast(R.string.home_network_fail)
+        }
     }
 
     /**
@@ -238,7 +223,7 @@ class HomeModel(
         val versionCode = pkg.versionCode
 
         // Check if the base APK version is a mismatch
-        if (remoteBuildData.discordVersionCode.toIntOrNull() != versionCode) return false
+        if (remoteBuildData.discordVersionCode != versionCode) return false
 
         // Try to parse install metadata. If none present, install was made via legacy installer.
         val apkPath = pkg.applicationInfo?.publicSourceDir ?: return false

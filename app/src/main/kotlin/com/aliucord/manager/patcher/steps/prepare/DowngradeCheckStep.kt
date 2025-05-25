@@ -43,8 +43,7 @@ class DowngradeCheckStep(private val options: PatchOptions) : Step(), KoinCompon
 
         val targetVersion = container
             .getStep<FetchInfoStep>()
-            .data.discordVersionCode.toIntOrNull()
-            ?: throw IllegalArgumentException("Invalid remote target Discord version")
+            .data.discordVersionCode
 
         container.log("Target discord version: $targetVersion")
 

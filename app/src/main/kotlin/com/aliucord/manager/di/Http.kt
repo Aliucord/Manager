@@ -5,6 +5,7 @@ import com.aliucord.manager.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.cache.storage.FileStorage
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -60,6 +61,11 @@ fun Scope.provideHttpClient() = HttpClient(OkHttp) {
 
     install(ContentNegotiation) {
         json(json)
+    }
+
+    install(HttpTimeout) {
+        connectTimeoutMillis = 20000
+        requestTimeoutMillis = 10000
     }
 
     install(HttpCache) {

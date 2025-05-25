@@ -8,7 +8,7 @@ import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.about.AboutScreenContent
 import com.aliucord.manager.ui.screens.about.AboutScreenState
 import com.aliucord.manager.ui.util.emptyImmutableList
-import com.aliucord.manager.util.ImmutableListSerializer
+import com.aliucord.manager.util.serialization.ImmutableListSerializer
 import kotlinx.collections.immutable.*
 import kotlinx.serialization.json.Json
 

@@ -32,7 +32,6 @@ import com.aliucord.manager.ui.components.ProjectHeader
 import com.aliucord.manager.ui.screens.home.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
-import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
 import com.aliucord.manager.util.pushOnce
@@ -64,7 +63,6 @@ class HomeScreen : Screen, Parcelable {
             when (val state = model.installsState) {
                 is InstallsState.Fetched -> HomeScreenLoadedContent(
                     state = state,
-                    supportedVersion = model.supportedVersion,
                     padding = padding,
                     onClickInstall = { navigator.pushOnce(PatchOptionsScreen()) },
                     onUpdate = {
@@ -119,7 +117,6 @@ fun HomeScreenLoadingContent(padding: PaddingValues) {
 @Composable
 fun HomeScreenLoadedContent(
     state: InstallsState.Fetched,
-    supportedVersion: DiscordVersion,
     padding: PaddingValues,
     onClickInstall: () -> Unit,
     onUpdate: (packageName: String) -> Unit,
@@ -153,20 +150,14 @@ fun HomeScreenLoadedContent(
         }
 
         items(state.data, key = { it.packageName }) { item ->
-            AnimatedVisibility(
-                enter = fadeIn() + slideInHorizontally { it * -2 },
-                exit = fadeOut() + slideOutHorizontally { it * 2 },
-                visible = supportedVersion !is DiscordVersion.None,
-            ) {
-                InstalledItemCard(
-                    data = item,
-                    onUpdate = { onUpdate(item.packageName) },
-                    onOpenApp = { onOpenApp(item.packageName) },
-                    onOpenInfo = { onOpenAppInfo(item.packageName) },
-                    onOpenPlugins = { onOpenPlugins(item.packageName) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            InstalledItemCard(
+                data = item,
+                onUpdate = { onUpdate(item.packageName) },
+                onOpenApp = { onOpenApp(item.packageName) },
+                onOpenInfo = { onOpenAppInfo(item.packageName) },
+                onOpenPlugins = { onOpenPlugins(item.packageName) },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.aliucord.manager.util
+package com.aliucord.manager.util.serialization
 
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import kotlinx.collections.immutable.ImmutableList

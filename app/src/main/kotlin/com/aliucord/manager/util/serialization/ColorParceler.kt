@@ -1,4 +1,4 @@
-package com.aliucord.manager.util
+package com.aliucord.manager.util.serialization
 
 import android.os.Parcel
 import androidx.compose.ui.graphics.Color
