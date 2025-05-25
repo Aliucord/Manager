@@ -33,10 +33,24 @@ class LogsListScreen : Screen, Parcelable {
         val navigator = LocalNavigator.currentOrThrow
         val model = koinScreenModel<LogsListScreenModel>()
 
+        var showWipeConfirmDialog by remember { mutableStateOf(false) }
+
+        if (showWipeConfirmDialog) {
+            DeleteLogsDialog(
+                onConfirm = {
+                    showWipeConfirmDialog = false
+                    model.deleteLogs()
+                },
+                onDismiss = {
+                    showWipeConfirmDialog = false
+                },
+            )
+        }
+
         LogsScreenContent(
             logs = model.logEntries,
             onOpenLog = { navigator.push(LogScreen(installId = it)) },
-            onDeleteLogs = model::deleteLogs, // TODO: show warning dialog first
+            onDeleteLogs = { showWipeConfirmDialog = true },
         )
     }
 }
@@ -47,24 +61,10 @@ fun LogsScreenContent(
     onOpenLog: (id: String) -> Unit,
     onDeleteLogs: () -> Unit,
 ) {
-    var showWipeConfirmDialog by remember { mutableStateOf(false) }
-
-    if (showWipeConfirmDialog) {
-        DeleteLogsDialog(
-            onConfirm = {
-                showWipeConfirmDialog = false
-                onDeleteLogs()
-            },
-            onDismiss = {
-                showWipeConfirmDialog = false
-            },
-        )
-    }
-
     Scaffold(
         topBar = {
             LogsListAppBar(
-                onDeleteLogs = { showWipeConfirmDialog = true },
+                onDeleteLogs = onDeleteLogs,
             )
         },
     ) { paddingValues ->

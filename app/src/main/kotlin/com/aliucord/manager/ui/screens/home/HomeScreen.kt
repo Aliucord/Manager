@@ -125,7 +125,7 @@ fun HomeScreenLoadedContent(
     onOpenPlugins: (packageName: String) -> Unit,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = padding
             .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
@@ -143,7 +143,7 @@ fun HomeScreenLoadedContent(
                 secondaryInstall = true,
                 onClick = onClickInstall,
                 modifier = Modifier
-                    .padding(vertical = 10.dp)
+                    .padding(vertical = 4.dp)
                     .height(50.dp)
                     .fillMaxWidth()
             )
