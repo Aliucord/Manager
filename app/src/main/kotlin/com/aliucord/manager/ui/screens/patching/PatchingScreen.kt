@@ -38,6 +38,7 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import com.aliucord.manager.ui.util.thenIf
+import com.aliucord.manager.util.back
 import com.aliucord.manager.util.isIgnoringBatteryOptimizations
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.filter

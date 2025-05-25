@@ -23,35 +23,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.koinScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.iconopts.components.*
+import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.util.ColorSaver
 import dev.zt64.compose.pipette.CircularColorPicker
 import dev.zt64.compose.pipette.HsvColor
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-interface IconOptionsScreenParent : Parcelable {
-    /**
-     * The screen model is elevated outside of this screen
-     * in order to share the state with the parent screen.
-     */
-    @Composable
-    fun getIconModel(): IconOptionsModel
-}
-
 @Parcelize
-class IconOptionsScreen(
-    private val parent: IconOptionsScreenParent,
-) : Screen, Parcelable {
+class IconOptionsScreen : Screen, Parcelable {
     @IgnoredOnParcel
     override val key = "IconOptions"
 
     @Composable
     override fun Content() {
-        val model = parent.getIconModel()
+        // Retrieves a global model owned by the navigator
+        val navigator = LocalNavigator.currentOrThrow
+        val modelScreen by remember {
+            derivedStateOf {
+                navigator.items.lastOrNull { it is PatchOptionsScreen }
+                    ?: error("No PatchOptionsScreen in stack")
+            }
+        }
+        val model = modelScreen.koinScreenModel<IconOptionsModel>() // Parameters are already injected in PatchOptionsScreen
 
         IconOptionsScreenContent(
             mode = model.mode,

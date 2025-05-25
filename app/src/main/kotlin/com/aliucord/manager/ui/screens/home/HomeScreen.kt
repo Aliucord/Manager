@@ -34,6 +34,7 @@ import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
+import com.aliucord.manager.util.pushOnce
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -48,7 +49,6 @@ class HomeScreen : Screen, Parcelable {
         val navigator = LocalNavigator.currentOrThrow
         val scope = rememberCoroutineScope()
         val model = koinScreenModel<HomeModel>()
-        val onClickInstall = remember { { navigator.push(PatchOptionsScreen()) } }
 
         // Refresh installations list when the screen changes or activity resumes
         LifecycleResumeEffect(Unit) {
@@ -65,7 +65,7 @@ class HomeScreen : Screen, Parcelable {
                     state = state,
                     supportedVersion = model.supportedVersion,
                     padding = padding,
-                    onClickInstall = onClickInstall,
+                    onClickInstall = { navigator.pushOnce(PatchOptionsScreen()) },
                     onUpdate = {
                         scope.launch {
                             navigator.push(model.createPrefilledPatchOptsScreen(it))
@@ -80,7 +80,7 @@ class HomeScreen : Screen, Parcelable {
 
                 InstallsState.None -> HomeScreenNoneContent(
                     padding = padding,
-                    onClickInstall = onClickInstall,
+                    onClickInstall = { navigator.pushOnce(PatchOptionsScreen()) },
                 )
 
                 InstallsState.Error -> HomeScreenFailureContent(padding = padding)

@@ -22,7 +22,8 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.TextDivider
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
-import com.aliucord.manager.ui.screens.iconopts.*
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsModel
+import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreen
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
@@ -39,14 +40,9 @@ import org.koin.core.parameter.parametersOf
 @Parcelize
 class PatchOptionsScreen(
     private val prefilledOptions: PatchOptions? = null,
-) : Screen, Parcelable, IconOptionsScreenParent {
+) : Screen, Parcelable {
     @IgnoredOnParcel
     override val key = "PatchOptions"
-
-    @Composable
-    override fun getIconModel(): IconOptionsModel {
-        return koinScreenModel<IconOptionsModel>()
-    }
 
     @Composable
     override fun Content() {
@@ -85,7 +81,7 @@ class PatchOptionsScreen(
             debuggable = model.debuggable,
             setDebuggable = model::changeDebuggable,
 
-            onOpenIconOptions = { navigator.push(IconOptionsScreen(this@PatchOptionsScreen)) },
+            onOpenIconOptions = { navigator.push(IconOptionsScreen()) },
 
             appName = model.appName,
             appNameIsError = model.appNameIsError,
