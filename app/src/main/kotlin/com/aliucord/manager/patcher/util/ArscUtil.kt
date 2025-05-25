@@ -125,45 +125,35 @@ object ArscUtil {
      *
      * @param resourceId The target resource id.
      * @param configurationName The target configuration variant of the resource. (ex: `anydpi-v26`, `xxhdpi`, `ldtrl-mpi`, etc.)
-     * @return The string value of the resource, which should be a file path into the apk.
+     * @return The string value of the resource for the specified configuration.
      */
     fun ResourceTableChunk.getResourceFileName(
         resourceId: BinaryResourceIdentifier,
         configurationName: String,
     ): String {
-        val packageChunk = this.packages.find { it.id == resourceId.packageId() }
-            ?: error("Unable to find target resource")
-
-        val typeChunk = packageChunk.getTypeChunks(resourceId.typeId())
-            .find { it.configuration.toString() == configurationName }
-            ?: error("Unable to find target resource")
-
-        val entry = try {
-            typeChunk.getEntry(resourceId.entryId())!!
-        } catch (_: Throwable) {
-            error("Unable to find target resource")
-        }
-
-        if (entry.isComplex || entry.value().type() != BinaryResourceValue.Type.STRING)
-            error("Target resource value type is not STRING")
-
-        val valueIdx = entry.value().data()
-        val value = this.stringPool.getString(valueIdx)
-
-        return value
+        return getResourceFileNames(
+            resourceId = resourceId,
+            configurations = { it.toString() == configurationName },
+        ).single()
     }
 
     /**
-     * In an arsc file, for a specific resource in all configurations, get all values.
+     * In an arsc file, for a specific resource in all matching configurations, get the values.
      *
      * @param resourceId The target resource id.
-     * @return The string value of all configuration values of the resource, which should be file paths into the apk.
+     * @param configurations A predicate whether to add the value into a matching type chunk.
+     * @return The string values of the resources, for each configuration.
      */
-    fun ResourceTableChunk.getResourceFileNames(resourceId: BinaryResourceIdentifier): List<String> {
+    fun ResourceTableChunk.getResourceFileNames(
+        resourceId: BinaryResourceIdentifier,
+        configurations: (BinaryResourceConfiguration) -> Boolean,
+    ): List<String> {
         val packageChunk = this.packages.find { it.id == resourceId.packageId() }
             ?: error("Unable to find target resource")
 
         val typeChunks = packageChunk.getTypeChunks(resourceId.typeId())
+            .filter { configurations(it.configuration) }
+
         val entries = typeChunks.map { typeChunk ->
             val entry = typeChunk.getEntry(resourceId.entryId())
                 ?: error("Unable to find target resource in type chunk " + typeChunk.configuration)

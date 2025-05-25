@@ -50,7 +50,7 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
     override val localizedName = R.string.patch_step_patch_icon
 
     // Adaptive icons are available starting with Android 8
-    private val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
+    private val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 26
 
     // Monochrome icons are always patched starting with Android 12
     private val isMonochromeIconsAvailable = Build.VERSION.SDK_INT >= 31
@@ -90,9 +90,15 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         arsc: BinaryResourceFile,
     ) {
         container.log("Parsing AndroidManifest.xml and obtaining adaptive square/round icon file paths")
-        val iconRscIds = AxmlUtil.readManifestIconInfo(apk)
-        val squareIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.squareIcon, "anydpi-v26")
-        val roundIconFile = arsc.getMainArscChunk().getResourceFileName(iconRscIds.roundIcon, "anydpi-v26")
+        val iconResourceIds = AxmlUtil.readManifestIconInfo(apk)
+        val squareIconFile = arsc.getMainArscChunk().getResourceFileName(
+            resourceId = iconResourceIds.squareIcon,
+            configurationName = "anydpi-v26"
+        )
+        val roundIconFile = arsc.getMainArscChunk().getResourceFileName(
+            resourceId = iconResourceIds.roundIcon,
+            configurationName = "anydpi-v26"
+        )
 
         var foregroundIcon: BinaryResourceIdentifier? = null
         var backgroundIcon: BinaryResourceIdentifier? = null
@@ -174,9 +180,15 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         arsc: BinaryResourceFile,
     ) {
         container.log("Parsing AndroidManifest.xml and obtaining all square/round launcher icon file paths")
-        val iconRscIds = AxmlUtil.readManifestIconInfo(apk)
-        val squareIconFiles = arsc.getMainArscChunk().getResourceFileNames(iconRscIds.squareIcon)
-        val roundIconFiles = arsc.getMainArscChunk().getResourceFileNames(iconRscIds.roundIcon)
+        val iconResourceIds = AxmlUtil.readManifestIconInfo(apk)
+        val squareIconFiles = arsc.getMainArscChunk().getResourceFileNames(
+            resourceId = iconResourceIds.squareIcon,
+            configurations = { it.toString() != "anydpi-v26" },
+        )
+        val roundIconFiles = arsc.getMainArscChunk().getResourceFileNames(
+            resourceId = iconResourceIds.roundIcon,
+            configurations = { it.toString() != "anydpi-v26" },
+        )
         val allIconFiles = squareIconFiles + roundIconFiles
 
         val backgroundColor = when (options.iconReplacement) {

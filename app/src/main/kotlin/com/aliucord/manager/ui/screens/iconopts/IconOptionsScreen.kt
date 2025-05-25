@@ -75,7 +75,7 @@ fun IconOptionsScreenContent(
     selectedImage: () -> ByteArray?,
     setSelectedImage: (Uri) -> Unit,
 ) {
-    val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 28
+    val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 26
 
     Scaffold(
         topBar = { IconOptionsAppBar() },
