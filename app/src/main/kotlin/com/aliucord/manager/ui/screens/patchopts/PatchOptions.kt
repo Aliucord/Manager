@@ -82,9 +82,9 @@ data class PatchOptions(
             val Aliucord = CustomColor(Color(0xFF00C853))
 
             /**
-             * The Discord icon color.
+             * The new Discord blurple.
              */
-            val Discord = CustomColor(Color(0xFF7289DA))
+            val Blurple = CustomColor(Color(0xFF5865F2))
         }
     }
 

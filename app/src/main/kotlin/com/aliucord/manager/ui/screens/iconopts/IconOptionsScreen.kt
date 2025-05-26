@@ -31,8 +31,10 @@ import coil3.compose.AsyncImage
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.iconopts.components.*
+import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.util.ColorSaver
+import com.aliucord.manager.ui.util.throttledState
 import dev.zt64.compose.pipette.CircularColorPicker
 import dev.zt64.compose.pipette.HsvColor
 import kotlinx.parcelize.IgnoredOnParcel
@@ -88,7 +90,37 @@ fun IconOptionsScreenContent(
                 .padding(paddingValues)
                 .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
-            // TODO: live icon preview
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                val color = when (mode) {
+                    IconOptionsMode.Original -> PatchOptions.IconReplacement.Blurple.color // TODO: old vs new discord color?
+                    IconOptionsMode.Aliucord -> PatchOptions.IconReplacement.Aliucord.color
+                    IconOptionsMode.CustomColor -> selectedColor.toColor()
+                    IconOptionsMode.CustomImage -> Color.Black // TODO: custom image icon preview
+                }
+                val throttledColor by throttledState(value = color, throttleMs = 75)
+
+                val drawable = discordIconDrawable(
+                    backgroundColor = throttledColor,
+                    size = 72.dp,
+                )
+
+                ColoredDiscordAppIcon(
+                    drawable = drawable,
+                    modifier = Modifier.size(24.dp),
+                )
+                ColoredDiscordAppIcon(
+                    drawable = drawable,
+                    modifier = Modifier.size(48.dp),
+                )
+                ColoredDiscordAppIcon(
+                    drawable = drawable,
+                    modifier = Modifier.size(72.dp),
+                )
+            }
 
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
 
