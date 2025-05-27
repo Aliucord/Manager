@@ -191,6 +191,8 @@ private fun CustomColorOptions(
     color: HsvColor,
     setColor: (HsvColor) -> Unit,
 ) {
+    val color by rememberUpdatedState(color)
+
     // This color is separated from the live color and intentionally lags behind while the RGBTextField is being edited.
     // When this changes, then the text inside the RGBTextField is reset to the fully formatted color.
     // As such, this only happens when the color is changed via the other color pickers.
@@ -210,7 +212,6 @@ private fun CustomColorOptions(
                 saturation = color.saturation,
                 value = color.value,
                 onColorChange = { hue, saturation ->
-                    // FIXME: lightness slider resets when color wheel is used
                     color.copy(hue = hue, saturation = saturation).let {
                         setColor(it)
                         initialRGBFieldColor = it.toColor()
