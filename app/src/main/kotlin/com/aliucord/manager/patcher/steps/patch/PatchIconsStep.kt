@@ -177,13 +177,19 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         container.log("Writing other patched files back to apk")
         ZipWriter(apk, /* append = */ true).use {
             if (isMonochromeIconsAvailable) {
+                val monochromeIconId = if (options.iconReplacement is IconReplacement.OldDiscord) {
+                    R.drawable.ic_discord_monochrome
+                } else {
+                    R.drawable.ic_discord_old_monochrome
+                }
+
                 container.log("Writing monochrome icon AXML to apk")
-                it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
+                it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(monochromeIconId))
             }
 
             if (options.iconReplacement is IconReplacement.OldDiscord) {
                 container.log("Writing custom icon foreground to apk")
-                it.writeEntry("res/ic_foreground_replacement.xml", context.getResBytes(R.drawable.ic_discord_old))
+                it.writeEntry("res/ic_foreground_replacement.xml", context.getResBytes(R.drawable.ic_discord_old_monochrome))
             } else if (options.iconReplacement is IconReplacement.CustomImage) {
                 container.log("Writing custom icon foreground to apk")
                 it.writeEntry("res/ic_foreground_replacement.png", options.iconReplacement.imageBytes)
