@@ -141,7 +141,7 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
             foregroundIcon = arsc.getPackageChunk().addResource(
                 typeName = "drawable",
                 resourceName = "ic_foreground_replacement",
-                configurations = { println("configuration: $it"); true },
+                configurations = { it.toString() == "anydpi" },
                 valueType = BinaryResourceValue.Type.STRING,
                 valueData = iconPathIdx,
             )

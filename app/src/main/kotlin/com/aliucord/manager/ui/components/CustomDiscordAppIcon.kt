@@ -23,6 +23,7 @@ import com.aliucord.manager.R
 @Composable
 fun discordIconDrawable(
     backgroundColor: Color,
+    oldLogo: Boolean = false,
     size: Dp = 24.dp,
 ): Drawable {
     val density = LocalDensity.current
@@ -30,9 +31,14 @@ fun discordIconDrawable(
     val size = with(density) { size.roundToPx() }
 
     val bitmap = remember(size) { createBitmap(size, size) }
-    val drawable = remember(context) {
+    val drawable = remember(context, oldLogo) {
+        val drawableId = when (oldLogo) {
+            false -> R.drawable.ic_discord
+            true -> R.drawable.ic_discord_old
+        }
+
         InsetDrawable(
-            /* drawable = */ ContextCompat.getDrawable(context, R.drawable.ic_discord)!!,
+            /* drawable = */ ContextCompat.getDrawable(context, drawableId)!!,
             /* inset = */ (size * .17f).toInt(),
         ).apply {
             setTint(Color.White.toArgb())

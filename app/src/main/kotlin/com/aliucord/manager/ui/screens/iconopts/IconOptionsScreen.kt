@@ -106,6 +106,7 @@ fun IconOptionsScreenContent(
 
                 val drawable = discordIconDrawable(
                     backgroundColor = throttledColor,
+                    oldLogo = mode == IconOptionsMode.OldDiscord,
                     size = 72.dp,
                 )
 

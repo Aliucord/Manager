@@ -64,8 +64,8 @@ private class IconOptionsParametersProvider : PreviewParameterProvider<IconOptio
             selectedImage = { null },
         ),
         IconOptionsParameters(
-            mode = IconOptionsMode.Aliucord,
-            selectedColor = IconReplacement.AliucordColor,
+            mode = IconOptionsMode.OldDiscord,
+            selectedColor = Color.Black,
             selectedImage = { null },
         ),
         IconOptionsParameters(
