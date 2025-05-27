@@ -48,6 +48,16 @@ data class PatchOptions(
         data object Original : IconReplacement
 
         /**
+         * Changes the foreground logo to Discord's old logo and the
+         * background color to old blurple, like prior to early 2021.
+         */
+        @Immutable
+        @Parcelize
+        @Serializable
+        @SerialName("old_discord")
+        data object OldDiscord : IconReplacement
+
+        /**
          * Changes the background of the icon to a specific color without
          * altering the foreground or monochrome variants.
          */
@@ -77,14 +87,19 @@ data class PatchOptions(
 
         companion object {
             /**
-             * The default icon replacement option.
+             * The default Aliucord background color.
              */
-            val Aliucord = CustomColor(Color(0xFF00C853))
+            val AliucordColor = Color(0xFF00C853)
 
             /**
-             * The new Discord blurple.
+             * The new Discord blurple used in icons.
              */
-            val Blurple = CustomColor(Color(0xFF5865F2))
+            val BlurpleColor = Color(0xFF5865F2)
+
+            /**
+             * The old Discord icon color (before the accessibility redesign).
+             */
+            val OldBlurpleColor = Color(0xFF7289DA)
         }
     }
 
@@ -93,7 +108,7 @@ data class PatchOptions(
             appName = "Aliucord",
             packageName = "com.aliucord",
             debuggable = false,
-            iconReplacement = IconReplacement.Aliucord,
+            iconReplacement = IconReplacement.CustomColor(IconReplacement.AliucordColor),
         )
     }
 }

@@ -123,9 +123,28 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         // Add a new color resource to use
         if (options.iconReplacement is IconReplacement.CustomColor) {
             container.log("Adding icon color resource to arsc")
-
             backgroundIcon = arsc.getPackageChunk()
                 .addColorResource("icon_background_replacement", options.iconReplacement.color)
+        }
+
+        // Add a new color and axml svg resource
+        else if (options.iconReplacement is IconReplacement.OldDiscord) {
+            container.log("Adding icon color resource to arsc")
+            backgroundIcon = arsc.getPackageChunk()
+                .addColorResource("icon_background_replacement", IconReplacement.OldBlurpleColor)
+
+            container.log("Adding custom icon foreground to arsc")
+
+            val iconPathIdx = arsc.getMainArscChunk().stringPool
+                .addString("res/ic_foreground_replacement.xml")
+
+            foregroundIcon = arsc.getPackageChunk().addResource(
+                typeName = "drawable",
+                resourceName = "ic_foreground_replacement",
+                configurations = { println("configuration: $it"); true },
+                valueType = BinaryResourceValue.Type.STRING,
+                valueData = iconPathIdx,
+            )
         }
 
         // Add a new mipmap resource and the file to be added later
@@ -162,14 +181,17 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
                 it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(R.drawable.ic_discord_monochrome))
             }
 
-            if (options.iconReplacement is IconReplacement.CustomImage) {
+            if (options.iconReplacement is IconReplacement.OldDiscord) {
+                container.log("Writing custom icon foreground to apk")
+                it.writeEntry("res/ic_foreground_replacement.xml", context.getResBytes(R.drawable.ic_discord_old))
+            } else if (options.iconReplacement is IconReplacement.CustomImage) {
                 container.log("Writing custom icon foreground to apk")
                 it.writeEntry("res/ic_foreground_replacement.png", options.iconReplacement.imageBytes)
             }
 
             container.log("Writing resources unaligned compressed")
             it.deleteEntry("resources.arsc")
-            // This doesn't need to be aligned and uncompressed here, since it that is done during AlignmentStep
+            // This doesn't need to be aligned and uncompressed here, since that is done during AlignmentStep
             it.writeEntry("resources.arsc", arsc.toByteArray())
         }
     }
@@ -192,13 +214,17 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         val allIconFiles = squareIconFiles + roundIconFiles
 
         val backgroundColor = when (options.iconReplacement) {
-            IconReplacement.Original -> IconReplacement.Aliucord.color
+            IconReplacement.Original -> IconReplacement.AliucordColor
+            IconReplacement.OldDiscord -> IconReplacement.OldBlurpleColor
             is IconReplacement.CustomColor -> options.iconReplacement.color
             is IconReplacement.CustomImage -> error("Cannot patch custom images below Android 8 (Adaptive Icons are required)")
         }
 
         container.log("Generating static launcher icon")
-        val icon = createDiscordLauncherIcon(backgroundColor)
+        val icon = createDiscordLauncherIcon(
+            backgroundColor = backgroundColor,
+            oldLogo = options.iconReplacement == IconReplacement.OldDiscord,
+        )
         val iconBytes = ByteArrayOutputStream().use {
             icon.compress(Bitmap.CompressFormat.PNG, 0, it)
             icon.recycle()
@@ -219,14 +245,24 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
      * to create a launcher icon like Discord's. This is used for devices that
      * do not support adaptive icons.
      */
-    private fun createDiscordLauncherIcon(backgroundColor: Color, size: Int = 192): Bitmap {
+    private fun createDiscordLauncherIcon(
+        backgroundColor: Color,
+        oldLogo: Boolean = false,
+        size: Int = 192,
+    ): Bitmap {
         val paint = Paint().apply {
             style = Paint.Style.FILL
             setColor(backgroundColor.toArgb())
         }
 
-        val vectorDrawable = ContextCompat.getDrawable(context, R.drawable.ic_discord)!!
-        val drawable = InsetDrawable(vectorDrawable, (size * .17f).toInt())
+        val drawableId = when (oldLogo) {
+            false -> R.drawable.ic_discord
+            true -> R.drawable.ic_discord_old
+        }
+        val vectorDrawable = ContextCompat.getDrawable(context, drawableId)!!
+        val drawable = InsetDrawable(vectorDrawable, (size * .17f).toInt()).apply {
+            setTint(Color.White.toArgb())
+        }
 
         val icon = createBitmap(size, size).applyCanvas {
             drawRect(Rect(0, 0, width, height), paint)

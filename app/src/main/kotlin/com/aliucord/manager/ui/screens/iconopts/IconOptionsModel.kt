@@ -29,7 +29,7 @@ class IconOptionsModel(
     }
 
     // ---------- Replacement color ---------- //
-    var selectedColor by mutableStateOf(HsvColor(IconReplacement.Aliucord.color))
+    var selectedColor by mutableStateOf(HsvColor(IconReplacement.AliucordColor))
         private set
 
     fun changeSelectedColor(color: HsvColor) {
@@ -75,9 +75,9 @@ class IconOptionsModel(
     // ---------- Other ---------- //
     init {
         when (prefilledOptions) {
-            is IconReplacement.CustomColor if prefilledOptions.color == IconReplacement.Aliucord.color -> {
+            is IconReplacement.CustomColor if prefilledOptions.color == IconReplacement.AliucordColor -> {
                 changeMode(IconOptionsMode.Aliucord)
-                initSelectedColor(IconReplacement.Aliucord.color)
+                initSelectedColor(IconReplacement.AliucordColor)
             }
 
             is IconReplacement.CustomColor -> {
@@ -91,14 +91,17 @@ class IconOptionsModel(
             }
 
             IconReplacement.Original -> changeMode(IconOptionsMode.Original)
+            IconReplacement.OldDiscord -> changeMode(IconOptionsMode.OldDiscord)
         }
     }
 
     fun generateConfig(): IconReplacement = when (mode) {
         IconOptionsMode.Original -> IconReplacement.Original
-        IconOptionsMode.Aliucord -> IconReplacement.Aliucord
+        IconOptionsMode.OldDiscord -> IconReplacement.OldDiscord
+        IconOptionsMode.Aliucord -> IconReplacement.CustomColor(IconReplacement.AliucordColor)
         IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toColor())
         IconOptionsMode.CustomImage -> IconReplacement.CustomImage(
+            // TODO: fix this?
             imageBytes = selectedImage ?: throw IllegalStateException("Cannot generate config without a selected image"),
         )
     }

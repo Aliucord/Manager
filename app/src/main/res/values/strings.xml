@@ -171,6 +171,8 @@
   <string name="patchopts_divider_advanced">Advanced</string>
 
   <string name="iconopts_screen_title">Icon Replacement</string>
+  <string name="iconopts_variant_title_old_discord">Old Discord</string>
+  <string name="iconopts_variant_desc_old_discord">The old Discord blurple color and logo from 2021 and prior.</string>
   <string name="iconopts_variant_title_color">Custom Color</string>
   <string name="iconopts_variant_title_image">Custom Image</string>
   <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>

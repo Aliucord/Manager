@@ -34,7 +34,9 @@ fun discordIconDrawable(
         InsetDrawable(
             /* drawable = */ ContextCompat.getDrawable(context, R.drawable.ic_discord)!!,
             /* inset = */ (size * .17f).toInt(),
-        )
+        ).apply {
+            setTint(Color.White.toArgb())
+        }
     }
 
     DisposableEffect(size) {

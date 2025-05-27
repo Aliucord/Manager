@@ -96,8 +96,9 @@ fun IconOptionsScreenContent(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 val color = when (mode) {
-                    IconOptionsMode.Original -> PatchOptions.IconReplacement.Blurple.color // TODO: old vs new discord color?
-                    IconOptionsMode.Aliucord -> PatchOptions.IconReplacement.Aliucord.color
+                    IconOptionsMode.Original -> PatchOptions.IconReplacement.BlurpleColor
+                    IconOptionsMode.OldDiscord -> PatchOptions.IconReplacement.OldBlurpleColor
+                    IconOptionsMode.Aliucord -> PatchOptions.IconReplacement.AliucordColor
                     IconOptionsMode.CustomColor -> selectedColor.toColor()
                     IconOptionsMode.CustomImage -> Color.Black // TODO: custom image icon preview
                 }
@@ -129,6 +130,12 @@ fun IconOptionsScreenContent(
                 description = stringResource(R.string.iconopts_variant_desc_discord),
                 selected = mode == IconOptionsMode.Original,
                 onClick = remember { { setMode(IconOptionsMode.Original) } },
+            )
+            RadioSelectorItem(
+                name = stringResource(R.string.iconopts_variant_title_old_discord),
+                description = stringResource(R.string.iconopts_variant_desc_old_discord),
+                selected = mode == IconOptionsMode.OldDiscord,
+                onClick = remember { { setMode(IconOptionsMode.OldDiscord) } },
             )
             RadioSelectorItem(
                 name = stringResource(R.string.aliucord),
@@ -202,6 +209,7 @@ private fun CustomColorOptions(
                 saturation = color.saturation,
                 value = color.value,
                 onColorChange = { hue, saturation ->
+                    // FIXME: lightness slider resets when color wheel is used
                     color.copy(hue = hue, saturation = saturation).let {
                         setColor(it)
                         initialRGBFieldColor = it.toColor()

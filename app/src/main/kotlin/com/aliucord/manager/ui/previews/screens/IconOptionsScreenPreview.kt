@@ -60,12 +60,12 @@ private class IconOptionsParametersProvider : PreviewParameterProvider<IconOptio
     override val values = sequenceOf(
         IconOptionsParameters(
             mode = IconOptionsMode.Original,
-            selectedColor = IconReplacement.Aliucord.color,
+            selectedColor = IconReplacement.AliucordColor,
             selectedImage = { null },
         ),
         IconOptionsParameters(
             mode = IconOptionsMode.Aliucord,
-            selectedColor = IconReplacement.Aliucord.color,
+            selectedColor = IconReplacement.AliucordColor,
             selectedImage = { null },
         ),
         IconOptionsParameters(
@@ -89,7 +89,7 @@ private class IconOptionsParametersProvider : PreviewParameterProvider<IconOptio
     )
 
     private fun getMipmapBytes(context: Context, @DrawableRes id: Int): ByteArray {
-        val drawable = AppCompatResources.getDrawable(context, R.mipmap.ic_launcher)!!
+        val drawable = AppCompatResources.getDrawable(context, id)!!
         val bitmap = drawable.toBitmap()
         return ByteArrayOutputStream().use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, it)
