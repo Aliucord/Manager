@@ -21,6 +21,8 @@ import androidx.core.graphics.drawable.toDrawable
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 
+// Sizing information is obtained from here: https://medium.com/google-design/designing-adaptive-icons-515af294c783
+
 @Composable
 fun discordIconDrawable(
     backgroundColor: Color,

@@ -2,6 +2,7 @@ package com.aliucord.manager.ui.previews.screens
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.*
 import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.patchopts.*
@@ -21,6 +22,9 @@ private fun PatchOptionsScreenPreview(
             isDevMode = parameters.isDevMode,
             debuggable = parameters.debuggable,
             setDebuggable = {},
+            oldLogo = parameters.oldLogo,
+            selectedColor = parameters.selectedColor,
+            selectedImage = { parameters.selectedImage },
             onOpenIconOptions = {},
             appName = parameters.appName,
             appNameIsError = parameters.appNameIsError,
@@ -34,10 +38,14 @@ private fun PatchOptionsScreenPreview(
     }
 }
 
+@Suppress("ArrayInDataClass")
 private data class PatchOptionsParameters(
     val isUpdate: Boolean,
     val isDevMode: Boolean,
     val debuggable: Boolean,
+    val oldLogo: Boolean,
+    val selectedColor: Color?,
+    val selectedImage: ByteArray?,
     val appName: String,
     val appNameIsError: Boolean,
     val packageName: String,
@@ -52,6 +60,9 @@ private class PatchOptionsParametersProvider : PreviewParameterProvider<PatchOpt
             isUpdate = false,
             isDevMode = false,
             debuggable = false,
+            oldLogo = false,
+            selectedColor = PatchOptions.IconReplacement.AliucordColor,
+            selectedImage = null,
             appName = PatchOptions.Default.appName,
             appNameIsError = false,
             packageName = PatchOptions.Default.packageName,
@@ -62,6 +73,9 @@ private class PatchOptionsParametersProvider : PreviewParameterProvider<PatchOpt
             isUpdate = true,
             isDevMode = false,
             debuggable = false,
+            oldLogo = false,
+            selectedColor = null,
+            selectedImage = null,
             appName = "an invalid app name.",
             appNameIsError = true,
             packageName = "a b",
@@ -72,6 +86,9 @@ private class PatchOptionsParametersProvider : PreviewParameterProvider<PatchOpt
             isUpdate = false,
             isDevMode = true,
             debuggable = true,
+            oldLogo = false,
+            selectedColor = Color.Magenta,
+            selectedImage = null,
             appName = PatchOptions.Default.appName,
             appNameIsError = false,
             packageName = PatchOptions.Default.packageName,

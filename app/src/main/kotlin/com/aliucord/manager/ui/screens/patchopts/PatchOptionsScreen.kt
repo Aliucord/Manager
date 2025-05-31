@@ -4,10 +4,13 @@ import android.os.Parcelable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,11 +22,10 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.TextDivider
+import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
-import com.aliucord.manager.ui.screens.iconopts.IconOptionsModel
-import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreen
+import com.aliucord.manager.ui.screens.iconopts.*
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
@@ -81,6 +83,9 @@ class PatchOptionsScreen(
             debuggable = model.debuggable,
             setDebuggable = model::changeDebuggable,
 
+            selectedColor = iconModel.selectedColor.toColor(),
+            oldLogo = iconModel.mode == IconOptionsMode.OldDiscord,
+            selectedImage = { iconModel.selectedImage },
             onOpenIconOptions = { navigator.push(IconOptionsScreen()) },
 
             appName = model.appName,
@@ -109,6 +114,9 @@ fun PatchOptionsScreenContent(
     debuggable: Boolean,
     setDebuggable: (Boolean) -> Unit,
 
+    oldLogo: Boolean,
+    selectedColor: Color?,
+    selectedImage: () -> ByteArray?,
     onOpenIconOptions: () -> Unit,
 
     appName: String,
@@ -156,14 +164,31 @@ fun PatchOptionsScreenContent(
                     )
                     .padding(bottom = 8.dp),
             ) {
-                // TODO: selected icon options preview
-                // Icon(
-                //     painter = painterResource(R.drawable.ic_discord),
-                //     contentDescription = null,
-                //     modifier = Modifier
-                //         .padding(start = 4.dp, end = 14.dp)
-                //         .size(26.dp),
-                // )
+                val drawable = when {
+                    selectedColor != null -> discordIconDrawable(
+                        backgroundColor = selectedColor,
+                        oldLogo = oldLogo,
+                        size = 34.dp,
+                    )
+
+                    selectedImage() != null -> customIconDrawable(
+                        foregroundIcon = selectedImage()!!,
+                    )
+
+                    else -> discordIconDrawable(
+                        backgroundColor = Color.Black,
+                        oldLogo = false,
+                        size = 34.dp,
+                    )
+                }
+
+                Drawable(
+                    drawable = drawable,
+                    modifier = Modifier
+                        .padding(start = 4.dp, end = 14.dp)
+                        .size(34.dp)
+                        .clip(CircleShape),
+                )
             }
 
             val appNameIsDefault by remember {
