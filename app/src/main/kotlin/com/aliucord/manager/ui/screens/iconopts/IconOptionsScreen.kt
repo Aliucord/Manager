@@ -19,12 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -367,13 +371,28 @@ private fun CustomImageOptions(
                         )
                     }
                 } else {
-                    AsyncImage(
-                        model = image,
-                        contentDescription = null,
+                    Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .padding(top = 8.dp)
-                            .clip(MaterialTheme.shapes.large),
-                    )
+                            .fillMaxWidth()
+                    ) {
+                        var size by remember { mutableStateOf(Size.Zero) }
+                        val dpSize = with(LocalDensity.current) { size.toDpSize() }
+
+                        TransparencyGrid(
+                            modifier = Modifier
+                                .clip(MaterialTheme.shapes.small)
+                                .size(dpSize)
+                        )
+
+                        AsyncImage(
+                            model = image,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .onSizeChanged { size = it.toSize() }
+                        )
+                    }
                 }
             }
         }
