@@ -86,6 +86,18 @@ object ManifestPatcher {
                                 }
                             }
 
+                            "permission" -> object : NodeVisitor(nv) {
+                                override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
+                                    super.attr(
+                                        ns, name, resourceId, type,
+                                        when (name) {
+                                            "name" -> (value as String).replace("com.discord", packageName)
+                                            else -> value
+                                        }
+                                    )
+                                }
+                            }
+
                             "application" -> object : ReplaceAttrsVisitor(
                                 nv,
                                 mapOf(
@@ -129,10 +141,7 @@ object ManifestPatcher {
                                         "provider" -> object : NodeVisitor(visitor) {
                                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                                 super.attr(
-                                                    ns,
-                                                    name,
-                                                    resourceId,
-                                                    type,
+                                                    ns, name, resourceId, type,
                                                     if (name == "authorities") {
                                                         (value as String).replace("com.discord", packageName)
                                                     } else {
