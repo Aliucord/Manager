@@ -10,6 +10,8 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -90,39 +92,11 @@ fun IconOptionsScreenContent(
                 .padding(paddingValues)
                 .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                val color = when (mode) {
-                    IconOptionsMode.Original -> PatchOptions.IconReplacement.BlurpleColor
-                    IconOptionsMode.OldDiscord -> PatchOptions.IconReplacement.OldBlurpleColor
-                    IconOptionsMode.Aliucord -> PatchOptions.IconReplacement.AliucordColor
-                    IconOptionsMode.CustomColor -> selectedColor.toColor()
-                    IconOptionsMode.CustomImage -> Color.Black // TODO: custom image icon preview
-                }
-                val throttledColor by throttledState(value = color, throttleMs = 75)
-
-                val drawable = discordIconDrawable(
-                    backgroundColor = throttledColor,
-                    oldLogo = mode == IconOptionsMode.OldDiscord,
-                    size = 72.dp,
-                )
-
-                ColoredDiscordAppIcon(
-                    drawable = drawable,
-                    modifier = Modifier.size(24.dp),
-                )
-                ColoredDiscordAppIcon(
-                    drawable = drawable,
-                    modifier = Modifier.size(48.dp),
-                )
-                ColoredDiscordAppIcon(
-                    drawable = drawable,
-                    modifier = Modifier.size(72.dp),
-                )
-            }
+            IconPreview(
+                mode = mode,
+                selectedColor = selectedColor,
+                selectedImage = selectedImage,
+            )
 
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
 
@@ -182,6 +156,82 @@ fun IconOptionsScreenContent(
                     setSelectedImage = setSelectedImage,
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun IconPreview(
+    mode: IconOptionsMode,
+    selectedColor: HsvColor,
+    selectedImage: () -> ByteArray?,
+) {
+    Label(
+        name = stringResource(R.string.iconopts_icon_preview_title),
+        description = stringResource(R.string.iconopts_icon_preview_desc),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 14.dp),
+        ) {
+            val drawable = if (mode == IconOptionsMode.CustomImage) {
+                val image = selectedImage()
+
+                if (image != null && Build.VERSION.SDK_INT >= 26) {
+                    customIconDrawable(
+                        foregroundIcon = image,
+                    )
+                } else {
+                    discordIconDrawable(
+                        backgroundColor = Color.Black,
+                        oldLogo = false,
+                        size = 72.dp,
+                    )
+                }
+            } else {
+                val color = when (mode) {
+                    IconOptionsMode.Original -> PatchOptions.IconReplacement.BlurpleColor
+                    IconOptionsMode.OldDiscord -> PatchOptions.IconReplacement.OldBlurpleColor
+                    IconOptionsMode.Aliucord -> PatchOptions.IconReplacement.AliucordColor
+                    IconOptionsMode.CustomColor -> selectedColor.toColor()
+                    IconOptionsMode.CustomImage -> error("unreachable")
+                }
+                val throttledColor by throttledState(value = color, throttleMs = 75)
+
+                discordIconDrawable(
+                    backgroundColor = throttledColor,
+                    oldLogo = mode == IconOptionsMode.OldDiscord,
+                    size = 72.dp,
+                )
+            }
+
+            Drawable(
+                drawable = drawable,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape),
+            )
+            Drawable(
+                drawable = drawable,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape),
+            )
+            Drawable(
+                drawable = drawable,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(4.dp)),
+            )
+            Drawable(
+                drawable = drawable,
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(CircleShape),
+            )
         }
     }
 }

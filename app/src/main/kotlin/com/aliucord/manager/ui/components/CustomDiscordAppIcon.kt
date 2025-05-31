@@ -1,10 +1,10 @@
 package com.aliucord.manager.ui.components
 
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.InsetDrawable
+import android.graphics.*
+import android.graphics.drawable.*
+import android.os.Build
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,8 +17,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.applyCanvas
 import androidx.core.graphics.createBitmap
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.graphics.drawable.toDrawable
 import com.aliucord.manager.R
+import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 
 @Composable
 fun discordIconDrawable(
@@ -30,7 +31,6 @@ fun discordIconDrawable(
     val context = LocalContext.current
     val size = with(density) { size.roundToPx() }
 
-    val bitmap = remember(size) { createBitmap(size, size) }
     val drawable = remember(context, oldLogo) {
         val drawableId = when (oldLogo) {
             false -> R.drawable.ic_discord
@@ -45,6 +45,7 @@ fun discordIconDrawable(
         }
     }
 
+    val bitmap = remember(size) { createBitmap(size, size) }
     DisposableEffect(size) {
         onDispose {
             bitmap.recycle()
@@ -57,8 +58,8 @@ fun discordIconDrawable(
                 style = Paint.Style.FILL
                 setColor(backgroundColor.toArgb())
             }
-
             drawRect(Rect(0, 0, width, height), paint)
+
             drawable.setBounds(0, 0, width, height)
             drawable.draw(this)
         }
@@ -67,15 +68,30 @@ fun discordIconDrawable(
     }
 
     return remember(context, bitmap) {
-        RoundedBitmapDrawableFactory.create(context.resources, bitmap).apply {
-            isCircular = true
-            setAntiAlias(true)
-        }
+        bitmap.toDrawable(context.resources)
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun customIconDrawable(
+    foregroundIcon: ByteArray,
+    backgroundColor: Color = IconReplacement.BlurpleColor,
+): Drawable {
+    val context = LocalContext.current
+
+    return remember(context, foregroundIcon) {
+        val foregroundIconBitmap = BitmapFactory.decodeByteArray(foregroundIcon, 0, foregroundIcon.size)
+
+        AdaptiveIconDrawable(
+            /* backgroundDrawable = */ backgroundColor.toArgb().toDrawable(),
+            /* foregroundDrawable = */ foregroundIconBitmap.toDrawable(context.resources),
+        )
     }
 }
 
 @Composable
-fun ColoredDiscordAppIcon(
+fun Drawable(
     drawable: Drawable,
     modifier: Modifier = Modifier,
 ) {
@@ -84,6 +100,9 @@ fun ColoredDiscordAppIcon(
             ImageView(context).apply {
                 setImageDrawable(drawable)
             }
+        },
+        update = { imageView ->
+            imageView.setImageDrawable(drawable)
         },
         modifier = modifier,
     )

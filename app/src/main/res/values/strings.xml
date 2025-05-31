@@ -189,8 +189,10 @@
   <string name="iconopts_failed_image_too_big">Image size exceeds maximum of 256KiB</string>
   <string name="iconopts_btn_open_selection">Select Image</string>
   <string name="iconopts_btn_open_example_image">Example image</string>
+  <string name="iconopts_icon_preview_title">Icon Preview</string>
+  <string name="iconopts_icon_preview_desc">A preview of the selected options, cropped and scaled to show how the icon will appear on your device</string>
   <string name="iconopts_image_preview_title">Preview</string>
-  <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
+  <string name="iconopts_image_preview_desc">A full, uncropped preview of the selected image.</string>
   <string name="iconopts_image_preview_none">No image selected</string>
 
   <string name="log_title">Log</string>
