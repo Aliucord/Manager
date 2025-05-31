@@ -95,14 +95,15 @@ class IconOptionsModel(
         }
     }
 
-    fun generateConfig(): IconReplacement = when (mode) {
-        IconOptionsMode.Original -> IconReplacement.Original
-        IconOptionsMode.OldDiscord -> IconReplacement.OldDiscord
-        IconOptionsMode.Aliucord -> IconReplacement.CustomColor(IconReplacement.AliucordColor)
-        IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toColor())
-        IconOptionsMode.CustomImage -> IconReplacement.CustomImage(
-            // TODO: fix this?
-            imageBytes = selectedImage ?: throw IllegalStateException("Cannot generate config without a selected image"),
-        )
+    fun generateConfig(): IconReplacement? {
+        return when (mode) {
+            IconOptionsMode.Original -> IconReplacement.Original
+            IconOptionsMode.OldDiscord -> IconReplacement.OldDiscord
+            IconOptionsMode.Aliucord -> IconReplacement.CustomColor(IconReplacement.AliucordColor)
+            IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toColor())
+            IconOptionsMode.CustomImage -> IconReplacement.CustomImage(
+                imageBytes = selectedImage ?: return null
+            )
+        }
     }
 }

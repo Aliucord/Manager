@@ -32,8 +32,7 @@ import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
 import com.aliucord.manager.ui.screens.patchopts.components.options.*
 import com.aliucord.manager.ui.util.InstallNotifications
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
-import com.aliucord.manager.util.isIgnoringBatteryOptimizations
-import com.aliucord.manager.util.requestNoBatteryOptimizations
+import com.aliucord.manager.util.*
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -97,8 +96,13 @@ class PatchOptionsScreen(
             setPackageName = model::changePackageName,
 
             isConfigValid = model.isConfigValid,
-            onInstall = {
+            onInstall = onInstall@{
                 val iconConfig = iconModel.generateConfig()
+                if (iconConfig == null) {
+                    context.showToast(R.string.patchopts_warning_invalid_iconopts)
+                    return@onInstall
+                }
+
                 val patchConfig = model.generateConfig(iconConfig)
                 navigator.push(PatchingScreen(patchConfig))
             },

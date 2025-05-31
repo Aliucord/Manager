@@ -169,6 +169,7 @@
   <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
+  <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
 
   <string name="iconopts_screen_title">Icon Replacement</string>
   <string name="iconopts_variant_title_old_discord">Old Discord</string>
