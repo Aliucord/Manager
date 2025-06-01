@@ -92,7 +92,10 @@ class SettingsScreen : Screen, Parcelable {
                     secondaryLabel = stringResource(R.string.setting_developer_options_desc),
                     pref = preferences.devMode,
                     icon = { Icon(painterResource(R.drawable.ic_code), null) },
-                    onPrefChange = { preferences.devMode = it },
+                    onPrefChange = {
+                        preferences.devMode = it
+                        clearedCache = false // Cache dir changes with this setting
+                    },
                 )
 
                 SettingsSwitch(
@@ -100,7 +103,10 @@ class SettingsScreen : Screen, Parcelable {
                     secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
                     icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
                     pref = preferences.keepPatchedApks,
-                    onPrefChange = model::setKeepPatchedApks,
+                    onPrefChange = {
+                        model.setKeepPatchedApks(it)
+                        clearedCache = false // Cache dir changes with this setting
+                    },
                     modifier = Modifier.padding(bottom = 18.dp),
                 )
 
