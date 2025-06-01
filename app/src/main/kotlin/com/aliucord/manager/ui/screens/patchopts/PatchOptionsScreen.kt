@@ -82,7 +82,13 @@ class PatchOptionsScreen(
             debuggable = model.debuggable,
             setDebuggable = model::changeDebuggable,
 
-            selectedColor = iconModel.selectedColor.toColor(),
+            selectedColor = when (iconModel.mode) {
+                IconOptionsMode.Original -> PatchOptions.IconReplacement.BlurpleColor
+                IconOptionsMode.OldDiscord -> PatchOptions.IconReplacement.OldBlurpleColor
+                IconOptionsMode.Aliucord -> PatchOptions.IconReplacement.AliucordColor
+                IconOptionsMode.CustomColor -> iconModel.selectedColor.toColor()
+                IconOptionsMode.CustomImage -> null
+            },
             oldLogo = iconModel.mode == IconOptionsMode.OldDiscord,
             selectedImage = { iconModel.selectedImage },
             onOpenIconOptions = { navigator.push(IconOptionsScreen()) },
