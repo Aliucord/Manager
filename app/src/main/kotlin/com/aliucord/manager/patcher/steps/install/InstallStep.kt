@@ -54,11 +54,16 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
         ProcessLifecycleOwner.get().lifecycle.withResumed {}
 
         // Show [PlayProtectDialog] and wait until it gets dismissed
-        if (!prefs.devMode && !context.isPackageInstalled(options.packageName) && context.isPlayProtectEnabled() == true) {
+        if (prefs.showPlayProtectWarning
+            && !prefs.devMode
+            && !context.isPackageInstalled(options.packageName)
+            && context.isPlayProtectEnabled() == true
+        ) {
             container.log("Showing play protect warning dialog")
-            overlays.startComposableForResult { callback ->
-                PlayProtectDialog(onDismiss = { callback(Unit) })
+            val neverShowAgain = overlays.startComposableForResult { callback ->
+                PlayProtectDialog(onDismiss = callback)
             }
+            prefs.showPlayProtectWarning = !neverShowAgain
         }
 
         container.log("Installing ${apk.absolutePath}, silent: ${!prefs.devMode}")

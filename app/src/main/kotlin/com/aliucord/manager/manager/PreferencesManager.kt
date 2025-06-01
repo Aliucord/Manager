@@ -13,4 +13,5 @@ class PreferencesManager(preferences: SharedPreferences) : BasePreferenceManager
     var installer by enumPreference<InstallerSetting>("installer", InstallerSetting.PM)
     var keepPatchedApks by booleanPreference("keep_patched_apks", false)
     var showNetworkWarning by booleanPreference("show_network_warning", true)
+    var showPlayProtectWarning by booleanPreference("show_play_protect_warning", true)
 }

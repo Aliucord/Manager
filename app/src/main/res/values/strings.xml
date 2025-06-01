@@ -224,6 +224,7 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -> \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
+  <string name="play_protect_warning_disable">Don\'t show this again</string>
 
   <string name="custom_component_picker_title">Custom Component</string>
   <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>

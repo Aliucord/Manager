@@ -2,10 +2,13 @@ package com.aliucord.manager.ui.components.dialogs
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -18,13 +21,15 @@ import com.aliucord.manager.ui.components.customColors
 
 @Composable
 fun PlayProtectDialog(
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
+    onDismiss: (neverShow: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
+    val interactionSource = remember(::MutableInteractionSource)
+    var neverShow by rememberSaveable { mutableStateOf(false) }
+    val rememberedNeverShow by rememberUpdatedState(neverShow)
 
     AlertDialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = { onDismiss(rememberedNeverShow) },
         dismissButton = {
             FilledTonalButton(onClick = context::launchPlayProtect) {
                 Text(stringResource(R.string.play_protect_warning_open_gpp))
@@ -32,7 +37,7 @@ fun PlayProtectDialog(
         },
         confirmButton = {
             FilledTonalButton(
-                onClick = onDismiss,
+                onClick = { onDismiss(rememberedNeverShow) },
                 colors = ButtonDefaults.filledTonalButtonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -51,16 +56,40 @@ fun PlayProtectDialog(
         },
         title = { Text(stringResource(R.string.play_protect_warning_title)) },
         text = {
-            Text(
-                text = stringResource(R.string.play_protect_warning_desc),
-                textAlign = TextAlign.Center,
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.play_protect_warning_desc),
+                    textAlign = TextAlign.Center,
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { neverShow = !rememberedNeverShow },
+                        )
+                        .padding(end = 16.dp)
+                ) {
+                    Checkbox(
+                        checked = neverShow,
+                        onCheckedChange = { neverShow = it },
+                        interactionSource = interactionSource,
+                    )
+
+                    Text(stringResource(R.string.play_protect_warning_disable))
+                }
+            }
         },
         properties = DialogProperties(
             dismissOnBackPress = false,
             usePlatformDefaultWidth = false,
         ),
-        modifier = modifier
+        modifier = Modifier
             .padding(25.dp),
     )
 }
