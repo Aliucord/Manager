@@ -53,9 +53,10 @@ class PatchOptionsModel(
     var showNetworkWarningDialog by mutableStateOf(!alreadyShownNetworkWarning && isNetworkDangerous())
         private set
 
-    fun hideNetworkWarning() {
+    fun hideNetworkWarning(neverShow: Boolean) {
         showNetworkWarningDialog = false
         alreadyShownNetworkWarning = true
+        prefs.showNetworkWarning = !neverShow
     }
 
     // ---------- Config generation ----------
@@ -133,6 +134,9 @@ class PatchOptionsModel(
 
     init {
         screenModelScope.launch { fetchPkgNameState() }
+
+        if (!prefs.showNetworkWarning)
+            showNetworkWarningDialog = false
     }
 
     companion object {

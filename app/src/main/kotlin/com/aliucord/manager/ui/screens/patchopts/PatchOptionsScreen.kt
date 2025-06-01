@@ -66,8 +66,8 @@ class PatchOptionsScreen(
         if (model.showNetworkWarningDialog) {
             NetworkWarningDialog(
                 onConfirm = model::hideNetworkWarning,
-                onDismiss = {
-                    model.hideNetworkWarning()
+                onDismiss = { neverShow ->
+                    model.hideNetworkWarning(neverShow)
                     navigator.pop()
                 },
             )

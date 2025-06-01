@@ -10,6 +10,7 @@
 
   <string name="action_cancel">Cancel</string>
   <string name="action_retry">Retry</string>
+  <string name="action_continue">Continue</string>
   <string name="action_retry_install">Retry installation</string>
   <string name="action_open_error_log">Open error log</string>
   <string name="action_apply">Apply</string>
@@ -80,7 +81,8 @@
 
   <string name="network_load_fail">Failed to load</string>
   <string name="network_warning_title">Metered network</string>
-  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. Continuing with the installation may result in several hundred megabytes being downloaded. Are you sure you want to continue?</string>
+  <string name="network_warning_disable">Don\'t show this again</string>
 
   <string name="version_supported">Supported version:</string>
   <string name="version_none">None</string>
