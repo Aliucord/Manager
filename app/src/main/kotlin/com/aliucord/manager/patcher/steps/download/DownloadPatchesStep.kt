@@ -42,11 +42,11 @@ class DownloadPatchesStep : DownloadStep(), KoinComponent {
         // Prompt to select or manage custom versions instead of downloading
         if (customVersions.isNotEmpty()) {
             container.log("Custom versions present, waiting for selection: ${customVersions.joinToString()}")
-            val selectedVersion = overlays.startComposableForResult { callback ->
+            val selectedVersion = overlays.startComposableForResult { onResult ->
                 CustomComponentVersionPicker(
                     componentTitle = "Smali Patches",
                     versions = customVersions,
-                    onConfirm = { version -> callback(version) },
+                    onConfirm = { version -> onResult(version) },
                     onDelete = { version ->
                         try {
                             paths.cachedSmaliPatches(version, custom = true).delete()
@@ -54,12 +54,12 @@ class DownloadPatchesStep : DownloadStep(), KoinComponent {
 
                             // Dismiss if no custom versions left
                             if (customVersions.isEmpty())
-                                callback(null)
+                                onResult(null)
                         } catch (t: Throwable) {
                             Log.e(BuildConfig.TAG, "Failed to delete custom component", t)
                         }
                     },
-                    onCancel = { callback(null) },
+                    onCancel = { onResult(null) },
                 )
             }
 

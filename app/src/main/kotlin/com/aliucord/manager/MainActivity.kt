@@ -18,6 +18,7 @@ import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.navigator.*
 import cafe.adriel.voyager.transitions.SlideTransition
+import com.aliucord.manager.manager.OverlayManager
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.components.Theme
@@ -30,6 +31,7 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     private val preferences: PreferencesManager by inject()
+    private val overlays: OverlayManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -70,6 +72,8 @@ class MainActivity : ComponentActivity() {
                             )
                         )
                     }
+
+                    overlays.Overlays()
                 }
             }
         }

@@ -60,8 +60,8 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
             && context.isPlayProtectEnabled() == true
         ) {
             container.log("Showing play protect warning dialog")
-            val neverShowAgain = overlays.startComposableForResult { callback ->
-                PlayProtectDialog(onDismiss = callback)
+            val neverShowAgain = overlays.startComposableForResult { onResult ->
+                PlayProtectDialog(onDismiss = onResult)
             }
             prefs.showPlayProtectWarning = !neverShowAgain
         }

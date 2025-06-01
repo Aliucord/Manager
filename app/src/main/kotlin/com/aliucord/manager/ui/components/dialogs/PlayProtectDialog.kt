@@ -86,7 +86,7 @@ fun PlayProtectDialog(
             }
         },
         properties = DialogProperties(
-            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
             usePlatformDefaultWidth = false,
         ),
         modifier = Modifier

@@ -44,11 +44,11 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
         // Prompt to select or manage custom versions instead of downloading
         if (customVersions.isNotEmpty()) {
             container.log("Custom versions present, waiting for selection: ${customVersions.joinToString()}")
-            val selectedVersion = overlays.startComposableForResult { callback ->
+            val selectedVersion = overlays.startComposableForResult { onResult ->
                 CustomComponentVersionPicker(
                     componentTitle = "Injector",
                     versions = customVersions,
-                    onConfirm = { version -> callback(version) },
+                    onConfirm = { version -> onResult(version) },
                     onDelete = { version ->
                         try {
                             paths.cachedInjectorDex(version, custom = true).delete()
@@ -56,12 +56,12 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
 
                             // Dismiss if no custom versions left
                             if (customVersions.isEmpty())
-                                callback(null)
+                                onResult(null)
                         } catch (t: Throwable) {
                             Log.e(BuildConfig.TAG, "Failed to delete custom component", t)
                         }
                     },
-                    onCancel = { callback(null) },
+                    onCancel = { onResult(null) },
                 )
             }
 
