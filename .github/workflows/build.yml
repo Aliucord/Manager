@@ -22,11 +22,13 @@ jobs:
           cache: "gradle"
 
       - name: Build project with Gradle
-        run: chmod +x ./gradlew && ./gradlew :app:assembleDebug --stacktrace
+        run: chmod +x ./gradlew && ./gradlew :app:assembleDebug :app:assembleStaging --stacktrace
 
       - name: Upload apk as artifact
         uses: actions/upload-artifact@v4
         with:
           name: app
           if-no-files-found: error
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/staging/app-staging.apk
