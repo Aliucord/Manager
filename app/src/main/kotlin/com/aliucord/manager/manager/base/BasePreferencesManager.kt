@@ -12,8 +12,13 @@ abstract class BasePreferenceManager(
     private fun getBoolean(key: String, defaultValue: Boolean) = prefs.getBoolean(key, defaultValue)
     private fun getInt(key: String, defaultValue: Int) = prefs.getInt(key, defaultValue)
     private fun getFloat(key: String, defaultValue: Float) = prefs.getFloat(key, defaultValue)
-    protected inline fun <reified E : Enum<E>> getEnum(key: String, defaultValue: E) =
-        enumValueOf<E>(getString(key, defaultValue.name))
+    protected inline fun <reified E : Enum<E>> getEnum(key: String, defaultValue: E): E {
+        return try {
+            enumValueOf<E>(getString(key, defaultValue.name))
+        } catch (_: IllegalArgumentException) {
+            defaultValue
+        }
+    }
 
     protected fun putString(key: String, value: String?) = prefs.edit { putString(key, value) }
     private fun putBoolean(key: String, value: Boolean) = prefs.edit { putBoolean(key, value) }
@@ -27,7 +32,6 @@ abstract class BasePreferenceManager(
         getter: (key: String, defaultValue: T) -> T,
         private val setter: (key: String, newValue: T) -> Unit,
     ) {
-        @Suppress("RedundantSetter")
         var value by mutableStateOf(getter(key, defaultValue))
             private set
 
@@ -38,6 +42,7 @@ abstract class BasePreferenceManager(
         }
     }
 
+    @Suppress("unused")
     protected fun stringPreference(
         key: String,
         defaultValue: String,
@@ -48,6 +53,7 @@ abstract class BasePreferenceManager(
         setter = ::putString
     )
 
+    @Suppress("unused")
     protected fun booleanPreference(
         key: String,
         defaultValue: Boolean,
@@ -58,6 +64,7 @@ abstract class BasePreferenceManager(
         setter = ::putBoolean
     )
 
+    @Suppress("unused")
     protected fun intPreference(
         key: String,
         defaultValue: Int,
@@ -68,6 +75,7 @@ abstract class BasePreferenceManager(
         setter = ::putInt
     )
 
+    @Suppress("unused")
     protected fun floatPreference(
         key: String,
         defaultValue: Float,
@@ -78,6 +86,7 @@ abstract class BasePreferenceManager(
         setter = ::putFloat
     )
 
+    @Suppress("unused")
     protected inline fun <reified E : Enum<E>> enumPreference(
         key: String,
         defaultValue: E,
