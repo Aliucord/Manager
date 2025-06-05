@@ -30,11 +30,13 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.components.MainActionButton
+import com.aliucord.manager.ui.components.Wakelock
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
 import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patching.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
+import com.aliucord.manager.ui.theme.customColors
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import com.aliucord.manager.ui.util.thenIf

@@ -3,10 +3,10 @@ package com.aliucord.manager.ui.previews.screens.plugins
 import android.content.res.Configuration
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
-import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.plugins.PluginsScreenContent
 import com.aliucord.manager.ui.screens.plugins.model.PluginItem
 import com.aliucord.manager.ui.screens.plugins.model.PluginManifest
+import com.aliucord.manager.ui.theme.ManagerTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import java.util.UUID

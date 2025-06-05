@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.tooling.preview.Preview
-import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.logs.LogEntry
 import com.aliucord.manager.ui.screens.logs.LogsScreenContent
+import com.aliucord.manager.ui.theme.ManagerTheme
 import kotlinx.collections.immutable.persistentListOf
 import java.util.UUID
 

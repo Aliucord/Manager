@@ -4,8 +4,8 @@ import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.*
-import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.patchopts.*
+import com.aliucord.manager.ui.theme.ManagerTheme
 
 // This preview has scrollable/interactable content that cannot be tested from an IDE preview
 

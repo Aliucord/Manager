@@ -5,9 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.components.dialogs.ExternalStorageDialog
 import com.aliucord.manager.ui.components.dialogs.ManageStorageDialog
+import com.aliucord.manager.ui.theme.ManagerTheme
 
 @Composable
 @RequiresApi(Build.VERSION_CODES.R)

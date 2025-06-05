@@ -10,7 +10,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.unit.IntOffset
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -20,10 +19,9 @@ import cafe.adriel.voyager.navigator.*
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.aliucord.manager.manager.OverlayManager
 import com.aliucord.manager.manager.PreferencesManager
-import com.aliucord.manager.ui.components.ManagerTheme
-import com.aliucord.manager.ui.components.Theme
 import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
+import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import com.aliucord.manager.util.back
@@ -42,8 +40,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ManagerTheme(
-                isDarkTheme = preferences.theme == Theme.DARK || preferences.theme == Theme.SYSTEM && isSystemInDarkTheme(),
-                isDynamicColor = preferences.dynamicColor
+                theme = preferences.theme,
+                dynamicColor = preferences.dynamicColor,
             ) {
                 StoragePermissionsDialog()
 

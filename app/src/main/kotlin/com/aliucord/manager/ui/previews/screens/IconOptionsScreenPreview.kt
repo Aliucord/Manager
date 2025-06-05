@@ -11,10 +11,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.*
 import androidx.core.graphics.drawable.toBitmap
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.iconopts.IconOptionsMode
 import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreenContent
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
+import com.aliucord.manager.ui.theme.ManagerTheme
 import dev.zt64.compose.pipette.HsvColor
 import java.io.ByteArrayOutputStream
 

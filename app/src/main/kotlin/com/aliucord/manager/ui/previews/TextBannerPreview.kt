@@ -9,9 +9,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.*
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.ManagerTheme
-import com.aliucord.manager.ui.components.customColors
 import com.aliucord.manager.ui.screens.patching.components.TextBanner
+import com.aliucord.manager.ui.theme.ManagerTheme
+import com.aliucord.manager.ui.theme.customColors
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.tooling.preview.*
-import com.aliucord.manager.ui.components.ManagerTheme
 import com.aliucord.manager.ui.screens.home.*
 import com.aliucord.manager.ui.screens.home.components.HomeAppBar
+import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.util.DiscordVersion
 import io.ktor.util.decodeBase64Bytes
 import kotlinx.collections.immutable.persistentListOf

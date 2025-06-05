@@ -1,9 +1,10 @@
-package com.aliucord.manager.ui.components
+package com.aliucord.manager.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 
+@Suppress("UnusedReceiverParameter")
 val MaterialTheme.customColors: CustomColors
     @Composable
     inline get() = LocalCustomColors.current
