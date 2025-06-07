@@ -9,6 +9,7 @@
   <string name="installer">Instalador</string>
   <string name="action_cancel">Cancelar</string>
   <string name="action_retry">Tente Novamente</string>
+  <string name="action_continue">Continue</string>
   <string name="action_retry_install">Retry Installation</string>
   <string name="action_open_error_log">Abrir logs de erros</string>
   <string name="action_apply">Aplicar</string>
@@ -40,8 +41,8 @@
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_header_advanced">Avançado</string>
   <string name="settings_header_appearance">Aparência</string>
-  <string name="setting_theme">Theme</string>
-  <string name="setting_theme_desc">The theme to apply to this app</string>
+  <string name="setting_theme">Tema</string>
+  <string name="setting_theme_desc">O tema a ser aplicado a este aplicativo</string>
   <string name="setting_dynamic_color">Cor dinâmica</string>
   <string name="setting_dynamic_color_desc">Habilita o tema Material You no Android 12+</string>
   <string name="setting_developer_options">Opções de desenvolvedor</string>
@@ -72,6 +73,7 @@
   <string name="network_load_fail">Falha ao carregar</string>
   <string name="network_warning_title">Rede limitada</string>
   <string name="network_warning_body">Parece que você está conectado a dados móveis ou a uma rede potencialmente limitada. Para continuar com a instalação, várias centenas de megabytes podem ser baixados. Tem certeza que deseja continuar?</string>
+  <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">Versões suportadas:</string>
   <string name="version_none">Nenhum</string>
   <string name="version_stable">Estável</string>
@@ -130,11 +132,11 @@
   <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
   <string name="updater_title">Atualizado para %1$s</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
-  <string name="downloader_err_timeout">Download failed (Timeout)</string>
+  <string name="downloader_err_timeout">Falha no Download (tempo esgotado)</string>
   <string name="downloader_err_response">Download falhou (Resposta inválida)</string>
   <string name="downloader_err_file_exists">Download falhou (Arquivo existente)</string>
   <string name="downloader_err_storage_space">Download falhou (Espaço insuficiente)</string>
-  <string name="home_network_fail">Failed to fetch data!</string>
+  <string name="home_network_fail">Falha ao obter dados!</string>
   <string name="patchopts_title">O Aliucord fornece várias personalizações na hora da instalação que não podem ser alteradas uma vez instaladas.</string>
   <string name="patchopts_pkgname_title">Nome do pacote</string>
   <string name="patchopts_pkgname_desc">O nome do pacote é um identificador exclusivo para todos os aplicativos. Usar diferentes pode permitir várias instalações do Aliucord.</string>
@@ -149,9 +151,10 @@
   <string name="patchopts_icon_desc">Muda o ícone do aplicativo para usar a marca Aliucord ao invés da do próprio Discord.</string>
   <string name="patchopts_divider_basic">Básico</string>
   <string name="patchopts_divider_advanced">Avançado</string>
+  <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
   <string name="iconopts_screen_title">Substituir Ícone</string>
-  <string name="iconopts_variant_title_old_discord">Old Discord</string>
-  <string name="iconopts_variant_desc_old_discord">The old Discord blurple color and logo from 2021 and prior.</string>
+  <string name="iconopts_variant_title_old_discord">Discord Antigo</string>
+  <string name="iconopts_variant_desc_old_discord">A antigo cor e logotipo do Discord de 2021 e antes.</string>
   <string name="iconopts_variant_title_color">Cor Personalizada</string>
   <string name="iconopts_variant_title_image">Imagem Personalizada</string>
   <string name="iconopts_variant_desc_discord">Não altera o ícone original, apenas adiciona o ícone monocromático que falta ao APK.</string>
@@ -168,6 +171,8 @@
   <string name="iconopts_failed_image_too_big">O tamanho da imagem excede o máximo de 256KiB</string>
   <string name="iconopts_btn_open_selection">Selecionar imagem</string>
   <string name="iconopts_btn_open_example_image">Imagem de exemplo</string>
+  <string name="iconopts_icon_preview_title">Icon Preview</string>
+  <string name="iconopts_icon_preview_desc">A preview of the selected options, cropped and scaled to show how the icon will appear on your device</string>
   <string name="iconopts_image_preview_title">Pré-visualizar</string>
   <string name="iconopts_image_preview_desc">Visualização sem corte da imagem selecionada</string>
   <string name="iconopts_image_preview_none">Nenhuma imagem selecionada</string>
@@ -194,6 +199,7 @@
   <string name="play_protect_warning_desc">O Google Play Protect parece estar ativado no seu dispositivo, o que pode interferir com uma instalação nova devido ao uso de uma chave de assinatura única. Você pode desativá-lo nas configurações do Play Protect.\n\nSe ele mostrar uma caixa de diálogo de aviso, pressione\n\"Mais Detalhes\" -&gt; \"Instalar assim mesmo\"</string>
   <string name="play_protect_warning_ok">Continuar</string>
   <string name="play_protect_warning_open_gpp">Abrir Play Protect</string>
+  <string name="play_protect_warning_disable">Don\'t show this again</string>
   <string name="custom_component_picker_title">Componente Personalizado</string>
   <string name="custom_component_picker_desc">Uma versão local personalizada para um componente de patch (%s) foi encontrada. Gostaria de usá-la?</string>
   <string name="fun_fact_prefix">Fato curioso: %s</string>

@@ -9,6 +9,7 @@
   <string name="installer">安装程序</string>
   <string name="action_cancel">取消</string>
   <string name="action_retry">重试</string>
+  <string name="action_continue">Continue</string>
   <string name="action_retry_install">Retry Installation</string>
   <string name="action_open_error_log">Open error log</string>
   <string name="action_apply">应用</string>
@@ -72,6 +73,7 @@
   <string name="network_load_fail">无法加载</string>
   <string name="network_warning_title">计费网络</string>
   <string name="network_warning_body">您似乎已连接到移动数据或可能计费的网络。要继续安装，将需要下载几百 MB。您确定要继续吗？</string>
+  <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">支持的版本：</string>
   <string name="version_none">无</string>
   <string name="version_stable">稳定版</string>
@@ -149,6 +151,7 @@
   <string name="patchopts_icon_desc">将应用的图标更改为使用 Aliucord 品牌，而不是 Discord 自己的品牌。</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">高级</string>
+  <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
   <string name="iconopts_screen_title">Icon Replacement</string>
   <string name="iconopts_variant_title_old_discord">Old Discord</string>
   <string name="iconopts_variant_desc_old_discord">The old Discord blurple color and logo from 2021 and prior.</string>
@@ -168,6 +171,8 @@
   <string name="iconopts_failed_image_too_big">Image size exceeds maximum of 256KiB</string>
   <string name="iconopts_btn_open_selection">Select Image</string>
   <string name="iconopts_btn_open_example_image">Example image</string>
+  <string name="iconopts_icon_preview_title">Icon Preview</string>
+  <string name="iconopts_icon_preview_desc">A preview of the selected options, cropped and scaled to show how the icon will appear on your device</string>
   <string name="iconopts_image_preview_title">Preview</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">No image selected</string>
@@ -194,6 +199,7 @@
   <string name="play_protect_warning_desc">您的设备上似乎启用了 Google Play 保护机制。它可能会尝试干扰使用了唯一的签名密钥的新安装。您可以在 Play 保护机制的设置中将其禁用。\n\n如果显示警告对话框，请点按\n“更多详细信息”-&gt;“仍然安装”</string>
   <string name="play_protect_warning_ok">继续</string>
   <string name="play_protect_warning_open_gpp">打开 Play 保护机制</string>
+  <string name="play_protect_warning_disable">Don\'t show this again</string>
   <string name="custom_component_picker_title">Custom Component</string>
   <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
   <string name="fun_fact_prefix">趣闻：%s</string>
