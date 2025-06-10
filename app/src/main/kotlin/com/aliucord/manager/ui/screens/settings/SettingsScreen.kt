@@ -119,7 +119,7 @@ class SettingsScreen : Screen, Parcelable {
                     ),
                     onClick = {
                         clearedCache = true
-                        model.clearCacheDir()
+                        model.clearCache()
                     },
                     modifier = Modifier
                         .padding(horizontal = 18.dp, vertical = 10.dp)

@@ -62,8 +62,6 @@ class PatchingScreenModel(
         }
     }
 
-    fun getCurrentInstallId(): String? = installId
-
     fun launchApp() {
         if (state.value !is PatchingScreenState.Success)
             return
@@ -77,6 +75,13 @@ class PatchingScreenModel(
             application.showToast(R.string.launch_aliucord_fail)
         }
     }
+
+    fun clearCache() = screenModelScope.launchBlock {
+        paths.clearCache()
+        application.showToast(R.string.action_cleared_cache)
+    }
+
+    fun getCurrentInstallId(): String? = installId
 
     fun cancelInstall() = screenModelScope.launchBlock(Dispatchers.IO) {
         runnerJob?.cancel("Manual cancellation")

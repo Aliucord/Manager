@@ -269,7 +269,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                                     ),
                                     onClick = {
                                         cacheCleared = true
-                                        model.cancelInstall()
+                                        model.clearCache()
                                     },
                                 )
                             }

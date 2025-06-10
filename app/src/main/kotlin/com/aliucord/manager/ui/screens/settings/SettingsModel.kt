@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.ui.theme.Theme
 import com.aliucord.manager.util.launchBlock
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class SettingsModel(
     private val application: Application,
+    private val paths: PathManager,
     val preferences: PreferencesManager,
 ) : ScreenModel {
     var showThemeDialog by mutableStateOf(false)
@@ -44,8 +46,8 @@ class SettingsModel(
         preferences.keepPatchedApks = value
     }
 
-    fun clearCacheDir() = screenModelScope.launchBlock {
-        application.externalCacheDir?.deleteRecursively()
+    fun clearCache() = screenModelScope.launchBlock {
+        paths.clearCache()
         application.showToast(R.string.action_cleared_cache)
     }
 }

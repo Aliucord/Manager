@@ -47,7 +47,8 @@ class PathManager(
      * Delete the entire cache dir and recreate it.
      */
     fun clearCache() {
-        cacheDir.deleteRecursively()
+        context.cacheDir.deleteRecursively()
+        context.externalCacheDir?.deleteRecursively()
         cacheDir.mkdirs()
     }
 
