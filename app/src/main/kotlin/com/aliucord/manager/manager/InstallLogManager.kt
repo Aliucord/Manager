@@ -3,6 +3,7 @@ package com.aliucord.manager.manager
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
+import android.text.format.Formatter
 import android.util.Log
 import androidx.compose.runtime.Immutable
 import com.aliucord.manager.BuildConfig
@@ -93,6 +94,7 @@ class InstallLogManager(
     /**
      * Creates a list of details about the current installation environment.
      */
+    @SuppressLint("UsableSpace")
     suspend fun getEnvironmentInfo(): String {
         @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
         val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
@@ -102,11 +104,17 @@ class InstallLogManager(
             true -> "Enabled"
             false -> "Disabled"
         }
+        val freeInternalStorage = application.cacheDir.usableSpace
+        val freeExternalStorage = application.externalCacheDir?.usableSpace ?: 0
 
         return """
             Aliucord Manager v${BuildConfig.VERSION_NAME}
             Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
             Developer mode: ${if (prefs.devMode) "On" else "Off"}
+            External storage: ${if (prefs.devMode || prefs.keepPatchedApks) "Yes" else "No"}
+
+            Disk Free (Internal): ${Formatter.formatShortFileSize(application, freeInternalStorage)}
+            Disk Free (External): ${Formatter.formatShortFileSize(application, freeExternalStorage)}
 
             Android API: ${Build.VERSION.SDK_INT}
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}
