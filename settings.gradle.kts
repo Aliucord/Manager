@@ -21,6 +21,10 @@ dependencyResolutionManagement {
             name = "jitpack"
             url = uri("https://jitpack.io")
         }
+        maven { // TODO: remove when Ktor 3.2.1 released
+            name = "ktor-eap"
+            url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+        }
     }
 }
 
