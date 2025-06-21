@@ -42,7 +42,6 @@ class ManagerApplication : Application() {
             // Services
             modules(module {
                 singleOf(::HttpService)
-                singleOf(::GithubService)
                 singleOf(::AliucordGithubService)
                 singleOf(::AliucordMavenService)
             })
