@@ -64,6 +64,7 @@ class SettingsModel(
             Aliucord Manager
             Version: ${BuildConfig.VERSION_NAME}
             Version Code: ${BuildConfig.VERSION_CODE}
+            Release: ${if (BuildConfig.RELEASE) "Yes" else "No"}
             Git Branch: ${BuildConfig.GIT_BRANCH}
             Git Commit: ${BuildConfig.GIT_COMMIT}
             Git Changes: ${if (BuildConfig.GIT_LOCAL_CHANGES) "Yes" else "No"}

@@ -9,7 +9,6 @@ import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.download.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
-import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import com.github.diamondminer88.zip.ZipWriter
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
@@ -34,7 +33,7 @@ class SaveMetadataStep(private val options: PatchOptions) : Step(), KoinComponen
 
         val metadata = InstallMetadata(
             options = options,
-            customManager = IS_CUSTOM_BUILD,
+            customManager = !BuildConfig.RELEASE,
             managerVersion = SemVer.parse(BuildConfig.VERSION_NAME),
             aliuhookVersion = aliuhook.targetVersion,
             injectorVersion = injector.targetVersion,

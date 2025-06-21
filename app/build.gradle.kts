@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val isRelease = System.getenv("RELEASE")?.toBoolean() ?: false
 val gitCurrentBranch = providers.execIgnoreCode("git", "symbolic-ref", "--quiet", "--short", "HEAD").takeIf { it.isNotEmpty() }
 val gitLatestCommit = providers.execIgnoreCode("git", "rev-parse", "--short", "HEAD")
 val gitHasLocalCommits = gitCurrentBranch?.let { providers.execIgnoreCode("git", "log", "origin/$gitCurrentBranch..HEAD").isNotEmpty() } ?: false
@@ -32,6 +33,7 @@ android {
 
         buildConfigField("String", "BACKEND_URL", "\"https://aliucord.com/\"")
 
+        buildConfigField("Boolean", "RELEASE", isRelease.toString())
         buildConfigField("String", "GIT_BRANCH", "\"$gitCurrentBranch\"")
         buildConfigField("String", "GIT_COMMIT", "\"$gitLatestCommit\"")
         buildConfigField("boolean", "GIT_LOCAL_COMMITS", "$gitHasLocalCommits")

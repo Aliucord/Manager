@@ -2,7 +2,6 @@ package com.aliucord.manager.util
 
 import android.os.Build
 import androidx.collection.ObjectList
-import com.aliucord.manager.BuildConfig
 import java.io.BufferedReader
 import java.io.IOException
 import kotlin.math.pow
@@ -23,16 +22,6 @@ inline fun <E> ObjectList<E>.find(block: (E) -> Boolean): E? {
     }
 
     return null
-}
-
-/**
- * Whether this manager build is not an official release.
- */
-@Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
-val IS_CUSTOM_BUILD by lazy {
-    BuildConfig.GIT_BRANCH != "release"
-        || BuildConfig.GIT_LOCAL_CHANGES
-        || BuildConfig.GIT_LOCAL_COMMITS
 }
 
 /**

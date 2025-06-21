@@ -23,7 +23,6 @@ import com.aliucord.manager.ui.components.dialogs.StoragePermissionsDialog
 import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
-import com.aliucord.manager.util.IS_CUSTOM_BUILD
 import com.aliucord.manager.util.back
 import org.koin.android.ext.android.inject
 
@@ -43,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 theme = preferences.theme,
                 dynamicColor = preferences.dynamicColor,
             ) {
-                if (!IS_CUSTOM_BUILD) {
+                if (BuildConfig.RELEASE) {
                     UpdaterDialog()
                 }
 
