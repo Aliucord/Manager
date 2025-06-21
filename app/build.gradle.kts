@@ -52,7 +52,11 @@ android {
     }
 
     buildTypes {
+        val isRelease = System.getenv("RELEASE")?.toBoolean() ?: false
         val hasReleaseSigning = System.getenv("SIGNING_STORE_PASSWORD")?.isNotEmpty() == true
+
+        if (isRelease && !hasReleaseSigning)
+            error("Missing keystore in a release workflow!")
 
         release {
             isMinifyEnabled = true

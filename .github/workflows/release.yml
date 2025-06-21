@@ -1,9 +1,8 @@
-name: Publish Release
+name: Build & Publish Release App
 
 on:
   push:
     tags: [ "v*.*.*" ]
-  workflow_dispatch:
 
 concurrency:
   group: "release"
@@ -26,18 +25,19 @@ jobs:
           distribution: zulu
           cache: "gradle"
 
-      - name: Build Manager
+      - name: Build with Gradle
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.keyAlias }}
           SIGNING_KEY_PASSWORD: ${{ secrets.keyPassword }}
           SIGNING_STORE_PASSWORD: ${{ secrets.keystorePassword }}
           SIGNING_STORE_FILE: ${{ github.workspace }}/release.keystore
+          RELEASE: true
         run: |
           echo "${{ secrets.keystore }}" | base64 -d > release.keystore
           chmod +x ./gradlew && ./gradlew :app:packageRelease --stacktrace
           rm release.keystore
 
-      - name: Upload apk as artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: app
@@ -48,12 +48,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          tag="${{ github.ref_name }}"
           apk_file="aliucord-manager-$tag.apk"
           mv -T ./app/build/outputs/apk/release/app-release.apk "./$apk_file"
 
           gh release create "$tag" \
-            --title "Aliucord Manager $tag" \
+            --title "$tag" \
             --generate-notes \
             --verify-tag \
             --fail-on-no-commits \
-            "../$apk_name"
+            "./$apk_file"

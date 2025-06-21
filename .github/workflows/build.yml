@@ -1,4 +1,4 @@
-name: Build Debug
+name: Build Debug App
 
 on:
   push:
@@ -12,19 +12,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: set up JDK 21
+      - name: Setup JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: zulu
           cache: "gradle"
 
-      - name: Build project with Gradle
+      - name: Build with Gradle
         run: chmod +x ./gradlew && ./gradlew :app:assembleDebug :app:assembleStaging --stacktrace
 
-      - name: Upload apk as artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: app
