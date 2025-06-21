@@ -41,6 +41,7 @@
   <string name="launch_aliucord_fail">Aliucord kunne ikke startes</string>
   <string name="settings_header_advanced">Avanceret</string>
   <string name="settings_header_appearance">Udseende</string>
+  <string name="settings_header_info">Info</string>
   <string name="setting_theme">Tema</string>
   <string name="setting_theme_desc">Temaet, der skal anvendes på denne app</string>
   <string name="setting_dynamic_color">Dynamisk farve</string>
@@ -131,6 +132,7 @@
   <string name="installer_abort_body">Sikker på, at den igangværende installation skal afbrydes? Cachelagrede filer ryddes for at undgå korrumpering.</string>
   <string name="updater_body">Ny opdatering udgivet! Den kan være nødvendig for korrekt funktion af Aliucord Manager. Opdatér?</string>
   <string name="updater_title">Opdatér til %1$s</string>
+  <string name="updater_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">Download mislykkedes (ukendt)</string>
   <string name="downloader_err_timeout">Download mislykkedes (timeout)</string>
   <string name="downloader_err_response">Download mislykkedes (ugyldigt svar)</string>

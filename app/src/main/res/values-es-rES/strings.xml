@@ -41,6 +41,7 @@
   <string name="launch_aliucord_fail">Error al abrir Aliucord</string>
   <string name="settings_header_advanced">Avanzado</string>
   <string name="settings_header_appearance">Apariencia</string>
+  <string name="settings_header_info">Info</string>
   <string name="setting_theme">Theme</string>
   <string name="setting_theme_desc">The theme to apply to this app</string>
   <string name="setting_dynamic_color">Colores dinámicos</string>
@@ -131,6 +132,7 @@
   <string name="installer_abort_body">¿Seguro de que realmente quieres abortar una instalación en progreso? Los archivos almacenados en caché se borrarán para evitar la corrupción.</string>
   <string name="updater_body">¡Se ha publicado una nueva actualización para Aliucord Manager! Puede que sea necesaria para funcionar correctamente. ¿Quieres actualizar?</string>
   <string name="updater_title">Actualizada a %1$s</string>
+  <string name="updater_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">Descarga fallida (desconocida)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">Descarga fallida (respuesta no válida)</string>

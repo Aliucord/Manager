@@ -41,6 +41,7 @@
   <string name="launch_aliucord_fail">无法启动 Aliucord</string>
   <string name="settings_header_advanced">高级</string>
   <string name="settings_header_appearance">外观</string>
+  <string name="settings_header_info">Info</string>
   <string name="setting_theme">Theme</string>
   <string name="setting_theme_desc">The theme to apply to this app</string>
   <string name="setting_dynamic_color">动态颜色</string>
@@ -131,6 +132,7 @@
   <string name="installer_abort_body">您确定要中止正在进行的安装吗？缓存文件将被清除以避免损坏。</string>
   <string name="updater_body">Aliucord 管理器已发布新更新！可能需要此更新才能正常运行。您想更新吗？</string>
   <string name="updater_title">更新到 %1$s</string>
+  <string name="updater_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">下载失败（未知）</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">下载失败（无效响应）</string>

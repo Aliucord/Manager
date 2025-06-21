@@ -41,6 +41,7 @@
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
   <string name="settings_header_advanced">Дополнительные</string>
   <string name="settings_header_appearance">Внешний вид</string>
+  <string name="settings_header_info">Info</string>
   <string name="setting_theme">Тема</string>
   <string name="setting_theme_desc">Тема для этого приложения</string>
   <string name="setting_dynamic_color">Динамические цвета</string>
@@ -131,6 +132,7 @@
   <string name="installer_abort_body">Вы уверены, что действительно хотите прервать начатую установку? Кэшированные файлы будут очищены, чтобы избежать повреждений.</string>
   <string name="updater_body">Вышло новое обновление для Aliucord Менеджера! Оно может быть обязательным для правильной работы. Желаете ли вы обновиться?</string>
   <string name="updater_title">Обновить до %1$s</string>
+  <string name="updater_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">Загрузка не удалась (Неизвестно)</string>
   <string name="downloader_err_timeout">Сбой загрузки (таймаут)</string>
   <string name="downloader_err_response">Загрузка не удалась (Неверный ответ)</string>

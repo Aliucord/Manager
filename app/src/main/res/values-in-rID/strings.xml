@@ -41,6 +41,7 @@
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>
   <string name="settings_header_advanced">Canggih</string>
   <string name="settings_header_appearance">Tampilan</string>
+  <string name="settings_header_info">Info</string>
   <string name="setting_theme">Theme</string>
   <string name="setting_theme_desc">The theme to apply to this app</string>
   <string name="setting_dynamic_color">Warna dinamis</string>
@@ -131,6 +132,7 @@
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Perbaruan baru sudah dirilis untuk Aliucord Manager! Itu mungkin diperlukan untuk berfungsi dengan baik. Apakah kamu ingin perbarui?</string>
   <string name="updater_title">Diperbarui ke %1$s</string>
+  <string name="updater_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">Download failed (Invalid response)</string>
