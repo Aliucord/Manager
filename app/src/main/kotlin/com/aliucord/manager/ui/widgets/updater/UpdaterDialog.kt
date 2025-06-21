@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.aliucord.manager.R
@@ -18,7 +20,13 @@ fun UpdaterDialog(
 
     AlertDialog(
         confirmButton = {
-            Button(onClick = viewModel::triggerUpdate) {
+            FilledTonalButton(
+                onClick = viewModel::triggerUpdate,
+                colors = ButtonDefaults.filledTonalButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            ) {
                 if (!viewModel.isWorking) {
                     Text(stringResource(R.string.action_update))
                 } else {
@@ -32,7 +40,7 @@ fun UpdaterDialog(
             }
         },
         dismissButton = {
-            Button(
+            TextButton(
                 onClick = viewModel::dismissDialog,
                 enabled = !viewModel.isWorking
             ) {
@@ -43,10 +51,22 @@ fun UpdaterDialog(
         title = {
             Text(stringResource(R.string.updater_title, viewModel.targetVersion ?: ""))
         },
-        text = { Text(stringResource(R.string.updater_body)) },
+        text = {
+            Text(
+                text = stringResource(R.string.updater_body),
+                textAlign = TextAlign.Center,
+            )
+        },
+        icon = {
+            Icon(
+                painter = painterResource(R.drawable.ic_warning),
+                contentDescription = null,
+                modifier = Modifier.size(36.dp),
+            )
+        },
         properties = DialogProperties(
             dismissOnBackPress = false,
-            dismissOnClickOutside = false
-        )
+            dismissOnClickOutside = false,
+        ),
     )
 }

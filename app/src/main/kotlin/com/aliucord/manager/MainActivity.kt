@@ -43,11 +43,11 @@ class MainActivity : ComponentActivity() {
                 theme = preferences.theme,
                 dynamicColor = preferences.dynamicColor,
             ) {
-                StoragePermissionsDialog()
-
                 if (!IS_CUSTOM_BUILD) {
                     UpdaterDialog()
                 }
+
+                StoragePermissionsDialog()
 
                 @OptIn(ExperimentalVoyagerApi::class)
                 CompositionLocalProvider(
