@@ -45,6 +45,7 @@
 
   <string name="settings_header_advanced">Advanced</string>
   <string name="settings_header_appearance">Appearance</string>
+  <string name="settings_header_info">Info</string>
   <string name="setting_theme">Theme</string>
   <string name="setting_theme_desc">The theme to apply to this app</string>
   <string name="setting_dynamic_color">Dynamic color</string>

@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -136,6 +138,34 @@ class SettingsScreen : Screen, Parcelable {
                             .padding(horizontal = 18.dp, vertical = 9.dp)
                             .fillMaxWidth()
                     )
+                }
+
+                SettingsHeader(stringResource(R.string.settings_header_info))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(horizontal = 36.dp, vertical = 12.dp),
+                ) {
+                    Text(
+                        text = model.installInfo,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                        ),
+                    )
+
+                    Spacer(Modifier.weight(1f, fill = true))
+
+                    IconButton(onClick = model::copyInstallInfo) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_copy),
+                            contentDescription = stringResource(R.string.action_copy),
+                            modifier = Modifier
+                                .size(28.dp)
+                                .alpha(.8f),
+                        )
+                    }
                 }
             }
         }
