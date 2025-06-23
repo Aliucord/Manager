@@ -3,9 +3,11 @@ package com.aliucord.manager.manager
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
+import android.os.storage.StorageManager
 import android.text.format.Formatter
 import android.util.Log
 import androidx.compose.runtime.Immutable
+import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
@@ -94,9 +96,11 @@ class InstallLogManager(
     /**
      * Creates a list of details about the current installation environment.
      */
+    @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
     @SuppressLint("UsableSpace")
     suspend fun getEnvironmentInfo(): String {
-        @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
+        val storageManager = application.getSystemService<StorageManager>()!!
+
         val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
         val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unavailable"
         val playProtect = when (application.isPlayProtectEnabled()) {
@@ -104,8 +108,13 @@ class InstallLogManager(
             true -> "Enabled"
             false -> "Disabled"
         }
-        val freeInternalStorage = application.cacheDir.usableSpace
-        val freeExternalStorage = application.externalCacheDir?.usableSpace ?: 0
+
+        val diskFreeSize = application.filesDir.usableSpace
+        val cacheQuotaSize = if (Build.VERSION.SDK_INT >= 26) {
+            storageManager.getCacheQuotaBytes(storageManager.getUuidForPath(application.cacheDir))
+        } else {
+            0L
+        }
 
         return """
             Aliucord Manager v${BuildConfig.VERSION_NAME}
@@ -113,8 +122,8 @@ class InstallLogManager(
             Developer mode: ${if (prefs.devMode) "On" else "Off"}
             External storage: ${if (prefs.devMode || prefs.keepPatchedApks) "Yes" else "No"}
 
-            Disk Free (Internal): ${Formatter.formatShortFileSize(application, freeInternalStorage)}
-            Disk Free (External): ${Formatter.formatShortFileSize(application, freeExternalStorage)}
+            Disk Free: ${Formatter.formatShortFileSize(application, diskFreeSize)}
+            Cache Quota: ${Formatter.formatShortFileSize(application, cacheQuotaSize)}
 
             Android API: ${Build.VERSION.SDK_INT}
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}

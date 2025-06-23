@@ -54,7 +54,6 @@
   <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installing for debugging. This setting may drastically slow down (20x) patching on certain devices!</string>
-  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
   <string name="settings_clear_cache">Clear cache</string>
   <string name="settings_see_patched_apks">See patched APKs</string>
 
