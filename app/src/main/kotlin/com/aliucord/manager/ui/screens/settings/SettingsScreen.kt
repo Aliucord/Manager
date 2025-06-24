@@ -15,14 +15,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import com.aliucord.manager.R
-import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.MainActionButton
 import com.aliucord.manager.ui.components.settings.*
@@ -94,10 +92,7 @@ class SettingsScreen : Screen, Parcelable {
                     secondaryLabel = stringResource(R.string.setting_developer_options_desc),
                     pref = preferences.devMode,
                     icon = { Icon(painterResource(R.drawable.ic_code), null) },
-                    onPrefChange = {
-                        preferences.devMode = it
-                        clearedCache = false // Cache dir changes with this setting
-                    },
+                    onPrefChange = { preferences.devMode = it },
                 )
 
                 SettingsSwitch(
@@ -105,12 +100,21 @@ class SettingsScreen : Screen, Parcelable {
                     secondaryLabel = stringResource(R.string.setting_keep_patched_apks_desc),
                     icon = { Icon(painterResource(R.drawable.ic_delete_forever), null) },
                     pref = preferences.keepPatchedApks,
-                    onPrefChange = {
-                        model.setKeepPatchedApks(it)
-                        clearedCache = false // Cache dir changes with this setting
-                    },
+                    onPrefChange = { model.setKeepPatchedApks(it) },
                     modifier = Modifier.padding(bottom = 18.dp),
                 )
+
+                if (preferences.keepPatchedApks) {
+                    MainActionButton(
+                        text = stringResource(R.string.log_action_export_apk),
+                        icon = painterResource(R.drawable.ic_save),
+                        enabled = model.patchedApkExists,
+                        onClick = model::shareApk,
+                        modifier = Modifier
+                            .padding(horizontal = 18.dp, vertical = 9.dp)
+                            .fillMaxWidth()
+                    )
+                }
 
                 MainActionButton(
                     text = stringResource(R.string.settings_clear_cache),
@@ -127,18 +131,6 @@ class SettingsScreen : Screen, Parcelable {
                         .padding(horizontal = 18.dp, vertical = 10.dp)
                         .fillMaxWidth()
                 )
-
-                if (preferences.keepPatchedApks) {
-                    val handler = LocalUriHandler.current
-                    MainActionButton(
-                        text = stringResource(R.string.settings_see_patched_apks),
-                        icon = painterResource(R.drawable.ic_launch),
-                        onClick = { handler.openUri(AliucordGithubService.PATCHED_APKS_INFO_URL) },
-                        modifier = Modifier
-                            .padding(horizontal = 18.dp, vertical = 9.dp)
-                            .fillMaxWidth()
-                    )
-                }
 
                 SettingsHeader(stringResource(R.string.settings_header_info))
 

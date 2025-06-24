@@ -38,6 +38,5 @@ class AliucordGithubService(
         const val MANAGER_REPO = "Manager"
 
         const val DATA_JSON_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/data.json"
-        const val PATCHED_APKS_INFO_URL = "https://github.com/$ORG/$MANAGER_REPO/blob/main/INFO.md#obtaining-patched-apks"
     }
 }

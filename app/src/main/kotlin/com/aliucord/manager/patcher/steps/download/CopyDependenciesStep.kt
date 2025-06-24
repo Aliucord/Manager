@@ -18,8 +18,7 @@ class CopyDependenciesStep : Step(), KoinComponent {
     /**
      * The target APK file which can be modified during patching
      */
-    val patchedApk: File = paths.patchingWorkingDir()
-        .resolve("patched.apk")
+    val patchedApk: File = paths.patchedApk()
 
     override val group = StepGroup.Download
     override val localizedName = R.string.patch_step_copy_deps

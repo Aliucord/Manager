@@ -101,6 +101,11 @@ class PathManager(
     fun patchingWorkingDir() = patchingDir
         .resolve("patched")
 
+    /**
+     * The APK that is worked on during the patching process.
+     */
+    fun patchedApk() = patchingWorkingDir().resolve("patched.apk")
+
     private companion object {
         /**
          * List all the files that follow the ```[SemVer].custom.*``` naming scheme.
