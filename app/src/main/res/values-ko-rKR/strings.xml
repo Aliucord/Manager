@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">무엇을 하고 있는지 모른다면 활성화 하지 마세요!</string>
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
   <string name="setting_keep_patched_apks_desc">설치 후 패치된 APK를 삭제하지 않아요 (수동 설치용)</string>
-  <string name="setting_keep_patched_apks_error">이 기기는 외부 캐시 디렉토리를 지원하지 않아요!</string>
   <string name="settings_clear_cache">캐시 지우기</string>
-  <string name="settings_see_patched_apks">패치된 APK 보기</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어두운 테마</string>
   <string name="theme_light">밝은 테마</string>

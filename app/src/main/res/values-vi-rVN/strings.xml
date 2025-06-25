@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_keep_patched_apks">Giữ lại các bản vá APKs</string>
   <string name="setting_keep_patched_apks_desc">Không xóa bỏ các bản vá APKs sau khi cài đặt (dành cho cài đặt thủ công)</string>
-  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
   <string name="settings_clear_cache">Xoá bộ nhớ đệm</string>
-  <string name="settings_see_patched_apks">See patched APKs</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>

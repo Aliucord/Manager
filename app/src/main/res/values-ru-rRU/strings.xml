@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">Не включайте это, если не знаете, что делаете!</string>
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
   <string name="setting_keep_patched_apks_desc">Не удалять пропатченные APK после установки (для ручной установки)</string>
-  <string name="setting_keep_patched_apks_error">Это устройство не поддерживает внешние папки кэша!</string>
   <string name="settings_clear_cache">Очистить кеш</string>
-  <string name="settings_see_patched_apks">Просмотреть пропатченные APK</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
   <string name="theme_light">Светлая</string>

@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">Não ative isso a menos que saiba o que está fazendo!</string>
   <string name="setting_keep_patched_apks">Manter APKs patcheadas</string>
   <string name="setting_keep_patched_apks_desc">Não excluir APKs patcheadas após a instalação (para instalação manual)</string>
-  <string name="setting_keep_patched_apks_error">Este dispositivo não suporta diretórios de cache externos!</string>
   <string name="settings_clear_cache">Limpar cache</string>
-  <string name="settings_see_patched_apks">Ver APKs patcheadas</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>

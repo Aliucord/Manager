@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Não apague APKs modificados após a sua instalação (para instalação manualmente)</string>
-  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
   <string name="settings_clear_cache">Limpar cache</string>
-  <string name="settings_see_patched_apks">See patched APKs</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>

@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_keep_patched_apks">保持補丁 APKs</string>
   <string name="setting_keep_patched_apks_desc">安裝後不刪除已安裝補丁的 APK（用於手動安裝）</string>
-  <string name="setting_keep_patched_apks_error">This device does not support external cache directories!</string>
   <string name="settings_clear_cache">清除快取</string>
-  <string name="settings_see_patched_apks">See patched APKs</string>
   <string name="theme_system">跟隨系統</string>
   <string name="theme_dark">深色模式</string>
   <string name="theme_light">淺色模式</string>

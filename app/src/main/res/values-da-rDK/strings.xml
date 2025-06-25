@@ -50,9 +50,7 @@
   <string name="setting_developer_options_desc">Aktivér ikke dette, medmindre man ved, hvad man foretager sig!</string>
   <string name="setting_keep_patched_apks">Behold patchede APK\'er</string>
   <string name="setting_keep_patched_apks_desc">Behold alle fejlrettede filer og APK\'er efter installation til fejlretning.</string>
-  <string name="setting_keep_patched_apks_error">Denne enhed understøtter ikke eksterne cachemapper!</string>
   <string name="settings_clear_cache">Ryd cache</string>
-  <string name="settings_see_patched_apks">Vis fejlrettede APK\'er</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Mørkt</string>
   <string name="theme_light">Lyst</string>
