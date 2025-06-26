@@ -3,8 +3,7 @@ package com.aliucord.manager.patcher
 import com.aliucord.manager.patcher.steps.download.*
 import com.aliucord.manager.patcher.steps.install.*
 import com.aliucord.manager.patcher.steps.patch.*
-import com.aliucord.manager.patcher.steps.prepare.DowngradeCheckStep
-import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
+import com.aliucord.manager.patcher.steps.prepare.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import kotlinx.collections.immutable.persistentListOf
 
@@ -16,6 +15,7 @@ class KotlinPatchRunner(options: PatchOptions) : StepRunner() {
         // Prepare
         FetchInfoStep(),
         DowngradeCheckStep(options),
+        RestoreDownloadsStep(),
 
         // Download
         DownloadDiscordStep(),

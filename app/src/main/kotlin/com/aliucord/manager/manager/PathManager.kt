@@ -42,17 +42,38 @@ class PathManager(
     val patchingDir = context.filesDir.resolve("patching").apply { mkdirs() }
 
     /**
+     * The internal app directory uses for downloads that should not be wiped,
+     * to be used during the patching process. When the process completes, then this
+     * is to be moved to the cache dir, to allow Android to wipe the downloads when
+     * low on storage.
+     */
+    val patchingDownloadDir = patchingDir.resolve("downloads")
+
+    /**
+     * Used as a secondary location for downloads when not currently patching.
+     * This allows Android to clear the download cache when low on storage.
+     */
+    val cacheDownloadDir = context.cacheDir.resolve("downloads")
+
+    /**
+     * A permanent location used for storing custom patching components.
+     * This does not get moved to an Android-managed cache dir when
+     * not currently patching.
+     */
+    val customComponentsDir = patchingDir.resolve("custom")
+
+    /**
      * Delete all the cache dirs and recreate them.
      */
     fun clearCache() {
-        context.cacheDir.apply { deleteRecursively() && mkdirs() }
-        patchingDir.apply { deleteRecursively() && mkdirs() }
+        for (dir in arrayOf(patchingDir, cacheDownloadDir, context.cacheDir))
+            dir.deleteRecursively() && dir.mkdirs()
     }
 
     /**
      * Create a new subfolder in the Discord APK cache for a specific version.
      */
-    fun discordApkVersionCache(version: Int): File = patchingDir
+    fun discordApkVersionCache(version: Int): File = patchingDownloadDir
         .resolve("discord")
         .resolve(version.toString())
         .apply { mkdirs() }
@@ -60,39 +81,39 @@ class PathManager(
     /**
      * Resolve a specific path for a cached injector.
      */
-    fun cachedInjectorDex(version: SemVer, custom: Boolean = false) = patchingDir
+    fun cachedInjectorDex(version: SemVer, custom: Boolean = false) = patchingDownloadDir
         .resolve("injector").apply { mkdirs() }
         .resolve("$version${if (custom) ".custom" else ""}.dex")
 
     /**
      * Get all the versions of custom injector builds.
      */
-    fun customInjectorDexs() = listCustomFiles(patchingDir.resolve("injector"))
+    fun customInjectorDexs() = listCustomFiles(customComponentsDir.resolve("injector"))
 
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
      */
-    fun cachedAliuhookAAR(version: SemVer) = patchingDir
+    fun cachedAliuhookAAR(version: SemVer) = patchingDownloadDir
         .resolve("aliuhook").apply { mkdirs() }
         .resolve("$version.aar")
 
     /**
      * Resolve a specific path for a versioned smali patches archive.
      */
-    fun cachedSmaliPatches(version: SemVer, custom: Boolean = false) = patchingDir
+    fun cachedSmaliPatches(version: SemVer, custom: Boolean = false) = patchingDownloadDir
         .resolve("patches").apply { mkdirs() }
         .resolve("$version${if (custom) ".custom" else ""}.zip")
 
     /**
      * Get all the versions of custom smali bundles.
      */
-    fun customSmaliPatches() = listCustomFiles(patchingDir.resolve("patches"))
+    fun customSmaliPatches() = listCustomFiles(customComponentsDir.resolve("patches"))
 
     /**
      * Singular Kotlin file of the most up-to-date version
      * since the stdlib is backwards compatible.
      */
-    fun cachedKotlinDex() = patchingDir
+    fun cachedKotlinDex() = patchingDownloadDir
         .resolve("kotlin.dex")
 
     /**
@@ -108,7 +129,7 @@ class PathManager(
 
     private companion object {
         /**
-         * List all the files that follow the ```[SemVer].custom.*``` naming scheme.
+         * List all the files in a directory that follow SemVer naming.
          */
         private fun listCustomFiles(dir: File): List<SemVer>? {
             if (!dir.exists()) return null
@@ -116,12 +137,9 @@ class PathManager(
             val files = dir.listFiles()
                 ?: throw Error("Failed to list directory")
 
-            val customVersions = files
+            return files
                 .map { it.nameWithoutExtension }
-                .filter { it.endsWith(".custom") }
-                .map { it.removeSuffix(".custom") }
-
-            return customVersions.mapNotNull(SemVer::parseOrNull)
+                .mapNotNull(SemVer::parseOrNull)
         }
     }
 }

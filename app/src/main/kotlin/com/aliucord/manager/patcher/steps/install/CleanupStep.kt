@@ -6,7 +6,6 @@ import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
-import com.aliucord.manager.patcher.steps.base.StepState
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -21,9 +20,11 @@ class CleanupStep : Step(), KoinComponent {
     override val localizedName = R.string.patch_step_cleanup
 
     override suspend fun execute(container: StepRunner) {
+        container.log("Moving downloads back to cache")
+        paths.patchingDownloadDir.renameTo(paths.cacheDownloadDir)
+
         if (prefs.keepPatchedApks) {
-            container.log("keepPatchedApks enabled, skipping...")
-            state = StepState.Skipped
+            container.log("keepPatchedApks enabled, keeping working dir")
         } else {
             container.log("Deleting patching working dir")
             if (!paths.patchingWorkingDir().deleteRecursively())

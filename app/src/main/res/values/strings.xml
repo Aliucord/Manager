@@ -119,6 +119,7 @@
 
   <string name="patch_step_fetch_kt_version">Fetching target Discord version</string>
   <string name="patch_step_downgrade_check">Checking for newer installations</string>
+  <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Downloading Discord APK</string>
   <string name="patch_step_dl_kotlin">Downloading Kotlin library</string>
   <string name="patch_step_dl_injector">Downloading Aliucord Injector</string>
