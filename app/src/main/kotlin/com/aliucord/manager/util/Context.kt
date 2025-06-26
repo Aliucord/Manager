@@ -28,18 +28,19 @@ fun Context.copyToClipboard(text: String) {
     )
 }
 
-fun Context.saveFile(name: String, text: String): File? {
-    val basePath = Environment.getExternalStorageDirectory()
-    val file = File(basePath, "/Download/$name")
+fun Context.saveFile(name: String, text: String): Boolean {
+    val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    val file = File(downloads, name)
+    val base = downloads.parentFile!!
 
     return try {
         file.writeText(text)
-        showToast(R.string.installer_file_save_success, file.relativeTo(basePath))
-        file
+        showToast(R.string.installer_file_save_success, file.toRelativeString(base))
+        true
     } catch (e: Throwable) {
         Log.e(BuildConfig.TAG, Log.getStackTraceString(e))
-        showToast(R.string.installer_file_save_failed, file.relativeTo(basePath))
-        null
+        showToast(R.string.installer_file_save_failed, file.toRelativeString(base))
+        false
     }
 }
 
