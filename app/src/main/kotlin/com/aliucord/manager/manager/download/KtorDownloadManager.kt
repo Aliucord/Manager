@@ -1,7 +1,11 @@
 package com.aliucord.manager.manager.download
 
+import android.app.Application
 import android.content.Context
+import android.os.Build
+import android.os.storage.StorageManager
 import androidx.annotation.StringRes
+import androidx.core.content.getSystemService
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.download.IDownloadManager.Result
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
@@ -14,6 +18,7 @@ import io.ktor.http.contentLength
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.CancellationException
 import java.io.File
+import java.io.IOException
 import java.net.SocketTimeoutException
 
 /**
@@ -21,7 +26,10 @@ import java.net.SocketTimeoutException
  * This is used as an alternative downloader option due to some bugs with the
  * system's DownloadManager that prevents its usage on some emulators and ROMs.
  */
-class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
+class KtorDownloadManager(
+    private val http: HttpClient,
+    private val application: Application,
+) : IDownloadManager {
     override suspend fun download(url: String, out: File, onProgressUpdate: IDownloadManager.ProgressListener?): Result {
         onProgressUpdate?.onUpdate(null)
         out.parentFile?.mkdirs()
@@ -46,9 +54,15 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
                 var retrieved = 0L
 
                 val buf = ByteArray(1024 * 1024 * 1)
-                var bufLen = 0
+                var bufLen: Int
 
                 tmpOut.outputStream().use { stream ->
+                    // Preallocate space for this file
+                    if (total > 0 && Build.VERSION.SDK_INT >= 26) {
+                        application.getSystemService<StorageManager>()!!
+                            .allocateBytes(stream.fd, total)
+                    }
+
                     while (!channel.isClosedForRead) {
                         bufLen = channel.readAvailable(buf)
                         if (bufLen <= 0) break
@@ -59,6 +73,9 @@ class KtorDownloadManager(private val http: HttpClient) : IDownloadManager {
                         retrieved += bufLen
 
                         if (total > 0) {
+                            if (retrieved > total)
+                                throw IOException("Total bytes received exceeds header total!")
+
                             onProgressUpdate?.onUpdate(retrieved / total.toFloat())
                         } else {
                             onProgressUpdate?.onUpdate(null)
