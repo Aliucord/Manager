@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.download.IDownloadManager.Result
+import com.aliucord.manager.patcher.util.InsufficientStorageException
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
@@ -59,8 +60,13 @@ class KtorDownloadManager(
                 tmpOut.outputStream().use { stream ->
                     // Preallocate space for this file
                     if (total > 0 && Build.VERSION.SDK_INT >= 26) {
-                        application.getSystemService<StorageManager>()!!
-                            .allocateBytes(stream.fd, total)
+                        val storageManager = application.getSystemService<StorageManager>()!!
+
+                        try {
+                            storageManager.allocateBytes(stream.fd, total)
+                        } catch (e: IOException) {
+                            throw InsufficientStorageException(e.message)
+                        }
                     }
 
                     while (!channel.isClosedForRead) {
@@ -86,9 +92,12 @@ class KtorDownloadManager(
         } catch (_: CancellationException) {
             tmpOut.delete()
             return Result.Cancelled(systemTriggered = false)
-        } catch (t: SocketTimeoutException) {
+        } catch (e: SocketTimeoutException) {
             tmpOut.delete()
-            return Error(t, localizedError = R.string.downloader_err_timeout)
+            return Error(e, localizedError = R.string.downloader_err_timeout)
+        } catch (e: InsufficientStorageException) {
+            tmpOut.delete()
+            return Error(e, localizedError = R.string.downloader_err_storage_space)
         } catch (t: Throwable) {
             tmpOut.delete()
             return Error(t)

@@ -9,9 +9,11 @@ import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
+import com.aliucord.manager.patcher.util.InsufficientStorageException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
+import java.io.IOException
 
 /**
  * Step to duplicate the Discord APK to be worked on.
@@ -47,7 +49,12 @@ class CopyDependenciesStep : Step(), KoinComponent {
             // 2) Modifying the copied APK (whether this is necessary I'm not sure)
             // 2) Extracting native libs and other various operations
             val allocSize = (fileSize * 3.5).toLong()
-            storageManager.allocateBytes(targetFileStorageId, allocSize)
+
+            try {
+                storageManager.allocateBytes(targetFileStorageId, allocSize)
+            } catch (e: IOException) {
+                throw InsufficientStorageException(e.message)
+            }
         }
 
         container.log("Copying patched apk from ${srcApk.absolutePath} to ${patchedApk.absolutePath}")

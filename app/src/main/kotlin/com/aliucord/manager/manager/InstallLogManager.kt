@@ -17,6 +17,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -90,7 +91,11 @@ class InstallLogManager(
             errorStacktrace = error?.let { Log.getStackTraceString(it).trimEnd() },
         )
 
-        path.writeText(json.encodeToString(data))
+        try {
+            path.writeText(json.encodeToString(data))
+        } catch (e: IOException) {
+            Log.e(BuildConfig.TAG, "Failed to write log to disk", e)
+        }
     }
 
     /**

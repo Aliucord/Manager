@@ -15,6 +15,7 @@ import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.*
 import com.aliucord.manager.patcher.steps.install.InstallStep
+import com.aliucord.manager.patcher.util.InsufficientStorageException
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
 import com.aliucord.manager.util.launchBlock
@@ -160,6 +161,10 @@ class PatchingScreenModel(
             else -> {
                 Log.e(BuildConfig.TAG, "Failed to perform installation process", error)
                 mutableState.value = PatchingScreenState.Failed(installId = installId!!)
+
+                if (error is InsufficientStorageException) {
+                    application.showToast(R.string.installer_insufficient_storage)
+                }
 
                 error
             }
