@@ -15,6 +15,7 @@
   <string name="action_install">Εγκατάσταση</string>
   <string name="action_uninstall">Απεγκατάσταση</string>
   <string name="action_add_install">Προσθήκη Εγκατάστασης</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Ενημέρωση</string>
   <string name="action_clear">Εκκαθάριση</string>
   <string name="action_launch">Έναρξη</string>
@@ -30,6 +31,7 @@
   <string name="action_open_info">Άνοιγμα πληροφοριών</string>
   <string name="action_reset_default">Επαναφορά προεπιλογών</string>
   <string name="permissions_grant_title">Εκχώρηση αδειών</string>
+  <string name="storage_permissions_grant_body">Για να λειτουργήσει σωστά ο Aliucord Manager, πρέπει να εκχωρήσετε δικαιώματα αρχείου. Δεδομένου ότι τα κοινόχρηστα δεδομένα αποθηκεύονται στο ~/Aliucord, απαιτούνται δικαιώματα για να λειτουργήσει ο Manager.</string>
   <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Αποτυχία εκκίνησης του Aliucord</string>
@@ -41,15 +43,18 @@
   <string name="setting_dynamic_color">Δυναμικό χρώμα</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">Επιλογές προγραμματιστών</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
+  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_keep_patched_apks">Διατήρηση patched APKs</string>
+  <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installation for debugging purposes. Note that exporting the APK is only useful after a successful patching session.</string>
   <string name="settings_clear_cache">Εκκαθάριση προσωρινής μνήμης</string>
+  <string name="settings_export_apk">Export APK</string>
   <string name="theme_system">Σύστημα</string>
   <string name="theme_dark">Σκοτεινό</string>
   <string name="theme_light">Φωτεινό</string>
   <string name="plugins_title">Plugins</string>
   <string name="plugins_view_changelog">Προβολή αλλαγών για %1$s</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>
+  <string name="plugins_delete_plugin_body">Είσαστε βέβαιοι ότι θέλετε να απεγκαταστήσετε αυτό το plugin;</string>
   <string name="plugins_none_installed">Δεν υπάρχουν εγκατεστημένα plugins!</string>
   <string name="plugins_changelog_media">Πολυμέσα Αλλαγών</string>
   <string name="plugins_error">Παρουσιάστηκε σφάλμα κατά την επεξεργασία των plugins!</string>
@@ -62,6 +67,7 @@
   <string name="contributors_contributions">%s συνεισφορές</string>
   <string name="network_load_fail">Αποτυχία φόρτωσης</string>
   <string name="network_warning_title">Μετρημένο δίκτυο</string>
+  <string name="network_warning_body">Φαίνεται ότι είστε συνδεδεμένοι με δεδομένα κινητής τηλεφωνίας ή ένα ενδεχομένως μετρημένο δίκτυο. Για να συνεχίσετε την εγκατάσταση, θα μπορούσε να γίνει λήψη αρκετών εκατοντάδων megabytes. Είστε σίγουροι ότι θέλετε να συνεχίσετε;</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">Υποστηριζόμενη έκδοση:</string>
   <string name="version_none">Κανένα</string>
@@ -78,6 +84,7 @@
   <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
   <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
   <string name="installer_dl_verify_fail">Αποτυχία επαλήθευσης λήψης</string>
+  <string name="installer_insufficient_storage">Insufficient storage space!</string>
   <string name="installer_banner_minimization">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="installer_banner_failure">Installation failed! You can either retry or click this banner to open the Aliucord server for help.</string>
   <string name="installer_banner_success">Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.</string>
@@ -93,6 +100,8 @@
   <string name="install_group_patch">Ενημέρωση APKs</string>
   <string name="install_group_install">Εγκατάσταση</string>
   <string name="patch_step_fetch_kt_version">Λήψη επιλεγμένης έκδοσης του Discord</string>
+  <string name="patch_step_downgrade_check">Έλεγχος για παλαιότερες εγκαταστάσεις</string>
+  <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Λήψη Discord APK</string>
   <string name="patch_step_dl_kotlin">Λήψη βιβλιοθήκης Kotlin</string>
   <string name="patch_step_dl_injector">Λήψη Aliucord Injector</string>
@@ -116,6 +125,7 @@
   <string name="status_success">Επιτυχής</string>
   <string name="status_failed">Αποτυχία</string>
   <string name="installer_abort_title">Έξοδος σίγουρα;</string>
+  <string name="installer_abort_body">Είστε βέβαιοι ότι θέλετε να ακυρώσετε μια σε εξέλιξη εγκατάσταση; Τα προσωρινά αποθηκευμένα αρχεία θα καθαριστούν για να αποφευχθεί η διαφθορά.</string>
   <string name="updater_body">Μια νέα ενημέρωση έχει κυκλοφορήσει για το Aliucord Manager! Μπορεί να απαιτείται για να λειτουργήσει σωστά. Θα θέλατε να ενημερώσετε;</string>
   <string name="updater_title">Ενημέρωση σε %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -170,6 +180,7 @@
   <string name="log_section_error">Error Stacktrace</string>
   <string name="log_section_log">Installation Log</string>
   <string name="log_action_export">Export log</string>
+  <string name="log_action_export_apk">Export APK</string>
   <string name="log_action_share">Share log</string>
   <string name="logs_title">Logs</string>
   <string name="logs_none">No logs present!</string>

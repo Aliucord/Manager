@@ -15,6 +15,7 @@
   <string name="action_install">安装</string>
   <string name="action_uninstall">卸载</string>
   <string name="action_add_install">添加安装</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
   <string name="action_launch">启动</string>
@@ -42,15 +43,18 @@
   <string name="setting_dynamic_color">动态颜色</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">开发者选项</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
+  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
+  <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installation for debugging purposes. Note that exporting the APK is only useful after a successful patching session.</string>
   <string name="settings_clear_cache">清除缓存</string>
+  <string name="settings_export_apk">Export APK</string>
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
   <string name="theme_light">浅色</string>
   <string name="plugins_title">插件</string>
   <string name="plugins_view_changelog">查看 %1$s 的更新日志</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>
+  <string name="plugins_delete_plugin_body">您确定要卸载此插件吗？</string>
   <string name="plugins_none_installed">没有已安装的插件！</string>
   <string name="plugins_changelog_media">更新日志媒体</string>
   <string name="plugins_error">处理插件时发生错误！</string>
@@ -80,6 +84,7 @@
   <string name="installer_uninstall_success">成功卸载 Aliucord</string>
   <string name="installer_uninstall_aborted">已取消卸载</string>
   <string name="installer_dl_verify_fail">无法验证下载</string>
+  <string name="installer_insufficient_storage">Insufficient storage space!</string>
   <string name="installer_banner_minimization">由于电池优化未被禁用，最小化此屏幕可能会中止安装过程！</string>
   <string name="installer_banner_failure">Installation failed! You can either retry or click this banner to open the Aliucord server for help.</string>
   <string name="installer_banner_success">Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.</string>
@@ -95,6 +100,8 @@
   <string name="install_group_patch">修补 APK</string>
   <string name="install_group_install">安装 APK</string>
   <string name="patch_step_fetch_kt_version">正在获取目标 Discord 版本</string>
+  <string name="patch_step_downgrade_check">正在检查更新的安装</string>
+  <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">正在下载 Discord APK</string>
   <string name="patch_step_dl_kotlin">正在下载 Kotlin Library</string>
   <string name="patch_step_dl_injector">正在下载 Aliucord 注入器</string>
@@ -139,6 +146,7 @@
   <string name="patchopts_debuggable_title">可调试</string>
   <string name="patchopts_debuggable_desc">启用可调试清单标志。仅当您知道自己在做什么时才使用此功能！</string>
   <string name="patchopts_icon_title">替换应用图标</string>
+  <string name="patchopts_icon_desc">将应用的图标更改为使用 Aliucord 品牌，而不是 Discord 自己的品牌。</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">高级</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -172,6 +180,7 @@
   <string name="log_section_error">Error Stacktrace</string>
   <string name="log_section_log">Installation Log</string>
   <string name="log_action_export">Export log</string>
+  <string name="log_action_export_apk">Export APK</string>
   <string name="log_action_share">Share log</string>
   <string name="logs_title">Logs</string>
   <string name="logs_none">No logs present!</string>

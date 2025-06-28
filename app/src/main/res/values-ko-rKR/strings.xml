@@ -15,6 +15,7 @@
   <string name="action_install">설치</string>
   <string name="action_uninstall">설치 삭제</string>
   <string name="action_add_install">신규 설치</string>
+  <string name="action_update_install">업데이트 설치</string>
   <string name="action_update">업데이트</string>
   <string name="action_clear">초기화</string>
   <string name="action_launch">실행</string>
@@ -30,6 +31,7 @@
   <string name="action_open_info">정보 보기</string>
   <string name="action_reset_default">기본값으로 재설정</string>
   <string name="permissions_grant_title">권한 부여</string>
+  <string name="storage_permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
   <string name="install_permissions_grant_body">Aliucord를 설치하려면 출처를 알 수 없는 앱 설치 권한을 허용해야 해요.</string>
   <string name="installs_no_installs">설치된 앱이 없어요!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
@@ -43,13 +45,16 @@
   <string name="setting_developer_options">개발자 옵션</string>
   <string name="setting_developer_options_desc">무엇을 하고 있는지 모른다면 활성화 하지 마세요!</string>
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
+  <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installation for debugging purposes. Note that exporting the APK is only useful after a successful patching session.</string>
   <string name="settings_clear_cache">캐시 지우기</string>
+  <string name="settings_export_apk">Export APK</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어두운 테마</string>
   <string name="theme_light">밝은 테마</string>
   <string name="plugins_title">플러그인</string>
   <string name="plugins_view_changelog">%1$s의 변경 사항 보기</string>
   <string name="plugins_delete_plugin">%s 삭제</string>
+  <string name="plugins_delete_plugin_body">이 플러그인을 설치 삭제할까요?</string>
   <string name="plugins_none_installed">설치된 플러그인이 없어요!</string>
   <string name="plugins_changelog_media">미디어 변경 사항</string>
   <string name="plugins_error">플러그인을 처리하던 도중 오류가 발생했어요!</string>
@@ -62,6 +67,7 @@
   <string name="contributors_contributions">%s회 기여</string>
   <string name="network_load_fail">불러오지 못했어요</string>
   <string name="network_warning_title">종량제 네트워크</string>
+  <string name="network_warning_body">모바일 데이터 또는 종량제 네트워크에 연결된 것 같아요. 100MB 이상의 데이터가 다운로드될 수 있어요. 계속할까요?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">지원하는 버전:</string>
   <string name="version_none">없음</string>
@@ -78,6 +84,7 @@
   <string name="installer_uninstall_success">Aliucord 설치 삭제를 완료했어요</string>
   <string name="installer_uninstall_aborted">설치 삭제를 중단했어요</string>
   <string name="installer_dl_verify_fail">다운로드를 검증하지 못했어요</string>
+  <string name="installer_insufficient_storage">Insufficient storage space!</string>
   <string name="installer_banner_minimization">배터리 최적화가 꺼져 있지 않아, 화면을 최소화하면 설치 과정이 중단될 수 있어요!</string>
   <string name="installer_banner_failure">설치 실패! 다시 시도하거나 이 배너를 클릭하고 Aliucord 서버를 열어 도움을 받을 수 있어요.</string>
   <string name="installer_banner_success">Aliucord를 성공적으로 설치했어요! 이 Manager 앱은 특정한 업데이트를 수행하는 데 필요하니 제거하지 마세요.</string>
@@ -93,8 +100,11 @@
   <string name="install_group_patch">APK 패치</string>
   <string name="install_group_install">APK 설치</string>
   <string name="patch_step_fetch_kt_version">대상 버전의 Discord 가져오는 중</string>
+  <string name="patch_step_downgrade_check">최신 버전 확인 중</string>
+  <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Discord APK 다운로드 중</string>
   <string name="patch_step_dl_kotlin">Kotlin 라이브러리 다운로드 중</string>
+  <string name="patch_step_dl_injector">인젝터 다운로드 중</string>
   <string name="patch_step_dl_aliuhook">Aliuhook 라이브러리 다운로드 중</string>
   <string name="patch_step_dl_smali">smali 패치 다운로드 중</string>
   <string name="patch_step_copy_deps">종속성 복사 중</string>
@@ -170,6 +180,7 @@
   <string name="log_section_error">오류 상세로그</string>
   <string name="log_section_log">설치 로그</string>
   <string name="log_action_export">로그 내보내기</string>
+  <string name="log_action_export_apk">Export APK</string>
   <string name="log_action_share">로그 공유</string>
   <string name="logs_title">Logs</string>
   <string name="logs_none">No logs present!</string>

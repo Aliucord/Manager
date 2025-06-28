@@ -15,6 +15,7 @@
   <string name="action_install">Instalar</string>
   <string name="action_uninstall">Desinstalar</string>
   <string name="action_add_install">Adicionar instalação</string>
+  <string name="action_update_install">Atualizar Instalação do Aliucord</string>
   <string name="action_update">Atualização</string>
   <string name="action_clear">Limpar</string>
   <string name="action_launch">Iniciar</string>
@@ -30,12 +31,13 @@
   <string name="action_open_info">Abrir informações</string>
   <string name="action_reset_default">Restaurar</string>
   <string name="permissions_grant_title">Conceder permissões</string>
+  <string name="storage_permissions_grant_body">Para o Aliucord Manager funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
   <string name="install_permissions_grant_body">A instalação do Aliucord requer a concessão de permissão para instalar apps de fontes desconhecidas.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_header_advanced">Avançado</string>
   <string name="settings_header_appearance">Aparência</string>
-  <string name="settings_header_info">Info</string>
+  <string name="settings_header_info">Informações</string>
   <string name="setting_theme">Tema</string>
   <string name="setting_theme_desc">O tema a ser aplicado a este aplicativo</string>
   <string name="setting_dynamic_color">Cor dinâmica</string>
@@ -43,13 +45,16 @@
   <string name="setting_developer_options">Opções de desenvolvedor</string>
   <string name="setting_developer_options_desc">Não ative isso a menos que saiba o que está fazendo!</string>
   <string name="setting_keep_patched_apks">Manter APKs patcheadas</string>
+  <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installation for debugging purposes. Note that exporting the APK is only useful after a successful patching session.</string>
   <string name="settings_clear_cache">Limpar cache</string>
+  <string name="settings_export_apk">Export APK</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>
   <string name="plugins_title">Extensões</string>
   <string name="plugins_view_changelog">Ver mudanças para %1$s</string>
   <string name="plugins_delete_plugin">Desinstalar %s</string>
+  <string name="plugins_delete_plugin_body">Tem certeza de que deseja desinstalar essa extensão?</string>
   <string name="plugins_none_installed">Nenhum plugin instalado!</string>
   <string name="plugins_changelog_media">Mídia de registro</string>
   <string name="plugins_error">Ocorreu um erro ao processar os plugins!</string>
@@ -79,6 +84,7 @@
   <string name="installer_uninstall_success">Aliucord foi desinstalado com sucesso</string>
   <string name="installer_uninstall_aborted">Desinstalação cancelada</string>
   <string name="installer_dl_verify_fail">Falha ao verificar o download</string>
+  <string name="installer_insufficient_storage">Insufficient storage space!</string>
   <string name="installer_banner_minimization">Uma vez que as otimizações da bateria não foram desativadas, minimizar esta tela poderá abortar o processo de instalação!</string>
   <string name="installer_banner_failure">Falha na instalação! Você pode tentar novamente ou clicar neste banner para abrir o servidor do Aliucord para obter ajuda.</string>
   <string name="installer_banner_success">Aliucord instalado com sucesso! *NÃO* desinstale o gerenciador (este aplicativo), pois ele é necessário para executar certos tipos de atualizações.</string>
@@ -94,8 +100,11 @@
   <string name="install_group_patch">Patchear APK</string>
   <string name="install_group_install">Instalar APK</string>
   <string name="patch_step_fetch_kt_version">Buscando versão do Discord</string>
+  <string name="patch_step_downgrade_check">Verificando instalações antigas</string>
+  <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Baixando a APK do Discord</string>
   <string name="patch_step_dl_kotlin">Baixando biblioteca Kotlin</string>
+  <string name="patch_step_dl_injector">Baixando injetor</string>
   <string name="patch_step_dl_aliuhook">Baixando biblioteca Aliuhook</string>
   <string name="patch_step_dl_smali">Baixando patches smali</string>
   <string name="patch_step_copy_deps">Copiando dependências</string>
@@ -119,7 +128,7 @@
   <string name="installer_abort_body">Tem certeza que deseja cancelar uma instalação em andamento?</string>
   <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
   <string name="updater_title">Atualizado para %1$s</string>
-  <string name="updater_fail">Failed to check for updates!</string>
+  <string name="updater_fail">Falha ao checar atualizações</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
   <string name="downloader_err_timeout">Falha no Download (tempo esgotado)</string>
   <string name="downloader_err_response">Download falhou (Resposta inválida)</string>
@@ -137,6 +146,7 @@
   <string name="patchopts_debuggable_title">Depurável</string>
   <string name="patchopts_debuggable_desc">Habilite a opção de manifesto depurável. Use isso apenas se você sabe o que está fazendo!</string>
   <string name="patchopts_icon_title">Substituir ícone do app</string>
+  <string name="patchopts_icon_desc">Muda o ícone do aplicativo para usar a marca Aliucord ao invés da do próprio Discord.</string>
   <string name="patchopts_divider_basic">Básico</string>
   <string name="patchopts_divider_advanced">Avançado</string>
   <string name="patchopts_warning_invalid_iconopts">As opções de ícone selecionadas são inválidas!</string>
@@ -148,6 +158,7 @@
   <string name="iconopts_variant_desc_discord">Não altera o ícone original, apenas adiciona o ícone monocromático que falta ao APK.</string>
   <string name="iconopts_variant_desc_aliucord">Altera a cor do ícone original para a marca do Aliucord.</string>
   <string name="iconopts_variant_desc_color">Selecionar uma cor de fundo personalizada para o ícone.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Matiz &amp; Saturação</string>
   <string name="iconopts_colorpicker_desc">Os componentes principais das cores HSV.</string>
   <string name="iconopts_lightness_title">Luminosidade</string>
@@ -169,6 +180,7 @@
   <string name="log_section_error">Stacktrace do Erro</string>
   <string name="log_section_log">Logs de Instalação</string>
   <string name="log_action_export">Exportar logs</string>
+  <string name="log_action_export_apk">Export APK</string>
   <string name="log_action_share">Compartilhar logs</string>
   <string name="logs_title">Logs</string>
   <string name="logs_none">Não há logs presentes!</string>

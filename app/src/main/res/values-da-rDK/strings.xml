@@ -15,6 +15,7 @@
   <string name="action_install">Installér</string>
   <string name="action_uninstall">Afinstallér</string>
   <string name="action_add_install">Tilføj Installation</string>
+  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Opdatér</string>
   <string name="action_clear">Ryd</string>
   <string name="action_launch">Start</string>
@@ -44,13 +45,16 @@
   <string name="setting_developer_options">Udviklerindstillinger</string>
   <string name="setting_developer_options_desc">Aktivér ikke dette, medmindre man ved, hvad man foretager sig!</string>
   <string name="setting_keep_patched_apks">Behold patchede APK\'er</string>
+  <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installation for debugging purposes. Note that exporting the APK is only useful after a successful patching session.</string>
   <string name="settings_clear_cache">Ryd cache</string>
+  <string name="settings_export_apk">Export APK</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Mørkt</string>
   <string name="theme_light">Lyst</string>
   <string name="plugins_title">Plugins</string>
   <string name="plugins_view_changelog">Se ændringslog for %1$s</string>
   <string name="plugins_delete_plugin">Afinstallér %s</string>
+  <string name="plugins_delete_plugin_body">Sikker på, at dette plugin skal afinstalleres?</string>
   <string name="plugins_none_installed">Ingen plugins installeret!</string>
   <string name="plugins_changelog_media">Ændringslog Medie</string>
   <string name="plugins_error">En fejl opstod under behandlingen af plugins!</string>
@@ -60,9 +64,10 @@
   <string name="navigation_settings">Indstillinger</string>
   <string name="contributors_lead">Ledende</string>
   <string name="contributors">Bidragsydere</string>
-  <string name="contributors_contributions">%s contributions</string>
+  <string name="contributors_contributions">%o contributions</string>
   <string name="network_load_fail">Indlæsning mislykkedes</string>
   <string name="network_warning_title">Forbrugsafregnet netværk</string>
+  <string name="network_warning_body">Det ser ud til, at der anvendes mobildata eller et potentielt forbrugsafregnet netværk. For at fortsætte installationen, vil flere hundrede megabytes kunne blive downloadet. Fortsæt installationen, sikker?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">Understøttet version:</string>
   <string name="version_none">Ingen</string>
@@ -79,6 +84,7 @@
   <string name="installer_uninstall_success">Aliucord er nu afinstalleret</string>
   <string name="installer_uninstall_aborted">Afinstallation afbrudt</string>
   <string name="installer_dl_verify_fail">Mislykkedes at bekræfte download</string>
+  <string name="installer_insufficient_storage">Insufficient storage space!</string>
   <string name="installer_banner_minimization">Da batterioptimeringer ikke er blevet deaktiveret, kan minimering af denne skærm afbryde installationsprocessen!</string>
   <string name="installer_banner_failure">Installation mislykkedes! Man kan enten prøve igen eller klikke på dette banner for at åbne Aliucord-serveren for at få hjælp.</string>
   <string name="installer_banner_success">Aliucord er installeret! Afinstallér *IKKE* håndteringen (denne app), da den kræves for udførelse af visse typer opdateringer.</string>
@@ -94,8 +100,10 @@
   <string name="install_group_patch">Fejlret APK</string>
   <string name="install_group_install">Installér APK</string>
   <string name="patch_step_fetch_kt_version">Henter mål Discord-version</string>
+  <string name="patch_step_downgrade_check">Tjekker for nyere installationer</string>
+  <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Downloader Discord-APK</string>
-  <string name="patch_step_dl_kotlin">Downloading Kotlin library</string>
+  <string name="patch_step_dl_kotlin">Downloader Kotlin Stdlib</string>
   <string name="patch_step_dl_injector">Downloadier Aliucord Injector</string>
   <string name="patch_step_dl_aliuhook">Downloader Aliuhook-bibliotek</string>
   <string name="patch_step_dl_smali">Downloader smali-fejlrettelser</string>
@@ -138,7 +146,7 @@
   <string name="patchopts_debuggable_title">Fejlfindbar</string>
   <string name="patchopts_debuggable_desc">Aktivér fejlsøgningsmanifestflaget. Brug kun dette, såfremt man ved, hvad man foretager sig!</string>
   <string name="patchopts_icon_title">Udskift app-ikon</string>
-  <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
+  <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
   <string name="patchopts_divider_basic">Grundlæggende</string>
   <string name="patchopts_divider_advanced">Avanceret</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -172,6 +180,7 @@
   <string name="log_section_error">Fejl Stacktrace</string>
   <string name="log_section_log">Installationslog</string>
   <string name="log_action_export">Eksportér log</string>
+  <string name="log_action_export_apk">Export APK</string>
   <string name="log_action_share">Del log</string>
   <string name="logs_title">Logger</string>
   <string name="logs_none">Ingen logger til stede!</string>
