@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">Uma modificação do aplicativo do Discord para Android</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">Servidor de Suporte</string>
   <string name="installer">Instalador</string>
   <string name="action_cancel">Cancelar</string>
@@ -18,11 +15,9 @@
   <string name="action_install">Instalar</string>
   <string name="action_uninstall">Desinstalar</string>
   <string name="action_add_install">Adicionar instalação</string>
-  <string name="action_update_install">Atualizar Instalação do Aliucord</string>
   <string name="action_update">Atualização</string>
   <string name="action_clear">Limpar</string>
   <string name="action_launch">Iniciar</string>
-  <string name="action_launch_aliucord">Iniciar</string>
   <string name="action_close">Fechar</string>
   <string name="action_open_settings">Abrir as configurações</string>
   <string name="action_search">Buscar</string>
@@ -35,7 +30,6 @@
   <string name="action_open_info">Abrir informações</string>
   <string name="action_reset_default">Restaurar</string>
   <string name="permissions_grant_title">Conceder permissões</string>
-  <string name="storage_permissions_grant_body">Para o Aliucord Manager funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
   <string name="install_permissions_grant_body">A instalação do Aliucord requer a concessão de permissão para instalar apps de fontes desconhecidas.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
@@ -49,7 +43,6 @@
   <string name="setting_developer_options">Opções de desenvolvedor</string>
   <string name="setting_developer_options_desc">Não ative isso a menos que saiba o que está fazendo!</string>
   <string name="setting_keep_patched_apks">Manter APKs patcheadas</string>
-  <string name="setting_keep_patched_apks_desc">Não excluir APKs patcheadas após a instalação (para instalação manual)</string>
   <string name="settings_clear_cache">Limpar cache</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
@@ -57,10 +50,8 @@
   <string name="plugins_title">Extensões</string>
   <string name="plugins_view_changelog">Ver mudanças para %1$s</string>
   <string name="plugins_delete_plugin">Desinstalar %s</string>
-  <string name="plugins_delete_plugin_body">Tem certeza de que deseja desinstalar essa extensão?</string>
   <string name="plugins_none_installed">Nenhum plugin instalado!</string>
   <string name="plugins_changelog_media">Mídia de registro</string>
-  <string name="plugins_plugin_title">§extensão§%1$s§ v%2$s</string>
   <string name="plugins_error">Ocorreu um erro ao processar os plugins!</string>
   <string name="navigation_back">Voltar</string>
   <string name="navigation_about">Sobre</string>
@@ -68,7 +59,7 @@
   <string name="navigation_settings">Configurações</string>
   <string name="contributors_lead">Líderes do Projeto</string>
   <string name="contributors">Colaboradores</string>
-  <string name="contributors_contributions">%o contribuições</string>
+  <string name="contributors_contributions">%s contribuições</string>
   <string name="network_load_fail">Falha ao carregar</string>
   <string name="network_warning_title">Rede limitada</string>
   <string name="network_warning_body">Parece que você está conectado a dados móveis ou a uma rede potencialmente limitada. Para continuar com a instalação, várias centenas de megabytes podem ser baixados. Tem certeza que deseja continuar?</string>
@@ -103,10 +94,8 @@
   <string name="install_group_patch">Patchear APK</string>
   <string name="install_group_install">Instalar APK</string>
   <string name="patch_step_fetch_kt_version">Buscando versão do Discord</string>
-  <string name="patch_step_downgrade_check">Verificando instalações antigas</string>
   <string name="patch_step_dl_kt_apk">Baixando a APK do Discord</string>
   <string name="patch_step_dl_kotlin">Baixando biblioteca Kotlin</string>
-  <string name="patch_step_dl_injector">Baixando injetor</string>
   <string name="patch_step_dl_aliuhook">Baixando biblioteca Aliuhook</string>
   <string name="patch_step_dl_smali">Baixando patches smali</string>
   <string name="patch_step_copy_deps">Copiando dependências</string>
@@ -127,7 +116,7 @@
   <string name="status_success">Sucesso</string>
   <string name="status_failed">Falhou</string>
   <string name="installer_abort_title">Deseja realmente sair?</string>
-  <string name="installer_abort_body">Tem certeza que deseja cancelar uma instalação em andamento? Arquivos armazenados em cache serão apagados para evitar corrupção.</string>
+  <string name="installer_abort_body">Tem certeza que deseja cancelar uma instalação em andamento?</string>
   <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
   <string name="updater_title">Atualizado para %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -148,7 +137,6 @@
   <string name="patchopts_debuggable_title">Depurável</string>
   <string name="patchopts_debuggable_desc">Habilite a opção de manifesto depurável. Use isso apenas se você sabe o que está fazendo!</string>
   <string name="patchopts_icon_title">Substituir ícone do app</string>
-  <string name="patchopts_icon_desc">Muda o ícone do aplicativo para usar a marca Aliucord ao invés da do próprio Discord.</string>
   <string name="patchopts_divider_basic">Básico</string>
   <string name="patchopts_divider_advanced">Avançado</string>
   <string name="patchopts_warning_invalid_iconopts">As opções de ícone selecionadas são inválidas!</string>
@@ -160,7 +148,6 @@
   <string name="iconopts_variant_desc_discord">Não altera o ícone original, apenas adiciona o ícone monocromático que falta ao APK.</string>
   <string name="iconopts_variant_desc_aliucord">Altera a cor do ícone original para a marca do Aliucord.</string>
   <string name="iconopts_variant_desc_color">Selecionar uma cor de fundo personalizada para o ícone.</string>
-  <string name="iconopts_variant_desc_image">Selecionar uma imagem personalizada. Note que a imagem deve ter espaçamento suficiente de acordo com as diretrizes dos Ícones Adaptativos. Android 8+.</string>
   <string name="iconopts_colorpicker_title">Matiz &amp; Saturação</string>
   <string name="iconopts_colorpicker_desc">Os componentes principais das cores HSV.</string>
   <string name="iconopts_lightness_title">Luminosidade</string>
@@ -210,9 +197,7 @@
   <string name="fun_fact_5">Você sabia que o AliucordRN deu origem ao Enmity e Vendetta?</string>
   <string name="fun_fact_6">Está com problemas? Visite o canal #support em nosso Discord!</string>
   <string name="fun_fact_7">O plugin IWillCrashYourDiscord crasha o seu discord.</string>
-  <string name="fun_fact_8">\"@Vendicated foi mal.\"</string>
   <string name="fun_fact_9">Aliucord funciona no WearOS</string>
   <string name="fun_fact_10">Aliucord usa a interface antiga *real*, de meados de 2022!</string>
   <string name="fun_fact_11">Houve uma tentativa de fazer o Aliucord rodar no iOS…</string>
-  <string name="fun_fact_12">veeeee 😭</string>
 </resources>

@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Менеджер</string>
   <string name="app_description">Модификация для приложения Discord на Android</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">Сервер поддержки</string>
   <string name="installer">Установщик</string>
   <string name="action_cancel">Отменить</string>
@@ -18,11 +15,9 @@
   <string name="action_install">Установить</string>
   <string name="action_uninstall">Удалить</string>
   <string name="action_add_install">Новый экземпляр</string>
-  <string name="action_update_install">Обновить экземпляр Aliucord</string>
   <string name="action_update">Обновить</string>
   <string name="action_clear">Стереть</string>
   <string name="action_launch">Запустить</string>
-  <string name="action_launch_aliucord">Запустить</string>
   <string name="action_close">Закрыть</string>
   <string name="action_open_settings">Открыть настройки</string>
   <string name="action_search">Поиск</string>
@@ -49,7 +44,6 @@
   <string name="setting_developer_options">Настройки для разработчиков</string>
   <string name="setting_developer_options_desc">Не включайте это, если не знаете, что делаете!</string>
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
-  <string name="setting_keep_patched_apks_desc">Не удалять пропатченные APK после установки (для ручной установки)</string>
   <string name="settings_clear_cache">Очистить кеш</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
@@ -57,10 +51,8 @@
   <string name="plugins_title">Плагины</string>
   <string name="plugins_view_changelog">Открыть список изменений для %1$s</string>
   <string name="plugins_delete_plugin">Удалить %s</string>
-  <string name="plugins_delete_plugin_body">Вы действительно хотите удалить этот плагин?</string>
   <string name="plugins_none_installed">Нет установленных плагинов!</string>
   <string name="plugins_changelog_media">Список изменений</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">Произошла ошибка при обработке плагинов!</string>
   <string name="navigation_back">Назад</string>
   <string name="navigation_about">О приложении</string>
@@ -68,7 +60,7 @@
   <string name="navigation_settings">Настройки</string>
   <string name="contributors_lead">Главные разработчики</string>
   <string name="contributors">Участники</string>
-  <string name="contributors_contributions">%o участий</string>
+  <string name="contributors_contributions">%s участий</string>
   <string name="network_load_fail">Не удалось загрузить</string>
   <string name="network_warning_title">Ограниченная сеть</string>
   <string name="network_warning_body">Похоже, вы подключены к мобильным данным или потенциально платной сети. Чтобы осуществить установку, может быть загружено несколько сотен мегабайт. Вы уверены, что хотите продолжить?</string>
@@ -103,7 +95,7 @@
   <string name="install_group_patch">Патч APK</string>
   <string name="install_group_install">Установка</string>
   <string name="patch_step_fetch_kt_version">Получение целевой версии Discord</string>
-  <string name="patch_step_downgrade_check">Проверка наличия старых установок</string>
+  <string name="patch_step_downgrade_check">Проверка наличия новых установок</string>
   <string name="patch_step_dl_kt_apk">Скачивание APK-файла Discord</string>
   <string name="patch_step_dl_kotlin">Скачивание библиотеки Kotlin</string>
   <string name="patch_step_dl_injector">Скачивание инжектора Aliucord</string>
@@ -127,7 +119,7 @@
   <string name="status_success">Успешно</string>
   <string name="status_failed">Ошибка</string>
   <string name="installer_abort_title">Действительно выйти?</string>
-  <string name="installer_abort_body">Вы уверены, что действительно хотите прервать начатую установку? Кэшированные файлы будут очищены, чтобы избежать повреждений.</string>
+  <string name="installer_abort_body">Вы уверены, что действительно хотите прервать начатую установку?</string>
   <string name="updater_body">Вышло новое обновление для Aliucord Менеджера! Оно может быть обязательным для правильной работы. Желаете ли вы обновиться?</string>
   <string name="updater_title">Обновить до %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -148,7 +140,6 @@
   <string name="patchopts_debuggable_title">Отлаживаемое</string>
   <string name="patchopts_debuggable_desc">Включите флаг отлаживаемого манифеста. Используйте его только в том случае, если вы знаете, что делаете!</string>
   <string name="patchopts_icon_title">Замена значка приложения</string>
-  <string name="patchopts_icon_desc">Изменяет значок приложения так, чтобы он использовал брендинг Aliucord, а не Discord.</string>
   <string name="patchopts_divider_basic">Основное</string>
   <string name="patchopts_divider_advanced">Расширенное</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -160,7 +151,7 @@
   <string name="iconopts_variant_desc_discord">Не изменяет исходную иконку, добавляя только недостающую монохромную иконку в APK.</string>
   <string name="iconopts_variant_desc_aliucord">Изменяет оригинальный цвет иконки под брендинг Aliucord.</string>
   <string name="iconopts_variant_desc_color">Выберите желаемый цвет фона иконки.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Оттенок и насыщенность</string>
   <string name="iconopts_colorpicker_desc">Основные компоненты цвета в системе HSV.</string>
   <string name="iconopts_lightness_title">Светлота</string>
@@ -210,9 +201,7 @@
   <string name="fun_fact_5">Знаете ли вы, что AliucordRN породил Enmity и Vendetta?</string>
   <string name="fun_fact_6">Возникли проблемы? Посетите канал #support в нашем Discord!</string>
   <string name="fun_fact_7">Плагин IWillCrashYourDiscord крашит ваш Discord.</string>
-  <string name="fun_fact_8">\"Я виноват, @Vendicated\"</string>
   <string name="fun_fact_9">Aliucord может работать на WearOS</string>
   <string name="fun_fact_10">Aliucord использует *реальный* старый пользовательский интерфейс, начиная с середины 2022 года!</string>
   <string name="fun_fact_11">Была попытка заставить Aliucord работать на iOS…</string>
-  <string name="fun_fact_12">ыааааа 😭</string>
 </resources>

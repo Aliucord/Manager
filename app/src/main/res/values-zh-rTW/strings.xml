@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">一個專為 Android 客製化的 Discord 應用程式</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">支持伺服器</string>
   <string name="installer">安裝程式</string>
   <string name="action_cancel">取消</string>
@@ -18,11 +15,9 @@
   <string name="action_install">安裝</string>
   <string name="action_uninstall">解除安裝</string>
   <string name="action_add_install">新增安裝</string>
-  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
   <string name="action_launch">啟動</string>
-  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">關閉</string>
   <string name="action_open_settings">開啟設定</string>
   <string name="action_search">搜尋</string>
@@ -35,7 +30,6 @@
   <string name="action_open_info">開啟資訊</string>
   <string name="action_reset_default">重設為預設植</string>
   <string name="permissions_grant_title">授予權限</string>
-  <string name="storage_permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
   <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 啟動失敗</string>
@@ -47,9 +41,8 @@
   <string name="setting_dynamic_color">動態色彩</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">開發人員選項</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
+  <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
   <string name="setting_keep_patched_apks">保持補丁 APKs</string>
-  <string name="setting_keep_patched_apks_desc">安裝後不刪除已安裝補丁的 APK（用於手動安裝）</string>
   <string name="settings_clear_cache">清除快取</string>
   <string name="theme_system">跟隨系統</string>
   <string name="theme_dark">深色模式</string>
@@ -57,10 +50,8 @@
   <string name="plugins_title">插件</string>
   <string name="plugins_view_changelog">查看 %1$s 的更新記錄檔</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>
-  <string name="plugins_delete_plugin_body">您確定要解除安裝此插件嗎？</string>
   <string name="plugins_none_installed">沒有已安裝的插件！</string>
   <string name="plugins_changelog_media">更新記錄檔媒體</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">處理插件時發生錯誤！</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">關於</string>
@@ -68,10 +59,10 @@
   <string name="navigation_settings">設定</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">貢獻者</string>
-  <string name="contributors_contributions">%o 貢獻者</string>
+  <string name="contributors_contributions">%s 貢獻者</string>
   <string name="network_load_fail">載入失敗</string>
   <string name="network_warning_title">計量付費網路</string>
-  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. Continuing with the installation may result in several hundred megabytes being downloaded. Are you sure you want to continue?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">已支援版本：</string>
   <string name="version_none">無</string>
@@ -103,10 +94,9 @@
   <string name="install_group_patch">補丁 APKs</string>
   <string name="install_group_install">安裝</string>
   <string name="patch_step_fetch_kt_version">正在獲得目標 Discord 版本</string>
-  <string name="patch_step_downgrade_check">Checking for older installations</string>
+  <string name="patch_step_downgrade_check">Checking for newer installations</string>
   <string name="patch_step_dl_kt_apk">正在下載 Discord APK</string>
   <string name="patch_step_dl_kotlin">正在下載 Kotlin library</string>
-  <string name="patch_step_dl_injector">正在下載 injector</string>
   <string name="patch_step_dl_aliuhook">正在下載 Aliuhook library</string>
   <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Copying dependencies</string>
@@ -127,7 +117,7 @@
   <string name="status_success">成功</string>
   <string name="status_failed">失敗</string>
   <string name="installer_abort_title">確定離開？</string>
-  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation?</string>
   <string name="updater_body">Aliucord Manager 已發布新更新！Aliucord Manager 可能需要它才能正常運行。您想更新嗎？</string>
   <string name="updater_title">更新到 %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -148,7 +138,7 @@
   <string name="patchopts_debuggable_title">Debuggable</string>
   <string name="patchopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
   <string name="patchopts_icon_title">更換應用程示圖示</string>
-  <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">進階</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -160,7 +150,7 @@
   <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
   <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
   <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
   <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
   <string name="iconopts_lightness_title">Lightness</string>
@@ -210,9 +200,7 @@
   <string name="fun_fact_5">Did you know AliucordRN spawned Enmity and Vendetta?</string>
   <string name="fun_fact_6">Having issues? Visit the #support channel in our Discord!</string>
   <string name="fun_fact_7">The IWillCrashYourDiscord plugin crashes your discord.</string>
-  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
   <string name="fun_fact_9">Aliucord can run on WearOS</string>
   <string name="fun_fact_10">Aliucord uses the *real* old UI, from mid-2022!</string>
   <string name="fun_fact_11">There was an attempt to make Aliucord run on iOS…</string>
-  <string name="fun_fact_12">veeeee 😭</string>
 </resources>

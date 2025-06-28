@@ -21,8 +21,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.plugins.model.PluginItem
-import com.aliucord.manager.ui.util.annotatingStringResource
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun PluginCard(
@@ -44,17 +42,12 @@ fun PluginCard(
             Column {
                 // Name
                 Text(
-                    annotatingStringResource(
-                        R.string.plugins_plugin_title,
-                        persistentListOf(
-                            plugin.manifest.name,
-                            plugin.manifest.version,
-                        )
-                    ) {
-                        when (it) {
-                            "plugin" -> SpanStyle(fontWeight = FontWeight.Bold)
-                            else -> null
+                    text = buildAnnotatedString {
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(plugin.manifest.name)
                         }
+                        append(" v")
+                        append(plugin.manifest.version)
                     }
                 )
 

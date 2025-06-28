@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">Android Discord 앱의 개조판</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">지원 서버</string>
   <string name="installer">설치 창</string>
   <string name="action_cancel">취소</string>
@@ -18,11 +15,9 @@
   <string name="action_install">설치</string>
   <string name="action_uninstall">설치 삭제</string>
   <string name="action_add_install">신규 설치</string>
-  <string name="action_update_install">업데이트 설치</string>
   <string name="action_update">업데이트</string>
   <string name="action_clear">초기화</string>
   <string name="action_launch">실행</string>
-  <string name="action_launch_aliucord">실행</string>
   <string name="action_close">닫기</string>
   <string name="action_open_settings">설정 열기</string>
   <string name="action_search">검색</string>
@@ -35,7 +30,6 @@
   <string name="action_open_info">정보 보기</string>
   <string name="action_reset_default">기본값으로 재설정</string>
   <string name="permissions_grant_title">권한 부여</string>
-  <string name="storage_permissions_grant_body">Aliucord Manager가 정상적으로 작동하려면, 파일 권한을 부여해 주셔야 해요. 공유된 데이터가 ~/Aliucord에 저장되기 때문에, Manager가 작동하려면 권한이 필요해요.</string>
   <string name="install_permissions_grant_body">Aliucord를 설치하려면 출처를 알 수 없는 앱 설치 권한을 허용해야 해요.</string>
   <string name="installs_no_installs">설치된 앱이 없어요!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
@@ -49,7 +43,6 @@
   <string name="setting_developer_options">개발자 옵션</string>
   <string name="setting_developer_options_desc">무엇을 하고 있는지 모른다면 활성화 하지 마세요!</string>
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
-  <string name="setting_keep_patched_apks_desc">설치 후 패치된 APK를 삭제하지 않아요 (수동 설치용)</string>
   <string name="settings_clear_cache">캐시 지우기</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어두운 테마</string>
@@ -57,10 +50,8 @@
   <string name="plugins_title">플러그인</string>
   <string name="plugins_view_changelog">%1$s의 변경 사항 보기</string>
   <string name="plugins_delete_plugin">%s 삭제</string>
-  <string name="plugins_delete_plugin_body">이 플러그인을 설치 삭제할까요?</string>
   <string name="plugins_none_installed">설치된 플러그인이 없어요!</string>
   <string name="plugins_changelog_media">미디어 변경 사항</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">플러그인을 처리하던 도중 오류가 발생했어요!</string>
   <string name="navigation_back">돌아가기</string>
   <string name="navigation_about">소개</string>
@@ -71,7 +62,6 @@
   <string name="contributors_contributions">%s회 기여</string>
   <string name="network_load_fail">불러오지 못했어요</string>
   <string name="network_warning_title">종량제 네트워크</string>
-  <string name="network_warning_body">모바일 데이터 또는 종량제 네트워크에 연결된 것 같아요. 100MB 이상의 데이터가 다운로드될 수 있어요. 계속할까요?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">지원하는 버전:</string>
   <string name="version_none">없음</string>
@@ -103,10 +93,8 @@
   <string name="install_group_patch">APK 패치</string>
   <string name="install_group_install">APK 설치</string>
   <string name="patch_step_fetch_kt_version">대상 버전의 Discord 가져오는 중</string>
-  <string name="patch_step_downgrade_check">최신 버전 확인 중</string>
   <string name="patch_step_dl_kt_apk">Discord APK 다운로드 중</string>
   <string name="patch_step_dl_kotlin">Kotlin 라이브러리 다운로드 중</string>
-  <string name="patch_step_dl_injector">인젝터 다운로드 중</string>
   <string name="patch_step_dl_aliuhook">Aliuhook 라이브러리 다운로드 중</string>
   <string name="patch_step_dl_smali">smali 패치 다운로드 중</string>
   <string name="patch_step_copy_deps">종속성 복사 중</string>
@@ -160,7 +148,7 @@
   <string name="iconopts_variant_desc_discord">원본 아이콘을 변경하지 않는 대신, APK에 없는 흑백 아이콘을 추가해요.</string>
   <string name="iconopts_variant_desc_aliucord">원래 아이콘 색상을 Aliucord 브랜드 색으로 변경해요.</string>
   <string name="iconopts_variant_desc_color">커스텀 아이콘 배경색을 선택하세요.</string>
-  <string name="iconopts_variant_desc_image">커스텀 대체 이미지를 선택하세요. 이미지는 적응형 아이콘 가이드라인에 따라 충분한 여백이 있어야 해요. Android 8 이상만 지원하며, 최대 이미지 크기는 256KIB예요.</string>
+  <string name="iconopts_variant_desc_image">커스텀 대체 이미지를 선택하세요. 이미지는 적응형 아이콘 가이드라인에 따라 충분한 여백이 있어야 해요. 최대 이미지 크기는 256KIB예요.</string>
   <string name="iconopts_colorpicker_title">색상 및 채도</string>
   <string name="iconopts_colorpicker_desc">메인 HSV 색상을 설정할 수 있어요.</string>
   <string name="iconopts_lightness_title">밝기</string>
@@ -210,9 +198,7 @@
   <string name="fun_fact_5">AliucordRN이 Enmity와 Vendetta를 만들어냈다는 사실을 알고 계셨나요?</string>
   <string name="fun_fact_6">문제가 생겼나요? 저희 Discord의 #support 채널로 와주세요!</string>
   <string name="fun_fact_7">IWillCrashYourDiscord라는 플러그인은 discord를 충돌시킨대요.</string>
-  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
   <string name="fun_fact_9">Aliucord는 WearOS에서 실행할 수 있어요</string>
   <string name="fun_fact_10">Aliucord는 2022년 중반에 나온 *엄청* 오래된 UI를 사용해요!</string>
   <string name="fun_fact_11">Aliucord를 iOS에서 실행하려는 시도가 있었습니다…</string>
-  <string name="fun_fact_12">후에에엥 😭</string>
 </resources>

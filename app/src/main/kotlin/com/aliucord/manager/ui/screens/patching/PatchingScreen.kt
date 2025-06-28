@@ -239,7 +239,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
 
                                     PatchingScreenState.Success -> {
                                         MainActionButton(
-                                            text = stringResource(R.string.action_launch_aliucord),
+                                            text = stringResource(R.string.action_launch),
                                             icon = painterResource(R.drawable.ic_launch),
                                             onClick = model::launchApp,
                                         )

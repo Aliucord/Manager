@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord 管理器</string>
   <string name="app_description">Discord Android 应用的修改版</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">支持服务器</string>
   <string name="installer">安装程序</string>
   <string name="action_cancel">取消</string>
@@ -18,11 +15,9 @@
   <string name="action_install">安装</string>
   <string name="action_uninstall">卸载</string>
   <string name="action_add_install">添加安装</string>
-  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
   <string name="action_launch">启动</string>
-  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">关闭</string>
   <string name="action_open_settings">打开设置</string>
   <string name="action_search">搜索</string>
@@ -47,9 +42,8 @@
   <string name="setting_dynamic_color">动态颜色</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">开发者选项</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
+  <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
-  <string name="setting_keep_patched_apks_desc">安装后不删除已修补的 APK（供手动安装）</string>
   <string name="settings_clear_cache">清除缓存</string>
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
@@ -57,10 +51,8 @@
   <string name="plugins_title">插件</string>
   <string name="plugins_view_changelog">查看 %1$s 的更新日志</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>
-  <string name="plugins_delete_plugin_body">您确定要卸载此插件吗？</string>
   <string name="plugins_none_installed">没有已安装的插件！</string>
   <string name="plugins_changelog_media">更新日志媒体</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">处理插件时发生错误！</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">关于</string>
@@ -68,7 +60,7 @@
   <string name="navigation_settings">设置</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">贡献者</string>
-  <string name="contributors_contributions">%o 项贡献</string>
+  <string name="contributors_contributions">%s 项贡献</string>
   <string name="network_load_fail">无法加载</string>
   <string name="network_warning_title">计费网络</string>
   <string name="network_warning_body">您似乎已连接到移动数据或可能计费的网络。要继续安装，将需要下载几百 MB。您确定要继续吗？</string>
@@ -103,9 +95,8 @@
   <string name="install_group_patch">修补 APK</string>
   <string name="install_group_install">安装 APK</string>
   <string name="patch_step_fetch_kt_version">正在获取目标 Discord 版本</string>
-  <string name="patch_step_downgrade_check">正在检查更新的安装</string>
   <string name="patch_step_dl_kt_apk">正在下载 Discord APK</string>
-  <string name="patch_step_dl_kotlin">正在下载 Kotlin Stdlib</string>
+  <string name="patch_step_dl_kotlin">正在下载 Kotlin Library</string>
   <string name="patch_step_dl_injector">正在下载 Aliucord 注入器</string>
   <string name="patch_step_dl_aliuhook">正在下载 Aliuhook 库</string>
   <string name="patch_step_dl_smali">Downloading smali patches</string>
@@ -127,7 +118,7 @@
   <string name="status_success">成功</string>
   <string name="status_failed">失败</string>
   <string name="installer_abort_title">真的要退出吗？</string>
-  <string name="installer_abort_body">您确定要中止正在进行的安装吗？缓存文件将被清除以避免损坏。</string>
+  <string name="installer_abort_body">您确定要中止正在进行的安装吗？</string>
   <string name="updater_body">Aliucord 管理器已发布新更新！可能需要此更新才能正常运行。您想更新吗？</string>
   <string name="updater_title">更新到 %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -148,7 +139,6 @@
   <string name="patchopts_debuggable_title">可调试</string>
   <string name="patchopts_debuggable_desc">启用可调试清单标志。仅当您知道自己在做什么时才使用此功能！</string>
   <string name="patchopts_icon_title">替换应用图标</string>
-  <string name="patchopts_icon_desc">将应用的图标更改为使用 Aliucord 品牌，而不是 Discord 自己的品牌。</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">高级</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -160,7 +150,7 @@
   <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
   <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
   <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
   <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
   <string name="iconopts_lightness_title">Lightness</string>
@@ -210,9 +200,7 @@
   <string name="fun_fact_5">您知道 AliucordRN 产生了 Enmity 和 Vendetta 吗？</string>
   <string name="fun_fact_6">有问题？请访问我们 Discord 中的 #support 频道！</string>
   <string name="fun_fact_7">IWillCrashYourDiscord 插件会导致您的 Discord 崩溃。</string>
-  <string name="fun_fact_8">“@Vendicated 我的错。”</string>
   <string name="fun_fact_9">Aliucord 可在 WearOS 上运行</string>
   <string name="fun_fact_10">从 2022 年中期开始，Aliucord 将使用*真正的*旧 UI！</string>
   <string name="fun_fact_11">曾尝试在 iOS 上运行 Aliucord…</string>
-  <string name="fun_fact_12">veeeee 😭</string>
 </resources>

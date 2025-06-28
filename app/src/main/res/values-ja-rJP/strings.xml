@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">AndroidのDiscord Mod</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">サポートサーバー</string>
   <string name="installer">インストーラー</string>
   <string name="action_cancel">キャンセル</string>
@@ -17,12 +14,10 @@
   <string name="action_dismiss">閉じる</string>
   <string name="action_install">インストール</string>
   <string name="action_uninstall">アンインストール</string>
-  <string name="action_add_install">Add Installation</string>
-  <string name="action_update_install">Update Aliucord Installation</string>
+  <string name="action_add_install">New Install</string>
   <string name="action_update">アップデート</string>
   <string name="action_clear">クリア</string>
   <string name="action_launch">開く</string>
-  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">閉じる</string>
   <string name="action_open_settings">設定を開く</string>
   <string name="action_search">検索</string>
@@ -35,8 +30,6 @@
   <string name="action_open_info">情報を表示</string>
   <string name="action_reset_default">既定値に戻す</string>
   <string name="permissions_grant_title">権限を付与</string>
-  <string name="storage_permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
-~/Aliucordに共有データが保存されるため、Managerを機能させるためには権限が必要です。</string>
   <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucordの起動に失敗しました</string>
@@ -48,9 +41,8 @@
   <string name="setting_dynamic_color">ダイナミックカラー</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">開発者向けオプション</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
+  <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
   <string name="setting_keep_patched_apks">パッチを適用した APK を維持</string>
-  <string name="setting_keep_patched_apks_desc">インストール後にパッチ適用された APK を削除しないでください(手動でインストールする場合)</string>
   <string name="settings_clear_cache">キャッシュを消去</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>
@@ -58,10 +50,8 @@
   <string name="plugins_title">プラグイン</string>
   <string name="plugins_view_changelog">%1$sの更新履歴を表示</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>
-  <string name="plugins_delete_plugin_body">本当にこのプラグインをアンインストールしますか？</string>
   <string name="plugins_none_installed">プラグインがインストールされていません！</string>
   <string name="plugins_changelog_media">更新履歴のメディア</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">プラグイン処理中にエラーが発生しました！</string>
   <string name="navigation_back">戻る</string>
   <string name="navigation_about">概要</string>
@@ -69,7 +59,7 @@
   <string name="navigation_settings">設定</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">貢献者</string>
-  <string name="contributors_contributions">%o の貢献</string>
+  <string name="contributors_contributions">%s 貢献</string>
   <string name="network_load_fail">読み込みに失敗しました</string>
   <string name="network_warning_title">従量制ネットワーク</string>
   <string name="network_warning_body">モバイルデータまたは従量制課金ネットワークに接続されているようです。 インストールを続行するには、数百MBがダウンロードされる可能性があります。続行してもよろしいですか？</string>
@@ -104,10 +94,10 @@
   <string name="install_group_patch">APKにパッチを適用</string>
   <string name="install_group_install">インストール</string>
   <string name="patch_step_fetch_kt_version">ターゲットのDiscordバージョンを取得中</string>
-  <string name="patch_step_downgrade_check">Checking for older installations</string>
+  <string name="patch_step_downgrade_check">Checking for newer installations</string>
   <string name="patch_step_dl_kt_apk">Discord APKをダウンロード中</string>
   <string name="patch_step_dl_kotlin">Kotlinライブラリのダウンロード中</string>
-  <string name="patch_step_dl_injector">インジェクターをダウンロード中</string>
+  <string name="patch_step_dl_injector">Aliucordのインジェクターをダウンロード中</string>
   <string name="patch_step_dl_aliuhook">Aliuhookライブラリをダウンロード中</string>
   <string name="patch_step_dl_smali">Smaliパッチのダウンロード</string>
   <string name="patch_step_copy_deps">依存関係のコピー</string>
@@ -128,7 +118,7 @@
   <string name="status_success">成功</string>
   <string name="status_failed">失敗</string>
   <string name="installer_abort_title">本当に終了しますか？</string>
-  <string name="installer_abort_body">本当に進行中のインストールを中止してもよろしいですか？破損を避けるためにキャッシュファイルは削除されます。</string>
+  <string name="installer_abort_body">本当に進行中のインストールを中止してもよろしいですか？</string>
   <string name="updater_body">Aliucord Managerの新しいアップデートがリリースされました！正常に機能するために必要な場合があります。アップデートしますか？</string>
   <string name="updater_title">%1$sへ更新</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -149,7 +139,7 @@
   <string name="patchopts_debuggable_title">Debuggable</string>
   <string name="patchopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
   <string name="patchopts_icon_title">Replace app icon</string>
-  <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -161,7 +151,7 @@
   <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
   <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
   <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
   <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
   <string name="iconopts_lightness_title">Lightness</string>
@@ -211,9 +201,7 @@
   <string name="fun_fact_5">Did you know AliucordRN spawned Enmity and Vendetta?</string>
   <string name="fun_fact_6">Having issues? Visit the #support channel in our Discord!</string>
   <string name="fun_fact_7">The IWillCrashYourDiscord plugin crashes your discord.</string>
-  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
   <string name="fun_fact_9">Aliucord can run on WearOS</string>
   <string name="fun_fact_10">Aliucord uses the *real* old UI, from mid-2022!</string>
   <string name="fun_fact_11">There was an attempt to make Aliucord run on iOS…</string>
-  <string name="fun_fact_12">veeeee 😭</string>
 </resources>

@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
   <string name="app_description">En ændring til Discord Android-appen</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">Supportserver</string>
   <string name="installer">Installer</string>
   <string name="action_cancel">Afbryd</string>
@@ -18,11 +15,9 @@
   <string name="action_install">Installér</string>
   <string name="action_uninstall">Afinstallér</string>
   <string name="action_add_install">Tilføj Installation</string>
-  <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Opdatér</string>
   <string name="action_clear">Ryd</string>
   <string name="action_launch">Start</string>
-  <string name="action_launch_aliucord">Start</string>
   <string name="action_close">Luk</string>
   <string name="action_open_settings">Åbn indstillinger</string>
   <string name="action_search">Søg</string>
@@ -49,7 +44,6 @@
   <string name="setting_developer_options">Udviklerindstillinger</string>
   <string name="setting_developer_options_desc">Aktivér ikke dette, medmindre man ved, hvad man foretager sig!</string>
   <string name="setting_keep_patched_apks">Behold patchede APK\'er</string>
-  <string name="setting_keep_patched_apks_desc">Behold alle fejlrettede filer og APK\'er efter installation til fejlretning.</string>
   <string name="settings_clear_cache">Ryd cache</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Mørkt</string>
@@ -57,10 +51,8 @@
   <string name="plugins_title">Plugins</string>
   <string name="plugins_view_changelog">Se ændringslog for %1$s</string>
   <string name="plugins_delete_plugin">Afinstallér %s</string>
-  <string name="plugins_delete_plugin_body">Sikker på, at dette plugin skal afinstalleres?</string>
   <string name="plugins_none_installed">Ingen plugins installeret!</string>
   <string name="plugins_changelog_media">Ændringslog Medie</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">En fejl opstod under behandlingen af plugins!</string>
   <string name="navigation_back">Tilbage</string>
   <string name="navigation_about">Om</string>
@@ -68,10 +60,9 @@
   <string name="navigation_settings">Indstillinger</string>
   <string name="contributors_lead">Ledende</string>
   <string name="contributors">Bidragsydere</string>
-  <string name="contributors_contributions">%o contributions</string>
+  <string name="contributors_contributions">%s contributions</string>
   <string name="network_load_fail">Indlæsning mislykkedes</string>
   <string name="network_warning_title">Forbrugsafregnet netværk</string>
-  <string name="network_warning_body">Det ser ud til, at der anvendes mobildata eller et potentielt forbrugsafregnet netværk. For at fortsætte installationen, vil flere hundrede megabytes kunne blive downloadet. Fortsæt installationen, sikker?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">Understøttet version:</string>
   <string name="version_none">Ingen</string>
@@ -103,9 +94,8 @@
   <string name="install_group_patch">Fejlret APK</string>
   <string name="install_group_install">Installér APK</string>
   <string name="patch_step_fetch_kt_version">Henter mål Discord-version</string>
-  <string name="patch_step_downgrade_check">Tjekker for nyere installationer</string>
   <string name="patch_step_dl_kt_apk">Downloader Discord-APK</string>
-  <string name="patch_step_dl_kotlin">Downloader Kotlin Stdlib</string>
+  <string name="patch_step_dl_kotlin">Downloading Kotlin library</string>
   <string name="patch_step_dl_injector">Downloadier Aliucord Injector</string>
   <string name="patch_step_dl_aliuhook">Downloader Aliuhook-bibliotek</string>
   <string name="patch_step_dl_smali">Downloader smali-fejlrettelser</string>
@@ -127,7 +117,7 @@
   <string name="status_success">Udført</string>
   <string name="status_failed">Mislykkedes</string>
   <string name="installer_abort_title">Afslut, sikker?</string>
-  <string name="installer_abort_body">Sikker på, at den igangværende installation skal afbrydes? Cachelagrede filer ryddes for at undgå korrumpering.</string>
+  <string name="installer_abort_body">Sikker på, at den igangværende installation skal afbrydes?</string>
   <string name="updater_body">Ny opdatering udgivet! Den kan være nødvendig for korrekt funktion af Aliucord Manager. Opdatér?</string>
   <string name="updater_title">Opdatér til %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -148,7 +138,7 @@
   <string name="patchopts_debuggable_title">Fejlfindbar</string>
   <string name="patchopts_debuggable_desc">Aktivér fejlsøgningsmanifestflaget. Brug kun dette, såfremt man ved, hvad man foretager sig!</string>
   <string name="patchopts_icon_title">Udskift app-ikon</string>
-  <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
   <string name="patchopts_divider_basic">Grundlæggende</string>
   <string name="patchopts_divider_advanced">Avanceret</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -160,7 +150,7 @@
   <string name="iconopts_variant_desc_discord">Ændrer ikke det oprindelige ikon, men føjer i stedet blot det manglende monokrome ikon til APK\'en.</string>
   <string name="iconopts_variant_desc_aliucord">Ændrer den oprindelige ikonfarve til Aliucords branding.</string>
   <string name="iconopts_variant_desc_color">Vælg en tilpasset ikonbaggrundsfarve.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Farvetone og Farvemætning</string>
   <string name="iconopts_colorpicker_desc">Hoved HSV-farvekomponenterne.</string>
   <string name="iconopts_lightness_title">Lyshed</string>
@@ -210,9 +200,7 @@
   <string name="fun_fact_5">Vidste du, at AliucordRN affødte Enmity og Vendetta?</string>
   <string name="fun_fact_6">Har problemer? Besøg #support-kanalen i vores Discord!</string>
   <string name="fun_fact_7">IWillCrashYourDiscord-plugin\'et fik discord til at gå ned.</string>
-  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
   <string name="fun_fact_9">Aliucord kan køre på WearOS</string>
   <string name="fun_fact_10">Aliucord bruger den *rigtige* gamle UI, fra midt-2022!</string>
   <string name="fun_fact_11">Der var et forsøg på at få Aliucord til at køre på iOS…</string>
-  <string name="fun_fact_12">veeeee 😭</string>
 </resources>

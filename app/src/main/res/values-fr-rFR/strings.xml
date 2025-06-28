@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Gestionnaire d\'Aliucord</string>
   <string name="app_description">Une modification pour l\'application Android de Discord</string>
-  <string name="aliucord">Aliucord</string>
-  <string name="discord">Discord</string>
-  <string name="github">GitHub</string>
   <string name="support_server">Supporter le Serveur</string>
   <string name="installer">Installateur</string>
   <string name="action_cancel">Cancel</string>
@@ -17,12 +14,10 @@
   <string name="action_dismiss">Ignorer</string>
   <string name="action_install">Install</string>
   <string name="action_uninstall">Désinstaller</string>
-  <string name="action_add_install">Add Installation</string>
-  <string name="action_update_install">Update Aliucord Installation</string>
+  <string name="action_add_install">New Install</string>
   <string name="action_update">Mettre à jour</string>
   <string name="action_clear">Effacer</string>
   <string name="action_launch">Démarrer</string>
-  <string name="action_launch_aliucord">Launch</string>
   <string name="action_close">Fermer</string>
   <string name="action_open_settings">Ouvrir les paramètres</string>
   <string name="action_search">Rechercher</string>
@@ -31,11 +26,11 @@
   <string name="action_expand">Développer</string>
   <string name="action_copied">Copié !</string>
   <string name="action_cleared_cache">Cache effacé !</string>
-  <string name="action_exit_anyways">Exit anyways</string>
-  <string name="action_open_info">Open info</string>
+  <string name="action_exit_anyways">Exit Anyways</string>
+  <string name="action_open_info">Open Info</string>
   <string name="action_reset_default">Reset to default</string>
   <string name="permissions_grant_title">Accorder les permissions</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="storage_permissions_grant_body">In order for Aliucord Manager to function, file permissions are required. Since shared data is stored in ~/Aliucord, permissions are required in order to access it.</string>
   <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Impossible de démarrer Aliucord</string>
@@ -47,9 +42,8 @@
   <string name="setting_dynamic_color">Couleurs dynamiques</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">Options de développeur</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
+  <string name="setting_developer_options_desc">Don\'t enable this unless you know what it does! (yes, really)</string>
   <string name="setting_keep_patched_apks">Garder les APKs patchés</string>
-  <string name="setting_keep_patched_apks_desc">Ne pas supprimer les APKs patchés après l\'installation (pour les installer manuellement)</string>
   <string name="settings_clear_cache">Vider le cache</string>
   <string name="theme_system">Système</string>
   <string name="theme_dark">Sombre</string>
@@ -57,10 +51,8 @@
   <string name="plugins_title">Plugins</string>
   <string name="plugins_view_changelog">Voir le journal des modifications pour %1$s</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>
-  <string name="plugins_delete_plugin_body">Êtes-vous sûr de vouloir désinstaller ce plugin ?</string>
   <string name="plugins_none_installed">Aucun plugin installé !</string>
   <string name="plugins_changelog_media">Journal des modifications des médias</string>
-  <string name="plugins_plugin_title">§plugin§%1$s§ v%2$s</string>
   <string name="plugins_error">Une erreur s\'est produite lors du traitement des plugins !</string>
   <string name="navigation_back">Retour</string>
   <string name="navigation_about">À propos</string>
@@ -68,10 +60,10 @@
   <string name="navigation_settings">Paramètres</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">Contributeurs</string>
-  <string name="contributors_contributions">%o contributions</string>
+  <string name="contributors_contributions">%s contributions</string>
   <string name="network_load_fail">Échec du chargement</string>
   <string name="network_warning_title">Metered network</string>
-  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. Continuing with the installation may result in several hundred megabytes being downloaded. Are you sure you want to continue?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
   <string name="version_supported">Version supportée :</string>
   <string name="version_none">Aucun</string>
@@ -95,7 +87,7 @@
   <string name="install_error_blocked">Installation was blocked</string>
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
   <string name="install_error_conflict">Conflicts with an existing app, usually due to mismatched signatures</string>
-  <string name="install_error_storage">Not enough available storage to install</string>
+  <string name="install_error_storage">Not enough storage available to install</string>
   <string name="install_error_incompatible">Application is incompatible with this device</string>
   <string name="install_error_timeout">Installation timed out</string>
   <string name="install_group_prepare">Prepare</string>
@@ -103,10 +95,9 @@
   <string name="install_group_patch">Patcher les APKs</string>
   <string name="install_group_install">Installer</string>
   <string name="patch_step_fetch_kt_version">Récupération de la version cible de Discord</string>
-  <string name="patch_step_downgrade_check">Checking for older installations</string>
+  <string name="patch_step_downgrade_check">Checking for newer installations</string>
   <string name="patch_step_dl_kt_apk">Téléchargement de l\'APK de Discord</string>
   <string name="patch_step_dl_kotlin">Téléchargement de la bibliothèque de Kotlin</string>
-  <string name="patch_step_dl_injector">Téléchargement de l\'injecteur</string>
   <string name="patch_step_dl_aliuhook">Téléchargement de la bibliothèque Aliuhook</string>
   <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Copying dependencies</string>
@@ -127,7 +118,7 @@
   <string name="status_success">Succès</string>
   <string name="status_failed">Échec</string>
   <string name="installer_abort_title">Really exit?</string>
-  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
+  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation?</string>
   <string name="updater_body">Une nouvelle mise à jour a été publiée pour Aliucord Manager ! Elle peut être nécessaire pour fonctionner correctement. Voulez-vous faire la mise à jour ?</string>
   <string name="updater_title">Mettre à jour vers %1$s</string>
   <string name="updater_fail">Failed to check for updates!</string>
@@ -148,7 +139,7 @@
   <string name="patchopts_debuggable_title">Debuggable</string>
   <string name="patchopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
   <string name="patchopts_icon_title">Replace app icon</string>
-  <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -160,7 +151,7 @@
   <string name="iconopts_variant_desc_discord">Does not alter the original icon, instead only adding the missing monochrome icon to the APK.</string>
   <string name="iconopts_variant_desc_aliucord">Changes the original icon color to Aliucord\'s branding.</string>
   <string name="iconopts_variant_desc_color">Select a custom icon background color.</string>
-  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Android 8+ only.</string>
+  <string name="iconopts_variant_desc_image">Select a custom replacement image. Note that the image must have sufficient padding as per the Adaptive Icon foreground guidelines. Maximum image size is 256KiB.</string>
   <string name="iconopts_colorpicker_title">Hue &amp; Saturation</string>
   <string name="iconopts_colorpicker_desc">The main HSV color components.</string>
   <string name="iconopts_lightness_title">Lightness</string>
@@ -210,9 +201,7 @@
   <string name="fun_fact_5">Did you know AliucordRN spawned Enmity and Vendetta?</string>
   <string name="fun_fact_6">Having issues? Visit the #support channel in our Discord!</string>
   <string name="fun_fact_7">The IWillCrashYourDiscord plugin crashes your discord.</string>
-  <string name="fun_fact_8">\"@Vendicated my bad.\"</string>
   <string name="fun_fact_9">Aliucord can run on WearOS</string>
   <string name="fun_fact_10">Aliucord uses the *real* old UI, from mid-2022!</string>
   <string name="fun_fact_11">There was an attempt to make Aliucord run on iOS…</string>
-  <string name="fun_fact_12">veeeee 😭</string>
 </resources>
