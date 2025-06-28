@@ -27,7 +27,7 @@ class AliucordGithubService(
      */
     suspend fun getManagerReleases(): ApiResponse<List<GithubRelease>> {
         return http.request {
-            url("https://api.github.com/repos/rushiiMachine/$MANAGER_REPO/releases")
+            url("https://api.github.com/repos/$ORG/$MANAGER_REPO/releases")
             header(HttpHeaders.CacheControl, "public, max-age=60, s-maxage=60")
         }
     }
