@@ -117,7 +117,7 @@
   <string name="patch_step_save_metadata">Store metadata</string>
   <string name="patch_step_alignment">Aligning APKs</string>
   <string name="patch_step_signing">Signing APKs</string>
-  <string name="patch_step_install">Installing APKs</string>
+  <string name="patch_step_install">מתקין אפליקציה</string>
   <string name="patch_step_cleanup">Cleaning up</string>
   <string name="status_queued">Queued</string>
   <string name="status_ongoing">Ongoing</string>
