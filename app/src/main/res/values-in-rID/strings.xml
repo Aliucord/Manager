@@ -12,7 +12,7 @@
   <string name="action_apply">Terapkan</string>
   <string name="action_confirm">Konfirmasi</string>
   <string name="action_dismiss">Tolak</string>
-  <string name="action_install">Install</string>
+  <string name="action_install">Instal</string>
   <string name="action_uninstall">Copot pemasangan</string>
   <string name="action_add_install">Add Installation</string>
   <string name="action_update_install">Update Aliucord Installation</string>
@@ -29,7 +29,7 @@
   <string name="action_cleared_cache">Cache dihapus!</string>
   <string name="action_exit_anyways">Exit Anyways</string>
   <string name="action_open_info">Open Info</string>
-  <string name="action_reset_default">Reset to default</string>
+  <string name="action_reset_default">Atur ulang ke pengaturan awal</string>
   <string name="permissions_grant_title">Berikan izin</string>
   <string name="storage_permissions_grant_body">Untuk Manajer Aliucord berfungsi dengan baik, Anda perlu memberikan izin untuk mengakses file. Karena datanya disimpan di ~/Aliucord, perizinan diperlukan agar Manajer berfungsi.</string>
   <string name="install_permissions_grant_body">Installing Aliucord requires granting permissions to install apps from unknown sources.</string>
@@ -38,8 +38,8 @@
   <string name="settings_header_advanced">Canggih</string>
   <string name="settings_header_appearance">Tampilan</string>
   <string name="settings_header_info">Info</string>
-  <string name="setting_theme">Theme</string>
-  <string name="setting_theme_desc">The theme to apply to this app</string>
+  <string name="setting_theme">Tema</string>
+  <string name="setting_theme_desc">Tema yang akan di terapkan pada aplikasi</string>
   <string name="setting_dynamic_color">Warna dinamis</string>
   <string name="setting_dynamic_color_desc">Enables Material You theming on Android 12+</string>
   <string name="setting_developer_options">Opsi Pengembang</string>
@@ -60,7 +60,7 @@
   <string name="plugins_error">Terjadi kesalahan saat memproses plugin!</string>
   <string name="navigation_back">Kembali</string>
   <string name="navigation_about">Tentang</string>
-  <string name="navigation_logs">Open logs</string>
+  <string name="navigation_logs">Buka log</string>
   <string name="navigation_settings">Setelan</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">Kontributor</string>
@@ -84,7 +84,7 @@
   <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
   <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
-  <string name="installer_insufficient_storage">Insufficient storage space!</string>
+  <string name="installer_insufficient_storage">Ruang penyimpanan tidak cukup!</string>
   <string name="installer_banner_minimization">Since battery optimizations have not been disabled, minimizing this screen may abort the installation process!</string>
   <string name="installer_banner_failure">Installation failed! You can either retry or click this banner to open the Aliucord server for help.</string>
   <string name="installer_banner_success">Successfully installed Aliucord! Do *NOT* uninstall the manager (this app) as it is required to perform certain types of updates.</string>
@@ -93,7 +93,7 @@
   <string name="install_error_invalid">One or more APKs were invalid or corrupt</string>
   <string name="install_error_conflict">Conflicts with an existing app, usually due to mismatched signatures</string>
   <string name="install_error_storage">Not enough storage available to install</string>
-  <string name="install_error_incompatible">Application is incompatible with this device</string>
+  <string name="install_error_incompatible">Aplikasi ini tidak kompatibel dengan perangkat Anda</string>
   <string name="install_error_timeout">Installation timed out</string>
   <string name="install_group_prepare">Prepare</string>
   <string name="install_group_download">Download dependencies</string>
@@ -113,8 +113,8 @@
   <string name="patch_step_add_injector">Adding Aliucord injector</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
-  <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
-  <string name="patch_step_save_metadata">Store metadata</string>
+  <string name="patch_step_reorganize_dex">Menambahkan file-file .dex ke APK</string>
+  <string name="patch_step_save_metadata">Menyimpan metadata</string>
   <string name="patch_step_alignment">Aligning APKs</string>
   <string name="patch_step_signing">Menandatangani APK</string>
   <string name="patch_step_install">Memasang APK</string>
