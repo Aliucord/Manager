@@ -46,6 +46,7 @@ private fun IconOptionsScreenPreview(
             setSelectedColor = { color = it },
             selectedImage = { image },
             setSelectedImage = {},
+            onBackPressed = {},
         )
     }
 }

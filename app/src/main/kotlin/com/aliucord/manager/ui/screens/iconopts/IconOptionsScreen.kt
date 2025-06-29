@@ -41,6 +41,7 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.util.ColorSaver
 import com.aliucord.manager.ui.util.throttledState
+import com.aliucord.manager.util.back
 import dev.zt64.compose.pipette.CircularColorPicker
 import dev.zt64.compose.pipette.HsvColor
 import kotlinx.parcelize.IgnoredOnParcel
@@ -70,6 +71,7 @@ class IconOptionsScreen : Screen, Parcelable {
             setSelectedColor = model::changeSelectedColor,
             selectedImage = { model.selectedImage },
             setSelectedImage = model::changeSelectedImageUri,
+            onBackPressed = { navigator.back(currentActivity = null) },
         )
     }
 }
@@ -82,6 +84,7 @@ fun IconOptionsScreenContent(
     setSelectedColor: (HsvColor) -> Unit,
     selectedImage: () -> ByteArray?,
     setSelectedImage: (Uri) -> Unit,
+    onBackPressed: () -> Unit,
 ) {
     val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 26
 
@@ -159,6 +162,17 @@ fun IconOptionsScreenContent(
                     selectedImage = selectedImage,
                     setSelectedImage = setSelectedImage,
                 )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                FilledTonalButton(
+                    onClick = onBackPressed,
+                ) {
+                    Text(stringResource(R.string.action_confirm))
+                }
             }
         }
     }
