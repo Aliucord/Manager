@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.manager.InstallerSetting
 import com.aliucord.manager.manager.download.KtorDownloadManager
@@ -15,6 +16,7 @@ import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class UpdaterViewModel(
     private val github: AliucordGithubService,
@@ -54,14 +56,30 @@ class UpdaterViewModel(
             isWorking = true
 
             val apkFile = application.cacheDir.resolve("manager.apk").apply { delete() }
+            val installer = installers.getInstaller(InstallerSetting.PM)
 
             downloader.download(url, apkFile)
-            installers.getInstaller(InstallerSetting.PM).install(
+
+            val installResult = installer.waitInstall(
                 apks = listOf(apkFile),
                 silent = true,
             )
 
+            when (installResult) {
+                InstallerResult.Success -> {
+                    Log.w(BuildConfig.TAG, "Update completed without restarting app!")
+                    exitProcess(1)
+                }
+
+                is InstallerResult.Cancelled ->
+                    Log.i(BuildConfig.TAG, "Update cancelled")
+
+                is InstallerResult.Error ->
+                    Log.e(BuildConfig.TAG, "Failed to update: ${installResult.getDebugReason()}")
+            }
+
             apkFile.delete()
+            isWorking = false
         }
     }
 
