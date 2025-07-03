@@ -1,5 +1,6 @@
 package com.aliucord.manager.ui.screens.patching.components
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
@@ -12,6 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
+import com.aliucord.manager.ui.util.thenIf
 
 @Composable
 fun StepItem(
@@ -34,7 +36,9 @@ fun StepItem(
             style = MaterialTheme.typography.labelLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f, true),
+            modifier = Modifier
+                .weight(1f, true)
+                .thenIf(step.state == StepState.Running) { basicMarquee() },
         )
 
         TimeElapsed(
