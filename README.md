@@ -5,10 +5,10 @@
 
 [![Discord](https://img.shields.io/discord/811255666990907402?logo=discord&logoColor=white&style=for-the-badge&color=5865F2)](https://discord.gg/EsNDvBaHVU)
 [![GitHub Stars](https://img.shields.io/github/stars/Aliucord/Manager?logo=github&style=for-the-badge&color=ffd663)](https://github.com/Aliucord/Manager/stargazers)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Aliucord/Manager/build.yml?label=Build&logo=github&style=for-the-badge&branch=main)](https://nightly.link/Aliucord/Manager/workflows/android/main/app.zip)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Aliucord/Manager/build.yml?label=Build&logo=github&style=for-the-badge&branch=main)](https://nightly.link/Aliucord/Manager/workflows/build/main/app.zip)
 ![GitHub Downloads](https://img.shields.io/github/downloads/Aliucord/Manager/total?style=for-the-badge&logo=github)
-![Code Size](https://img.shields.io/github/languages/code-size/Aliucord/Manager?logo=github&logoColor=%23fff&style=for-the-badge)
-[![GitHub License](https://img.shields.io/github/license/Aliucord/Manager?style=for-the-badge)](https://github.com/Aliucord/Manager/blob/main/LICENSE)
+![Code Size](https://img.shields.io/github/languages/code-size/Aliucord/Manager?style=for-the-badge)
+[![GitHub License](https://img.shields.io/github/license/Aliucord/Manager?style=for-the-badge&color=007ec6)](https://github.com/Aliucord/Manager/blob/main/LICENSE)
 
 </div>
 
@@ -29,7 +29,7 @@ legacy installer. It is deprecated and does not work anymore.
     - If you have not enabled "Install from unknown sources" for your browser via system settings, do so now.
 3. Open Aliucord Manager
 4. Grant the permission requests
-5. Click "New Install"
+5. Click "New Install" or "Update" if you have previously installed Aliucord.
     - You may change how the Aliucord app icon will look once installed.
 6. Click "Install" and wait. Do not exit the app while it is running.
     - If a failure occurs, it may be due to a variety of reasons:
@@ -58,7 +58,7 @@ legacy installer. It is deprecated and does not work anymore.
    ```
    #### Windows
    ```shell
-   .\gradlew.bat app:assembleDebug
+   .\gradlew.bat :app:packageStaging --stacktrace
    ```
 4. Built APK will be located at `./app/build/outputs/apk/staging/app-staging.apk`
 
