@@ -18,8 +18,7 @@ import com.aliucord.manager.patcher.steps.install.InstallStep
 import com.aliucord.manager.patcher.util.InsufficientStorageException
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
-import com.aliucord.manager.util.launchBlock
-import com.aliucord.manager.util.showToast
+import com.aliucord.manager.util.*
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
@@ -77,14 +76,14 @@ class PatchingScreenModel(
         }
     }
 
-    fun clearCache() = screenModelScope.launchBlock {
+    fun clearCache() = screenModelScope.launchIO {
         paths.clearCache()
-        application.showToast(R.string.action_cleared_cache)
+        mainThread { application.showToast(R.string.action_cleared_cache) }
     }
 
     fun getCurrentInstallId(): String? = installId
 
-    fun cancelInstall() = screenModelScope.launchBlock(Dispatchers.IO) {
+    fun cancelInstall() = screenModelScope.launchIO {
         runnerJob?.cancel("Manual cancellation")
 
         val incompleteDownloadStep = stepRunner?.steps
@@ -95,7 +94,7 @@ class PatchingScreenModel(
         paths.patchingWorkingDir().deleteRecursively()
     }
 
-    fun install() = screenModelScope.launch {
+    fun install() = screenModelScope.launchBlock {
         runnerJob?.cancel("Manual cancellation")
         steps = null
 
@@ -104,7 +103,7 @@ class PatchingScreenModel(
         startTime = Clock.System.now()
         mutableState.value = PatchingScreenState.Working
 
-        runnerJob = screenModelScope.launch {
+        runnerJob = screenModelScope.launch(Dispatchers.Default) {
             Log.i(BuildConfig.TAG, "Starting installation with environment:\n" + installLogs.getEnvironmentInfo())
 
             try {

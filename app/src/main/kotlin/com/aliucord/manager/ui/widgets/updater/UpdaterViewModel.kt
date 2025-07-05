@@ -17,8 +17,9 @@ import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrThrow
-import com.aliucord.manager.util.showToast
-import kotlinx.coroutines.launch
+import com.aliucord.manager.util.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.system.exitProcess
 
 class UpdaterViewModel(
@@ -31,18 +32,18 @@ class UpdaterViewModel(
         private set
     var targetVersion by mutableStateOf<String?>(null)
         private set
-    var isWorking by mutableStateOf(false)
-        private set
+    val isWorking: Flow<Boolean>
+        private field = MutableStateFlow(false)
 
     private var targetApkUrl: String? = null
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launchIO {
             try {
                 fetchInfo()
             } catch (t: Throwable) {
                 Log.e(BuildConfig.TAG, "Failed to check for updates!", t)
-                application.showToast(R.string.updater_check_fail)
+                mainThread { application.showToast(R.string.updater_check_fail) }
             }
         }
     }
@@ -51,66 +52,66 @@ class UpdaterViewModel(
         showDialog = false
     }
 
-    fun triggerUpdate() {
-        if (isWorking) return
-        val url = targetApkUrl ?: return
+    fun triggerUpdate() = viewModelScope.launchIO {
+        if (!isWorking.compareAndSet(expect = false, update = true))
+            return@launchIO
 
-        viewModelScope.launch {
-            isWorking = true
+        val url = targetApkUrl ?: return@launchIO
+        val apkFile = application.cacheDir.resolve("manager.apk")
 
-            val apkFile = application.cacheDir.resolve("manager.apk")
+        try {
+            apkFile.apply {
+                parentFile!!.mkdirs()
+                exists() && delete()
+            }
 
-            try {
-                apkFile.apply {
-                    parentFile!!.mkdirs()
-                    exists() && delete()
+            val installer = installers.getInstaller(InstallerSetting.PM)
+
+            when (val downloadResult = downloader.download(url, apkFile)) {
+                is IDownloadManager.Result.Success ->
+                    Log.d(BuildConfig.TAG, "Downloaded update")
+
+                is IDownloadManager.Result.Cancelled -> {
+                    Log.i(BuildConfig.TAG, "Update cancelled")
+                    return@launchIO
                 }
 
-                val installer = installers.getInstaller(InstallerSetting.PM)
+                is IDownloadManager.Result.Error ->
+                    throw IllegalStateException("Failed to download update: ${downloadResult.getDebugReason()}", downloadResult.getError())
+            }
 
-                when (val downloadResult = downloader.download(url, apkFile)) {
-                    is IDownloadManager.Result.Success ->
-                        Log.d(BuildConfig.TAG, "Downloaded update")
+            val installResult = installer.waitInstall(
+                apks = listOf(apkFile),
+                silent = true,
+            )
 
-                    is IDownloadManager.Result.Cancelled -> {
-                        Log.i(BuildConfig.TAG, "Update cancelled")
-                        return@launch
-                    }
-
-                    is IDownloadManager.Result.Error ->
-                        throw IllegalStateException("Failed to download update: ${downloadResult.getDebugReason()}", downloadResult.getError())
+            when (installResult) {
+                InstallerResult.Success -> {
+                    Log.w(BuildConfig.TAG, "Update completed without restarting app!")
+                    exitProcess(1)
                 }
 
-                val installResult = installer.waitInstall(
-                    apks = listOf(apkFile),
-                    silent = true,
-                )
+                is InstallerResult.Cancelled ->
+                    Log.i(BuildConfig.TAG, "Update cancelled")
 
-                when (installResult) {
-                    InstallerResult.Success -> {
-                        Log.w(BuildConfig.TAG, "Update completed without restarting app!")
-                        exitProcess(1)
-                    }
+                is InstallerResult.Error ->
+                    throw Exception("Failed to install update: ${installResult.getDebugReason()}")
+            }
+        } catch (t: Throwable) {
+            Log.e(BuildConfig.TAG, "Failed to perform update!")
+            t.printStackTrace()
 
-                    is InstallerResult.Cancelled ->
-                        Log.i(BuildConfig.TAG, "Update cancelled")
-
-                    is InstallerResult.Error ->
-                        throw Exception("Failed to install update: ${installResult.getDebugReason()}")
-                }
-            } catch (t: Throwable) {
-                Log.e(BuildConfig.TAG, "Failed to perform update!")
-                t.printStackTrace()
+            mainThread {
                 application.showToast(R.string.updater_update_fail)
                 launchReleasesPage()
-            } finally {
-                isWorking = false
+            }
+        } finally {
+            isWorking.value = false
 
-                try {
-                    apkFile.apply { exists() && delete() }
-                } catch (t: Throwable) {
-                    Log.w(BuildConfig.TAG, "Failed to clean up installed update!", t)
-                }
+            try {
+                apkFile.apply { exists() && delete() }
+            } catch (t: Throwable) {
+                Log.w(BuildConfig.TAG, "Failed to clean up installed update!", t)
             }
         }
     }
@@ -151,10 +152,12 @@ class UpdaterViewModel(
             return
         }
 
-        targetVersion = version.toString()
-        targetApkUrl = apkUrl
-        showDialog = true
         Log.d(BuildConfig.TAG, "Found an update! $targetVersion $targetApkUrl")
+        mainThread {
+            targetVersion = version.toString()
+            targetApkUrl = apkUrl
+            showDialog = true
+        }
     }
 
     private fun launchReleasesPage() {

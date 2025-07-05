@@ -1,6 +1,9 @@
 package com.aliucord.manager
 
 import android.app.Application
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.annotation.DelicateCoilApi
 import com.aliucord.manager.di.*
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.manager.*
@@ -17,6 +20,7 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptionsModel
 import com.aliucord.manager.ui.screens.plugins.PluginsModel
 import com.aliucord.manager.ui.screens.settings.SettingsModel
 import com.aliucord.manager.ui.widgets.updater.UpdaterViewModel
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.*
@@ -76,6 +80,14 @@ class ManagerApplication : Application() {
             modules(module {
                 singleOf(::PMInstaller)
             })
+        }
+
+        // Limit parallel fetching of images using Coil
+        @OptIn(DelicateCoilApi::class)
+        SingletonImageLoader.setUnsafe { context ->
+            ImageLoader.Builder(context)
+                .fetcherCoroutineContext(Dispatchers.IO.limitedParallelism(5))
+                .build()
         }
     }
 }

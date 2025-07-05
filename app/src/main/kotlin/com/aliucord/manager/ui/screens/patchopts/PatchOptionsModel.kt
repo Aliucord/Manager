@@ -9,8 +9,7 @@ import androidx.core.content.getSystemService
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.manager.PreferencesManager
-import com.aliucord.manager.util.debounce
-import kotlinx.coroutines.launch
+import com.aliucord.manager.util.*
 
 class PatchOptionsModel(
     prefilledOptions: PatchOptions,
@@ -119,24 +118,26 @@ class PatchOptionsModel(
     private val fetchPkgNameStateDebounced: () -> Unit =
         screenModelScope.debounce(100L, function = ::fetchPkgNameState)
 
-    private fun fetchPkgNameState() {
-        if (packageName.length !in (3..150) || !PACKAGE_REGEX.matches(this.packageName)) {
-            packageNameState = PackageNameState.Invalid
+    private suspend fun fetchPkgNameState() {
+        val state = if (packageName.length !in (3..150) || !PACKAGE_REGEX.matches(this.packageName)) {
+            PackageNameState.Invalid
         } else {
             try {
                 context.packageManager.getPackageInfo(packageName, 0)
-                packageNameState = PackageNameState.Taken
+                PackageNameState.Taken
             } catch (_: NameNotFoundException) {
-                packageNameState = PackageNameState.Ok
+                PackageNameState.Ok
             }
         }
+
+        mainThread { packageNameState = state }
     }
 
     init {
-        screenModelScope.launch { fetchPkgNameState() }
-
         if (!prefs.showNetworkWarning)
             showNetworkWarningDialog = false
+
+        screenModelScope.launchBlock { fetchPkgNameState() }
     }
 
     companion object {

@@ -25,11 +25,9 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.util.DiscordVersion
 import com.aliucord.manager.ui.util.toUnsafeImmutable
-import com.aliucord.manager.util.launchBlock
-import com.aliucord.manager.util.showToast
+import com.aliucord.manager.util.*
 import com.github.diamondminer88.zip.ZipReader
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -53,22 +51,31 @@ class HomeModel(
         refresh()
     }
 
-    fun refresh() = screenModelScope.launchBlock {
-        if (refreshingLock.isLocked) return@launchBlock
+    fun refresh(delay: Boolean = false) = screenModelScope.launchIO {
+        if (refreshingLock.isLocked) return@launchIO
+
+        if (delay) {
+            delay(250)
+
+            if (refreshingLock.isLocked)
+                return@launchIO
+        }
 
         refreshingLock.withLock {
             val packages = fetchAliucordPackages()
 
             val jobs = listOf(
-                screenModelScope.launch { fetchInstallations(packages) },
-                screenModelScope.launch {
+                screenModelScope.launch(Dispatchers.IO) {
+                    fetchInstallations(packages)
+                },
+                screenModelScope.launch(Dispatchers.IO) {
                     if (remoteDataJson == null || latestAliuhookVersion == null)
                         fetchRemoteData()
                 }
             )
 
             jobs.joinAll()
-            refreshInstallationsUpToDate(packages)
+            mainThread { refreshInstallationsUpToDate(packages) }
         }
     }
 
@@ -104,7 +111,7 @@ class HomeModel(
             @OptIn(ExperimentalSerializationApi::class)
             metadataFile?.let { json.decodeFromStream<InstallMetadata>(it.inputStream()) }
         } catch (t: Throwable) {
-            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package ${packageName}", t)
+            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package $packageName", t)
             null
         }
 
@@ -114,8 +121,11 @@ class HomeModel(
         return PatchOptionsScreen(prefilledOptions = patchOptions)
     }
 
-    private fun fetchInstallations(packages: List<PackageInfo>) {
-        installsState = InstallsState.Fetching
+    private suspend fun fetchInstallations(packages: List<PackageInfo>) {
+        mainThread {
+            if (installsState !is InstallsState.Fetched)
+                installsState = InstallsState.Fetching
+        }
 
         try {
             val packageManager = application.packageManager
@@ -143,19 +153,21 @@ class HomeModel(
                 )
             }
 
-            installsState = if (aliucordInstallations.isNotEmpty()) {
-                InstallsState.Fetched(data = aliucordInstallations.toUnsafeImmutable())
-            } else {
-                InstallsState.None
+            mainThread {
+                installsState = if (aliucordInstallations.isNotEmpty()) {
+                    InstallsState.Fetched(data = aliucordInstallations.toUnsafeImmutable())
+                } else {
+                    InstallsState.None
+                }
             }
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to query Aliucord installations", t)
-            installsState = InstallsState.Error
+            mainThread { installsState = InstallsState.Error }
         }
     }
 
-    private fun refreshInstallationsUpToDate(packages: List<PackageInfo>) {
-        val installations = (installsState as? InstallsState.Fetched)?.data
+    private suspend fun refreshInstallationsUpToDate(packages: List<PackageInfo>) {
+        val installations = mainThread { (installsState as? InstallsState.Fetched)?.data }
             ?: return
 
         try {
@@ -166,22 +178,22 @@ class HomeModel(
                 data.copy(isUpToDate = isInstallationUpToDate(packageInfo))
             }
 
-            installsState = InstallsState.Fetched(data = newInstallations.toUnsafeImmutable())
+            mainThread { installsState = InstallsState.Fetched(data = newInstallations.toUnsafeImmutable()) }
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to check installations up-to-date", t)
-            installsState = InstallsState.Error
+            mainThread { installsState = InstallsState.Error }
         }
     }
 
     private suspend fun fetchRemoteData() {
         listOf(
-            screenModelScope.launch {
+            screenModelScope.launch(Dispatchers.IO) {
                 github.getBuildData().fold(
                     success = { remoteDataJson = it },
                     fail = { Log.w(BuildConfig.TAG, "Failed to fetch remote build data", it) },
                 )
             },
-            screenModelScope.launch {
+            screenModelScope.launch(Dispatchers.IO) {
                 maven.getAliuhookVersion().fold(
                     success = { latestAliuhookVersion = it },
                     fail = { Log.w(BuildConfig.TAG, "Failed to fetch latest Aliuhook version", it) },
@@ -190,7 +202,7 @@ class HomeModel(
         ).joinAll()
 
         if (remoteDataJson == null || latestAliuhookVersion == null) {
-            application.showToast(R.string.home_network_fail)
+            mainThread { application.showToast(R.string.home_network_fail) }
         }
     }
 

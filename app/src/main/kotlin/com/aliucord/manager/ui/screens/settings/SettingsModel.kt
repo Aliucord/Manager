@@ -43,10 +43,13 @@ class SettingsModel(
         preferences.keepPatchedApks = value
     }
 
-    fun clearCache() = screenModelScope.launchBlock {
+    fun clearCache() = screenModelScope.launchIO {
         paths.clearCache()
-        patchedApkExists = false
-        application.showToast(R.string.action_cleared_cache)
+
+        mainThread {
+            patchedApkExists = false
+            application.showToast(R.string.action_cleared_cache)
+        }
     }
 
     fun copyInstallInfo() {
@@ -54,7 +57,7 @@ class SettingsModel(
         application.showToast(R.string.action_copied)
     }
 
-    fun shareApk() = screenModelScope.launchBlock {
+    fun shareApk() {
         val file = paths.patchingWorkingDir().resolve("patched.apk")
         val fileUri = FileProvider.getUriForFile(
             /* context = */ application,

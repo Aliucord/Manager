@@ -11,8 +11,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
-import com.aliucord.manager.util.launchBlock
-import com.aliucord.manager.util.showToast
+import com.aliucord.manager.util.*
 import dev.zt64.compose.pipette.HsvColor
 import java.io.IOException
 
@@ -43,7 +42,7 @@ class IconOptionsModel(
     // ---------- Replacement color ---------- //
     var selectedImage by mutableStateOf<ByteArray?>(null)
 
-    fun changeSelectedImageUri(uri: Uri) = screenModelScope.launchBlock {
+    fun changeSelectedImageUri(uri: Uri) = screenModelScope.launchIO {
         try {
             // Check file size first
             val query = application.contentResolver.query(uri, null, null, null, null)
@@ -55,8 +54,8 @@ class IconOptionsModel(
             }
 
             if (size > 1024 * 256) { // 256KiB
-                application.showToast(R.string.iconopts_failed_image_too_big)
-                return@launchBlock
+                mainThread { application.showToast(R.string.iconopts_failed_image_too_big) }
+                return@launchIO
             }
 
             // Read file bytes
@@ -65,10 +64,10 @@ class IconOptionsModel(
                 ?.use { it.readBytes() }
                 ?: throw IOException("Failed to open input stream")
 
-            selectedImage = bytes
+            mainThread { selectedImage = bytes }
         } catch (t: Throwable) {
-            application.showToast(R.string.iconopts_failed_image)
             Log.w(BuildConfig.TAG, "Failed to open selected foreground replacement image", t)
+            mainThread { application.showToast(R.string.iconopts_failed_image) }
         }
     }
 

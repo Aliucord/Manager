@@ -6,7 +6,7 @@ import com.aliucord.manager.network.models.Contributor
 import com.aliucord.manager.network.services.HttpService
 import com.aliucord.manager.network.utils.fold
 import com.aliucord.manager.ui.util.toUnsafeImmutable
-import com.aliucord.manager.util.launchBlock
+import com.aliucord.manager.util.launchIO
 import io.ktor.client.request.url
 
 class AboutModel(
@@ -16,7 +16,7 @@ class AboutModel(
         fetchContributors()
     }
 
-    fun fetchContributors() = screenModelScope.launchBlock {
+    fun fetchContributors() = screenModelScope.launchIO {
         mutableState.value = AboutScreenState.Loading
 
         val response = http.request<List<Contributor>> { url(CONTRIBUTORS_API_URL) }

@@ -12,15 +12,14 @@ import com.aliucord.manager.ui.screens.plugins.model.PluginItem
 import com.aliucord.manager.ui.screens.plugins.model.PluginManifest
 import com.aliucord.manager.ui.util.emptyImmutableList
 import com.aliucord.manager.ui.util.toUnsafeImmutable
-import com.aliucord.manager.util.launchBlock
-import com.aliucord.manager.util.showToast
+import com.aliucord.manager.util.*
 import com.github.diamondminer88.zip.ZipReader
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.*
 import java.io.File
@@ -58,7 +57,7 @@ class PluginsModel(
                 }.toUnsafeImmutable()
             }
         }.stateIn(
-            scope = screenModelScope,
+            scope = screenModelScope + Dispatchers.Default,
             started = SharingStarted.WhileSubscribed(replayExpiration = Duration.ZERO),
             initialValue = plugins.value,
         )
@@ -83,36 +82,32 @@ class PluginsModel(
         showUninstallDialog = null
     }
 
-    fun uninstallPlugin(pluginPath: String) = screenModelScope.launchBlock(Dispatchers.IO) {
-        if (!plugins.value.any { it.path == pluginPath }) {
-            hideUninstallDialog()
-            return@launchBlock
+    fun uninstallPlugin(plugin: PluginItem) = screenModelScope.launchIO {
+        if (!plugins.value.any { it.path == plugin.path }) {
+            mainThread { hideUninstallDialog() }
+            return@launchIO
         }
 
         val deleteSuccess = try {
-            File(pluginPath).delete()
+            File(plugin.path).delete()
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to delete plugin", t)
             false
         }
 
         if (!deleteSuccess) {
-            withContext(Dispatchers.Main) {
+            mainThread {
+                hideUninstallDialog()
                 context.showToast(R.string.plugins_error)
             }
-            hideUninstallDialog()
-            return@launchBlock
+            return@launchIO
         }
 
-        withContext(Dispatchers.Main) {
-            plugins.getAndUpdate {
-                it.filter { it.path != pluginPath }.toUnsafeImmutable()
-            }
-        }
-        hideUninstallDialog()
+        plugins.update { (it - plugin).toUnsafeImmutable() }
+        mainThread { hideUninstallDialog() }
     }
 
-    fun setPluginEnabled(pluginName: String, enabled: Boolean) = screenModelScope.launchBlock(Dispatchers.IO) {
+    fun setPluginEnabled(pluginName: String, enabled: Boolean) = screenModelScope.launchIO {
         aliucordJsonMutex.withLock {
             @OptIn(ExperimentalSerializationApi::class)
             try {
@@ -126,11 +121,11 @@ class PluginsModel(
                     .use { json.encodeToStream(settings, it) }
             } catch (t: Throwable) {
                 Log.e(BuildConfig.TAG, "Failed to write Aliucord.json", t)
-                withContext(Dispatchers.Main) { error = true }
+                mainThread { error = true }
             }
         }
 
-        withContext(Dispatchers.Main) {
+        mainThread {
             plugins.value.forEach {
                 if (it.manifest.name == pluginName)
                     it.enabled = enabled
@@ -139,7 +134,7 @@ class PluginsModel(
     }
 
     // Called by screen to load initial data
-    fun refreshData() = screenModelScope.launchBlock(Dispatchers.IO) {
+    fun refreshData() = screenModelScope.launchIO {
         loadPlugins()
         loadPluginsEnabled()
     }
@@ -157,11 +152,11 @@ class PluginsModel(
                     .mapValues { it.value.jsonPrimitive.boolean }
             } catch (t: Throwable) {
                 Log.e(BuildConfig.TAG, "Failed to load Aliucord.json", t)
-                withContext(Dispatchers.Main) { error = true }
+                mainThread { error = true }
                 emptyMap()
             }
 
-            withContext(Dispatchers.Main) {
+            mainThread {
                 plugins.value.forEach {
                     if (!pluginToggles.getOrDefault(it.manifest.name, true))
                         it.enabled = false
@@ -185,12 +180,10 @@ class PluginsModel(
                 )
             }
 
-            withContext(Dispatchers.Main) {
-                plugins.value = pluginItems.toUnsafeImmutable()
-            }
+            plugins.value = pluginItems.toUnsafeImmutable()
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to load plugins", t)
-            withContext(Dispatchers.Main) { error = true }
+            mainThread { error = true }
         }
     }
 
