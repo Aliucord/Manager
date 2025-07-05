@@ -128,8 +128,8 @@
   <string name="installer_abort_title">本当に終了しますか？</string>
   <string name="installer_abort_body">本当に進行中のインストールを中止してもよろしいですか？</string>
   <string name="updater_body">Aliucord Managerの新しいアップデートがリリースされました！正常に機能するために必要な場合があります。アップデートしますか？</string>
-  <string name="updater_title">%1$sへ更新</string>
-  <string name="updater_fail">Failed to check for updates!</string>
+  <string name="updater_title">v%sへ更新</string>
+  <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">ダウンロードに失敗しました (不明)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">ダウンロードに失敗しました (無効な応答)</string>

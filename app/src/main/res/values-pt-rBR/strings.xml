@@ -127,8 +127,8 @@
   <string name="installer_abort_title">Deseja realmente sair?</string>
   <string name="installer_abort_body">Tem certeza que deseja cancelar uma instalação em andamento?</string>
   <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
-  <string name="updater_title">Atualizado para %1$s</string>
-  <string name="updater_fail">Falha ao checar atualizações</string>
+  <string name="updater_title">Atualizado para v%s</string>
+  <string name="updater_check_fail">Falha ao checar atualizações</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
   <string name="downloader_err_timeout">Falha no Download (tempo esgotado)</string>
   <string name="downloader_err_response">Download falhou (Resposta inválida)</string>

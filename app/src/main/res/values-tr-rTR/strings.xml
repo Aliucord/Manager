@@ -128,8 +128,8 @@ lütfen silin!</string>
   <string name="installer_abort_title">Gerçekten çıkış yapmak istiyor musun?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Aliucord Yöneticisi için yeni bir güncelleme yayınlandı! Düzgün çalışması için gerekli olabilir. Güncellemek ister misin?</string>
-  <string name="updater_title">%1$s\'a Güncelle</string>
-  <string name="updater_fail">Güncellemeler kontrol edilemedi!</string>
+  <string name="updater_title">v%s\'a Güncelle</string>
+  <string name="updater_check_fail">Güncellemeler kontrol edilemedi!</string>
   <string name="downloader_err_unknown">İndirme başarısız (Bilinmiyor)</string>
   <string name="downloader_err_timeout">İndirme başarısız (Zamanaşımı)</string>
   <string name="downloader_err_response">İndirme başarısız (İletişim sorunu)</string>

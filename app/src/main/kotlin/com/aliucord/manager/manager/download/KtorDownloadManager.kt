@@ -117,7 +117,7 @@ class KtorDownloadManager(
     ) : Result.Error() {
         override fun toString(): String = error.stackTraceToString()
         override fun getDebugReason(): String = error.message ?: "Unknown exception"
-        override fun getLocalizedReason(context: Context): String? =
-            localizedError?.let(context::getString)
+        override fun getLocalizedReason(context: Context): String? = localizedError?.let(context::getString)
+        override fun getError(): Throwable? = error
     }
 }

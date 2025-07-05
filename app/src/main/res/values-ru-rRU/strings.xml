@@ -127,8 +127,8 @@
   <string name="installer_abort_title">Действительно выйти?</string>
   <string name="installer_abort_body">Вы уверены, что действительно хотите прервать начатую установку?</string>
   <string name="updater_body">Вышло новое обновление для Aliucord Менеджера! Оно может быть обязательным для правильной работы. Желаете ли вы обновиться?</string>
-  <string name="updater_title">Обновить до %1$s</string>
-  <string name="updater_fail">Не удалось проверить наличие обновлений!</string>
+  <string name="updater_title">Обновить до v%s</string>
+  <string name="updater_check_fail">Не удалось проверить наличие обновлений!</string>
   <string name="downloader_err_unknown">Загрузка не удалась (Неизвестно)</string>
   <string name="downloader_err_timeout">Сбой загрузки (таймаут)</string>
   <string name="downloader_err_response">Загрузка не удалась (Неверный ответ)</string>

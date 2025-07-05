@@ -127,8 +127,8 @@
   <string name="installer_abort_title">정말 나가실 건가요?</string>
   <string name="installer_abort_body">진행 중인 설치를 중단할까요?</string>
   <string name="updater_body">Aliucord Manager의 새로운 업데이트가 출시됐어요! 제대로 작동하려면 업데이트가 필요할지도 몰라요. 업데이트할까요?</string>
-  <string name="updater_title">%1$s(으)로 업데이트했어요</string>
-  <string name="updater_fail">Failed to check for updates!</string>
+  <string name="updater_title">v%s(으)로 업데이트했어요</string>
+  <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="downloader_err_unknown">다운로드 실패 (알 수 없음)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">다운로드 실패 (잘못된 응답)</string>

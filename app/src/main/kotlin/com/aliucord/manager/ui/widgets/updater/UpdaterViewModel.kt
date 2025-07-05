@@ -1,8 +1,10 @@
 package com.aliucord.manager.ui.widgets.updater
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
@@ -10,6 +12,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.manager.InstallerManager
 import com.aliucord.manager.manager.InstallerSetting
+import com.aliucord.manager.manager.download.IDownloadManager
 import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.network.utils.SemVer
@@ -39,7 +42,7 @@ class UpdaterViewModel(
                 fetchInfo()
             } catch (t: Throwable) {
                 Log.e(BuildConfig.TAG, "Failed to check for updates!", t)
-                application.showToast(R.string.updater_fail)
+                application.showToast(R.string.updater_check_fail)
             }
         }
     }
@@ -55,31 +58,60 @@ class UpdaterViewModel(
         viewModelScope.launch {
             isWorking = true
 
-            val apkFile = application.cacheDir.resolve("manager.apk").apply { delete() }
-            val installer = installers.getInstaller(InstallerSetting.PM)
+            val apkFile = application.cacheDir.resolve("manager.apk")
 
-            downloader.download(url, apkFile)
-
-            val installResult = installer.waitInstall(
-                apks = listOf(apkFile),
-                silent = true,
-            )
-
-            when (installResult) {
-                InstallerResult.Success -> {
-                    Log.w(BuildConfig.TAG, "Update completed without restarting app!")
-                    exitProcess(1)
+            try {
+                apkFile.apply {
+                    parentFile!!.mkdirs()
+                    exists() && delete()
                 }
 
-                is InstallerResult.Cancelled ->
-                    Log.i(BuildConfig.TAG, "Update cancelled")
+                val installer = installers.getInstaller(InstallerSetting.PM)
 
-                is InstallerResult.Error ->
-                    Log.e(BuildConfig.TAG, "Failed to update: ${installResult.getDebugReason()}")
+                when (val downloadResult = downloader.download(url, apkFile)) {
+                    is IDownloadManager.Result.Success ->
+                        Log.d(BuildConfig.TAG, "Downloaded update")
+
+                    is IDownloadManager.Result.Cancelled -> {
+                        Log.i(BuildConfig.TAG, "Update cancelled")
+                        return@launch
+                    }
+
+                    is IDownloadManager.Result.Error ->
+                        throw IllegalStateException("Failed to download update: ${downloadResult.getDebugReason()}", downloadResult.getError())
+                }
+
+                val installResult = installer.waitInstall(
+                    apks = listOf(apkFile),
+                    silent = true,
+                )
+
+                when (installResult) {
+                    InstallerResult.Success -> {
+                        Log.w(BuildConfig.TAG, "Update completed without restarting app!")
+                        exitProcess(1)
+                    }
+
+                    is InstallerResult.Cancelled ->
+                        Log.i(BuildConfig.TAG, "Update cancelled")
+
+                    is InstallerResult.Error ->
+                        throw Exception("Failed to install update: ${installResult.getDebugReason()}")
+                }
+            } catch (t: Throwable) {
+                Log.e(BuildConfig.TAG, "Failed to perform update!")
+                t.printStackTrace()
+                application.showToast(R.string.updater_update_fail)
+                launchReleasesPage()
+            } finally {
+                isWorking = false
+
+                try {
+                    apkFile.apply { exists() && delete() }
+                } catch (t: Throwable) {
+                    Log.w(BuildConfig.TAG, "Failed to clean up installed update!", t)
+                }
             }
-
-            apkFile.delete()
-            isWorking = false
         }
     }
 
@@ -123,5 +155,15 @@ class UpdaterViewModel(
         targetApkUrl = apkUrl
         showDialog = true
         Log.d(BuildConfig.TAG, "Found an update! $targetVersion $targetApkUrl")
+    }
+
+    private fun launchReleasesPage() {
+        try {
+            Intent(Intent.ACTION_VIEW, AliucordGithubService.LATEST_RELEASE_HTML_URL.toUri())
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .also(application::startActivity)
+        } catch (t: Throwable) {
+            Log.w(BuildConfig.TAG, "Failed to open latest Github release in browser!", t)
+        }
     }
 }
