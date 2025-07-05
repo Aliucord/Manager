@@ -35,10 +35,6 @@
 # Keep class names of patching steps since they're used via reflection
 -keepnames class com.aliucord.manager.patcher.steps.**
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
--keepattributes SourceFile,LineNumberTable
-
 # Repackage classes into the top-level.
 -repackageclasses
 
@@ -51,3 +47,9 @@
 
 # Suppress missing class warnings
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Keeps all class and field names for debugging
+-keepnames class ** { *; }
+
+# Preserve the line number information for debugging stack traces.
+-keepattributes LineNumberTable
