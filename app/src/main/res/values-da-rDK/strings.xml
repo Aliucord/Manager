@@ -129,6 +129,7 @@
   <string name="updater_body">Ny opdatering udgivet! Den kan være nødvendig for korrekt funktion af Aliucord Manager. Opdatér?</string>
   <string name="updater_title">Opdatér til v%s</string>
   <string name="updater_check_fail">Failed to check for updates!</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Download mislykkedes (ukendt)</string>
   <string name="downloader_err_timeout">Download mislykkedes (timeout)</string>
   <string name="downloader_err_response">Download mislykkedes (ugyldigt svar)</string>

@@ -129,6 +129,7 @@
   <string name="updater_body">Một bản cập nhật mới đã được phát hành cho Aliucord Manager! Nó cần cập nhật để hoạt động đúng. Bạn có muốn cập nhật không?</string>
   <string name="updater_title">Cập nhật: v%s</string>
   <string name="updater_check_fail">Failed to check for updates!</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">Download failed (Invalid response)</string>

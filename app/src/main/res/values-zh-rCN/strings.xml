@@ -129,6 +129,7 @@
   <string name="updater_body">Aliucord 管理器已发布新更新！可能需要此更新才能正常运行。您想更新吗？</string>
   <string name="updater_title">更新到 v%s</string>
   <string name="updater_check_fail">Failed to check for updates!</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">下载失败（未知）</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">下载失败（无效响应）</string>

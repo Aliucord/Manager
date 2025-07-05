@@ -129,6 +129,7 @@
   <string name="updater_body">تم إصدار تحديث جديد لمدير Aliucord Manager! قد تكون مطلوبة من أجل العمل بشكل صحيح. هل ترغب في التحديث؟</string>
   <string name="updater_title">تم التحديث الي v%s</string>
   <string name="updater_check_fail">فشل في التحقق من وجود تحديثات</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">فشل التنزيل (مجهول)</string>
   <string name="downloader_err_timeout">فشل التنزيل (المهلة)</string>
   <string name="downloader_err_response">فشل التحميل (استجابة غير صالحة)</string>

@@ -101,7 +101,7 @@
   <string name="install_group_install">Установка</string>
   <string name="patch_step_fetch_kt_version">Получение целевой версии Discord</string>
   <string name="patch_step_downgrade_check">Проверка наличия новых установок</string>
-  <string name="patch_step_restore_cache">Restoring from cache</string>
+  <string name="patch_step_restore_cache">Восстановить из кэша</string>
   <string name="patch_step_dl_kt_apk">Скачивание APK-файла Discord</string>
   <string name="patch_step_dl_kotlin">Скачивание библиотеки Kotlin</string>
   <string name="patch_step_dl_injector">Скачивание инжектора Aliucord</string>
@@ -129,6 +129,7 @@
   <string name="updater_body">Вышло новое обновление для Aliucord Менеджера! Оно может быть обязательным для правильной работы. Желаете ли вы обновиться?</string>
   <string name="updater_title">Обновить до v%s</string>
   <string name="updater_check_fail">Не удалось проверить наличие обновлений!</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Загрузка не удалась (Неизвестно)</string>
   <string name="downloader_err_timeout">Сбой загрузки (таймаут)</string>
   <string name="downloader_err_response">Загрузка не удалась (Неверный ответ)</string>
