@@ -14,6 +14,7 @@ import com.aliucord.manager.ui.screens.log.LogScreenModel
 import com.aliucord.manager.ui.screens.logs.LogsListScreenModel
 import com.aliucord.manager.ui.screens.patching.PatchingScreenModel
 import com.aliucord.manager.ui.screens.patchopts.PatchOptionsModel
+import com.aliucord.manager.ui.screens.permissions.PermissionsModel
 import com.aliucord.manager.ui.screens.plugins.PluginsModel
 import com.aliucord.manager.ui.screens.settings.SettingsModel
 import com.aliucord.manager.ui.widgets.updater.UpdaterViewModel
@@ -57,6 +58,7 @@ class ManagerApplication : Application() {
                 factoryOf(::IconOptionsModel)
                 factoryOf(::LogScreenModel)
                 factoryOf(::LogsListScreenModel)
+                factoryOf(::PermissionsModel)
                 viewModelOf(::UpdaterViewModel)
             })
 
