@@ -1,8 +1,7 @@
 package com.aliucord.manager.ui.screens.patching.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -73,9 +72,12 @@ fun StepGroupCard(
                 size = 24.dp,
             )
 
-            Text(text = name)
-
-            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = name,
+                modifier = Modifier
+                    .basicMarquee()
+                    .weight(0.05f),
+            )
 
             TimeElapsed(
                 enabled = groupState.isFinished,
