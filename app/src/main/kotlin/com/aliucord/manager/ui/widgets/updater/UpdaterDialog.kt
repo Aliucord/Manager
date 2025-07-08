@@ -29,7 +29,7 @@ fun UpdaterDialog(
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
             ) {
-                if (isWorking) {
+                if (!isWorking) {
                     Text(stringResource(R.string.action_update))
                 } else {
                     CircularProgressIndicator(
@@ -44,7 +44,7 @@ fun UpdaterDialog(
         dismissButton = {
             TextButton(
                 onClick = viewModel::dismissDialog,
-                enabled = isWorking,
+                enabled = !isWorking,
             ) {
                 Text(stringResource(R.string.action_dismiss))
             }
