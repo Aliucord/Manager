@@ -127,9 +127,9 @@
   <string name="installer_abort_title">Дійсно вийти?</string>
   <string name="installer_abort_body">Ви дійсно хочете перервати почате встановлення?</string>
   <string name="updater_body">Вийшло нове оновлення для менеджера Aliucord! Воно може бути необхідним для того, щоб усе працювало правильно. Ви хотіли б оновити?</string>
-  <string name="updater_title">Update to v%s</string>
-  <string name="updater_check_fail">Failed to check for updates!</string>
-  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
+  <string name="updater_title">Оновлення до v%s</string>
+  <string name="updater_check_fail">Не вдалося перевірити на наявність оновлень!</string>
+  <string name="updater_update_fail">Не вдалося оновити! Будь ласка, завантажте та встановіть його вручну!</string>
   <string name="downloader_err_unknown">Помилка завантаження (Невідома)</string>
   <string name="downloader_err_timeout">Помилка завантаження (Час очікування вийшов)</string>
   <string name="downloader_err_response">Помилка завантаження (Неправильна відповідь)</string>

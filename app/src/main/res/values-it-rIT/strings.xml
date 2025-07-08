@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <string name="app_name">Gestore Aliucord</string>
+  <string name="app_name">Aliucord Manager</string>
   <string name="app_description">Una mod per l\'app di Discord su Android</string>
   <string name="support_server">Server di supporto</string>
   <string name="installer">Installatore</string>
@@ -127,9 +127,9 @@
   <string name="installer_abort_title">Vuoi veramente uscire?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">È stato rilasciato un nuovo aggiornamento per Aliucord Manager! Potrebbe essere necessario per funzionare correttamente. Vuoi aggiornare?</string>
-  <string name="updater_title">Update to v%s</string>
-  <string name="updater_check_fail">Failed to check for updates!</string>
-  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
+  <string name="updater_title">Aggiorna a v%s</string>
+  <string name="updater_check_fail">Impossibile controllare gli aggiornamenti!</string>
+  <string name="updater_update_fail">Impossibile aggiornare! Scarica e installa manualmente l\'aggiornamento!</string>
   <string name="downloader_err_unknown">Download non riuscito (Sconosciuto)</string>
   <string name="downloader_err_timeout">Download non riuscito (Timeout)</string>
   <string name="downloader_err_response">Download non riuscito (Risposta non valida)</string>
@@ -212,5 +212,5 @@
   <string name="fun_fact_7">Il plugin IWillCrashYourDiscord ti crasha Discord.</string>
   <string name="fun_fact_9">Aliucord può girare su WearOS</string>
   <string name="fun_fact_10">Aliucord utilizza la *vera* vecchia UI, quella del 2022!</string>
-  <string name="fun_fact_11">C\'è stato un tentativo di far eseguire Aliucord su iOS…</string>
+  <string name="fun_fact_11">C\'è stato un tentativo di far funzionare Aliucord su iOS…</string>
 </resources>

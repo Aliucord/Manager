@@ -35,7 +35,7 @@
   <string name="install_permissions_grant_body">Pemasangan Aliucord memerlukan pemberian izin untuk memasang aplikasi dari sumber yang tidak dikenal.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>
-  <string name="settings_header_advanced">Canggih</string>
+  <string name="settings_header_advanced">Tingkat Lanjut</string>
   <string name="settings_header_appearance">Tampilan</string>
   <string name="settings_header_info">Info</string>
   <string name="setting_theme">Tema</string>
@@ -43,7 +43,7 @@
   <string name="setting_dynamic_color">Warna dinamis</string>
   <string name="setting_dynamic_color_desc">Mengaktifkan tema Material di Andro 12+</string>
   <string name="setting_developer_options">Opsi Pengembang</string>
-  <string name="setting_developer_options_desc">Don\'t enable this unless you know what you are doing!</string>
+  <string name="setting_developer_options_desc">Jangan aktifkan ini kecuali anda tau apa fungsinya! (Seriusan)</string>
   <string name="setting_keep_patched_apks">Simpan APK yang ditambal</string>
   <string name="setting_keep_patched_apks_desc">Simpan semua file dan APK yang di-tambal setelah instalasi untuk keperluan debugging. Perlu diinget bahwa mengekspor APK hanya berguna setelah sesi tambal berhasil.</string>
   <string name="settings_clear_cache">Bersihkan cache</string>
@@ -67,8 +67,8 @@
   <string name="contributors_contributions">%s kontribusi</string>
   <string name="network_load_fail">Gagal dimuat</string>
   <string name="network_warning_title">Jaringan terukur</string>
-  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
-  <string name="network_warning_disable">Jangan lihat kan ini lagi</string>
+  <string name="network_warning_body">Sepertinya anda terhubung ke data seluler atau jaringan yang berpotensi dapat diukur. Melanjutkan pemasangan mungkin akan berakibat ratusan MB file untuk di download. Apa anda yakin ingin melanjutkan?</string>
+  <string name="network_warning_disable">Jangan tampilkan ini lagi</string>
   <string name="version_supported">Versi yang didukung:</string>
   <string name="version_none">Tidak ada</string>
   <string name="version_stable">Stabil</string>
@@ -101,7 +101,7 @@
   <string name="install_group_install">Pasang</string>
   <string name="patch_step_fetch_kt_version">Mengambil versi target Discord</string>
   <string name="patch_step_downgrade_check">Checking for older installations</string>
-  <string name="patch_step_restore_cache">Memulihkan dari tembolok</string>
+  <string name="patch_step_restore_cache">Memulihkan dari cache</string>
   <string name="patch_step_dl_kt_apk">Mengunduh APK Discord</string>
   <string name="patch_step_dl_kotlin">Mengunduh Kotlin library</string>
   <string name="patch_step_dl_injector">Mengunduh penyuntik</string>
@@ -128,8 +128,8 @@
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">Perbaruan baru sudah dirilis untuk Aliucord Manager! Itu mungkin diperlukan untuk berfungsi dengan baik. Apakah kamu ingin perbarui?</string>
   <string name="updater_title">Diperbarui ke v%s</string>
-  <string name="updater_check_fail">Failed to check for updates!</string>
-  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
+  <string name="updater_check_fail">Gagal untuk memeriksa update!</string>
+  <string name="updater_update_fail">Gagal memperbarui! Mohon download dan pasang versi terbaru secara manual!</string>
   <string name="downloader_err_unknown">Unduhan gagal (Tidak diketahui)</string>
   <string name="downloader_err_timeout">Unduhan gagal (Waktu habis)</string>
   <string name="downloader_err_response">Unduhan gagal (Reaksi tidak benar)</string>
@@ -168,13 +168,13 @@
   <string name="iconopts_hex_desc">Manually enter the RGB hex value of the color. Transparency is ignored!</string>
   <string name="iconopts_failed_image">Failed to open image</string>
   <string name="iconopts_failed_image_too_big">Image size exceeds maximum of 256KiB</string>
-  <string name="iconopts_btn_open_selection">Select Image</string>
-  <string name="iconopts_btn_open_example_image">Example image</string>
+  <string name="iconopts_btn_open_selection">Pilih gambar</string>
+  <string name="iconopts_btn_open_example_image">Contoh gambar</string>
   <string name="iconopts_icon_preview_title">Icon Preview</string>
   <string name="iconopts_icon_preview_desc">A preview of the selected options, cropped and scaled to show how the icon will appear on your device</string>
   <string name="iconopts_image_preview_title">Preview</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
-  <string name="iconopts_image_preview_none">No image selected</string>
+  <string name="iconopts_image_preview_none">Tak ada gambar yang terpilih</string>
   <string name="log_title">Log</string>
   <string name="log_section_install_info">Installation Info</string>
   <string name="log_section_env_info">Environment Info</string>
@@ -187,8 +187,8 @@
   <string name="logs_none">No logs present!</string>
   <string name="logs_action_delete_all">Delete all logs</string>
   <string name="logs_status_delete_success">Successfully deleted all logs</string>
-  <string name="logs_wipe_title">Clear Logs</string>
-  <string name="logs_wipe_desc">Are you sure you want to permanently delete all the logs?</string>
+  <string name="logs_wipe_title">Bersihkan Log</string>
+  <string name="logs_wipe_desc">Apa anda yakin untuk menghapus semua Log secara permanen?</string>
   <string name="notif_group_install_title">Active installation</string>
   <string name="notif_group_install_desc">Progress notifications sent during a minimized installation</string>
   <string name="notif_install_ready_title">Aliucord installation ready!</string>
@@ -199,7 +199,7 @@
   <string name="play_protect_warning_desc">Google Play Protect appears to be enabled on your device. It may attempt to interfere with a new installation due to the usage of a unique signing key. You can disable it in Play Protect\'s settings.\n\nIf it does show a warning dialog, press\n\"More Details\" -&gt; \"Install anyway\"</string>
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
-  <string name="play_protect_warning_disable">Don\'t show this again</string>
+  <string name="play_protect_warning_disable">Jangan tampilkan ini lagi</string>
   <string name="custom_component_picker_title">Custom Component</string>
   <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
   <string name="fun_fact_prefix">Fun Fact: %s</string>

@@ -128,8 +128,8 @@
   <string name="installer_abort_body">Tem a certeza que deseja abortar a instalação em progresso?</string>
   <string name="updater_body">Foi lançada uma nova atualização do Aliucord Manager! Pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
   <string name="updater_title">Atualizado para v%s</string>
-  <string name="updater_check_fail">Failed to check for updates!</string>
-  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
+  <string name="updater_check_fail">Falha na verificação de atualizações!</string>
+  <string name="updater_update_fail">Falha na atualização! Transfira e instale a atualização manualmente!</string>
   <string name="downloader_err_unknown">A transferência falhou (Desconhecido)</string>
   <string name="downloader_err_timeout">A transferência falhou (Tempo esgotado)</string>
   <string name="downloader_err_response">A transferência falhou (Resposta inválida)</string>
@@ -208,7 +208,7 @@
   <string name="fun_fact_3">Sabia que o Aliucord tem mais de 200 plugins disponíveis?</string>
   <string name="fun_fact_4">Eu estou nas suas paredes</string>
   <string name="fun_fact_5">Sabia que o AliucordRN deu origem ao Enmity e ao Vendetta?</string>
-  <string name="fun_fact_6">Está com problemas? Visite o canal #suporte no nosso Discord!</string>
+  <string name="fun_fact_6">Está com problemas? Visite o canal #support no nosso Discord!</string>
   <string name="fun_fact_7">O plugin IWillCrashYourDiscord faz crashar o seu discord.</string>
   <string name="fun_fact_9">Aliucord funciona no WearOS</string>
   <string name="fun_fact_10">Aliucord usa a interface antiga *real*, a partir de meados de 2022!</string>

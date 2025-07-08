@@ -128,8 +128,8 @@
   <string name="installer_abort_body">¿Seguro de que realmente quieres abortar una instalación en progreso?</string>
   <string name="updater_body">¡Se ha publicado una nueva actualización para Aliucord Manager! Puede que sea necesaria para funcionar correctamente. ¿Quieres actualizar?</string>
   <string name="updater_title">Actualizada a v%s</string>
-  <string name="updater_check_fail">Failed to check for updates!</string>
-  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
+  <string name="updater_check_fail">Error al buscar actualizaciones.</string>
+  <string name="updater_update_fail">¡Error al actualizar! Por favor descarga e instala la actualización manualmente.</string>
   <string name="downloader_err_unknown">Descarga fallida (error desconocido)</string>
   <string name="downloader_err_timeout">Descarga fallida (Tiempo de espera agotado)</string>
   <string name="downloader_err_response">Descarga fallida (respuesta no válida)</string>
