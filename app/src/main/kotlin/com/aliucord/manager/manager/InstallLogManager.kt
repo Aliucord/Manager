@@ -12,7 +12,6 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
 import com.aliucord.manager.util.isPlayProtectEnabled
-import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -22,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 /**
  * Central manager for storing all attempted installations and

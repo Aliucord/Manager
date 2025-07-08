@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -121,20 +124,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        val reportsDir = layout.buildDirectory.asFile.get()
-            .resolve("reports").absolutePath
-
-        jvmTarget = "1.8"
-        freeCompilerArgs += listOf(
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
-        )
-    }
-
     buildFeatures {
         buildConfig = true
         compose = true
@@ -148,7 +137,21 @@ android {
 kotlin {
     sourceSets.all {
         languageSettings.enableLanguageFeature("ExplicitBackingFields")
-        languageSettings.enableLanguageFeature("WhenGuards")
+    }
+    compilerOptions {
+        val reportsDir = layout.buildDirectory.asFile.get()
+            .resolve("reports").absolutePath
+
+        jvmTarget = JvmTarget.JVM_1_8
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.time.ExperimentalTime",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
+            "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode", // @StringRes in field parameters of a class warning
+        )
     }
 }
 
@@ -170,7 +173,6 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.runtime.tracing)
 
-    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.immutable)
     implementation(libs.kotlinx.serialization.json)
 
@@ -184,10 +186,9 @@ dependencies {
     implementation(libs.baksmali)
     implementation(libs.compose.pipette)
     implementation(libs.compose.shimmer)
-    implementation(variantOf(libs.zip) { artifactType("aar") })
+    implementation(libs.zip)
 
-    @Suppress("UseTomlInstead")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    coreLibraryDesugaring(libs.desugaring)
 }
 
 fun ProviderFactory.execIgnoreCode(vararg command: String): String = run {
