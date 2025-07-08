@@ -31,7 +31,7 @@
   <string name="action_open_info">فتح المعلومات</string>
   <string name="action_reset_default">إعادة تعيين الإعدادات إلى الافتراضي</string>
   <string name="permissions_grant_title">منح الأذونات</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="install_permissions_grant_body">يتطلب تثبيت Aliucord منح الأذونات لتثبيت التطبيقات من مصادر غير معروفة.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">فشل تشغيل Aliucord</string>

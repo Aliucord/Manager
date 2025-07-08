@@ -31,7 +31,7 @@
   <string name="action_open_info">Ouvrir Info</string>
   <string name="action_reset_default">Réinitialiser</string>
   <string name="permissions_grant_title">Accorder les permissions</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="install_permissions_grant_body">L\'installation d\'Aliucord nécessite d\'accorder les autorisations pour installer des applications à partir de sources inconnues.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Impossible de démarrer Aliucord</string>
