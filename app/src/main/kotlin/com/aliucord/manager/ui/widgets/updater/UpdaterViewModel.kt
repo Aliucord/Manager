@@ -18,8 +18,8 @@ import com.aliucord.manager.network.services.AliucordGithubService
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.network.utils.getOrThrow
 import com.aliucord.manager.util.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.system.exitProcess
 
 class UpdaterViewModel(
@@ -32,7 +32,9 @@ class UpdaterViewModel(
         private set
     var targetVersion by mutableStateOf<String?>(null)
         private set
-    val isWorking: Flow<Boolean>
+    val downloadProgress: StateFlow<Float?>
+        private field = MutableStateFlow(null)
+    val isWorking: StateFlow<Boolean>
         private field = MutableStateFlow(false)
 
     private var targetApkUrl: String? = null
@@ -56,6 +58,8 @@ class UpdaterViewModel(
         if (!isWorking.compareAndSet(expect = false, update = true))
             return@launchIO
 
+        downloadProgress.value = null
+
         val url = targetApkUrl ?: return@launchIO
         val apkFile = application.cacheDir.resolve("manager.apk")
 
@@ -65,9 +69,13 @@ class UpdaterViewModel(
                 exists() && delete()
             }
 
-            val installer = installers.getInstaller(InstallerSetting.PM)
+            val downloadResult = downloader.download(
+                url = url,
+                out = apkFile,
+                onProgressUpdate = { downloadProgress.value = it },
+            )
 
-            when (val downloadResult = downloader.download(url, apkFile)) {
+            when (downloadResult) {
                 is IDownloadManager.Result.Success ->
                     Log.d(BuildConfig.TAG, "Downloaded update")
 
@@ -80,6 +88,9 @@ class UpdaterViewModel(
                     throw IllegalStateException("Failed to download update: ${downloadResult.getDebugReason()}", downloadResult.getError())
             }
 
+            downloadProgress.value = null
+
+            val installer = installers.getInstaller(InstallerSetting.PM)
             val installResult = installer.waitInstall(
                 apks = listOf(apkFile),
                 silent = true,
