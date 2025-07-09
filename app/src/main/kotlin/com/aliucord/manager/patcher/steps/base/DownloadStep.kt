@@ -10,8 +10,7 @@ import com.aliucord.manager.manager.download.IDownloadManager
 import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.util.showToast
-import com.aliucord.manager.util.toPrecision
+import com.aliucord.manager.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -90,12 +89,14 @@ abstract class DownloadStep : Step(), KoinComponent {
                 try {
                     verify()
                 } catch (t: Throwable) {
-                    withContext(Dispatchers.Main) {
-                        context.showToast(R.string.installer_dl_verify_fail)
-                    }
-
+                    mainThread { context.showToast(R.string.installer_dl_verify_fail) }
                     container.log("Failed to verify file, deleting...")
-                    targetFile.delete()
+
+                    try {
+                        targetFile.delete()
+                    } catch (_: Throwable) {
+                        // Ignore
+                    }
                     throw t
                 }
 

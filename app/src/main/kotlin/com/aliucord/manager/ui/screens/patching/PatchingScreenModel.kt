@@ -94,7 +94,7 @@ class PatchingScreenModel(
 
     fun install() = screenModelScope.launchBlock {
         runnerJob?.cancel("Manual cancellation")
-        steps = null
+        mainThread { steps = null }
 
         @SuppressLint("MemberExtensionConflict")
         installId = UUID.randomUUID().toString()
@@ -128,9 +128,10 @@ class PatchingScreenModel(
         val runner = KotlinPatchRunner(options)
             .also { stepRunner = it }
 
-        steps = runner.steps.groupBy { it.group }
+        val newSteps = runner.steps.groupBy { it.group }
             .mapValues { it.value.toUnsafeImmutable() }
             .toUnsafeImmutable()
+        mainThread { steps = newSteps }
 
         // Intentionally delay to show the state change of the first step when it runs in the UI.
         // Without this, on a fast internet connection the step just immediately shows as "Success".
@@ -160,7 +161,7 @@ class PatchingScreenModel(
                 mutableState.value = PatchingScreenState.Failed(installId = installId!!)
 
                 if (error is InsufficientStorageException) {
-                    application.showToast(R.string.installer_insufficient_storage)
+                    mainThread { application.showToast(R.string.installer_insufficient_storage) }
                 }
 
                 error
