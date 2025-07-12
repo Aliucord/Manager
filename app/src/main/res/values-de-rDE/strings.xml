@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
-  <string name="app_description">Ein Mod für die Discord Android App</string>
+  <string name="app_description">Eine Modifikation für die Discord Android App</string>
   <string name="support_server">Support Server</string>
   <string name="installer">Installer</string>
   <string name="action_cancel">Abbrechen</string>
@@ -45,7 +45,7 @@
   <string name="setting_developer_options">Entwickleroptionen</string>
   <string name="setting_developer_options_desc">Aktiviere dies nicht, es sei denn, du weißt, was es tut! (Ja, wirklich)</string>
   <string name="setting_keep_patched_apks">Behalte gepatchte APKs</string>
-  <string name="setting_keep_patched_apks_desc">Behält alle gepatchten Dateien und APKs nach der Installation für Debugging. Beachte, dass dies nur nach erfolgreichem patchen nützlich ist.</string>
+  <string name="setting_keep_patched_apks_desc">Behalte alle gepatchten Dateien und APKs nach der Installation für Debugging-Zwecke. Beachte, dass das Exportieren der APK nur nach erfolgreichem Patchen nützlich ist.</string>
   <string name="settings_clear_cache">Cache leeren</string>
   <string name="settings_export_apk">APK Exportieren</string>
   <string name="theme_system">System</string>
@@ -66,8 +66,8 @@
   <string name="contributors">Mitwirkende</string>
   <string name="contributors_contributions">%s Mitwirkende</string>
   <string name="network_load_fail">Fehler beim Laden</string>
-  <string name="network_warning_title">Gemessenes Netzwerk</string>
-  <string name="network_warning_body">Es scheint, dass du mit mobilen Daten oder einem potenziell gemessenen Netzwerk verbunden bist. Das Fortfahren der Installation kann dazu führen, dass mehrere hundert Megabyte heruntergeladen werden. Bist du sicher, dass du fortfahren möchten?</string>
+  <string name="network_warning_title">Getaktetes Netzwerk</string>
+  <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="network_warning_disable">Nicht erneut anzeigen</string>
   <string name="version_supported">Unterstütze Version:</string>
   <string name="version_none">Keine</string>
@@ -100,7 +100,7 @@
   <string name="install_group_patch">Patch APKs</string>
   <string name="install_group_install">Install</string>
   <string name="patch_step_fetch_kt_version">Rufe Ziel Discord Version ab</string>
-  <string name="patch_step_downgrade_check">Suche nach neuen Installationen</string>
+  <string name="patch_step_downgrade_check">Überprüfe auf neuere Installationen</string>
   <string name="patch_step_restore_cache">Wiederherstellen aus dem Cache</string>
   <string name="patch_step_dl_kt_apk">Lade Discord APK</string>
   <string name="patch_step_dl_kotlin">Lade Kotlin Bibliothek</string>
@@ -153,7 +153,7 @@
   <string name="patchopts_warning_invalid_iconopts">Die ausgewählten Icon-Optionen sind ungültig!</string>
   <string name="iconopts_screen_title">Icon-Ersatz</string>
   <string name="iconopts_variant_title_old_discord">Altes Discord-Icon</string>
-  <string name="iconopts_variant_desc_old_discord">Die alte Discord Blurple Farbe und das Logo von 2021 und davor.</string>
+  <string name="iconopts_variant_desc_old_discord">Die alte Discord Blau-Lila Farbe und das Logo von 2021 und davor.</string>
   <string name="iconopts_variant_title_color">Benutzerdefinierte Farbe</string>
   <string name="iconopts_variant_title_image">Benutzerdefiniertes Bild</string>
   <string name="iconopts_variant_desc_discord">Ändert das Originale Symbol nicht, sondern fügt das fehlende monochromatische Symbol in die APK.</string>
@@ -203,14 +203,14 @@
   <string name="custom_component_picker_title">Benutzerdefinierte Komponenten</string>
   <string name="custom_component_picker_desc">Eine benutzerdefinierte lokale Version für eine Patching Komponente (%s) wurde gefunden. Möchtest du sie verwenden?</string>
   <string name="fun_fact_prefix">Fun Fact: %s</string>
-  <string name="fun_fact_1">Wussten du, dass Google Play Protect nutzlos ist?</string>
-  <string name="fun_fact_2">Wussten du, dass Aliucord mit 150+ Plugins irgendwie besser läuft als Discords neue App?</string>
-  <string name="fun_fact_3">Wussten du, dass Aliucord über 200 Plugins zur Verfügung hat?</string>
+  <string name="fun_fact_1">Wusstest du, dass Google Play Protect nutzlos ist?</string>
+  <string name="fun_fact_2">Wusstest du, dass Aliucord mit 150+ Plugins irgendwie besser läuft als Discords neue App?</string>
+  <string name="fun_fact_3">Wusstest du, dass Aliucord über 200 Plugins verfügt?</string>
   <string name="fun_fact_4">ich bin in deinen Wänden</string>
   <string name="fun_fact_5">Wusstest du, AliucordRN hat Enmity und Vendetta hervorgebracht?</string>
   <string name="fun_fact_6">Hast du Probleme? Besuche den #support Channel in unserem Discord!</string>
   <string name="fun_fact_7">Das IWillCrashYourDiscord Plugin bringt dein Discord zum abstürzen.</string>
   <string name="fun_fact_9">Aliucord kann auf WearOS laufen</string>
   <string name="fun_fact_10">Aliucord verwendet die *echte* alte Benutzeroberfläche, von Mitte 2022!</string>
-  <string name="fun_fact_11">Es wurde versucht, Aliucord auf IOS laufen zu lassen...</string>
+  <string name="fun_fact_11">Es wurde versucht, Aliucord auf IOS laufen zu lassen…</string>
 </resources>

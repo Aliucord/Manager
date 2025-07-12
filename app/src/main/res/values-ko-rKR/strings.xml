@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">Aliucord Manager</string>
-  <string name="app_description">Android Discord 앱의 개조판</string>
+  <string name="app_description">Discord 안드로이드 앱의 모드 버전</string>
   <string name="support_server">지원 서버</string>
   <string name="installer">설치 창</string>
   <string name="action_cancel">취소</string>
