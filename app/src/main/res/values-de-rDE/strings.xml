@@ -47,7 +47,7 @@
   <string name="setting_keep_patched_apks">Behalte gepatchte APKs</string>
   <string name="setting_keep_patched_apks_desc">Behalte alle gepatchten Dateien und APKs nach der Installation für Debugging-Zwecke. Beachte, dass das Exportieren der APK nur nach erfolgreichem Patchen nützlich ist.</string>
   <string name="settings_clear_cache">Cache leeren</string>
-  <string name="settings_export_apk">APK Exportieren</string>
+  <string name="settings_export_apk">APK exportieren</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Dunkel</string>
   <string name="theme_light">Hell</string>

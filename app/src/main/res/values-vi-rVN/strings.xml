@@ -6,9 +6,9 @@
   <string name="installer">Trình cài đặt</string>
   <string name="action_cancel">Hủy bỏ</string>
   <string name="action_retry">Thử lại</string>
-  <string name="action_continue">Continue</string>
+  <string name="action_continue">Tiếp tục</string>
   <string name="action_retry_install">Retry Installation</string>
-  <string name="action_open_error_log">Open error log</string>
+  <string name="action_open_error_log">Mở log lỗi</string>
   <string name="action_apply">Thiết lập</string>
   <string name="action_confirm">Xác nhận</string>
   <string name="action_dismiss">Bỏ qua</string>
