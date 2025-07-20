@@ -24,7 +24,7 @@ microg = "0.3.6.244735"
 shimmer = "1.3.3"
 smali = "3.0.9"
 voyager = "1.1.0-beta03"
-zip = "2.3.0"
+zip = "2.3.1"
 
 [libraries]
 # Accompanist

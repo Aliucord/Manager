@@ -129,6 +129,10 @@ android {
         compose = true
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     lint {
         disable += "ModifierParameter"
     }
