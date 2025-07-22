@@ -178,9 +178,9 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         ZipWriter(apk, /* append = */ true).use {
             if (isMonochromeIconsAvailable) {
                 val monochromeIconId = if (options.iconReplacement is IconReplacement.OldDiscord) {
-                    R.drawable.ic_discord_monochrome
-                } else {
                     R.drawable.ic_discord_old_monochrome
+                } else {
+                    R.drawable.ic_discord_monochrome
                 }
 
                 container.log("Writing monochrome icon AXML to apk")
