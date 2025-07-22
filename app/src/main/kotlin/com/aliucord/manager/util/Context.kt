@@ -12,6 +12,7 @@ import android.util.TypedValue
 import android.widget.Toast
 import androidx.annotation.AnyRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.google.android.gms.safetynet.SafetyNet
@@ -48,6 +49,10 @@ fun Context.showToast(@StringRes text: Int, vararg args: Any, length: Int = Toas
     Toast.makeText(this, this.getString(text, *args), length).show()
 }
 
+fun Context.selfHasPermission(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+}
+
 /**
  * @return (versionName, versionCode)
  */
@@ -76,12 +81,11 @@ fun Context.findActivity(): Activity? {
 }
 
 fun Context.isIgnoringBatteryOptimizations(): Boolean {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return false
+
     val power = applicationContext.getSystemService(PowerManager::class.java)
     val name = applicationContext.packageName
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        return power.isIgnoringBatteryOptimizations(name)
-    }
-    return true
+    return power.isIgnoringBatteryOptimizations(name)
 }
 
 /**

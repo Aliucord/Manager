@@ -1,17 +1,13 @@
 package com.aliucord.manager.ui.util
 
-import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.app.*
-import androidx.core.content.ContextCompat
 import com.aliucord.manager.*
-import com.aliucord.manager.util.findActivity
 
 object InstallNotifications {
     private const val CHANNEL_ID = "installation"
@@ -64,24 +60,6 @@ object InstallNotifications {
             manager.notify(id, notification)
         } catch (e: SecurityException) {
             Log.w(BuildConfig.TAG, "Failed to send install notification", e)
-        }
-    }
-
-    /**
-     * Request the `POST_NOTIFICATIONS` permission if needed.
-     */
-    fun requestPermissions(context: Context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
-
-        val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
-        val activity = context.findActivity() ?: return
-
-        if (granted != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                0,
-            )
         }
     }
 }
