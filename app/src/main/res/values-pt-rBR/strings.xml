@@ -16,7 +16,7 @@
   <string name="action_uninstall">Desinstalar</string>
   <string name="action_add_install">Adicionar instalação</string>
   <string name="action_update_install">Atualizar Instalação</string>
-  <string name="action_update">Atualização</string>
+  <string name="action_update">Atualizar</string>
   <string name="action_clear">Limpar</string>
   <string name="action_launch">Iniciar</string>
   <string name="action_close">Fechar</string>
@@ -28,7 +28,7 @@
   <string name="action_copied">Copiado!</string>
   <string name="action_cleared_cache">Cache limpo!</string>
   <string name="action_exit_anyways">Sair mesmo assim</string>
-  <string name="action_open_info">Abrir informações</string>
+  <string name="action_open_info">Informações</string>
   <string name="action_reset_default">Restaurar</string>
   <string name="permissions_grant_title">Conceder permissões</string>
   <string name="storage_permissions_grant_body">Para o Aliucord Manager funcionar corretamente, você precisa conceder as permissões de arquivos. Como os dados compartilhados são armazenados em ~/Aliucord, as permissões são necessárias para que o gerenciador funcione.</string>
@@ -95,7 +95,7 @@
   <string name="install_error_storage">Sem espaço suficiente para instalar</string>
   <string name="install_error_incompatible">O aplicativo é incompatível com esse dispositivo</string>
   <string name="install_error_timeout">A instalação expirou</string>
-  <string name="install_group_prepare">Preparar</string>
+  <string name="install_group_prepare">Preparando</string>
   <string name="install_group_download">Baixando dependências</string>
   <string name="install_group_patch">Patchear APK</string>
   <string name="install_group_install">Instalar APK</string>
@@ -133,7 +133,7 @@
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
   <string name="downloader_err_timeout">Falha no Download (tempo esgotado)</string>
   <string name="downloader_err_response">Download falhou (Resposta inválida)</string>
-  <string name="downloader_err_file_exists">Download falhou (Arquivo existente)</string>
+  <string name="downloader_err_file_exists">Download falhou (Arquivo já existe)</string>
   <string name="downloader_err_storage_space">Download falhou (Espaço insuficiente)</string>
   <string name="home_network_fail">Falha ao obter dados!</string>
   <string name="patchopts_title">O Aliucord fornece várias personalizações na hora da instalação que não podem ser alteradas uma vez instaladas.</string>
