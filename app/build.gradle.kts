@@ -14,7 +14,13 @@ plugins {
 val isRelease = System.getenv("RELEASE")?.toBoolean() ?: false
 val gitCurrentBranch = providers.execIgnoreCode("git", "symbolic-ref", "--quiet", "--short", "HEAD").takeIf { it.isNotEmpty() }
 val gitLatestCommit = providers.execIgnoreCode("git", "rev-parse", "--short", "HEAD")
-val gitHasLocalCommits = gitCurrentBranch?.let { providers.execIgnoreCode("git", "log", "origin/$gitCurrentBranch..HEAD").isNotEmpty() } ?: false
+val gitHasLocalCommits = gitCurrentBranch?.let { branch ->
+    val remoteBranchExists = providers.execIgnoreCode("git", "ls-remote", "--heads", "origin", branch)
+        .isNotEmpty()
+
+    remoteBranchExists && providers.execIgnoreCode("git", "log", "origin/$branch..HEAD").isNotEmpty()
+} ?: false
+
 val gitHasHasLocalChanges = providers.execIgnoreCode("git", "status", "-s").isNotEmpty()
 
 android {
