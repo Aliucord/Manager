@@ -20,7 +20,6 @@ val gitHasLocalCommits = gitCurrentBranch?.let { branch ->
 
     remoteBranchExists && providers.execIgnoreCode("git", "log", "origin/$branch..HEAD").isNotEmpty()
 } ?: false
-
 val gitHasHasLocalChanges = providers.execIgnoreCode("git", "status", "-s").isNotEmpty()
 
 android {
