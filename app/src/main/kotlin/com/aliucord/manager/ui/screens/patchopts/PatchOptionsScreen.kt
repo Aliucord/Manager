@@ -24,16 +24,13 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
-import com.aliucord.manager.ui.components.dialogs.UnknownSourcesPermissionDialog
 import com.aliucord.manager.ui.screens.iconopts.*
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
 import com.aliucord.manager.ui.screens.patchopts.components.PatchOptionsAppBar
 import com.aliucord.manager.ui.screens.patchopts.components.options.*
-import com.aliucord.manager.ui.util.InstallNotifications
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
-import com.aliucord.manager.util.*
-import kotlinx.coroutines.delay
+import com.aliucord.manager.util.showToast
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.koin.core.parameter.parametersOf
@@ -52,17 +49,6 @@ class PatchOptionsScreen(
         val model = koinScreenModel<PatchOptionsModel> { parametersOf(prefilledOptions ?: PatchOptions.Default) }
         val iconModel = koinScreenModel<IconOptionsModel> { parametersOf((prefilledOptions ?: PatchOptions.Default).iconReplacement) }
 
-        LaunchedEffect(Unit) {
-            // Ensure that when popping this screen off the stack that permission requests don't get triggered
-            // The coroutine context local to this screen gets cancelled and never continues after the delay()
-            delay(1000)
-
-            InstallNotifications.requestPermissions(context)
-
-            if (!context.isIgnoringBatteryOptimizations())
-                context.requestNoBatteryOptimizations()
-        }
-
         if (model.showNetworkWarningDialog) {
             NetworkWarningDialog(
                 onConfirm = model::hideNetworkWarning,
@@ -72,8 +58,6 @@ class PatchOptionsScreen(
                 },
             )
         }
-
-        UnknownSourcesPermissionDialog()
 
         PatchOptionsScreenContent(
             isUpdate = prefilledOptions != null,
