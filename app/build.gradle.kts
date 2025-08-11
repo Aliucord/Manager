@@ -146,6 +146,7 @@ android {
 kotlin {
     sourceSets.all {
         languageSettings.enableLanguageFeature("ExplicitBackingFields")
+        languageSettings.enableLanguageFeature("WhenGuards")
     }
     compilerOptions {
         val reportsDir = layout.buildDirectory.asFile.get()
