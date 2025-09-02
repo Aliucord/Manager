@@ -34,9 +34,6 @@ class PatchManifestStep(private val options: PatchOptions) : Step() {
         if (Build.VERSION.SDK_INT >= 30)
             manifest.addPermission(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
 
-        // Fix front camera on Meta Quest
-        manifest.addPermission("horizonos.permission.HEADSET_CAMERA")
-
         manifest.addApplicationAttributes(
             // Since we're aligning native libs, there's no need to extract them
             ApplicationAttribute("extractNativeLibs", android.R.attr.extractNativeLibs, false),

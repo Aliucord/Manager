@@ -19,6 +19,19 @@ class AndroidManifestUtil(manifestBytes: ByteArray) {
     fun toByteArray(): ByteArray = axml.toByteArray()
 
     /**
+     * An attribute to be added onto the `<application>` manifest element.
+     * @param name The name of the attribute (excluding namespace)
+     * @param resourceId The Android resource id of the attribute, as defined in [android.R.attr].
+     *   For example, [android.R.attr.useEmbeddedDex]
+     * @param value The value of the attribute. Refer to [makeAttribute] for what types are currently supported.
+     */
+    data class ApplicationAttribute(
+        val name: String,
+        val resourceId: Int,
+        val value: Any,
+    )
+
+    /**
      * Sets attributes on the `<application>` manifest element.
      * If an attribute already exists, its value is overridden.
      */
@@ -127,7 +140,6 @@ class AndroidManifestUtil(manifestBytes: ByteArray) {
             val attribute = this.attributes[i]
             val newAttributeData = remainingAttributes[attribute.nameIndex()] ?: continue
 
-            // FIXME: attributes are unmodifiable
             this.attributes[i] = makeAttribute(
                 parent = this,
                 namespaceIdx = newAttributeData.namespaceIdx,
@@ -139,7 +151,6 @@ class AndroidManifestUtil(manifestBytes: ByteArray) {
             remainingAttributes -= attribute.nameIndex()
         }
 
-        // FIXME: attributes are unmodifiable
         this.attributes += remainingAttributes.map { (_, data) ->
             makeAttribute(
                 parent = this,
@@ -196,12 +207,6 @@ class AndroidManifestUtil(manifestBytes: ByteArray) {
             /* parent = */ parent,
         )
     }
-
-    data class ApplicationAttribute(
-        val name: String,
-        val resourceId: Int,
-        val value: Any,
-    )
 
     private data class XmlAttributeData(
         val namespaceIdx: Int,
