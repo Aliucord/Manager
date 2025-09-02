@@ -127,8 +127,9 @@
   <string name="installer_abort_title">Really exit?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">A new update has been released for Aliucord Manager! It may be required in order to function properly. Would you like to update?</string>
-  <string name="updater_title">Update to %1$s</string>
-  <string name="updater_fail">Failed to check for updates!</string>
+  <string name="updater_title">Update to v%s</string>
+  <string name="updater_check_fail">Failed to check for updates!</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">Download failed (Invalid response)</string>

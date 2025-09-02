@@ -37,8 +37,6 @@ class ArrangementLastAtBottom(
             lastSpace = min(spacingPx, totalSize - outPositions[index] - size)
             occupied = outPositions[index] + size + lastSpace
         }
-
-        occupied -= lastSpace
     }
 }
 

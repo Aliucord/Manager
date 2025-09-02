@@ -8,13 +8,17 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.request
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 class HttpService(
     val json: Json,
     val http: HttpClient,
 ) {
-    suspend inline fun <reified T> request(builder: HttpRequestBuilder.() -> Unit = {}): ApiResponse<T> {
+    suspend inline fun <reified T> request(
+        crossinline builder: HttpRequestBuilder.() -> Unit = {},
+    ): ApiResponse<T> = withContext(Dispatchers.IO) request@{
         var body: String? = null
 
         val response = try {
@@ -24,7 +28,7 @@ class HttpService(
                 body = response.bodyAsText()
 
                 if (T::class == String::class) {
-                    return ApiResponse.Success(body as T)
+                    return@request ApiResponse.Success(body as T)
                 }
 
                 ApiResponse.Success(json.decodeFromString<T>(body))
@@ -42,6 +46,6 @@ class HttpService(
             Log.e(BuildConfig.TAG, "Failed to fetch: error: $t, body: $body")
             ApiResponse.Failure(ApiFailure(t, body))
         }
-        return response
+        return@request response
     }
 }

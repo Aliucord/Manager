@@ -49,6 +49,7 @@ object ManifestPatcher {
                     )
                 ) {
                     private var addExternalStoragePerm = false
+                    private var addHorizonOsPerm = false
 
                     override fun child(ns: String?, name: String): NodeVisitor {
                         val nv = super.child(ns, name)
@@ -61,6 +62,14 @@ object ManifestPatcher {
                             addExternalStoragePerm = false
                         }
 
+                        // Add permission to access front camera for Meta Quest VR headsets
+                        if (addHorizonOsPerm) {
+                            super
+                                .child(null, "uses-permission")
+                                .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, "horizonos.permission.HEADSET_CAMERA")
+                            addHorizonOsPerm = false
+                        }
+
                         return when (name) {
                             "uses-permission" -> object : NodeVisitor(nv) {
                                 override fun attr(ns: String?, name: String?, resourceId: Int, type: Int, value: Any?) {
@@ -71,6 +80,9 @@ object ManifestPatcher {
                                     // Set the add external storage permission to be added after WRITE_EXTERNAL_STORAGE (which is after read)
                                     if (name == "name" && value == Manifest.permission.READ_EXTERNAL_STORAGE) {
                                         addExternalStoragePerm = true
+
+                                        // Add this together with the other permissions as well
+                                        addHorizonOsPerm = true
                                     }
                                 }
                             }

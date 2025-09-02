@@ -59,6 +59,11 @@ interface IDownloadManager {
              * If null is returned, then the [getDebugReason] will be used instead.
              */
             open fun getLocalizedReason(context: Context): String? = null
+
+            /**
+             * Gets the underlying raw error (if available).
+             */
+            open fun getError(): Throwable? = null
         }
     }
 }

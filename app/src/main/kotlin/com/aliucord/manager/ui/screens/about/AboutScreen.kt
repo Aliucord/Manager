@@ -20,8 +20,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.about.components.LeadContributor
-import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
-import com.aliucord.manager.ui.util.paddings.exclude
+import com.aliucord.manager.ui.util.paddings.*
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -52,10 +51,11 @@ fun AboutScreenContent(state: State<AboutScreenState>) {
             verticalArrangement = Arrangement.spacedBy(2.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = paddingValues
-                .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top),
+                .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
+                .add(PaddingValues(vertical = 16.dp)),
             modifier = Modifier
                 .padding(paddingValues.exclude(PaddingValuesSides.Bottom))
-                .padding(16.dp),
+                .padding(horizontal = 14.dp),
         ) {
             item(key = "PROJECT_HEADER") {
                 ProjectHeader()

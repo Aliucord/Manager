@@ -8,8 +8,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.InstallLogManager
-import com.aliucord.manager.util.launchBlock
-import com.aliucord.manager.util.showToast
+import com.aliucord.manager.util.*
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -26,18 +25,21 @@ class LogsListScreenModel(
         loadLogsList()
     }
 
-    fun deleteLogs() = screenModelScope.launchBlock {
+    fun deleteLogs() = screenModelScope.launchIO {
         logsManager.deleteAllEntries()
-        logEntries.clear()
-        application.showToast(R.string.logs_status_delete_success)
+
+        mainThread {
+            logEntries.clear()
+            application.showToast(R.string.logs_status_delete_success)
+        }
     }
 
-    private fun loadLogsList() = screenModelScope.launchBlock {
+    private fun loadLogsList() = screenModelScope.launchIO {
         for (installId in logsManager.fetchInstallDataEntries()) {
             val data = logsManager.fetchInstallData(id = installId)
                 ?: continue
 
-            logEntries += LogEntry(
+            val entry = LogEntry(
                 id = data.id,
                 isError = data.isError,
                 installDate = DateUtils.getRelativeDateTimeString(
@@ -53,6 +55,8 @@ class LogsListScreenModel(
                     ?.take(3)
                     ?.toImmutableList(),
             )
+
+            mainThread { logEntries += entry }
         }
     }
 }

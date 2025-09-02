@@ -12,7 +12,6 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
 import com.aliucord.manager.util.isPlayProtectEnabled
-import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -22,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 /**
  * Central manager for storing all attempted installations and
@@ -106,7 +106,11 @@ class InstallLogManager(
     suspend fun getEnvironmentInfo(): String {
         val storageManager = application.getSystemService<StorageManager>()!!
 
-        val gitChanges = if (BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS) "(Changes present)" else ""
+        val buildType = when {
+            BuildConfig.RELEASE -> "(Release)"
+            BuildConfig.GIT_LOCAL_CHANGES || BuildConfig.GIT_LOCAL_COMMITS -> "(Changes present)"
+            else -> ""
+        }
         val soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MANUFACTURER + ' ' + Build.SOC_MODEL) else "Unavailable"
         val playProtect = when (application.isPlayProtectEnabled()) {
             null -> "Unavailable"
@@ -123,7 +127,7 @@ class InstallLogManager(
 
         return """
             Aliucord Manager v${BuildConfig.VERSION_NAME}
-            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $gitChanges
+            Built from commit ${BuildConfig.GIT_COMMIT} on ${BuildConfig.GIT_BRANCH} $buildType
             Developer mode: ${if (prefs.devMode) "On" else "Off"}
             External storage: ${if (prefs.devMode || prefs.keepPatchedApks) "Yes" else "No"}
 

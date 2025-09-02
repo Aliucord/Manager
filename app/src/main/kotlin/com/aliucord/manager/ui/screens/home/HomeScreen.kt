@@ -34,8 +34,7 @@ import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.util.paddings.PaddingValuesSides
 import com.aliucord.manager.ui.util.paddings.exclude
-import com.aliucord.manager.util.pushOnce
-import kotlinx.coroutines.launch
+import com.aliucord.manager.util.*
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -52,7 +51,7 @@ class HomeScreen : Screen, Parcelable {
 
         // Refresh installations list when the screen changes or activity resumes
         LifecycleResumeEffect(Unit) {
-            model.refresh()
+            model.refresh(delay = true)
 
             onPauseOrDispose {}
         }
@@ -66,8 +65,9 @@ class HomeScreen : Screen, Parcelable {
                     padding = padding,
                     onClickInstall = { navigator.pushOnce(PatchOptionsScreen()) },
                     onUpdate = {
-                        scope.launch {
-                            navigator.push(model.createPrefilledPatchOptsScreen(it))
+                        scope.launchIO {
+                            val screen = model.createPrefilledPatchOptsScreen(it)
+                            mainThread { navigator.push(screen) }
                         }
                     },
                     onOpenApp = model::openApp,

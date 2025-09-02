@@ -31,8 +31,8 @@ class LogScreenModel(
     /**
      * Formats the log data into a file and writes it to the downloads folder.
      */
-    fun saveLog() = screenModelScope.launchBlock {
-        val data = data ?: return@launchBlock
+    fun saveLog() = screenModelScope.launchIO {
+        val data = data ?: return@launchIO
 
         val formattedDate = data.getFormattedInstallDate()
         val content = data.getLogFileContents()
@@ -43,8 +43,8 @@ class LogScreenModel(
     /**
      * Writes the log to internal cache and launches a share intent of the log file.
      */
-    fun shareLog() = screenModelScope.launchBlock {
-        val data = data ?: return@launchBlock
+    fun shareLog() {
+        val data = data ?: return
         val formattedDate = data.getFormattedInstallDate()
         val formattedName = "Aliucord Install $formattedDate.log"
         val content = data.getLogFileContents()
@@ -79,14 +79,16 @@ class LogScreenModel(
         }
     }
 
-    private fun loadLogData() = screenModelScope.launchBlock {
+    private fun loadLogData() = screenModelScope.launchIO {
         val result = logs.fetchInstallData(installId)
 
-        if (result != null) {
-            data = result
-        } else {
-            shouldCloseScreen = true
-            application.showToast(R.string.network_load_fail)
+        mainThread {
+            if (result != null) {
+                data = result
+            } else {
+                shouldCloseScreen = true
+                application.showToast(R.string.network_load_fail)
+            }
         }
     }
 }

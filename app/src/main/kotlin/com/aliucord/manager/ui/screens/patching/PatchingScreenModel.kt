@@ -18,15 +18,12 @@ import com.aliucord.manager.patcher.steps.install.InstallStep
 import com.aliucord.manager.patcher.util.InsufficientStorageException
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.toUnsafeImmutable
-import com.aliucord.manager.util.launchBlock
-import com.aliucord.manager.util.showToast
+import com.aliucord.manager.util.*
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.*
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import java.util.UUID
-import kotlin.time.Duration
+import kotlin.time.*
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -77,14 +74,14 @@ class PatchingScreenModel(
         }
     }
 
-    fun clearCache() = screenModelScope.launchBlock {
+    fun clearCache() = screenModelScope.launchIO {
         paths.clearCache()
-        application.showToast(R.string.action_cleared_cache)
+        mainThread { application.showToast(R.string.action_cleared_cache) }
     }
 
     fun getCurrentInstallId(): String? = installId
 
-    fun cancelInstall() = screenModelScope.launchBlock(Dispatchers.IO) {
+    fun cancelInstall() = screenModelScope.launchIO {
         runnerJob?.cancel("Manual cancellation")
 
         val incompleteDownloadStep = stepRunner?.steps
@@ -95,16 +92,16 @@ class PatchingScreenModel(
         paths.patchingWorkingDir().deleteRecursively()
     }
 
-    fun install() = screenModelScope.launch {
+    fun install() = screenModelScope.launchBlock {
         runnerJob?.cancel("Manual cancellation")
-        steps = null
+        mainThread { steps = null }
 
         @SuppressLint("MemberExtensionConflict")
         installId = UUID.randomUUID().toString()
         startTime = Clock.System.now()
         mutableState.value = PatchingScreenState.Working
 
-        runnerJob = screenModelScope.launch {
+        runnerJob = screenModelScope.launch(Dispatchers.Default) {
             Log.i(BuildConfig.TAG, "Starting installation with environment:\n" + installLogs.getEnvironmentInfo())
 
             try {
@@ -131,9 +128,10 @@ class PatchingScreenModel(
         val runner = KotlinPatchRunner(options)
             .also { stepRunner = it }
 
-        steps = runner.steps.groupBy { it.group }
+        val newSteps = runner.steps.groupBy { it.group }
             .mapValues { it.value.toUnsafeImmutable() }
             .toUnsafeImmutable()
+        mainThread { steps = newSteps }
 
         // Intentionally delay to show the state change of the first step when it runs in the UI.
         // Without this, on a fast internet connection the step just immediately shows as "Success".
@@ -163,7 +161,7 @@ class PatchingScreenModel(
                 mutableState.value = PatchingScreenState.Failed(installId = installId!!)
 
                 if (error is InsufficientStorageException) {
-                    application.showToast(R.string.installer_insufficient_storage)
+                    mainThread { application.showToast(R.string.installer_insufficient_storage) }
                 }
 
                 error

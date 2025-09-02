@@ -38,5 +38,6 @@ class AliucordGithubService(
         const val MANAGER_REPO = "Manager"
 
         const val DATA_JSON_URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/data.json"
+        const val LATEST_RELEASE_HTML_URL = "https://github.com/$ORG/$MANAGER_REPO/releases/latest"
     }
 }

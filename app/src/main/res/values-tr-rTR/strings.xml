@@ -126,10 +126,11 @@ lütfen silin!</string>
   <string name="status_success">Başarılı</string>
   <string name="status_failed">Başarısız</string>
   <string name="installer_abort_title">Gerçekten çıkış yapmak istiyor musun?</string>
-  <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
+  <string name="installer_abort_body">Hala bitmemiş bir kurulumu iptal etmek istediğinize emin misiniz? Bozulmaların önlenmesi için önbelleğe alınmış dosyalar temizlenecektir.</string>
   <string name="updater_body">Aliucord Yöneticisi için yeni bir güncelleme yayınlandı! Düzgün çalışması için gerekli olabilir. Güncellemek ister misin?</string>
-  <string name="updater_title">%1$s\'a Güncelle</string>
-  <string name="updater_fail">Güncellemeler kontrol edilemedi!</string>
+  <string name="updater_title">v%s\'a Güncelle</string>
+  <string name="updater_check_fail">Güncellemeler kontrol edilemedi!</string>
+  <string name="updater_update_fail">Güncelleme başarısız! Lütfen güncellemeyi kendiniz elle indirip yükleyin!</string>
   <string name="downloader_err_unknown">İndirme başarısız (Bilinmiyor)</string>
   <string name="downloader_err_timeout">İndirme başarısız (Zamanaşımı)</string>
   <string name="downloader_err_response">İndirme başarısız (İletişim sorunu)</string>
@@ -173,7 +174,7 @@ lütfen silin!</string>
   <string name="iconopts_icon_preview_title">Simge Önizlemesi</string>
   <string name="iconopts_icon_preview_desc">İşaretlenen seçeneklerin bir önizlemesi; simgenin cihazınızda nasıl görüntüleneceğini göstermek için kesilmiş ve yakınlaştırılmış</string>
   <string name="iconopts_image_preview_title">Önizleme</string>
-  <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
+  <string name="iconopts_image_preview_desc">Seçilen resmin kesilmemiş bir önizlemesi</string>
   <string name="iconopts_image_preview_none">Resim seçilmedi</string>
   <string name="log_title">Kayıt</string>
   <string name="log_section_install_info">Kurulum Bilgisi</string>

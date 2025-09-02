@@ -31,7 +31,7 @@
   <string name="action_open_info">فتح المعلومات</string>
   <string name="action_reset_default">إعادة تعيين الإعدادات إلى الافتراضي</string>
   <string name="permissions_grant_title">منح الأذونات</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data in stored in ~/Aliucord, permissions are required in order for manager to function.</string>
+  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
   <string name="install_permissions_grant_body">يتطلب تثبيت Aliucord منح الأذونات لتثبيت التطبيقات من مصادر غير معروفة.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">فشل تشغيل Aliucord</string>
@@ -80,8 +80,8 @@
   <string name="installer_file_save_failed">Failed to save %s</string>
   <string name="installer_install_success">Successfully installed Aliucord</string>
   <string name="installer_install_aborted">Aborted Aliucord installation</string>
-  <string name="installer_uninstall_new">Please uninstall your current version of Aliucord in order to continue!</string>
-  <string name="installer_uninstall_success">Successfully uninstalled Aliucord</string>
+  <string name="installer_uninstall_new">!</string>
+  <string name="installer_uninstall_success">تم إلغاء تثبيت Aliucord بنجاح</string>
   <string name="installer_uninstall_aborted">Cancelled uninstallation</string>
   <string name="installer_dl_verify_fail">Failed to verify download</string>
   <string name="installer_insufficient_storage">Insufficient storage space!</string>
@@ -127,8 +127,9 @@
   <string name="installer_abort_title">هل تريد الخروج؟</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
   <string name="updater_body">تم إصدار تحديث جديد لمدير Aliucord Manager! قد تكون مطلوبة من أجل العمل بشكل صحيح. هل ترغب في التحديث؟</string>
-  <string name="updater_title">تم التحديث الي %1$s</string>
-  <string name="updater_fail">فشل في التحقق من وجود تحديثات</string>
+  <string name="updater_title">تم التحديث الي v%s</string>
+  <string name="updater_check_fail">فشل في التحقق من وجود تحديثات</string>
+  <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">فشل التنزيل (مجهول)</string>
   <string name="downloader_err_timeout">فشل التنزيل (المهلة)</string>
   <string name="downloader_err_response">فشل التحميل (استجابة غير صالحة)</string>

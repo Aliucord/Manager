@@ -10,10 +10,7 @@ import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
-import com.aliucord.manager.util.getPackageVersion
-import com.aliucord.manager.util.showToast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.aliucord.manager.util.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -49,18 +46,12 @@ class DowngradeCheckStep(private val options: PatchOptions) : Step(), KoinCompon
 
         if (currentVersion > targetVersion) {
             container.log("Current installed version is greater than target, forcing uninstallation")
-
-            withContext(Dispatchers.Main) {
-                context.showToast(R.string.installer_uninstall_new)
-            }
+            mainThread { context.showToast(R.string.installer_uninstall_new) }
 
             when (val result = installers.getActiveInstaller().waitUninstall(options.packageName)) {
                 is InstallerResult.Error -> throw Error("Failed to uninstall Aliucord: ${result.getDebugReason()}")
                 is InstallerResult.Cancelled -> {
-                    withContext(Dispatchers.Main) {
-                        context.showToast(R.string.installer_uninstall_new)
-                    }
-
+                    mainThread { context.showToast(R.string.installer_uninstall_new) }
                     throw Error("Newer versions of Aliucord must be uninstalled prior to installing an older version")
                 }
 

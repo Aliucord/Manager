@@ -200,24 +200,26 @@ fun PatchOptionsScreenContent(
                 onValueReset = { setAppName(PatchOptions.Default.appName) },
             )
 
-            val packageNameIsDefault by remember {
-                derivedStateOf {
-                    packageName == PatchOptions.Default.packageName
+            if (!isUpdate) {
+                val packageNameIsDefault by remember {
+                    derivedStateOf {
+                        packageName == PatchOptions.Default.packageName
+                    }
                 }
-            }
-            TextPatchOption(
-                name = stringResource(R.string.patchopts_pkgname_title),
-                description = stringResource(R.string.patchopts_pkgname_desc),
-                value = packageName,
-                valueIsError = packageNameState == PackageNameState.Invalid,
-                valueIsDefault = packageNameIsDefault,
-                onValueChange = setPackageName,
-                onValueReset = { setPackageName(PatchOptions.Default.packageName) },
-            ) {
-                PackageNameStateLabel(
-                    state = packageNameState,
-                    modifier = Modifier.padding(start = 4.dp),
-                )
+                TextPatchOption(
+                    name = stringResource(R.string.patchopts_pkgname_title),
+                    description = stringResource(R.string.patchopts_pkgname_desc),
+                    value = packageName,
+                    valueIsError = packageNameState == PackageNameState.Invalid,
+                    valueIsDefault = packageNameIsDefault,
+                    onValueChange = setPackageName,
+                    onValueReset = { setPackageName(PatchOptions.Default.packageName) },
+                ) {
+                    PackageNameStateLabel(
+                        state = packageNameState,
+                        modifier = Modifier.padding(start = 4.dp),
+                    )
+                }
             }
 
             if (isDevMode) {

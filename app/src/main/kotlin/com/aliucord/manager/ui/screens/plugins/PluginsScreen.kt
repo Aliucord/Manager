@@ -46,7 +46,7 @@ class PluginsScreen : Screen, Parcelable {
         model.showUninstallDialog?.let { plugin ->
             UninstallPluginDialog(
                 pluginName = plugin.manifest.name,
-                onConfirm = { model.uninstallPlugin(plugin.path) },
+                onConfirm = { model.uninstallPlugin(plugin) },
                 onDismiss = model::hideUninstallDialog
             )
         }
