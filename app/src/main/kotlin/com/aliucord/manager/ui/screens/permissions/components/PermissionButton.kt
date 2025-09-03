@@ -6,9 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun PermissionButton(
@@ -25,42 +23,42 @@ fun PermissionButton(
         modifier = modifier
             .heightIn(min = 64.dp)
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            modifier = Modifier.padding(end = 5.dp)
-        )
-
         Column(
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-            modifier = Modifier.weight(0.95f, true),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            ProvideTextStyle(
-                MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Companion.Normal,
-                    fontSize = 18.sp,
-                ),
-            ) {
+            ProvideTextStyle(MaterialTheme.typography.labelLarge) {
                 Text(name)
             }
-            ProvideTextStyle(
-                MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
-                ),
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = Alignment.Companion.CenterVertically,
             ) {
-                Text(description)
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                )
+
+                ProvideTextStyle(
+                    MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                    ),
+                ) {
+                    Text(
+                        text = description,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+
+                OutlinedButton(
+                    onClick = onClick,
+                    enabled = !granted,
+                ) {
+                    Text(if (granted) "Granted" else "Grant")
+                }
             }
-        }
-
-        Spacer(Modifier.weight(0.05f, true))
-
-        OutlinedButton(
-            onClick = onClick,
-            enabled = !granted,
-        ) {
-            Text(if (granted) "Granted" else "Grant")
         }
     }
 }

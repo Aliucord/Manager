@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -94,7 +95,7 @@ fun PermissionsScreenContent(
         ) {
             item(key = "HEADER") {
                 ProjectHeader(
-                    modifier = Modifier.padding(top = 56.dp, bottom = 20.dp),
+                    modifier = Modifier.padding(top = 56.dp, bottom = 16.dp),
                 )
             }
 
@@ -118,18 +119,10 @@ fun PermissionsScreenContent(
             item(key = "PERMS_STORAGE", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
                     name = "External Storage Permissions",
-                    description = "Aliucord stores shared data in ~/Aliucord, which requires full storage permissions.",
+                    description = "Aliucord stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently implemented.",
                     granted = storagePermsGranted,
                     icon = painterResource(R.drawable.ic_save),
                     onClick = onGrantStoragePerms,
-                )
-            }
-
-            item(key = "HEADER_3") {
-                Text(
-                    text = "Optional",
-                    style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.padding(top = 12.dp, bottom = 6.dp),
                 )
             }
 
@@ -146,7 +139,7 @@ fun PermissionsScreenContent(
             item(key = "PERMS_BATTERY", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
                     name = "Background Battery Permissions",
-                    description = "TODO",
+                    description = "Used to ensure the patching process does not get cancelled if the app is minimized.",
                     granted = batteryPermsGranted,
                     icon = painterResource(R.drawable.ic_battery_settings),
                     onClick = onGrantBatteryPerms,
@@ -158,7 +151,7 @@ fun PermissionsScreenContent(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 18.dp),
+                        .padding(top = 16.dp),
                 ) {
                     FilledTonalButton(
                         onClick = onContinue,

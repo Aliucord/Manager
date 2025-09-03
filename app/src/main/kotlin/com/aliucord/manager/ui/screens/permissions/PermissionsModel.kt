@@ -68,7 +68,7 @@ class PermissionsModel(
 
         installPermsGranted = Build.VERSION.SDK_INT < 26 || application.packageManager.canRequestPackageInstalls()
         notificationsPermsGranted = Build.VERSION.SDK_INT < 33 || application.selfHasPermission(Manifest.permission.POST_NOTIFICATIONS)
-        notificationsPermsGranted = Build.VERSION.SDK_INT < 24 || !application.isIgnoringBatteryOptimizations()
+        batteryPermsGranted = Build.VERSION.SDK_INT < 24 || application.isIgnoringBatteryOptimizations()
     }
 
     init {
