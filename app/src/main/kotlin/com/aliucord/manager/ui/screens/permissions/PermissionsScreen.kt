@@ -2,44 +2,51 @@ package com.aliucord.manager.ui.screens.permissions
 
 import android.os.Build
 import android.os.Parcelable
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.EnterTransition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.stack.StackEvent
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import cafe.adriel.voyager.transitions.ScreenTransition
 import com.aliucord.manager.R
-import com.aliucord.manager.ui.components.ProjectHeader
 import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.screens.permissions.components.PermissionButton
+import com.aliucord.manager.ui.screens.settings.SettingsScreen
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.compose.viewmodel.koinActivityViewModel
 
 @Parcelize
-class PermissionsScreen : Screen, Parcelable {
+@OptIn(ExperimentalVoyagerApi::class)
+class PermissionsScreen : Screen, ScreenTransition, Parcelable {
     @IgnoredOnParcel
     override val key = "Permissions"
+
+    override fun enter(lastEvent: StackEvent): EnterTransition? = EnterTransition.None
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val model = koinActivityViewModel<PermissionsModel>()
 
-        // Can't use koinActivityViewModel due to https://github.com/InsertKoinIO/koin/pull/2229
-        val model = koinViewModel<PermissionsModel>(
-            viewModelStoreOwner = LocalActivity.current as ComponentActivity,
-        )
+        // Go back (ex: HomeScreen) when all permissions have been granted
+        LaunchedEffect(model.allPermsGranted) {
+            if (model.allPermsGranted)
+                navigator.pop()
+        }
 
         PermissionsScreenContent(
             storagePermsGranted = model.storagePermsGranted,
@@ -51,17 +58,9 @@ class PermissionsScreen : Screen, Parcelable {
             installPermsGranted = model.installPermsGranted,
             onGrantInstallPerms = model::requestInstallPerms,
             notificationsPermsGranted = model.notificationsPermsGranted,
-            onGrantNotificationsPerms = if (Build.VERSION.SDK_INT > 33) {
-                model::requestNotificationsPerms
-            } else {
-                {}
-            },
+            onGrantNotificationsPerms = model::requestNotificationsPerms,
             batteryPermsGranted = model.batteryPermsGranted,
-            onGrantBatteryPerms = if (Build.VERSION.SDK_INT > 23) {
-                model::grantBatteryPerms
-            } else {
-                {}
-            },
+            onGrantBatteryPerms = model::grantBatteryPerms,
             canContinue = model.requiredPermsGranted,
             onContinue = { navigator.replace(HomeScreen()) },
         )
@@ -81,36 +80,56 @@ fun PermissionsScreenContent(
     canContinue: Boolean,
     onContinue: () -> Unit,
 ) {
-    Scaffold { padding ->
+    Scaffold(
+        topBar = {
+            LargeTopAppBar(
+                title = {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(start = 12.dp),
+                    ) {
+                        Text(
+                            text = "App Permissions",
+                            style = MaterialTheme.typography.displaySmall,
+                        )
+                        Text(
+                            text = "Aliucord Manager requires permissions:",
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                color = MaterialTheme.colorScheme.onSurface.copy(.6f),
+                            ),
+                        )
+                    }
+                },
+                actions = {
+                    val navigator = LocalNavigator.current
+
+                    IconButton(onClick = { navigator?.push(SettingsScreen()) }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_settings),
+                            contentDescription = stringResource(R.string.navigation_settings)
+                        )
+                    }
+                }
+            )
+        }
+    ) { padding ->
         LazyColumn(
             verticalArrangement = Arrangement.spacedByLastAtBottom(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = padding
                 .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
-                .add(PaddingValues(bottom = 12.dp)),
+                .add(PaddingValues(vertical = 12.dp)),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 18.dp)
                 .padding(padding.exclude(PaddingValuesSides.Bottom))
         ) {
-            item(key = "HEADER") {
-                ProjectHeader(
-                    modifier = Modifier.padding(top = 56.dp, bottom = 16.dp),
-                )
-            }
-
-            item(key = "HEADER_2") {
-                Text(
-                    text = "Aliucord Manager requires the following permissions:",
-                    style = MaterialTheme.typography.titleSmall,
-                )
-            }
-
             item(key = "PERMS_INSTALL", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "Install Permissions",
-                    description = "Manager requires install permissions to install Aliucord.",
+                    name = "Install from Unknown Sources",
+                    description = "Install permissions are required to install Aliucord.",
                     granted = installPermsGranted,
+                    required = true,
                     icon = painterResource(R.drawable.ic_apk_install),
                     onClick = onGrantInstallPerms,
                 )
@@ -118,9 +137,10 @@ fun PermissionsScreenContent(
 
             item(key = "PERMS_STORAGE", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "External Storage Permissions",
-                    description = "Aliucord stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently implemented.",
+                    name = "External Storage",
+                    description = "Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.",
                     granted = storagePermsGranted,
+                    required = true,
                     icon = painterResource(R.drawable.ic_save),
                     onClick = onGrantStoragePerms,
                 )
@@ -128,9 +148,10 @@ fun PermissionsScreenContent(
 
             item(key = "PERMS_NOTIFICATIONS", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "Notifications Permissions",
-                    description = "Used to show download progress if the app is minimized during installation.",
+                    name = "Notifications",
+                    description = "Used to show download progress if Aliucord Manager is minimized during installation.",
                     granted = notificationsPermsGranted,
+                    required = false,
                     icon = painterResource(R.drawable.ic_bell),
                     onClick = onGrantNotificationsPerms,
                 )
@@ -138,9 +159,10 @@ fun PermissionsScreenContent(
 
             item(key = "PERMS_BATTERY", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "Background Battery Permissions",
-                    description = "Used to ensure the patching process does not get cancelled if the app is minimized.",
+                    name = "Background Battery",
+                    description = "Ensures the installation process does not get automatically cancelled if the app is minimized.",
                     granted = batteryPermsGranted,
+                    required = false,
                     icon = painterResource(R.drawable.ic_battery_settings),
                     onClick = onGrantBatteryPerms,
                 )

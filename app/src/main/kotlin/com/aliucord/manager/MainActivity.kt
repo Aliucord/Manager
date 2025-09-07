@@ -21,6 +21,7 @@ import cafe.adriel.voyager.navigator.*
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.aliucord.manager.manager.OverlayManager
 import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.screens.permissions.PermissionsModel
 import com.aliucord.manager.ui.screens.permissions.PermissionsScreen
 import com.aliucord.manager.ui.theme.ManagerTheme
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     LocalNavigatorSaver provides parcelableNavigatorSaver(),
                 ) {
                     Navigator(
-                        screen = PermissionsScreen(),
+                        screen = HomeScreen(),
                         onBackPressed = null,
                     ) { navigator ->
                         // Open the permissions screen whenever permissions are insufficient

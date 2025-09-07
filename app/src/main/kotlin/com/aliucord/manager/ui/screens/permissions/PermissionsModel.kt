@@ -23,17 +23,22 @@ class PermissionsModel(
     private val application: Application,
     private val activities: ActivityProvider,
 ) : ViewModel() {
+    private var timesRequestedNotificationsPerms = 0
+
     var storagePermsGranted by mutableStateOf(false)
         private set
-    var installPermsGranted by mutableStateOf(false)
+    var installPermsGranted by mutableStateOf(Build.VERSION.SDK_INT < 26)
         private set
-    var notificationsPermsGranted by mutableStateOf(false)
+    var notificationsPermsGranted by mutableStateOf(Build.VERSION.SDK_INT < 33)
         private set
-    var batteryPermsGranted by mutableStateOf(false)
+    var batteryPermsGranted by mutableStateOf(Build.VERSION.SDK_INT < 24)
         private set
 
     val requiredPermsGranted by derivedStateOf {
         storagePermsGranted && installPermsGranted
+    }
+    val allPermsGranted by derivedStateOf {
+        storagePermsGranted && installPermsGranted && notificationsPermsGranted && batteryPermsGranted
     }
 
     fun requestInstallPerms() {
@@ -53,11 +58,25 @@ class PermissionsModel(
             .let(activities.get<Activity>()::startActivity) // TODO: do this for all other intent launches
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    fun requestNotificationsPerms() = permissionRequestLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    fun requestNotificationsPerms() {
+        if (Build.VERSION.SDK_INT < 33) return
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun grantBatteryPerms() = application.requestNoBatteryOptimizations()
+        // If the user denies the permission twice (not dismiss), then the dialog will no longer show,
+        // and the user will have to manually enable it from system settings.
+        if (++timesRequestedNotificationsPerms <= 2) {
+            permissionRequestLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
+                .let(activities.get<Activity>()::startActivity)
+        }
+    }
+
+    fun grantBatteryPerms() {
+        if (Build.VERSION.SDK_INT < 23) return
+
+        application.requestNoBatteryOptimizations()
+    }
 
     fun refresh() = viewModelScope.launchBlock {
         storagePermsGranted = if (Build.VERSION.SDK_INT >= 30) {
@@ -89,7 +108,7 @@ class PermissionsModel(
         activity.activityResultRegistry.register(
             key = UUID.randomUUID().toString(),
             contract = ActivityResultContracts.RequestPermission(),
-            callback = { println("here"); refresh() },
+            callback = { refresh() },
         )
     }
 }
