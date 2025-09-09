@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.aliucord.manager.R
 
 @Composable
 fun PermissionButton(
@@ -68,7 +70,7 @@ fun PermissionButton(
                 onClick = onClick,
                 enabled = !granted,
             ) {
-                Text(if (granted) "Granted" else "Grant")
+                Text(stringResource(if (granted) R.string.permissions_granted else R.string.permissions_grant))
             }
         }
     }

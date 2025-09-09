@@ -20,11 +20,11 @@ fun PermissionsAppBar() {
                 modifier = Modifier.padding(start = 12.dp),
             ) {
                 Text(
-                    text = "App Permissions",
+                    text = stringResource(R.string.permissions_title),
                     style = MaterialTheme.typography.displaySmall,
                 )
                 Text(
-                    text = "Aliucord Manager requires permissions:",
+                    text = stringResource(R.string.permissions_subtitle),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onSurface.copy(.6f),
                     ),

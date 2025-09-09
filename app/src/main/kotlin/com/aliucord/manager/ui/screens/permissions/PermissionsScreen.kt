@@ -96,8 +96,8 @@ fun PermissionsScreenContent(
         ) {
             item(key = "PERMS_INSTALL", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "Install from Unknown Sources",
-                    description = "Install permissions are required to install Aliucord.",
+                    name = stringResource(R.string.permissions_install_title),
+                    description = stringResource(R.string.permissions_install_desc),
                     granted = installPermsGranted,
                     required = true,
                     icon = painterResource(R.drawable.ic_apk_install),
@@ -107,8 +107,8 @@ fun PermissionsScreenContent(
 
             item(key = "PERMS_STORAGE", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "External Storage",
-                    description = "Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.",
+                    name = stringResource(R.string.permissions_storage_title),
+                    description = stringResource(R.string.permissions_storage_desc),
                     granted = storagePermsGranted,
                     required = true,
                     icon = painterResource(R.drawable.ic_save),
@@ -118,8 +118,8 @@ fun PermissionsScreenContent(
 
             item(key = "PERMS_NOTIFICATIONS", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "Notifications",
-                    description = "Used to show download progress if Aliucord Manager is minimized during installation.",
+                    name = stringResource(R.string.permissions_notifs_title),
+                    description = stringResource(R.string.permissions_notifs_desc),
                     granted = notificationsPermsGranted,
                     required = false,
                     icon = painterResource(R.drawable.ic_bell),
@@ -129,8 +129,8 @@ fun PermissionsScreenContent(
 
             item(key = "PERMS_BATTERY", contentType = "PERMISSION_BUTTON") {
                 PermissionButton(
-                    name = "Background Battery",
-                    description = "Ensures the installation process does not get automatically cancelled if the app is minimized.",
+                    name = stringResource(R.string.permissions_battery_title),
+                    description = stringResource(R.string.permissions_battery_desc),
                     granted = batteryPermsGranted,
                     required = false,
                     icon = painterResource(R.drawable.ic_battery_settings),
@@ -140,7 +140,7 @@ fun PermissionsScreenContent(
 
             item(key = "LEGEND") {
                 Text(
-                    text = "＊ indicates required permissions!",
+                    text = stringResource(R.string.permissions_legend, "＊"),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier
