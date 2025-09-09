@@ -5,29 +5,40 @@
 
 package com.aliucord.manager
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.*
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.IntOffset
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.*
 import cafe.adriel.voyager.transitions.SlideTransition
+import com.aliucord.manager.MainActivity.Companion.EXTRA_PACKAGE_NAME
 import com.aliucord.manager.manager.OverlayManager
 import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.patcher.InstallMetadata
 import com.aliucord.manager.ui.screens.home.HomeScreen
+import com.aliucord.manager.ui.screens.patching.PatchingScreen
+import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.permissions.PermissionsModel
 import com.aliucord.manager.ui.screens.permissions.PermissionsScreen
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
-import com.aliucord.manager.util.back
-import com.aliucord.manager.util.pushOnce
+import com.aliucord.manager.util.*
+import com.github.diamondminer88.zip.ZipReader
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,6 +46,8 @@ class MainActivity : ComponentActivity() {
     private val permissions: PermissionsModel by viewModel()
     private val preferences: PreferencesManager by inject()
     private val overlays: OverlayManager by inject()
+    private val json: Json by inject()
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -73,6 +86,14 @@ class MainActivity : ComponentActivity() {
                                 navigator.pushOnce(PermissionsScreen())
                         }
 
+                        DisposableEffect(Unit) {
+                            this@MainActivity.intent?.let { handleNewIntent(it, navigator) }
+
+                            fun handle(intent: Intent) = handleNewIntent(intent, navigator)
+                            addOnNewIntentListener(::handle)
+                            onDispose { removeOnNewIntentListener(::handle) }
+                        }
+
                         BackHandler {
                             navigator.back(this@MainActivity)
                         }
@@ -91,5 +112,58 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun handleNewIntent(intent: Intent, navigator: Navigator) = scope.launchBlock {
+        when (intent.action) {
+            INTENT_REINSTALL -> {
+                val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)
+
+                if (packageName == null) {
+                    Log.w(BuildConfig.TAG, "Missing aliucord.packageName extra for intent aliucord.reinstall")
+                    return@launchBlock
+                }
+
+                navigator.push(handleReinstall(packageName))
+            }
+
+            else -> {
+                Log.w(BuildConfig.TAG, "Unhandled intent ${intent.action}")
+            }
+        }
+    }
+
+    private suspend fun handleReinstall(packageName: String): Screen {
+        val metadata = try {
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            val metadataFile = ZipReader(applicationInfo.publicSourceDir)
+                .use { it.openEntry("aliucord.json")?.read() }
+
+            @OptIn(ExperimentalSerializationApi::class)
+            metadataFile?.let { json.decodeFromStream<InstallMetadata>(it.inputStream()) }
+        } catch (t: Throwable) {
+            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package $packageName", t)
+            mainThread { showToast(R.string.intent_reinstall_fail) }
+            null
+        }
+
+        val patchOptions = metadata?.options
+            ?: PatchOptions.Default.copy(packageName = packageName)
+
+        return PatchingScreen(patchOptions)
+    }
+
+    companion object {
+        /**
+         * Intent action to trigger an immediate reinstallation of a specific Aliucord installation.
+         * Required extra data:
+         * - [EXTRA_PACKAGE_NAME] The target installation package name.
+         */
+        const val INTENT_REINSTALL = "com.aliucord.manager.REINSTALL"
+
+        /**
+         * Specifies the target package name for an action.
+         */
+        const val EXTRA_PACKAGE_NAME = "aliucord.packageName"
     }
 }

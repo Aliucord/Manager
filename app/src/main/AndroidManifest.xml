@@ -57,6 +57,7 @@
         tools:ignore="DiscouragedApi,LockedOrientationActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
+        <action android:name="com.aliucord.manager.REINSTALL" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>

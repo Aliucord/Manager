@@ -34,6 +34,8 @@
   <string name="action_open_info">Open Info</string>
   <string name="action_reset_default">Reset to default</string>
 
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+
   <string name="permissions_title">Grant Permissions</string>
   <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
   <string name="permissions_legend">%s indicates required permissions!</string>
