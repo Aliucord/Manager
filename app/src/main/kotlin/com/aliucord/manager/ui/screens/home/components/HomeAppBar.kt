@@ -27,7 +27,7 @@ fun HomeAppBar() {
             IconButton(onClick = { navigator?.push(LogsListScreen()) }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_receipt),
-                    contentDescription = stringResource(R.string.navigation_about),
+                    contentDescription = stringResource(R.string.navigation_logs),
                 )
             }
 

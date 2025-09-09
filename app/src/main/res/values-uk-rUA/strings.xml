@@ -20,7 +20,6 @@
   <string name="action_clear">Очистити</string>
   <string name="action_launch">Запустити</string>
   <string name="action_close">Закрити</string>
-  <string name="action_open_settings">Відкрити налаштування</string>
   <string name="action_search">Пошук</string>
   <string name="action_copy">Копіювати</string>
   <string name="action_collapse">Згорнути</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Все одно вийти</string>
   <string name="action_open_info">Відкрити деталі</string>
   <string name="action_reset_default">Скинути до замовчення</string>
-  <string name="permissions_grant_title">Надати дозволи</string>
-  <string name="storage_permissions_grant_body">Для того, щоб Менеджер Aliucord функціонував необхідно надати доступ до файлів. В слід того, що дані зберігаються у ~/Aliucord, для доступу до нього потрібен дозвіл.</string>
-  <string name="install_permissions_grant_body">Встановлення Aliucord вимагає дозвіл на інсталювання додатків з невідомих джерел.</string>
   <string name="installs_no_installs">Встановлень не знайдено!</string>
   <string name="launch_aliucord_fail">Не вдалося відкрити Aliucord</string>
   <string name="settings_header_advanced">Розширенні</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Зберегти модифікований APK</string>
   <string name="setting_keep_patched_apks_desc">Залишити усі файли патчів й APK після встановлення для налагодження. Зверніть увагу експорт APK корисний лише після успішної установки патчів.</string>
   <string name="settings_clear_cache">Очистити кеш</string>
-  <string name="settings_export_apk">Експортувати APK</string>
   <string name="theme_system">Системна</string>
   <string name="theme_dark">Темна</string>
   <string name="theme_light">Світла</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Сталася помилка під час обробки плагінів!</string>
   <string name="navigation_back">Назад</string>
   <string name="navigation_about">Про додаток</string>
-  <string name="navigation_logs">Відкрити звіти</string>
   <string name="navigation_settings">Налаштування</string>
   <string name="contributors_lead">Головні розробники</string>
   <string name="contributors">Учасники</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Мережа з обмеженим трафіком</string>
   <string name="network_warning_body">Схоже ви з\'єднанні через мобільний інтернет чи потенційно обмежену мережу. В результаті встановлення будуть завантаженні декілька сотень мегабайтів. Ви впевненні, що хочете продовжити?</string>
   <string name="network_warning_disable">Не показувати знову</string>
-  <string name="version_supported">Сумісна версія:</string>
   <string name="version_none">Ніяка</string>
   <string name="version_stable">Стабільна</string>
   <string name="version_beta">Бета</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Копіювання залежностей</string>
   <string name="patch_step_patch_manifests">Патч маніфесту APK</string>
   <string name="patch_step_patch_icon">Модифікація іконки додатка</string>
-  <string name="patch_step_add_injector">Додавання інжектора Aliucord</string>
   <string name="patch_step_add_aliuhook">Додавання бібліотеки Aliuhook</string>
   <string name="patch_step_patch_smali">Застосування патчів Aliuhook</string>
   <string name="patch_step_reorganize_dex">Додавання .dex файлів до APK</string>

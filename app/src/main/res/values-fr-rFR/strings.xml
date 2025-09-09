@@ -20,7 +20,6 @@
   <string name="action_clear">Effacer</string>
   <string name="action_launch">Démarrer</string>
   <string name="action_close">Fermer</string>
-  <string name="action_open_settings">Ouvrir les paramètres</string>
   <string name="action_search">Rechercher</string>
   <string name="action_copy">Copier</string>
   <string name="action_collapse">Réduire</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Quitter quand même</string>
   <string name="action_open_info">Ouvrir Info</string>
   <string name="action_reset_default">Réinitialiser par défaut</string>
-  <string name="permissions_grant_title">Accorder les permissions</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
-  <string name="install_permissions_grant_body">L\'installation d\'Aliucord nécessite d\'accorder les autorisations pour installer des applications à partir de sources inconnues.</string>
   <string name="installs_no_installs">Aucune installation trouvée !</string>
   <string name="launch_aliucord_fail">Impossible de démarrer Aliucord</string>
   <string name="settings_header_advanced">Avancé</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Garder les APKs patchés</string>
   <string name="setting_keep_patched_apks_desc">Garder tous les fichiers et APK patchés après installation pour des raisons de débogage. Notez que l\'export de l\'APK n\'est utile qu\'après une session de patch.</string>
   <string name="settings_clear_cache">Vider le cache</string>
-  <string name="settings_export_apk">Exporter APK</string>
   <string name="theme_system">Système</string>
   <string name="theme_dark">Sombre</string>
   <string name="theme_light">Clair</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Une erreur s\'est produite lors du traitement des plugins !</string>
   <string name="navigation_back">Retour</string>
   <string name="navigation_about">À propos</string>
-  <string name="navigation_logs">Ouvrir les logs</string>
   <string name="navigation_settings">Paramètres</string>
   <string name="contributors_lead">Chef Contributeur</string>
   <string name="contributors">Contributeurs</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Réseau limité</string>
   <string name="network_warning_body">Il semble que vous soyez connecté à des données mobiles ou à un réseau potentiellement limité. Poursuivre l\'installation peut entraîner le téléchargement de plusieurs centaines de mégaoctets. Êtes-vous sûr de vouloir continuer ?</string>
   <string name="network_warning_disable">Ne plus afficher</string>
-  <string name="version_supported">Version supportée :</string>
   <string name="version_none">Aucun</string>
   <string name="version_stable">Stable</string>
   <string name="version_beta">Bêta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Copie des dépendances</string>
   <string name="patch_step_patch_manifests">Patcher les manifestes apk</string>
   <string name="patch_step_patch_icon">Modification de l\'icône de l\'app</string>
-  <string name="patch_step_add_injector">Ajout de l\'injecteur Aliucord</string>
   <string name="patch_step_add_aliuhook">Ajout de la bibliothèque Aliuhook</string>
   <string name="patch_step_patch_smali">Application des patchs smali</string>
   <string name="patch_step_reorganize_dex">Ajout des fichiers .dex à l\'APK</string>

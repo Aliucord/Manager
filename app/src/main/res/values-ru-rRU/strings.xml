@@ -20,7 +20,6 @@
   <string name="action_clear">Стереть</string>
   <string name="action_launch">Запустить</string>
   <string name="action_close">Закрыть</string>
-  <string name="action_open_settings">Открыть настройки</string>
   <string name="action_search">Поиск</string>
   <string name="action_copy">Скопировать</string>
   <string name="action_collapse">Свернуть</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Все равно выйти</string>
   <string name="action_open_info">Свойства</string>
   <string name="action_reset_default">Сброс по умолчанию</string>
-  <string name="permissions_grant_title">Предоставление разрешений</string>
-  <string name="storage_permissions_grant_body">Чтобы Aliucord работал правильно, ему необходимо предоставить разрешения на доступ к файлам. Так как данные хранятся в ~/Aliucord, разрешения необходимы для работы менеджера.</string>
-  <string name="install_permissions_grant_body">Установка Aliucord требует разрешение на установку приложений из неизвестных источников.</string>
   <string name="installs_no_installs">Установки не найдены!</string>
   <string name="launch_aliucord_fail">Не удалось запустить Aliucord</string>
   <string name="settings_header_advanced">Дополнительные</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
   <string name="setting_keep_patched_apks_desc">Сохранять пропатченные файлы и APKs после установки для отладки. Учтите, что экспорт APK имеет смысл только после успешного применения патчей.</string>
   <string name="settings_clear_cache">Очистить кеш</string>
-  <string name="settings_export_apk">Экспортировать APK</string>
   <string name="theme_system">Системная</string>
   <string name="theme_dark">Тёмная</string>
   <string name="theme_light">Светлая</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Произошла ошибка при обработке плагинов!</string>
   <string name="navigation_back">Назад</string>
   <string name="navigation_about">О приложении</string>
-  <string name="navigation_logs">Открыть журналы</string>
   <string name="navigation_settings">Настройки</string>
   <string name="contributors_lead">Главные разработчики</string>
   <string name="contributors">Участники</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Ограниченная сеть</string>
   <string name="network_warning_body">Похоже, вы подключены к мобильным данным или потенциально лимитированной сети. Чтобы осуществить установку, может быть загружено несколько сотен мегабайт. Вы уверены, что хотите продолжить?</string>
   <string name="network_warning_disable">Не показывать снова</string>
-  <string name="version_supported">Текущая версия:</string>
   <string name="version_none">Никакая</string>
   <string name="version_stable">Стабильная</string>
   <string name="version_beta">Бета</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Копирование зависимостей</string>
   <string name="patch_step_patch_manifests">Патч манифестов пакета</string>
   <string name="patch_step_patch_icon">Патч значка приложения</string>
-  <string name="patch_step_add_injector">Добавление инжектора Aliucord</string>
   <string name="patch_step_add_aliuhook">Добавление библиотеки Aliuhook</string>
   <string name="patch_step_patch_smali">Применение smali-патчей</string>
   <string name="patch_step_reorganize_dex">Добавление .dex файлов в APK</string>

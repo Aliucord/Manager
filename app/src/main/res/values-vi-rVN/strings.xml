@@ -20,7 +20,6 @@
   <string name="action_clear">Xoá</string>
   <string name="action_launch">Khởi động</string>
   <string name="action_close">Đóng</string>
-  <string name="action_open_settings">Mở cài đặt</string>
   <string name="action_search">Tìm kiếm</string>
   <string name="action_copy">Sao chép</string>
   <string name="action_collapse">Thu gọn</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Vẫn thoát</string>
   <string name="action_open_info">Mở thông tin</string>
   <string name="action_reset_default">Khôi phục về mặc định</string>
-  <string name="permissions_grant_title">Cấp phép truy cập</string>
-  <string name="storage_permissions_grant_body">Để trình quản lý Aliucord hoạt động bình thường, bạn cần cấp phép truy cập tệp. Do dữ liệu được lưu trữ trong ~/Aliucord nên cần có quyền để trình quản lí hoạt động.</string>
-  <string name="install_permissions_grant_body">Để cài đặt được Aliucord yêu cầu cần cấp phép quyền để cài đặt ứng dụng từ nguồn không xác định.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
   <string name="settings_header_advanced">Nâng cao</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Giữ lại các bản vá APKs</string>
   <string name="setting_keep_patched_apks_desc">Giữ tất cả tập tin đã chỉnh sửa và tệp APK sau khi cài đặt nhằm phục vụ mục đích sửa chữa lỗi. Vui lòng lưu ý rằng việc xuất tệp APK chỉ hữu dụng khi phiên chỉnh sửa ứng dụng đã thành công.</string>
   <string name="settings_clear_cache">Xoá bộ nhớ đệm</string>
-  <string name="settings_export_apk">Xuất APK</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Đã xảy ra lỗi khi xử lí tiện ích mở rộng!</string>
   <string name="navigation_back">Quay lại</string>
   <string name="navigation_about">Giới thiệu</string>
-  <string name="navigation_logs">Mở nhật ký</string>
   <string name="navigation_settings">Cài đặt</string>
   <string name="contributors_lead">Đầu tiên</string>
   <string name="contributors">Những người đóng góp</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Mạng có hạn mức dữ liệu</string>
   <string name="network_warning_body">Có vẻ như bạn đang kết nối với dữ liệu di động hoặc một mạng có hạn mức dữ liệu. Để tiếp tục cài đặt, một vài trăm megabyte có thể sẽ được tải xuống. Bạn có chắc chắn muốn tiếp tục không?</string>
   <string name="network_warning_disable">Không hiển thị lại</string>
-  <string name="version_supported">Phiên bản được hỗ trợ:</string>
   <string name="version_none">Không</string>
   <string name="version_stable">Ổn định</string>
   <string name="version_beta">Thử nghiệm</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Đang sao chép phần phụ thuộc</string>
   <string name="patch_step_patch_manifests">Đang vá tệp kê khai apk</string>
   <string name="patch_step_patch_icon">Đang vá icon ứng dụng</string>
-  <string name="patch_step_add_injector">Đang thêm trình nhập Aliucord</string>
   <string name="patch_step_add_aliuhook">Đang thêm thư viện Aliuhook</string>
   <string name="patch_step_patch_smali">Đang áp dụng bản vá nhỏ</string>
   <string name="patch_step_reorganize_dex">Đang thêm tệp .dex vào APK</string>

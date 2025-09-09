@@ -20,7 +20,6 @@
   <string name="action_clear">清除</string>
   <string name="action_launch">启动</string>
   <string name="action_close">关闭</string>
-  <string name="action_open_settings">打开设置</string>
   <string name="action_search">搜索</string>
   <string name="action_copy">复制</string>
   <string name="action_collapse">收起</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">仍然退出</string>
   <string name="action_open_info">打开信息</string>
   <string name="action_reset_default">重置为默认</string>
-  <string name="permissions_grant_title">授予权限</string>
-  <string name="storage_permissions_grant_body">为了使 Aliucord 管理器正常运行，需要文件权限。由于共享数据存储在 ~/Aliucord 中，因此需要权限才能访问它。</string>
-  <string name="install_permissions_grant_body">安装Aliucord需要授予安装来自未知来源的应用的权限。</string>
   <string name="installs_no_installs">未找到任何安装！</string>
   <string name="launch_aliucord_fail">无法启动 Aliucord</string>
   <string name="settings_header_advanced">高级</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
   <string name="setting_keep_patched_apks_desc">安装后保留补丁的文件和APK以供调试。注意导出APK仅在补丁成功的情况下有用。</string>
   <string name="settings_clear_cache">清除缓存</string>
-  <string name="settings_export_apk">导出APK</string>
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
   <string name="theme_light">浅色</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">处理插件时发生错误！</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">关于</string>
-  <string name="navigation_logs">打开日志</string>
   <string name="navigation_settings">设置</string>
   <string name="contributors_lead">主创</string>
   <string name="contributors">贡献者</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">计费网络</string>
   <string name="network_warning_body">您似乎已连接到移动数据或可能计费的网络。要继续安装，将需要下载几百 MB。您确定要继续吗？</string>
   <string name="network_warning_disable">不再显示</string>
-  <string name="version_supported">支持的版本：</string>
   <string name="version_none">无</string>
   <string name="version_stable">稳定版</string>
   <string name="version_beta">Beta 版</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">正在复制依赖项</string>
   <string name="patch_step_patch_manifests">正在修补 APK 清单</string>
   <string name="patch_step_patch_icon">正在修补应用程序图标</string>
-  <string name="patch_step_add_injector">正在添加 Aliucord 注入器</string>
   <string name="patch_step_add_aliuhook">正在添加 Aliuhook 库</string>
   <string name="patch_step_patch_smali">应用smali补丁</string>
   <string name="patch_step_reorganize_dex">添加.dex文件到APK</string>

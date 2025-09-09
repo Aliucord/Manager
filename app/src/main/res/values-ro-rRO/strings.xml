@@ -20,7 +20,6 @@
   <string name="action_clear">Șterge</string>
   <string name="action_launch">Lansați</string>
   <string name="action_close">Închideți</string>
-  <string name="action_open_settings">Deschide setările</string>
   <string name="action_search">Căutare</string>
   <string name="action_copy">Copiere</string>
   <string name="action_collapse">Restrângeți</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Ieșiți oricum</string>
   <string name="action_open_info">Vizualizați informațiile despre aplicație</string>
   <string name="action_reset_default">Resetați la setări implicite</string>
-  <string name="permissions_grant_title">Acordă permisiuni</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
-  <string name="install_permissions_grant_body">Pentru a instala Aliucord, este necesară acordarea permisiunii de a instala aplicații din surse necunoscute.</string>
   <string name="installs_no_installs">Nu a fost găsita nici o instalare!</string>
   <string name="launch_aliucord_fail">Lansarea Aliucord a eșuat</string>
   <string name="settings_header_advanced">Setări avansate</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Păstrați APK-urile patch-uite</string>
   <string name="setting_keep_patched_apks_desc">Păstrează toate fișierele patch-uite și APK-urile după instalare pentru scopuri de depanare. De reținut: exportul APK este util doar după ce APK-ul a fost patch-uit cu succes.</string>
   <string name="settings_clear_cache">Golire memorie cache</string>
-  <string name="settings_export_apk">Exportă APK-ul</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Întunecat</string>
   <string name="theme_light">Luminos</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">A apărut o eroare în timpul procesării plugin-urilor!</string>
   <string name="navigation_back">Înapoi</string>
   <string name="navigation_about">Despre</string>
-  <string name="navigation_logs">Deschideți jurnalele</string>
   <string name="navigation_settings">Setări</string>
   <string name="contributors_lead">Lider</string>
   <string name="contributors">Contributori</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Rețea tarifată după utilizare</string>
   <string name="network_warning_body">Se pare ca sunteți conectat la datele mobile sau la o rețea potențial limitată. Continuarea instalării poate duce la descărcarea a câtorva sute de megabiți. Sunteți sigur că doriți să continuați?</string>
   <string name="network_warning_disable">Nu afișa asta din nou</string>
-  <string name="version_supported">Versiuni acceptate:</string>
   <string name="version_none">Niciuna</string>
   <string name="version_stable">Stabil</string>
   <string name="version_beta">Beta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Se copiază dependențele</string>
   <string name="patch_step_patch_manifests">Se patch-ează manifestele APK</string>
   <string name="patch_step_patch_icon">Se schimbă icoana aplicației</string>
-  <string name="patch_step_add_injector">Se adaugă injectorul Aliucord</string>
   <string name="patch_step_add_aliuhook">Se adaugă Aliuhook library</string>
   <string name="patch_step_patch_smali">Se aplică patch-urile smali</string>
   <string name="patch_step_reorganize_dex">Se adaugă fișierele .dex în APK</string>

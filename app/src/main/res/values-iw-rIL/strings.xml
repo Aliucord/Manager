@@ -20,7 +20,6 @@
   <string name="action_clear">מחק</string>
   <string name="action_launch">פתח</string>
   <string name="action_close">סגור</string>
-  <string name="action_open_settings">פתח הגדרות</string>
   <string name="action_search">חיפוש</string>
   <string name="action_copy">העתק</string>
   <string name="action_collapse">צמצום</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">תמיד תסגור</string>
   <string name="action_open_info">לפתוח מידע</string>
   <string name="action_reset_default">אפס לברירת המחדל</string>
-  <string name="permissions_grant_title">הענק הרשאה</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
-  <string name="install_permissions_grant_body">התקנת Aliucord דורשת מתן הרשאות להתקנת אפליקציות ממקורות לא ידועים.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
   <string name="settings_header_advanced">Advanced</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Keep patched APKs</string>
   <string name="setting_keep_patched_apks_desc">Keep all patched files and APKs after installation for debugging purposes. Note that exporting the APK is only useful after a successful patching session.</string>
   <string name="settings_clear_cache">Clear cache</string>
-  <string name="settings_export_apk">Export APK</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Dark</string>
   <string name="theme_light">Light</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">An error occurred while processing plugins!</string>
   <string name="navigation_back">Back</string>
   <string name="navigation_about">About</string>
-  <string name="navigation_logs">Open logs</string>
   <string name="navigation_settings">Settings</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">Contributors</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Metered network</string>
   <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="network_warning_disable">Don\'t show this again</string>
-  <string name="version_supported">Supported version:</string>
   <string name="version_none">None</string>
   <string name="version_stable">Stable</string>
   <string name="version_beta">Beta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Copying dependencies</string>
   <string name="patch_step_patch_manifests">Patching apk manifests</string>
   <string name="patch_step_patch_icon">Patching app icon</string>
-  <string name="patch_step_add_injector">Adding Aliucord injector</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>

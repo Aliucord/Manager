@@ -20,7 +20,6 @@
   <string name="action_clear">クリア</string>
   <string name="action_launch">開く</string>
   <string name="action_close">閉じる</string>
-  <string name="action_open_settings">設定を開く</string>
   <string name="action_search">検索</string>
   <string name="action_copy">コピー</string>
   <string name="action_collapse">折りたたむ</string>
@@ -30,10 +29,6 @@
   <string name="action_exit_anyways">とにかく終了</string>
   <string name="action_open_info">情報を表示</string>
   <string name="action_reset_default">既定値に戻す</string>
-  <string name="permissions_grant_title">権限を付与</string>
-  <string name="storage_permissions_grant_body">Aliucord Managerを正しく動作させるためには、ファイルへのアクセスを許可する必要があります。
-~/Aliucordに共有データが保存されるため、Managerを機能させるためには権限が必要です。</string>
-  <string name="install_permissions_grant_body">Aliucord をインストールするには、提供元不明のアプリのインストールを許可する必要があります。</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucordの起動に失敗しました</string>
   <string name="settings_header_advanced">高度な設定</string>
@@ -48,7 +43,6 @@
   <string name="setting_keep_patched_apks">パッチを適用した APK を維持</string>
   <string name="setting_keep_patched_apks_desc">インストール後も、デバッグ用にパッチ済みファイルとAPKをすべて保持します。なお、APKのエクスポートはパッチ処理が正常に完了した後でのみ有効です。</string>
   <string name="settings_clear_cache">キャッシュを消去</string>
-  <string name="settings_export_apk">APKをエクスポート</string>
   <string name="theme_system">システム</string>
   <string name="theme_dark">ダーク</string>
   <string name="theme_light">ライト</string>
@@ -61,7 +55,6 @@
   <string name="plugins_error">プラグイン処理中にエラーが発生しました！</string>
   <string name="navigation_back">戻る</string>
   <string name="navigation_about">アプリについて</string>
-  <string name="navigation_logs">ログを開く</string>
   <string name="navigation_settings">設定</string>
   <string name="contributors_lead">読み込み</string>
   <string name="contributors">貢献者</string>
@@ -70,7 +63,6 @@
   <string name="network_warning_title">従量制ネットワーク</string>
   <string name="network_warning_body">モバイルデータまたは従量制課金ネットワークに接続されているようです。 インストールを続行するには、数百MBがダウンロードされる可能性があります。続行してもよろしいですか？</string>
   <string name="network_warning_disable">このメッセージを再度表示しない</string>
-  <string name="version_supported">サポートされているバージョン:</string>
   <string name="version_none">なし</string>
   <string name="version_stable">安定版</string>
   <string name="version_beta">ベータ版</string>
@@ -111,7 +103,6 @@
   <string name="patch_step_copy_deps">依存関係のコピー</string>
   <string name="patch_step_patch_manifests">APKマニフェストにパッチを適用</string>
   <string name="patch_step_patch_icon">アプリのアイコンにパッチを適用</string>
-  <string name="patch_step_add_injector">インジェクターの追加</string>
   <string name="patch_step_add_aliuhook">Aliuhookライブラリの追加</string>
   <string name="patch_step_patch_smali">Smaliパッチの適用</string>
   <string name="patch_step_reorganize_dex">APKに.dexファイルの追加</string>

@@ -106,7 +106,7 @@ class SettingsScreen : Screen, Parcelable {
 
                 if (preferences.keepPatchedApks) {
                     MainActionButton(
-                        text = stringResource(R.string.log_action_export_apk),
+                        text = stringResource(R.string.settings_export_apk),
                         icon = painterResource(R.drawable.ic_save),
                         enabled = model.patchedApkExists,
                         onClick = model::shareApk,

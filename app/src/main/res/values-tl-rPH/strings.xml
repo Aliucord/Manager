@@ -20,7 +20,6 @@
   <string name="action_clear">I-clear</string>
   <string name="action_launch">Buksan</string>
   <string name="action_close">Isara</string>
-  <string name="action_open_settings">Buksan ang mga setting</string>
   <string name="action_search">Maghanap</string>
   <string name="action_copy">Kopyahin</string>
   <string name="action_collapse">I-collapse</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Lumabas pa rin</string>
   <string name="action_open_info">Buksan ang Impormasyon</string>
   <string name="action_reset_default">I-reset sa default</string>
-  <string name="permissions_grant_title">Ibigay ang Mga Pahintulot</string>
-  <string name="storage_permissions_grant_body">Upang gumana ang Aliucord Manager, kinakailangan ang mga pahintulot sa file. Dahil ang mga binabahaging data ay nakaimbak sa ~/Aliucord, kinakailangan ang mga pahintulot para i-access iyan.</string>
-  <string name="install_permissions_grant_body">Kinakailangan ang pagbigay ng pahintulot sa pag-install ng mga app mula sa hindi kilalang pinagmulan ang pag-install ng Aliucord.</string>
   <string name="installs_no_installs">Walang mga nahanap na installation</string>
   <string name="launch_aliucord_fail">Nabigong buksan ang Aliucord</string>
   <string name="settings_header_advanced">Advanced</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Panatilihin ang mga naka-patch na APK</string>
   <string name="setting_keep_patched_apks_desc">Panatilihin ang lahat ng mga na-patch na file at APK pagkatapos ng pag-install para sa layunin ng pag-debug. Tandaan na pakinabang lamang ang pag-export ng APK pagkatapos ng isang matagumpay na session ng pag-patch.</string>
   <string name="settings_clear_cache">I-clear ang cache</string>
-  <string name="settings_export_apk">I-export ang APK</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Madilim</string>
   <string name="theme_light">Maliwanag</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">May nangyaring error habang pinoproseso ang mga plugin!</string>
   <string name="navigation_back">Bumalik</string>
   <string name="navigation_about">Tungkol sa </string>
-  <string name="navigation_logs">Buksan ang mga log</string>
   <string name="navigation_settings">Mga Setting</string>
   <string name="contributors_lead">Nangunguna</string>
   <string name="contributors">Mga kontribyutor</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Naka-meter na network</string>
   <string name="network_warning_body">Mukhang nakakonekta ka sa isang mobile data o isang potensyal na naka-meter na network. Ang pagpatuloy ay maaaring magresulta sa ilang daang megabytes na mada-download. Sigurado ka ba gusto mong magpatuloy?</string>
   <string name="network_warning_disable">Huwag itong ipakita muli</string>
-  <string name="version_supported">Sinusuportahang bersyon:</string>
   <string name="version_none">Wala</string>
   <string name="version_stable">Stable</string>
   <string name="version_beta">Beta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Kinokopya ang mga dependency</string>
   <string name="patch_step_patch_manifests">Pina-patch ang manifest ng APK</string>
   <string name="patch_step_patch_icon">Pina-patch ang icon ng app</string>
-  <string name="patch_step_add_injector">Dinadagdag ang Aliucord injector</string>
   <string name="patch_step_add_aliuhook">Dinadagdag ang Aliuhook library</string>
   <string name="patch_step_patch_smali">Ina-apply ang mga smali patch</string>
   <string name="patch_step_reorganize_dex">Dinadagdag ang mga .dex file sa APK</string>

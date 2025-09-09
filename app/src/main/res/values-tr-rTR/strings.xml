@@ -20,7 +20,6 @@
   <string name="action_clear">Temizle</string>
   <string name="action_launch">Başlat</string>
   <string name="action_close">Kapat</string>
-  <string name="action_open_settings">Ayarları aç</string>
   <string name="action_search">Ara</string>
   <string name="action_copy">Kopyala</string>
   <string name="action_collapse">Daralt</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Yine de Çık</string>
   <string name="action_open_info">Hakkında\'yı Aç</string>
   <string name="action_reset_default">Varsayılana geri dön</string>
-  <string name="permissions_grant_title">İzinleri Ver</string>
-  <string name="storage_permissions_grant_body">Aliucord Yöneticisinin düzgün çalışması için, dosya izinleri vermeniz gerekli. Paylaşılan uygulama verileri ~/Aliucord\'ta depolandığı için, yöneticinin çalışması izin gerektirir.</string>
-  <string name="install_permissions_grant_body">Aliucord\'u indirmek için \"Bilinmeyen uygulamardan yükle\" iznini etkinleştirmeniz gerekir.</string>
   <string name="installs_no_installs">Kurulum bulunamadı!</string>
   <string name="launch_aliucord_fail">Aliucord başlatılamadı</string>
   <string name="settings_header_advanced">Gelişmiş</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Yamalanmış APK\'ları sakla</string>
   <string name="setting_keep_patched_apks_desc">Tüm yamalanmış dosyaları ve APK\'ları hata ayıklama için sakla. Aklınıza not edin; APK\'yı dışa aktarma sadece başarılı bir yama sonrasında işinize yarar.</string>
   <string name="settings_clear_cache">Önbelleği temizle</string>
-  <string name="settings_export_apk">APK\'yı dışa aktar</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Koyu</string>
   <string name="theme_light">Açık</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Eklentiler işlenirken bir hata oluştu!</string>
   <string name="navigation_back">Geri</string>
   <string name="navigation_about">Hakkında</string>
-  <string name="navigation_logs">Kayıtları aç</string>
   <string name="navigation_settings">Ayarlar</string>
   <string name="contributors_lead">Baş</string>
   <string name="contributors">Katkıda Bulunanlar</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Tarifeli ağ</string>
   <string name="network_warning_body">Görünüşe göre sınırlı veya tarifeli bir ağa bağlısınız. Kuruluma devam etmek birkaç yüz megabyte\'ın indirilmesinde sonuçlanabilir. Devam etmek istediğinize emin misiniz?</string>
   <string name="network_warning_disable">Bunu tekrar gösterme</string>
-  <string name="version_supported">Desteklenen sürüm:</string>
   <string name="version_none">Hiçbiri</string>
   <string name="version_stable">Stabil</string>
   <string name="version_beta">Beta</string>
@@ -111,7 +104,6 @@ lütfen silin!</string>
   <string name="patch_step_copy_deps">Bağımlılıklar kopyalanıyor</string>
   <string name="patch_step_patch_manifests">APK üstveri dosyaları yamalanıyor</string>
   <string name="patch_step_patch_icon">Uygulama simgesi yamalanıyor</string>
-  <string name="patch_step_add_injector">Aliucord enjektörü ekleniyor</string>
   <string name="patch_step_add_aliuhook">Aliuhook kitaplığı ekleniyor</string>
   <string name="patch_step_patch_smali">Smali yamaları uygulanıyor</string>
   <string name="patch_step_reorganize_dex">APK\'ya .dex dosyaları ekleniyor</string>

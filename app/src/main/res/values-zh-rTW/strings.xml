@@ -20,7 +20,6 @@
   <string name="action_clear">清除</string>
   <string name="action_launch">啟動</string>
   <string name="action_close">關閉</string>
-  <string name="action_open_settings">開啟設定</string>
   <string name="action_search">搜尋</string>
   <string name="action_copy">複製</string>
   <string name="action_collapse">崩潰</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">無論如何都要退出</string>
   <string name="action_open_info">開啟資訊</string>
   <string name="action_reset_default">重設為預設植</string>
-  <string name="permissions_grant_title">授予權限</string>
-  <string name="storage_permissions_grant_body">為了讓 Aliucord Manager 正常運作，您需要授予「檔案和媒體」權限。 由於共享資料儲存在 ~/Aliucord 中，因此需要權限才能使 Manager 發揮作用。</string>
-  <string name="install_permissions_grant_body">安裝 Aliucord 需要授予安裝來自未知來源的應用程式的權限。</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Aliucord 啟動失敗</string>
   <string name="settings_header_advanced">進階</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">保持補丁 APKs</string>
   <string name="setting_keep_patched_apks_desc">安裝後，請保留所有已修補的檔案以及各 APK 檔案，以利進行偵錯。請注意，匯出的 APK 僅在成功完成修補後才有用。</string>
   <string name="settings_clear_cache">清除快取</string>
-  <string name="settings_export_apk">匯出 APK</string>
   <string name="theme_system">跟隨系統</string>
   <string name="theme_dark">深色模式</string>
   <string name="theme_light">淺色模式</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">處理插件時發生錯誤！</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">關於</string>
-  <string name="navigation_logs">開啟日誌</string>
   <string name="navigation_settings">設定</string>
   <string name="contributors_lead">Lead</string>
   <string name="contributors">貢獻者</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">計量付費網路</string>
   <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="network_warning_disable">不再顯示</string>
-  <string name="version_supported">已支援版本：</string>
   <string name="version_none">無</string>
   <string name="version_stable">穩定版</string>
   <string name="version_beta">Beta 版</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Copying dependencies</string>
   <string name="patch_step_patch_manifests">正在安裝 apk 清單補丁</string>
   <string name="patch_step_patch_icon">正在安裝應用程式圖示補丁</string>
-  <string name="patch_step_add_injector">Adding Aliucord injector</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>

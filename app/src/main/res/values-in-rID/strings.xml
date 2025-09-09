@@ -20,7 +20,6 @@
   <string name="action_clear">Hapus</string>
   <string name="action_launch">Jalankan</string>
   <string name="action_close">Tutup</string>
-  <string name="action_open_settings">Buka setelan</string>
   <string name="action_search">Cari</string>
   <string name="action_copy">Salin</string>
   <string name="action_collapse">Runtuhkan</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Keluar saja</string>
   <string name="action_open_info">Buka info</string>
   <string name="action_reset_default">Atur ulang ke pengaturan awal</string>
-  <string name="permissions_grant_title">Berikan izin</string>
-  <string name="storage_permissions_grant_body">Untuk Manajer Aliucord berfungsi dengan baik, Anda perlu memberikan izin untuk mengakses file. Karena datanya disimpan di ~/Aliucord, perizinan diperlukan agar Manajer berfungsi.</string>
-  <string name="install_permissions_grant_body">Pemasangan Aliucord memerlukan pemberian izin untuk memasang aplikasi dari sumber yang tidak dikenal.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>
   <string name="settings_header_advanced">Tingkat Lanjut</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Simpan APK yang ditambal</string>
   <string name="setting_keep_patched_apks_desc">Simpan semua file dan APK yang di-tambal setelah instalasi untuk keperluan debugging. Perlu diinget bahwa mengekspor APK hanya berguna setelah sesi tambal berhasil.</string>
   <string name="settings_clear_cache">Bersihkan cache</string>
-  <string name="settings_export_apk">Ekspor APK</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Gelap</string>
   <string name="theme_light">Terang</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Terjadi kesalahan saat memproses plugin!</string>
   <string name="navigation_back">Kembali</string>
   <string name="navigation_about">Tentang</string>
-  <string name="navigation_logs">Buka log</string>
   <string name="navigation_settings">Setelan</string>
   <string name="contributors_lead">Memimpin</string>
   <string name="contributors">Kontributor</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Jaringan terukur</string>
   <string name="network_warning_body">Sepertinya anda terhubung ke data seluler atau jaringan yang berpotensi dapat diukur. Melanjutkan pemasangan mungkin akan berakibat ratusan MB file untuk di download. Apa anda yakin ingin melanjutkan?</string>
   <string name="network_warning_disable">Jangan tampilkan ini lagi</string>
-  <string name="version_supported">Versi yang didukung:</string>
   <string name="version_none">Tidak ada</string>
   <string name="version_stable">Stabil</string>
   <string name="version_beta">Beta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Menyalin dependensi</string>
   <string name="patch_step_patch_manifests">Menambal manifest aplikasi</string>
   <string name="patch_step_patch_icon">Menambal logo Aplikasi</string>
-  <string name="patch_step_add_injector">Menambahkan Aliucord injektor</string>
   <string name="patch_step_add_aliuhook">Menambahkan perpustakaan Aliuhook</string>
   <string name="patch_step_patch_smali">Menerapkan tambalan smali</string>
   <string name="patch_step_reorganize_dex">Menambahkan file-file .dex ke APK</string>

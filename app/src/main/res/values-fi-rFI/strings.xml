@@ -20,7 +20,6 @@
   <string name="action_clear">Tyhjennä</string>
   <string name="action_launch">Käynnistä</string>
   <string name="action_close">Sulje</string>
-  <string name="action_open_settings">Avaa asetukset</string>
   <string name="action_search">Hae</string>
   <string name="action_copy">Kopioi</string>
   <string name="action_collapse">Pienennä</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Poistu kuitenkin</string>
   <string name="action_open_info">Avaa info</string>
   <string name="action_reset_default">Palauta oletusarvoon</string>
-  <string name="permissions_grant_title">Myönnä käyttöoikeudet</string>
-  <string name="storage_permissions_grant_body">Jotta Aliucord-manageri voi toimia, tiedostokäyttöoikeudet vaaditaan. Sillä jaettu data säilötään kansiossa ~/Aliucord, käyttöoikeudet sen pääsyyn vaaditaan.</string>
-  <string name="install_permissions_grant_body">Aliucordin asentaminen vaatii sovellusten asentamisen tuntemattomien lähteiden käyttöoikeuden myöntämisen.</string>
   <string name="installs_no_installs">Ei asennunksia löytynyt!</string>
   <string name="launch_aliucord_fail">Epäonnistui Aliucordin avaamisessa</string>
   <string name="settings_header_advanced">Edistynyt</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Säilytä paikatut APK:t</string>
   <string name="setting_keep_patched_apks_desc">Säilytä kaikki paikatut tiedostot ja APK:t asennuksen jälkeen virheenjäljitystarkoituksiin. Huomioi että APK:n vienti on hyödyllistä vain onnistuneen paikkaussession jälkeen.</string>
   <string name="settings_clear_cache">Tyhjennä välimuisti</string>
-  <string name="settings_export_apk">Vie APK</string>
   <string name="theme_system">Järjestelmä</string>
   <string name="theme_dark">Tumma</string>
   <string name="theme_light">Vaalea</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Virhe tapahtui laajennusten käsittelyssä!</string>
   <string name="navigation_back">Takaisin</string>
   <string name="navigation_about">Tietoa</string>
-  <string name="navigation_logs">Avaa lokit</string>
   <string name="navigation_settings">Asetukset</string>
   <string name="contributors_lead">Johto</string>
   <string name="contributors">Avustajat</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Mitattu nettiyhteys</string>
   <string name="network_warning_body">Vaikuttaa siltä, että olet yhdistettynä mobiilidataan tai mitattuun nettiyhteyteen. Asennuksen jatkaminen voi johtaa monen sadan megatavun lataamiseen. Oletko varma, että haluat jatkaa?</string>
   <string name="network_warning_disable">Älä näytä tätä uudestaan</string>
-  <string name="version_supported">Tuettu versio:</string>
   <string name="version_none">Ei merkitty</string>
   <string name="version_stable">Vakaa</string>
   <string name="version_beta">Beeta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Kopioidaan riippuvaisuuksia</string>
   <string name="patch_step_patch_manifests">Paikataan APK-manifesti</string>
   <string name="patch_step_patch_icon">Paikataan sovelluskuvake</string>
-  <string name="patch_step_add_injector">Lisätään Aliucord-injektori</string>
   <string name="patch_step_add_aliuhook">Lisätään Aliuhook-kirjasto</string>
   <string name="patch_step_patch_smali">Lisätään smali-paikkaukset</string>
   <string name="patch_step_reorganize_dex">Lisätään .dex-tiedostot APK:hon</string>

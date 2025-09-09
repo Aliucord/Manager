@@ -20,7 +20,6 @@
   <string name="action_clear">Vymazat</string>
   <string name="action_launch">Spustit</string>
   <string name="action_close">Zavřít</string>
-  <string name="action_open_settings">Otevřít nastavení</string>
   <string name="action_search">Hledat</string>
   <string name="action_copy">Zkopírovat</string>
   <string name="action_collapse">Sbalit</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Přesto ukončit</string>
   <string name="action_open_info">Zobrazit informace</string>
   <string name="action_reset_default">Obnovit výchozí</string>
-  <string name="permissions_grant_title">Udělit oprávnění</string>
-  <string name="storage_permissions_grant_body">Aby Správce Aliucord správně fungoval, jsou potřeba oprávnění k souborům. Jelikož jsou sdílená data uložena ve složce ~/Aliucord, je nutné mít přístupová oprávnění k této složce.</string>
-  <string name="install_permissions_grant_body">Instalace Aliucord vyžaduje udělení oprávnění pro instalaci aplikací z neznámých zdrojů.</string>
   <string name="installs_no_installs">Nenalezena žádná instalace!</string>
   <string name="launch_aliucord_fail">Nepodařilo se spustit Aliucord</string>
   <string name="settings_header_advanced">Pokročilé</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Zachovat upravené APK</string>
   <string name="setting_keep_patched_apks_desc">Po instalaci uchovat všechny upravené soubory a APK pro účely ladění. Upozornění: export APK je užitečný pouze po úspěšném procesu záplatování.</string>
   <string name="settings_clear_cache">Vymazat mezipaměť</string>
-  <string name="settings_export_apk">Exportovat APK</string>
   <string name="theme_system">Systém</string>
   <string name="theme_dark">Tmavý</string>
   <string name="theme_light">Světlý</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Při zpracování pluginů došlo k chybě!</string>
   <string name="navigation_back">Zpět</string>
   <string name="navigation_about">O aplikaci</string>
-  <string name="navigation_logs">Otevřít záznamy</string>
   <string name="navigation_settings">Nastavení</string>
   <string name="contributors_lead">Hlavní kontributor</string>
   <string name="contributors">Kontributoři</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Limitované připojení </string>
   <string name="network_warning_body">Vypadá to, že jste připojeni k mobilním datům nebo k potenciálně omezené síti. Pokračování instalace může vést ke stažení několika stovek megabajtů. Opravdu chcete pokračovat?</string>
   <string name="network_warning_disable">Příště nezobrazovat</string>
-  <string name="version_supported">Podporované verze:</string>
   <string name="version_none">Žádná</string>
   <string name="version_stable">Stabilní</string>
   <string name="version_beta">Beta</string>
@@ -87,8 +80,7 @@
   <string name="installer_insufficient_storage">Nedostatek místa v úložišti!</string>
   <string name="installer_banner_minimization">Protože optimalizace baterie nebyla vypnuta, minimalizací této obrazovky může přerušit instalační proces!</string>
   <string name="installer_banner_failure">Instalace se nezdařila! Můžete buď zkusit znovu nebo kliknout na tento baner pro otevření Aliucord uživatelské podpory.</string>
-  <string name="installer_banner_success">Aliucord byl úspěšně nainstalován! 
-*NE*odstraňujte správce (tuto aplikaci), protože je potřeba pro provádění určitých aktualizací.</string>
+  <string name="installer_banner_success">Aliucord byl úspěšně nainstalován! *NE*odstraňujte správce (tuto aplikaci), protože je potřeba pro provádění určitých aktualizací.</string>
   <string name="install_error_unknown">Selhání instalátoru (neznámý důvod)</string>
   <string name="install_error_blocked">Instalace byla zablokována</string>
   <string name="install_error_invalid">Jeden nebo více APK souborů jsou neplatné nebo poškozené</string>
@@ -111,7 +103,6 @@
   <string name="patch_step_copy_deps">Kopírování potřebných souborů</string>
   <string name="patch_step_patch_manifests">Záplatovaní APK manifestu</string>
   <string name="patch_step_patch_icon">Úprava ikony aplikace</string>
-  <string name="patch_step_add_injector">Přidávání Aliucord injektoru</string>
   <string name="patch_step_add_aliuhook">Přidávání Aliuhook knihovny</string>
   <string name="patch_step_patch_smali">Aplikování smali záplat</string>
   <string name="patch_step_reorganize_dex">Přidávání .dex souborů do APK</string>

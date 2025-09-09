@@ -20,7 +20,6 @@
   <string name="action_clear">Wis</string>
   <string name="action_launch">Starten</string>
   <string name="action_close">Sluit</string>
-  <string name="action_open_settings">Instellingen openen</string>
   <string name="action_search">Zoeken</string>
   <string name="action_copy">Kopieer</string>
   <string name="action_collapse">Samenvouwen</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Toch afsluiten</string>
   <string name="action_open_info">Informatie openen</string>
   <string name="action_reset_default">Fabrieksinstellingen</string>
-  <string name="permissions_grant_title">Toestemmingen verlenen</string>
-  <string name="storage_permissions_grant_body">Om Aliucord Manager te laten functioneren, zijn bestandsrechten vereist. Omdat gedeelde gegevens zijn opgeslagen in ~/Aliucord, zijn machtigingen vereist voor toegang.</string>
-  <string name="install_permissions_grant_body">Om Aliucord te installeren moet je toestemming geven om apps te installeren van onbekende bronnen.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Kon Aliucord niet opstarten</string>
   <string name="settings_header_advanced">Geavanceerd</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Houd gepatchte APK\'s</string>
   <string name="setting_keep_patched_apks_desc">Bewaar alle gepatchte bestanden en APK\'s na de installatie voor foutopsporing. Houd er rekening mee dat het exporteren van de APK alleen nuttig is na een succesvolle patchsessie.</string>
   <string name="settings_clear_cache">Cache verwijderen</string>
-  <string name="settings_export_apk">APK exporteren</string>
   <string name="theme_system">Systeem</string>
   <string name="theme_dark">Donker</string>
   <string name="theme_light">Licht</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Een fout is gebeurd tijdens het verwerken van de plug-ins!</string>
   <string name="navigation_back">Terug</string>
   <string name="navigation_about">Over</string>
-  <string name="navigation_logs">Logboeken openen</string>
   <string name="navigation_settings">Instellingen</string>
   <string name="contributors_lead">Leiding</string>
   <string name="contributors">Medewerkers</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Datalimiet</string>
   <string name="network_warning_body">It appears you are connected to mobile data or a potentially metered network. In order to continue with the installation, several hundred megabytes could be downloaded. Are you sure you want to continue?</string>
   <string name="network_warning_disable">Dit niet meer weergeven</string>
-  <string name="version_supported">Ondersteunde versie</string>
   <string name="version_none">Geen</string>
   <string name="version_stable">Stabiel</string>
   <string name="version_beta">Bèta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Afhankelijkheden kopiëren</string>
   <string name="patch_step_patch_manifests">Patching apk manifests</string>
   <string name="patch_step_patch_icon">Toepassen app icoon</string>
-  <string name="patch_step_add_injector">Aliucord injector toevoegen</string>
   <string name="patch_step_add_aliuhook">Aliuhook bibliotheek toevoegen</string>
   <string name="patch_step_patch_smali">Smali patches toepassen</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>

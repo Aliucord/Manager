@@ -20,7 +20,6 @@
   <string name="action_clear">Törlés</string>
   <string name="action_launch">Indítás</string>
   <string name="action_close">Bezárás</string>
-  <string name="action_open_settings">Beállítások megnyitása</string>
   <string name="action_search">Keresés</string>
   <string name="action_copy">Másolás</string>
   <string name="action_collapse">Összecsukás</string>
@@ -30,9 +29,6 @@
   <string name="action_exit_anyways">Kilépés mindenképp</string>
   <string name="action_open_info">Info megnyitása</string>
   <string name="action_reset_default">Visszaállítás alapértelmezettre</string>
-  <string name="permissions_grant_title">Engedélyek megadása</string>
-  <string name="storage_permissions_grant_body">In order for Aliucord Manager to work properly, you need to grant file permissions. Since shared data is stored in ~/Aliucord, permissions are required in order for manager to function.</string>
-  <string name="install_permissions_grant_body">Az Aliucord telepítése megköveteli, hogy engedélyezd az ismeretlen forrásokból való telepítést.</string>
   <string name="installs_no_installs">Nem található telepítés!</string>
   <string name="launch_aliucord_fail">Nem sikerült elindítani az Aliucordot</string>
   <string name="settings_header_advanced">Haladó</string>
@@ -47,7 +43,6 @@
   <string name="setting_keep_patched_apks">Patchelt APK megtartása</string>
   <string name="setting_keep_patched_apks_desc">Minden patchelt fájlt és APK-t megtart telepítés után hibakeresési dolgokra. Fontos, hogy az APK exportálása csak sikeres patchelés után hasznos.</string>
   <string name="settings_clear_cache">Gyorsítótár ürítése</string>
-  <string name="settings_export_apk">APK exportálás</string>
   <string name="theme_system">Rendszer</string>
   <string name="theme_dark">Sötét</string>
   <string name="theme_light">Világos</string>
@@ -60,7 +55,6 @@
   <string name="plugins_error">Hiba történt a bővítmények feldolgozása közben!</string>
   <string name="navigation_back">Vissza</string>
   <string name="navigation_about">Névjegy</string>
-  <string name="navigation_logs">Naplók megnyitása</string>
   <string name="navigation_settings">Beállítások</string>
   <string name="contributors_lead">Vezető</string>
   <string name="contributors">Hozzájárulók</string>
@@ -69,7 +63,6 @@
   <string name="network_warning_title">Mért hálózat</string>
   <string name="network_warning_body">Úgy tűnik, hogy mobilhálózatra vagy egyéb forgalmi díjas hálózatra vagy csatlakozva. A telepítés folytatása esetén több száz megabájtnyi adat letültése lehet szükséges. Biztos folytatni szeretnéd?</string>
   <string name="network_warning_disable">Ne jelenjen meg többször</string>
-  <string name="version_supported">Támogatott verzió:</string>
   <string name="version_none">Semmi</string>
   <string name="version_stable">Stabil</string>
   <string name="version_beta">Béta</string>
@@ -110,7 +103,6 @@
   <string name="patch_step_copy_deps">Függőségek másolása</string>
   <string name="patch_step_patch_manifests">APK manifeszt javítása</string>
   <string name="patch_step_patch_icon">Alkalmazás ikon patchelése</string>
-  <string name="patch_step_add_injector">Aliucord injektor hozzáadása</string>
   <string name="patch_step_add_aliuhook">Aliuhook könyvtár hozzáadása</string>
   <string name="patch_step_patch_smali">Smali patchek alkalmazása</string>
   <string name="patch_step_reorganize_dex">.dex fájlok hozzáadása az APK-hoz</string>
