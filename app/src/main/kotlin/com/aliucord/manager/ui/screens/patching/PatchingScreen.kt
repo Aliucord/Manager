@@ -33,6 +33,7 @@ import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.ui.components.MainActionButton
 import com.aliucord.manager.ui.components.Wakelock
 import com.aliucord.manager.ui.components.dialogs.InstallerAbortDialog
+import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patching.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
@@ -106,6 +107,19 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
             }
 
             listState.animateScrollToItem(0)
+        }
+
+        if (model.showNetworkWarningDialog) {
+            NetworkWarningDialog(
+                onConfirm = { neverShow ->
+                    model.hideNetworkWarning(neverShow)
+                    model.install()
+                },
+                onDismiss = { neverShow ->
+                    model.hideNetworkWarning(neverShow)
+                    navigator.pop()
+                },
+            )
         }
 
         if (showAbortWarning) {

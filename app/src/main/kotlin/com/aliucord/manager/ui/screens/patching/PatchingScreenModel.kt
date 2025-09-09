@@ -41,6 +41,9 @@ class PatchingScreenModel(
 
     val devMode get() = prefs.devMode
 
+    var showNetworkWarningDialog by mutableStateOf(!alreadyShownNetworkWarning && application.isNetworkDangerous())
+        private set
+
     var steps by mutableStateOf<ImmutableMap<StepGroup, ImmutableList<Step>>?>(null)
         private set
 
@@ -49,7 +52,11 @@ class PatchingScreenModel(
         private set
 
     init {
-        install()
+        if (!prefs.showNetworkWarning)
+            showNetworkWarningDialog = false
+
+        if (!showNetworkWarningDialog)
+            install()
 
         // Rotate fun facts every so often
         screenModelScope.launch {
@@ -58,6 +65,12 @@ class PatchingScreenModel(
                 delay(8.seconds)
             }
         }
+    }
+
+    fun hideNetworkWarning(neverShow: Boolean) {
+        showNetworkWarningDialog = false
+        alreadyShownNetworkWarning = true
+        prefs.showNetworkWarning = !neverShow
     }
 
     fun launchApp() {
@@ -179,6 +192,9 @@ class PatchingScreenModel(
     }
 
     private companion object {
+        // Global state to avoid showing the warning more than once per launch
+        private var alreadyShownNetworkWarning = false
+
         /**
          * Random fun facts to show on the installation screen.
          */

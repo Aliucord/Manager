@@ -4,15 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.util.TypedValue
 import android.widget.Toast
 import androidx.annotation.AnyRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.google.android.gms.safetynet.SafetyNet
@@ -148,4 +151,35 @@ suspend fun Context.isPlayProtectEnabled(): Boolean? {
                 }
             }
     }
+}
+
+/**
+ * Check whether the device is connected on a metered WIFI connection or through any type of mobile data,
+ * to avoid unknowingly downloading a lot of stuff through a potentially metered network.
+ */
+@Suppress("DEPRECATION")
+fun Context.isNetworkDangerous(): Boolean {
+    val connectivity = this.getSystemService<ConnectivityManager>()
+        ?: error("Unable to get system connectivity service")
+
+    if (connectivity.isActiveNetworkMetered) return true
+
+    when (val info = connectivity.activeNetworkInfo) {
+        null -> return false
+        else -> {
+            if (info.isRoaming) return true
+            if (info.type == ConnectivityManager.TYPE_WIFI) return false
+        }
+    }
+
+    val telephony = this.getSystemService<TelephonyManager>()
+        ?: error("Unable to get system telephony service")
+
+    val dangerousMobileDataStates = arrayOf(
+        /* TelephonyManager.DATA_DISCONNECTING */ 4,
+        TelephonyManager.DATA_CONNECTED,
+        TelephonyManager.DATA_CONNECTING,
+    )
+
+    return dangerousMobileDataStates.contains(telephony.dataState)
 }

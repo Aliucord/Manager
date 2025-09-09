@@ -23,7 +23,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
-import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.iconopts.*
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
@@ -48,17 +47,6 @@ class PatchOptionsScreen(
         val navigator = LocalNavigator.currentOrThrow
         val model = koinScreenModel<PatchOptionsModel> { parametersOf(prefilledOptions ?: PatchOptions.Default) }
         val iconModel = koinScreenModel<IconOptionsModel> { parametersOf((prefilledOptions ?: PatchOptions.Default).iconReplacement) }
-
-        // TODO: move this to the patching screen
-        if (model.showNetworkWarningDialog) {
-            NetworkWarningDialog(
-                onConfirm = model::hideNetworkWarning,
-                onDismiss = { neverShow ->
-                    model.hideNetworkWarning(neverShow)
-                    navigator.pop()
-                },
-            )
-        }
 
         PatchOptionsScreenContent(
             isUpdate = prefilledOptions != null,
