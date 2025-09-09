@@ -22,7 +22,7 @@ import cafe.adriel.voyager.transitions.ScreenTransition
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.screens.permissions.components.PermissionButton
-import com.aliucord.manager.ui.screens.settings.SettingsScreen
+import com.aliucord.manager.ui.screens.permissions.components.PermissionsAppBar
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import kotlinx.parcelize.IgnoredOnParcel
@@ -81,37 +81,7 @@ fun PermissionsScreenContent(
     onContinue: () -> Unit,
 ) {
     Scaffold(
-        topBar = {
-            LargeTopAppBar(
-                title = {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(start = 12.dp),
-                    ) {
-                        Text(
-                            text = "App Permissions",
-                            style = MaterialTheme.typography.displaySmall,
-                        )
-                        Text(
-                            text = "Aliucord Manager requires permissions:",
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                color = MaterialTheme.colorScheme.onSurface.copy(.6f),
-                            ),
-                        )
-                    }
-                },
-                actions = {
-                    val navigator = LocalNavigator.current
-
-                    IconButton(onClick = { navigator?.push(SettingsScreen()) }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_settings),
-                            contentDescription = stringResource(R.string.navigation_settings)
-                        )
-                    }
-                }
-            )
-        }
+        topBar = { PermissionsAppBar() },
     ) { padding ->
         LazyColumn(
             verticalArrangement = Arrangement.spacedByLastAtBottom(10.dp),
@@ -165,6 +135,17 @@ fun PermissionsScreenContent(
                     required = false,
                     icon = painterResource(R.drawable.ic_battery_settings),
                     onClick = onGrantBatteryPerms,
+                )
+            }
+
+            item(key = "LEGEND") {
+                Text(
+                    text = "＊ indicates required permissions!",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp, vertical = 12.dp)
+                        .fillMaxWidth(),
                 )
             }
 
