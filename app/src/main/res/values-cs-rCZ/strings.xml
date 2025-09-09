@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">Přesto ukončit</string>
   <string name="action_open_info">Zobrazit informace</string>
   <string name="action_reset_default">Obnovit výchozí</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">Nenalezena žádná instalace!</string>
   <string name="launch_aliucord_fail">Nepodařilo se spustit Aliucord</string>
   <string name="settings_header_advanced">Pokročilé</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">Zachovat upravené APK</string>
   <string name="setting_keep_patched_apks_desc">Po instalaci uchovat všechny upravené soubory a APK pro účely ladění. Upozornění: export APK je užitečný pouze po úspěšném procesu záplatování.</string>
   <string name="settings_clear_cache">Vymazat mezipaměť</string>
+  <string name="settings_export_apk">Exportovat APK</string>
   <string name="theme_system">Systém</string>
   <string name="theme_dark">Tmavý</string>
   <string name="theme_light">Světlý</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">Při zpracování pluginů došlo k chybě!</string>
   <string name="navigation_back">Zpět</string>
   <string name="navigation_about">O aplikaci</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">Nastavení</string>
   <string name="contributors_lead">Hlavní kontributor</string>
   <string name="contributors">Kontributoři</string>

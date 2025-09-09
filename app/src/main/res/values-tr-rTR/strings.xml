@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">Yine de Çık</string>
   <string name="action_open_info">Hakkında\'yı Aç</string>
   <string name="action_reset_default">Varsayılana geri dön</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">Kurulum bulunamadı!</string>
   <string name="launch_aliucord_fail">Aliucord başlatılamadı</string>
   <string name="settings_header_advanced">Gelişmiş</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">Yamalanmış APK\'ları sakla</string>
   <string name="setting_keep_patched_apks_desc">Tüm yamalanmış dosyaları ve APK\'ları hata ayıklama için sakla. Aklınıza not edin; APK\'yı dışa aktarma sadece başarılı bir yama sonrasında işinize yarar.</string>
   <string name="settings_clear_cache">Önbelleği temizle</string>
+  <string name="settings_export_apk">APK\'yı dışa aktar</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Koyu</string>
   <string name="theme_light">Açık</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">Eklentiler işlenirken bir hata oluştu!</string>
   <string name="navigation_back">Geri</string>
   <string name="navigation_about">Hakkında</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">Ayarlar</string>
   <string name="contributors_lead">Baş</string>
   <string name="contributors">Katkıda Bulunanlar</string>

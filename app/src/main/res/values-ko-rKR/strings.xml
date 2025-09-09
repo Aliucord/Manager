@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">그래도 종료하기</string>
   <string name="action_open_info">정보 보기</string>
   <string name="action_reset_default">기본값으로 재설정</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">설치된 앱이 없어요!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
   <string name="settings_header_advanced">고급 설정</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">패치된 APK 유지</string>
   <string name="setting_keep_patched_apks_desc">설치 후 디버깅 목적으로 모든 패치된 파일과 APK를 보관해요. APK를 내보내는 것은 패치 성공 후에만 유용해요.</string>
   <string name="settings_clear_cache">캐시 지우기</string>
+  <string name="settings_export_apk">APK 내보내기</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어둡게</string>
   <string name="theme_light">밝게</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">플러그인을 처리하던 도중 오류가 발생했어요!</string>
   <string name="navigation_back">돌아가기</string>
   <string name="navigation_about">소개</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">설정</string>
   <string name="contributors_lead">주도자</string>
   <string name="contributors">기여자</string>

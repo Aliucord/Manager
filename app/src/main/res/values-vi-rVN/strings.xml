@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">Vẫn thoát</string>
   <string name="action_open_info">Mở thông tin</string>
   <string name="action_reset_default">Khôi phục về mặc định</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
   <string name="settings_header_advanced">Nâng cao</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">Giữ lại các bản vá APKs</string>
   <string name="setting_keep_patched_apks_desc">Giữ tất cả tập tin đã chỉnh sửa và tệp APK sau khi cài đặt nhằm phục vụ mục đích sửa chữa lỗi. Vui lòng lưu ý rằng việc xuất tệp APK chỉ hữu dụng khi phiên chỉnh sửa ứng dụng đã thành công.</string>
   <string name="settings_clear_cache">Xoá bộ nhớ đệm</string>
+  <string name="settings_export_apk">Xuất APK</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">Đã xảy ra lỗi khi xử lí tiện ích mở rộng!</string>
   <string name="navigation_back">Quay lại</string>
   <string name="navigation_about">Giới thiệu</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">Cài đặt</string>
   <string name="contributors_lead">Đầu tiên</string>
   <string name="contributors">Những người đóng góp</string>

@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">Keluar saja</string>
   <string name="action_open_info">Buka info</string>
   <string name="action_reset_default">Atur ulang ke pengaturan awal</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Gagal untuk membuka Aliucord</string>
   <string name="settings_header_advanced">Tingkat Lanjut</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">Simpan APK yang ditambal</string>
   <string name="setting_keep_patched_apks_desc">Simpan semua file dan APK yang di-tambal setelah instalasi untuk keperluan debugging. Perlu diinget bahwa mengekspor APK hanya berguna setelah sesi tambal berhasil.</string>
   <string name="settings_clear_cache">Bersihkan cache</string>
+  <string name="settings_export_apk">Ekspor APK</string>
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Gelap</string>
   <string name="theme_light">Terang</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">Terjadi kesalahan saat memproses plugin!</string>
   <string name="navigation_back">Kembali</string>
   <string name="navigation_about">Tentang</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">Setelan</string>
   <string name="contributors_lead">Memimpin</string>
   <string name="contributors">Kontributor</string>

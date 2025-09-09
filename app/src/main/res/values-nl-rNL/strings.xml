@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">Toch afsluiten</string>
   <string name="action_open_info">Informatie openen</string>
   <string name="action_reset_default">Fabrieksinstellingen</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Kon Aliucord niet opstarten</string>
   <string name="settings_header_advanced">Geavanceerd</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">Houd gepatchte APK\'s</string>
   <string name="setting_keep_patched_apks_desc">Bewaar alle gepatchte bestanden en APK\'s na de installatie voor foutopsporing. Houd er rekening mee dat het exporteren van de APK alleen nuttig is na een succesvolle patchsessie.</string>
   <string name="settings_clear_cache">Cache verwijderen</string>
+  <string name="settings_export_apk">APK exporteren</string>
   <string name="theme_system">Systeem</string>
   <string name="theme_dark">Donker</string>
   <string name="theme_light">Licht</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">Een fout is gebeurd tijdens het verwerken van de plug-ins!</string>
   <string name="navigation_back">Terug</string>
   <string name="navigation_about">Over</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">Instellingen</string>
   <string name="contributors_lead">Leiding</string>
   <string name="contributors">Medewerkers</string>

@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">仍然退出</string>
   <string name="action_open_info">打开信息</string>
   <string name="action_reset_default">重置为默认</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">未找到任何安装！</string>
   <string name="launch_aliucord_fail">无法启动 Aliucord</string>
   <string name="settings_header_advanced">高级</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">保留已修补的 APK</string>
   <string name="setting_keep_patched_apks_desc">安装后保留补丁的文件和APK以供调试。注意导出APK仅在补丁成功的情况下有用。</string>
   <string name="settings_clear_cache">清除缓存</string>
+  <string name="settings_export_apk">导出APK</string>
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
   <string name="theme_light">浅色</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">处理插件时发生错误！</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">关于</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">设置</string>
   <string name="contributors_lead">主创</string>
   <string name="contributors">贡献者</string>

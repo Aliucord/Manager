@@ -29,6 +29,20 @@
   <string name="action_exit_anyways">Wyjdź mimo to</string>
   <string name="action_open_info">Otwórz informacje</string>
   <string name="action_reset_default">Przywróć domyślne</string>
+  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="permissions_title">Grant Permissions</string>
+  <string name="permissions_subtitle">Aliucord Manager requires permissions:</string>
+  <string name="permissions_legend">%s indicates required permissions!</string>
+  <string name="permissions_grant">Grant</string>
+  <string name="permissions_granted">Granted</string>
+  <string name="permissions_install_title">Install from Unknown Sources</string>
+  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_storage_title">External Storage</string>
+  <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
+  <string name="permissions_notifs_title">Notifications</string>
+  <string name="permissions_battery_title">Background Battery</string>
+  <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
+  <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Nie udało się uruchomić Aliucorda</string>
   <string name="settings_header_advanced">Zaawansowane</string>
@@ -43,6 +57,7 @@
   <string name="setting_keep_patched_apks">Zachowaj załatane APK</string>
   <string name="setting_keep_patched_apks_desc">Zachowaj wszystkie zmodyfikowane pliki oraz APK po instalacji w celu debugowania. Eksportowanie APK jest użyteczne tylko po pomyślnej modyfikacji.</string>
   <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
+  <string name="settings_export_apk">Eksportuj APK</string>
   <string name="theme_system">System</string>
   <string name="theme_dark">Ciemny</string>
   <string name="theme_light">Jasny</string>
@@ -55,6 +70,7 @@
   <string name="plugins_error">Wystąpił błąd podczas przetwarzania wtyczek!</string>
   <string name="navigation_back">Wstecz</string>
   <string name="navigation_about">O aplikacji</string>
+  <string name="navigation_logs">Logs</string>
   <string name="navigation_settings">Ustawienia</string>
   <string name="contributors_lead">Prowadź</string>
   <string name="contributors">Współtwórcy</string>
