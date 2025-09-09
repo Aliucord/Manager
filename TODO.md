@@ -1,5 +1,4 @@
 - Android API 21 support
-- Unified permissions screen like in Aurora Store
 - zip-android 64KiB alignment
 - zip-android faster file deletion
 - Better UI for conflicting package names
