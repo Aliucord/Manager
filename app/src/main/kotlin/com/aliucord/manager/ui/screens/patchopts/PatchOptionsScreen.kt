@@ -49,6 +49,7 @@ class PatchOptionsScreen(
         val model = koinScreenModel<PatchOptionsModel> { parametersOf(prefilledOptions ?: PatchOptions.Default) }
         val iconModel = koinScreenModel<IconOptionsModel> { parametersOf((prefilledOptions ?: PatchOptions.Default).iconReplacement) }
 
+        // TODO: move this to the patching screen
         if (model.showNetworkWarningDialog) {
             NetworkWarningDialog(
                 onConfirm = model::hideNetworkWarning,

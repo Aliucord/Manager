@@ -30,6 +30,7 @@ import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.permissions.PermissionsModel
 import com.aliucord.manager.ui.screens.permissions.PermissionsScreen
+import com.aliucord.manager.ui.screens.plugins.PluginsScreen
 import com.aliucord.manager.ui.theme.ManagerTheme
 import com.aliucord.manager.ui.widgets.updater.UpdaterDialog
 import com.aliucord.manager.util.*
@@ -117,14 +118,22 @@ class MainActivity : ComponentActivity() {
     private fun handleNewIntent(intent: Intent, navigator: Navigator) = scope.launchBlock {
         when (intent.action) {
             INTENT_REINSTALL -> {
-                val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)
-
-                if (packageName == null) {
-                    Log.w(BuildConfig.TAG, "Missing aliucord.packageName extra for intent aliucord.reinstall")
+                val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME) ?: run {
+                    Log.w(BuildConfig.TAG, "Missing $EXTRA_PACKAGE_NAME extra for intent $INTENT_REINSTALL")
                     return@launchBlock
                 }
 
                 navigator.push(handleReinstall(packageName))
+            }
+
+            INTENT_OPEN_PLUGINS -> {
+                // TODO: per-install plugins screen
+                // val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME) ?: run {
+                //     Log.w(BuildConfig.TAG, "Missing $EXTRA_PACKAGE_NAME extra for intent $INTENT_REINSTALL")
+                //     return@launchBlock
+                // }
+
+                navigator.push(PluginsScreen())
             }
 
             else -> {
@@ -160,6 +169,13 @@ class MainActivity : ComponentActivity() {
          * - [EXTRA_PACKAGE_NAME] The target installation package name.
          */
         const val INTENT_REINSTALL = "com.aliucord.manager.REINSTALL"
+
+        /**
+         * Opens the plugins page for a specific Aliucord installation.
+         * Required extra data:
+         * - [EXTRA_PACKAGE_NAME] The target installation package name.
+         */
+        const val INTENT_OPEN_PLUGINS = "com.aliucord.manager.OPEN_PLUGINS"
 
         /**
          * Specifies the target package name for an action.
