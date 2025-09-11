@@ -2,6 +2,7 @@ package com.aliucord.manager.manager
 
 import com.aliucord.manager.installers.Installer
 import com.aliucord.manager.installers.pm.PMInstaller
+import com.aliucord.manager.installers.root.RootInstaller
 import com.aliucord.manager.installers.shizuku.ShizukuInstaller
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.component.KoinComponent
@@ -27,5 +28,6 @@ enum class InstallerSetting(
     val installerClass: KClass<out Installer>,
 ) {
     PM(PMInstaller::class),
+    Root(RootInstaller::class),
     Shizuku(ShizukuInstaller::class),
 }

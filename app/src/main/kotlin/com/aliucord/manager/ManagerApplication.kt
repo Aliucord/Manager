@@ -6,6 +6,7 @@ import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import com.aliucord.manager.di.*
 import com.aliucord.manager.installers.pm.PMInstaller
+import com.aliucord.manager.installers.root.RootInstaller
 import com.aliucord.manager.installers.shizuku.ShizukuInstaller
 import com.aliucord.manager.manager.*
 import com.aliucord.manager.manager.download.AndroidDownloadManager
@@ -83,6 +84,7 @@ class ManagerApplication : Application() {
             // Installers
             modules(module {
                 singleOf(::PMInstaller)
+                singleOf(::RootInstaller)
                 singleOf(::ShizukuInstaller)
             })
         }

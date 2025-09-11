@@ -201,6 +201,7 @@ dependencies {
     implementation(libs.baksmali)
     implementation(libs.compose.pipette)
     implementation(libs.compose.shimmer)
+    implementation(libs.libsu)
     implementation(libs.zip)
 
     coreLibraryDesugaring(libs.desugaring)

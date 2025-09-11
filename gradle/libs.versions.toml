@@ -23,6 +23,7 @@ kotlin = "2.2.10"
 kotlinx-immutable = "0.4.0"
 kotlinx-serialization = "1.9.0"
 ktor = "3.2.3"
+libsu = "6.0.0"
 microg = "0.3.6.244735"
 shimmer = "1.3.3"
 shizuku = "13.1.5"
@@ -102,6 +103,7 @@ hiddenApi-stub = { module = "dev.rikka.hidden:stub", version.ref = "hiddenApi-st
 # Other
 microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "microg" }
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+libsu = { module = "com.github.topjohnwu.libsu:core", version.ref = "libsu" }
 
 [bundles]
 accompanist = [
