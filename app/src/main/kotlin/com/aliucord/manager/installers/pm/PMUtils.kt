@@ -124,7 +124,7 @@ object PMUtils {
     /**
      * Creates an uninstallation callback [PendingIntent] that will forward events
      * to the relaying [PMIntentReceiver]. These events can be captured by registering [PMResultReceiver]
-     * through [registerRelayReceiver].
+     * through [PMUtils.registerRelayReceiver].
      */
     fun createUninstallRelayingIntent(context: Context): PendingIntent {
         // FIXME: Conflicting pending intents when multiple simultaneous uninstalls are happening.

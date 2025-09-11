@@ -183,3 +183,21 @@ fun Context.isNetworkDangerous(): Boolean {
 
     return dangerousMobileDataStates.contains(telephony.dataState)
 }
+
+/**
+ * Gets the user associated with this context.
+ */
+fun Context.getUserId(): Int? {
+    HiddenAPI.disable()
+
+    return try {
+        @SuppressLint("DiscouragedPrivateApi")
+        val method = Context::class.java.getDeclaredMethod("getUserId")
+            .apply { isAccessible = true }
+
+        method.invoke(this) as Int
+    } catch (t: Throwable) {
+        Log.e(BuildConfig.TAG, "Failed to get current Android user ID", t)
+        null
+    }
+}

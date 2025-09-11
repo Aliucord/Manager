@@ -2,16 +2,13 @@ package com.aliucord.manager.manager
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import com.aliucord.manager.R
 import com.aliucord.manager.util.showToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
-import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.shizuku.Shizuku
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.resume
 import kotlin.random.Random
 
@@ -33,10 +30,6 @@ class ShizukuManager(private val context: Context) {
             if (shizukuPermissionLock.isLocked)
                 shizukuPermissionLock.unlock()
         }
-
-        // Required to change hidden SessionParams flags
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !hiddenApiDisabled.getAndSet(true))
-            HiddenApiBypass.addHiddenApiExemptions("Landroid/content", "Landroid/os")
     }
 
     /**
@@ -100,9 +93,5 @@ class ShizukuManager(private val context: Context) {
             Shizuku.addRequestPermissionResultListener(onPermissionRequestResult)
             Shizuku.requestPermission(currentRequestCode)
         }
-    }
-
-    private companion object {
-        var hiddenApiDisabled = AtomicBoolean(false)
     }
 }

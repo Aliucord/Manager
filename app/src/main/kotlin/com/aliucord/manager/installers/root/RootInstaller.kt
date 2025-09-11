@@ -1,6 +1,8 @@
 package com.aliucord.manager.installers.root
 
+import android.content.Context
 import com.aliucord.manager.installers.*
+import com.aliucord.manager.util.getUserId
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.*
 import java.io.File
@@ -13,7 +15,7 @@ import java.io.File
  * Errors from this installer will always be [UnknownInstallerError]
  * as it is impossible to extract meaningful information from shell installations.
  */
-class RootInstaller : Installer {
+class RootInstaller(private val context: Context) : Installer {
     val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private suspend fun executeSU(command: String): List<String> = withContext(Dispatchers.IO) {
@@ -38,7 +40,8 @@ class RootInstaller : Installer {
     }
 
     private suspend fun createInstallSession(totalSize: Long): Int {
-        val response = executeSU("pm install-create -i $PLAY_PACKAGE_NAME -r -S $totalSize")
+        val userId = context.getUserId()?.toString() ?: "all"
+        val response = executeSU("pm install-create -i $PLAY_PACKAGE_NAME --user $userId -r -S $totalSize")
         val result = response[0]
 
         val sessionIdMatch = Regex("""\d+""").find(result)
@@ -90,7 +93,9 @@ class RootInstaller : Installer {
         obtainRoot()
 
         return try {
-            executeSU("""pm uninstall $packageName""")
+            val userFlag = context.getUserId()?.let { "--user $it" } ?: ""
+
+            executeSU("""pm uninstall $userFlag $packageName""")
             InstallerResult.Success
         } catch (t: Throwable) {
             UnknownInstallerError(t)
