@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hiddenApi.refine)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
@@ -176,6 +177,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
+    implementation(libs.bundles.shizuku)
     implementation(libs.bundles.voyager)
 
     implementation(libs.compose.ui.tooling.preview)
@@ -184,6 +186,10 @@ dependencies {
 
     implementation(libs.kotlinx.immutable)
     implementation(libs.kotlinx.serialization.json)
+
+    compileOnly(libs.hiddenApi.stub)
+    implementation(libs.hiddenApi.refine)
+    implementation(libs.hiddenApi.bypass)
 
     implementation(libs.apksig)
     implementation(libs.axml)

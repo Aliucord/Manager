@@ -50,6 +50,8 @@
   <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
   <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
 
+  <string name="permissions_shizuku_denied">Failed to obtain Shizuku permissions</string>
+
   <string name="installs_no_installs">No installations found!</string>
   <string name="launch_aliucord_fail">Failed to launch Aliucord</string>
 

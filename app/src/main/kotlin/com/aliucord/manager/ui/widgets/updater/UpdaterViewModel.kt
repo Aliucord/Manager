@@ -11,7 +11,6 @@ import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.manager.InstallerManager
-import com.aliucord.manager.manager.InstallerSetting
 import com.aliucord.manager.manager.download.IDownloadManager
 import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.network.services.AliucordGithubService
@@ -90,7 +89,7 @@ class UpdaterViewModel(
 
             downloadProgress.value = null
 
-            val installer = installers.getInstaller(InstallerSetting.PM)
+            val installer = installers.getActiveInstaller()
             val installResult = installer.waitInstall(
                 apks = listOf(apkFile),
                 silent = true,
