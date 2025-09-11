@@ -23,18 +23,18 @@ fun SettingsItem(
             .heightIn(min = 64.dp)
             .fillMaxWidth()
             .padding(horizontal = 18.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier.padding(end = 5.dp)
+            modifier = Modifier.padding(end = 12.dp)
         ) {
             icon()
         }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(2.dp),
-            modifier = Modifier.weight(0.95f, true)
+            modifier = Modifier.weight(2f, true)
         ) {
             ProvideTextStyle(
                 MaterialTheme.typography.titleLarge.copy(

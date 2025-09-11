@@ -9,8 +9,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.manager.PathManager
-import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.manager.*
 import com.aliucord.manager.ui.theme.Theme
 import com.aliucord.manager.util.*
 
@@ -23,8 +22,9 @@ class SettingsModel(
 
     var patchedApkExists by mutableStateOf(paths.patchedApk().exists())
         private set
-
     var showThemeDialog by mutableStateOf(false)
+        private set
+    var showInstallersDialog by mutableStateOf(false)
         private set
 
     fun showThemeDialog() {
@@ -35,8 +35,20 @@ class SettingsModel(
         showThemeDialog = false
     }
 
+    fun showInstallersDialog() {
+        showInstallersDialog = true
+    }
+
+    fun hideInstallersDialog() {
+        showInstallersDialog = false
+    }
+
     fun setTheme(theme: Theme) {
         preferences.theme = theme
+    }
+
+    fun setInstaller(installer: InstallerSetting) {
+        preferences.installer = installer
     }
 
     fun setKeepPatchedApks(value: Boolean) {

@@ -33,6 +33,7 @@ class RootInstaller(private val context: Context) : Installer {
      * If they are not granted, throw an exception.
      */
     private fun obtainRoot() {
+        Shell.getShell().waitAndClose()
         Shell.getShell()
 
         if (Shell.isAppGrantedRoot() != true)

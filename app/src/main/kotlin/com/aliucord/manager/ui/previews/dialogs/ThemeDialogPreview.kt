@@ -16,7 +16,7 @@ private fun ThemeDialogPreview() {
     ManagerTheme {
         ThemeDialog(
             currentTheme = theme,
-            onDismissRequest = {},
+            onDismiss = {},
             onConfirm = setTheme,
         )
     }

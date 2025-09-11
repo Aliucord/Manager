@@ -19,17 +19,17 @@ import com.aliucord.manager.ui.theme.Theme
 @Composable
 fun ThemeDialog(
     currentTheme: Theme,
-    onDismissRequest: () -> Unit,
+    onDismiss: () -> Unit,
     onConfirm: (Theme) -> Unit,
 ) {
     var selectedTheme by rememberSaveable { mutableStateOf(currentTheme) }
 
     AlertDialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = onDismiss,
         icon = {
             Icon(
                 painter = painterResource(R.drawable.ic_brush),
-                contentDescription = stringResource(R.string.setting_theme),
+                contentDescription = null,
                 modifier = Modifier.size(32.dp),
             )
         },
@@ -79,7 +79,7 @@ fun ThemeDialog(
             Button(
                 onClick = {
                     onConfirm(selectedTheme)
-                    onDismissRequest()
+                    onDismiss()
                 },
             ) {
                 Text(stringResource(R.string.action_apply))

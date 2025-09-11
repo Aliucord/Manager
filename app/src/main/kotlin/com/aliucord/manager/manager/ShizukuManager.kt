@@ -83,6 +83,7 @@ class ShizukuManager(private val context: Context) {
                         context.showToast(R.string.permissions_shizuku_denied)
 
                     continuation.resume(grantResult == PackageManager.PERMISSION_GRANTED)
+                    shizukuPermissionLock.unlock()
                 }
 
             continuation.invokeOnCancellation {

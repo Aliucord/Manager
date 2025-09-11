@@ -1,5 +1,9 @@
 package com.aliucord.manager.manager
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import com.aliucord.manager.R
 import com.aliucord.manager.installers.Installer
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.installers.root.RootInstaller
@@ -22,12 +26,29 @@ class InstallerManager(
         getKoin().scopeRegistry.rootScope.get(clazz = type.installerClass)
 }
 
-enum class InstallerSetting(
-    // @StringRes
-    // private val localizedName: Int,
-    val installerClass: KClass<out Installer>,
-) {
+enum class InstallerSetting(val installerClass: KClass<out Installer>) {
     PM(PMInstaller::class),
     Root(RootInstaller::class),
-    Shizuku(ShizukuInstaller::class),
+    Shizuku(ShizukuInstaller::class);
+
+    @Composable
+    fun title() = when (this) {
+        PM -> stringResource(R.string.installer_pm)
+        Root -> stringResource(R.string.installer_root)
+        Shizuku -> stringResource(R.string.installer_shizuku)
+    }
+
+    @Composable
+    fun description() = when (this) {
+        PM -> stringResource(R.string.installer_pm_desc)
+        Root -> stringResource(R.string.installer_root_desc)
+        Shizuku -> stringResource(R.string.installer_shizuku_desc)
+    }
+
+    @Composable
+    fun icon() = when (this) {
+        PM -> painterResource(R.drawable.ic_android)
+        Root -> painterResource(R.drawable.ic_hashtag)
+        Shizuku -> painterResource(R.drawable.ic_shizuku)
+    }
 }

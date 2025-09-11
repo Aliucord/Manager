@@ -24,6 +24,7 @@ import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.BackButton
 import com.aliucord.manager.ui.components.MainActionButton
 import com.aliucord.manager.ui.components.settings.*
+import com.aliucord.manager.ui.screens.settings.components.InstallersDialog
 import com.aliucord.manager.ui.screens.settings.components.ThemeDialog
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -37,6 +38,23 @@ class SettingsScreen : Screen, Parcelable {
     override fun Content() {
         val model = koinScreenModel<SettingsModel>()
         var clearedCache by rememberSaveable { mutableStateOf(false) }
+        val preferences = model.preferences
+
+        if (model.showThemeDialog) {
+            ThemeDialog(
+                currentTheme = preferences.theme,
+                onDismiss = model::hideThemeDialog,
+                onConfirm = model::setTheme
+            )
+        }
+
+        if (model.showInstallersDialog) {
+            InstallersDialog(
+                currentInstaller = preferences.installer,
+                onDismiss = model::hideInstallersDialog,
+                onConfirm = model::setInstaller,
+            )
+        }
 
         Scaffold(
             topBar = {
@@ -51,16 +69,6 @@ class SettingsScreen : Screen, Parcelable {
                     .padding(paddingValues)
                     .verticalScroll(state = rememberScrollState())
             ) {
-                val preferences = model.preferences
-
-                if (model.showThemeDialog) {
-                    ThemeDialog(
-                        currentTheme = preferences.theme,
-                        onDismissRequest = model::hideThemeDialog,
-                        onConfirm = model::setTheme
-                    )
-                }
-
                 SettingsHeader(stringResource(R.string.settings_header_appearance))
 
                 SettingsItem(
@@ -85,15 +93,26 @@ class SettingsScreen : Screen, Parcelable {
                     )
                 }
 
-                SettingsHeader(stringResource(R.string.settings_header_advanced))
+                SettingsHeader(stringResource(R.string.settings_header_installation))
 
-                SettingsSwitch(
-                    label = stringResource(R.string.setting_developer_options),
-                    secondaryLabel = stringResource(R.string.setting_developer_options_desc),
-                    pref = preferences.devMode,
-                    icon = { Icon(painterResource(R.drawable.ic_code), null) },
-                    onPrefChange = { preferences.devMode = it },
-                )
+                SettingsItem(
+                    text = { Text(stringResource(R.string.setting_installer)) },
+                    secondaryText = { Text(stringResource(R.string.setting_installer_desc)) },
+                    icon = { Icon(painterResource(R.drawable.ic_apk_install), null) },
+                    modifier = Modifier.clickable(onClick = model::showInstallersDialog),
+                ) {
+                    FilledTonalButton(onClick = model::showInstallersDialog) {
+                        val installer = preferences.installer
+                        Icon(
+                            painter = installer.icon(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(end = 4.dp),
+                        )
+                        Text(installer.title())
+                    }
+                }
 
                 SettingsSwitch(
                     label = stringResource(R.string.setting_keep_patched_apks),
@@ -111,10 +130,20 @@ class SettingsScreen : Screen, Parcelable {
                         enabled = model.patchedApkExists,
                         onClick = model::shareApk,
                         modifier = Modifier
-                            .padding(horizontal = 18.dp, vertical = 9.dp)
+                            .padding(horizontal = 18.dp)
                             .fillMaxWidth()
                     )
                 }
+
+                SettingsHeader(stringResource(R.string.settings_header_advanced))
+
+                SettingsSwitch(
+                    label = stringResource(R.string.setting_developer_options),
+                    secondaryLabel = stringResource(R.string.setting_developer_options_desc),
+                    pref = preferences.devMode,
+                    icon = { Icon(painterResource(R.drawable.ic_code), null) },
+                    onPrefChange = { preferences.devMode = it },
+                )
 
                 MainActionButton(
                     text = stringResource(R.string.settings_clear_cache),
@@ -128,7 +157,7 @@ class SettingsScreen : Screen, Parcelable {
                         model.clearCache()
                     },
                     modifier = Modifier
-                        .padding(horizontal = 18.dp, vertical = 10.dp)
+                        .padding(start = 18.dp, end = 18.dp, top = 18.dp)
                         .fillMaxWidth()
                 )
 
