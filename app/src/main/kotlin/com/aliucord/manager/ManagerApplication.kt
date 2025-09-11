@@ -74,6 +74,7 @@ class ManagerApplication : Application() {
                 singleOf(::InstallerManager)
                 singleOf(::OverlayManager)
                 singleOf(::InstallLogManager)
+                singleOf(::ShizukuManager)
 
                 singleOf(::AndroidDownloadManager)
                 singleOf(::KtorDownloadManager)
