@@ -26,7 +26,7 @@ fun PermissionButton(
         modifier = modifier
             .heightIn(min = 64.dp)
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = 32.dp, vertical = 8.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -38,7 +38,7 @@ fun PermissionButton(
                 modifier = Modifier.size(20.dp),
             )
 
-            ProvideTextStyle(MaterialTheme.typography.labelLarge) {
+            ProvideTextStyle(MaterialTheme.typography.titleSmall) {
                 Text(name)
 
                 if (required) {

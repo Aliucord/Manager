@@ -36,7 +36,7 @@
   <string name="permissions_grant">Grant</string>
   <string name="permissions_granted">Granted</string>
   <string name="permissions_install_title">Install from Unknown Sources</string>
-  <string name="permissions_install_desc">Install permissions are required to install Aliucord.</string>
+  <string name="permissions_install_desc">Permissions are required to initiate an installation from this app.</string>
   <string name="permissions_storage_title">External Storage</string>
   <string name="permissions_storage_desc">Aliucord and Manager stores shared data in ~/Aliucord, which requires full storage permissions. Scoped storage is not currently supported.</string>
   <string name="permissions_notifs_title">Notifications</string>

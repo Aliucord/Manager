@@ -6,9 +6,7 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun SettingsItem(
@@ -22,28 +20,27 @@ fun SettingsItem(
         modifier = modifier
             .heightIn(min = 64.dp)
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 12.dp),
+            .padding(horizontal = 32.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier.padding(end = 12.dp)
-        ) {
-            icon()
-        }
-
         Column(
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.weight(2f, true)
         ) {
-            ProvideTextStyle(
-                MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp
-                )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.Companion.CenterVertically,
             ) {
-                text()
+                Box(modifier = Modifier.size(20.dp)) {
+                    icon()
+                }
+
+                ProvideTextStyle(MaterialTheme.typography.titleSmall) {
+                    text()
+                }
             }
+
             ProvideTextStyle(
                 MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(0.6f)

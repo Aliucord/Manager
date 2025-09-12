@@ -16,18 +16,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.di.ActivityProvider
+import com.aliucord.manager.manager.InstallerSetting
+import com.aliucord.manager.manager.PreferencesManager
 import com.aliucord.manager.util.*
 import java.util.UUID
 
 class PermissionsModel(
     private val application: Application,
     private val activities: ActivityProvider,
+    private val preferences: PreferencesManager,
 ) : ViewModel() {
     private var timesRequestedNotificationsPerms = 0
 
+    var showInstallersDialog by mutableStateOf(false)
+        private set
+
+    val installer: InstallerSetting
+        get() = preferences.installer
+
     var storagePermsGranted by mutableStateOf(false)
         private set
-    var installPermsGranted by mutableStateOf(Build.VERSION.SDK_INT < 26)
+    var unknownSourcesPermsGranted by mutableStateOf(Build.VERSION.SDK_INT < 26)
         private set
     var notificationsPermsGranted by mutableStateOf(Build.VERSION.SDK_INT < 33)
         private set
@@ -35,13 +44,29 @@ class PermissionsModel(
         private set
 
     val requiredPermsGranted by derivedStateOf {
-        storagePermsGranted && installPermsGranted
+        // Unknown Sources permission is only required when the installer is PM
+        if (preferences.installer == InstallerSetting.PM && !unknownSourcesPermsGranted)
+            return@derivedStateOf false
+
+        storagePermsGranted
     }
     val allPermsGranted by derivedStateOf {
-        storagePermsGranted && installPermsGranted && notificationsPermsGranted && batteryPermsGranted
+        requiredPermsGranted && notificationsPermsGranted && batteryPermsGranted
     }
 
-    fun requestInstallPerms() {
+    fun showInstallersDialog() {
+        showInstallersDialog = true
+    }
+
+    fun hideInstallersDialog() {
+        showInstallersDialog = false
+    }
+
+    fun setInstaller(installer: InstallerSetting) {
+        preferences.installer = installer
+    }
+
+    fun requestUnknownSourcesPerms() {
         if (Build.VERSION.SDK_INT < 26) return
 
         Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
@@ -85,7 +110,7 @@ class PermissionsModel(
             application.selfHasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
 
-        installPermsGranted = Build.VERSION.SDK_INT < 26 || application.packageManager.canRequestPackageInstalls()
+        unknownSourcesPermsGranted = Build.VERSION.SDK_INT < 26 || application.packageManager.canRequestPackageInstalls()
         notificationsPermsGranted = Build.VERSION.SDK_INT < 33 || application.selfHasPermission(Manifest.permission.POST_NOTIFICATIONS)
         batteryPermsGranted = Build.VERSION.SDK_INT < 24 || application.isIgnoringBatteryOptimizations()
     }

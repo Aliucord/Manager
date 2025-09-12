@@ -3,6 +3,7 @@ package com.aliucord.manager.ui.screens.permissions
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.animation.EnterTransition
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -20,9 +21,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.transitions.ScreenTransition
 import com.aliucord.manager.R
+import com.aliucord.manager.manager.InstallerSetting
+import com.aliucord.manager.ui.components.TextDivider
+import com.aliucord.manager.ui.components.settings.SettingsItem
 import com.aliucord.manager.ui.screens.home.HomeScreen
 import com.aliucord.manager.ui.screens.permissions.components.PermissionButton
 import com.aliucord.manager.ui.screens.permissions.components.PermissionsAppBar
+import com.aliucord.manager.ui.screens.settings.components.InstallersDialog
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
 import kotlinx.parcelize.IgnoredOnParcel
@@ -48,15 +53,25 @@ class PermissionsScreen : Screen, ScreenTransition, Parcelable {
                 navigator.pop()
         }
 
+        if (model.showInstallersDialog) {
+            InstallersDialog(
+                currentInstaller = model.installer,
+                onDismiss = model::hideInstallersDialog,
+                onConfirm = model::setInstaller,
+            )
+        }
+
         PermissionsScreenContent(
+            installer = model.installer,
+            openInstallersDialog = model::showInstallersDialog,
             storagePermsGranted = model.storagePermsGranted,
             onGrantStoragePerms = if (Build.VERSION.SDK_INT >= 30) {
                 model::requestManageStoragePerms
             } else {
                 model::requestStoragePerms
             },
-            installPermsGranted = model.installPermsGranted,
-            onGrantInstallPerms = model::requestInstallPerms,
+            unknownSourcesPermsGranted = model.unknownSourcesPermsGranted,
+            onGrantUnknownSourcesPerms = model::requestUnknownSourcesPerms,
             notificationsPermsGranted = model.notificationsPermsGranted,
             onGrantNotificationsPerms = model::requestNotificationsPerms,
             batteryPermsGranted = model.batteryPermsGranted,
@@ -69,10 +84,12 @@ class PermissionsScreen : Screen, ScreenTransition, Parcelable {
 
 @Composable
 fun PermissionsScreenContent(
+    installer: InstallerSetting,
+    openInstallersDialog: () -> Unit,
     storagePermsGranted: Boolean,
     onGrantStoragePerms: () -> Unit,
-    installPermsGranted: Boolean,
-    onGrantInstallPerms: () -> Unit,
+    unknownSourcesPermsGranted: Boolean,
+    onGrantUnknownSourcesPerms: () -> Unit,
     notificationsPermsGranted: Boolean,
     onGrantNotificationsPerms: () -> Unit,
     batteryPermsGranted: Boolean,
@@ -84,25 +101,61 @@ fun PermissionsScreenContent(
         topBar = { PermissionsAppBar() },
     ) { padding ->
         LazyColumn(
-            verticalArrangement = Arrangement.spacedByLastAtBottom(10.dp),
+            verticalArrangement = Arrangement.spacedByLastAtBottom(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = padding
                 .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
-                .add(PaddingValues(vertical = 12.dp)),
+                .add(PaddingValues(bottom = 12.dp, top = 24.dp)),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 18.dp)
                 .padding(padding.exclude(PaddingValuesSides.Bottom))
         ) {
-            item(key = "PERMS_INSTALL", contentType = "PERMISSION_BUTTON") {
-                PermissionButton(
-                    name = stringResource(R.string.permissions_install_title),
-                    description = stringResource(R.string.permissions_install_desc),
-                    granted = installPermsGranted,
-                    required = true,
-                    icon = painterResource(R.drawable.ic_apk_install),
-                    onClick = onGrantInstallPerms,
+            item(key = "OPTIONS_DIVIDER", contentType = "DIVIDER") {
+                TextDivider(
+                    text = "Options",
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
+            }
+
+            item(key = "INSTALLER") {
+                SettingsItem(
+                    text = { Text(stringResource(R.string.setting_installer)) },
+                    secondaryText = { Text(stringResource(R.string.setting_installer_desc)) },
+                    icon = { Icon(painterResource(R.drawable.ic_apk_install), null) },
+                    modifier = Modifier.clickable(onClick = openInstallersDialog),
+                ) {
+                    FilledTonalButton(onClick = openInstallersDialog) {
+                        Icon(
+                            painter = installer.icon(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(end = 6.dp),
+                        )
+                        Text(installer.title())
+                    }
+                }
+            }
+
+            item(key = "PERMS_DIVIDER", contentType = "DIVIDER") {
+                TextDivider(
+                    text = "Permissions",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+
+            if (installer == InstallerSetting.PM) {
+                item(key = "PERMS_UNKNOWN_SOURCES", contentType = "PERMISSION_BUTTON") {
+                    PermissionButton(
+                        name = stringResource(R.string.permissions_install_title),
+                        description = stringResource(R.string.permissions_install_desc),
+                        granted = unknownSourcesPermsGranted,
+                        required = true,
+                        icon = painterResource(R.drawable.ic_alt_route),
+                        onClick = onGrantUnknownSourcesPerms,
+                        modifier = Modifier.animateItem(),
+                    )
+                }
             }
 
             item(key = "PERMS_STORAGE", contentType = "PERMISSION_BUTTON") {
@@ -144,7 +197,7 @@ fun PermissionsScreenContent(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier
-                        .padding(horizontal = 12.dp, vertical = 12.dp)
+                        .padding(horizontal = 32.dp, vertical = 12.dp)
                         .fillMaxWidth(),
                 )
             }
@@ -154,7 +207,7 @@ fun PermissionsScreenContent(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),
+                        .padding(top = 16.dp, end = 32.dp),
                 ) {
                     FilledTonalButton(
                         onClick = onContinue,

@@ -108,7 +108,7 @@ class SettingsScreen : Screen, Parcelable {
                             contentDescription = null,
                             modifier = Modifier
                                 .size(20.dp)
-                                .padding(end = 4.dp),
+                                .padding(end = 6.dp),
                         )
                         Text(installer.title())
                     }
@@ -130,7 +130,7 @@ class SettingsScreen : Screen, Parcelable {
                         enabled = model.patchedApkExists,
                         onClick = model::shareApk,
                         modifier = Modifier
-                            .padding(horizontal = 18.dp)
+                            .padding(horizontal = 32.dp)
                             .fillMaxWidth()
                     )
                 }
@@ -157,7 +157,7 @@ class SettingsScreen : Screen, Parcelable {
                         model.clearCache()
                     },
                     modifier = Modifier
-                        .padding(start = 18.dp, end = 18.dp, top = 18.dp)
+                        .padding(start = 32.dp, end = 32.dp, top = 18.dp)
                         .fillMaxWidth()
                 )
 
