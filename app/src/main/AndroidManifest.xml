@@ -67,6 +67,7 @@
         <action android:name="android.intent.action.MAIN" />
         <action android:name="com.aliucord.manager.REINSTALL" />
         <action android:name="com.aliucord.manager.OPEN_PLUGINS" />
+        <action android:name="com.aliucord.manager.IMPORT_COMPONENT" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>

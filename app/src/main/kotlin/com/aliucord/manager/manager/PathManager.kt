@@ -63,6 +63,18 @@ class PathManager(
     val customComponentsDir = patchingDir.resolve("custom")
 
     /**
+     * Permanent location used for storing custom injectors pushed to the device.
+     * No verification for the files placed here is done.
+     */
+    val customInjectorsDir = customComponentsDir.resolve("injector")
+
+    /**
+     * Permanent location used for storing custom smali patch bundles pushed to the device.
+     * No verification for the files placed here is done.
+     */
+    val customPatchesDir = customComponentsDir.resolve("patches")
+
+    /**
      * Delete all the cache dirs and recreate them.
      */
     fun clearCache() {
@@ -88,7 +100,7 @@ class PathManager(
     /**
      * Get all the versions of custom injector builds.
      */
-    fun customInjectorDexs() = listCustomFiles(customComponentsDir.resolve("injector"))
+    fun customInjectorDexs() = listVersionedFiles(customInjectorsDir)
 
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
@@ -107,7 +119,7 @@ class PathManager(
     /**
      * Get all the versions of custom smali bundles.
      */
-    fun customSmaliPatches() = listCustomFiles(customComponentsDir.resolve("patches"))
+    fun customSmaliPatches() = listVersionedFiles(customPatchesDir)
 
     /**
      * Singular Kotlin file of the most up-to-date version
@@ -131,7 +143,7 @@ class PathManager(
         /**
          * List all the files in a directory that follow SemVer naming.
          */
-        private fun listCustomFiles(dir: File): List<SemVer>? {
+        private fun listVersionedFiles(dir: File): List<SemVer>? {
             if (!dir.exists()) return null
 
             val files = dir.listFiles()
