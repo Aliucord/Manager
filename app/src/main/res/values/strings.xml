@@ -41,6 +41,8 @@
   <string name="permissions_legend">%s indicates required permissions!</string>
   <string name="permissions_grant">Grant</string>
   <string name="permissions_granted">Granted</string>
+  <string name="permissions_header_options">Options</string>
+  <string name="permissions_header_permissions">Permissions</string>
   <string name="permissions_install_title">Install from Unknown Sources</string>
   <string name="permissions_install_desc">Permissions are required to initiate an installation from this app.</string>
   <string name="permissions_storage_title">External Storage</string>

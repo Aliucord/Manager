@@ -110,9 +110,9 @@ fun PermissionsScreenContent(
                 .fillMaxSize()
                 .padding(padding.exclude(PaddingValuesSides.Bottom))
         ) {
-            item(key = "OPTIONS_DIVIDER", contentType = "DIVIDER") {
+            item(key = "DIVIDER_OPTIONS", contentType = "DIVIDER") {
                 TextDivider(
-                    text = "Options",
+                    text = stringResource(R.string.permissions_header_options),
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
@@ -137,9 +137,9 @@ fun PermissionsScreenContent(
                 }
             }
 
-            item(key = "PERMS_DIVIDER", contentType = "DIVIDER") {
+            item(key = "DIVIDER_PERMS", contentType = "DIVIDER") {
                 TextDivider(
-                    text = "Permissions",
+                    text = stringResource(R.string.permissions_header_permissions),
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
