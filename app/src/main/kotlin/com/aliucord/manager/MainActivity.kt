@@ -244,6 +244,6 @@ class MainActivity : ComponentActivity() {
          * - `injector`
          * - `patches`
          */
-        const val EXTRA_COMPONENT_TYPE = "aliucord.customComponentType"
+        const val EXTRA_COMPONENT_TYPE = "aliucord.componentType"
     }
 }

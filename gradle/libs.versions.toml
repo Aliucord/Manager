@@ -103,7 +103,7 @@ hiddenApi-stub = { module = "dev.rikka.hidden:stub", version.ref = "hiddenApi-st
 # Other
 microg = { module = "org.microg.gms:play-services-safetynet", version.ref = "microg" }
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
-libsu = { module = "com.github.topjohnwu.libsu:core", version.ref = "libsu" }
+libsu = { module = "com.aliucord.libsu:core", version.ref = "libsu" }
 
 [bundles]
 accompanist = [
