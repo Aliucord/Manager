@@ -1,5 +1,6 @@
 package com.aliucord.manager.network.services
 
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.di.cacheControl
 import com.aliucord.manager.network.utils.*
 import io.ktor.client.request.header
@@ -30,10 +31,9 @@ class AliucordMavenService(private val http: HttpService) {
     }
 
     companion object {
-        private const val BASE_URL = "https://maven.aliucord.com/snapshots"
-        private const val ALIUHOOK_METADATA_URL = "$BASE_URL/com/aliucord/Aliuhook/maven-metadata.xml"
+        private const val ALIUHOOK_METADATA_URL = "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/maven-metadata.xml"
 
         fun getAliuhookUrl(version: String): String =
-            "$BASE_URL/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"
+            "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"
     }
 }

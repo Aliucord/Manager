@@ -40,7 +40,8 @@ android {
         buildConfigField("String", "TAG", "\"AliucordManager\"")
         buildConfigField("String", "SUPPORT_SERVER", "\"EsNDvBaHVU\"")
 
-        buildConfigField("String", "BACKEND_URL", "\"https://aliucord.com/\"")
+        buildConfigField("String", "BACKEND_URL", "\"https://aliucord.com\"")
+        buildConfigField("String", "MAVEN_URL", "\"https://maven.aliucord.com/releases\"")
 
         buildConfigField("Boolean", "RELEASE", isRelease.toString())
         buildConfigField("String", "GIT_BRANCH", "\"$gitCurrentBranch\"")
