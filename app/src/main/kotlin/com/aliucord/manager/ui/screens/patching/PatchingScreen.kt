@@ -142,19 +142,6 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
                 modifier = Modifier
                     .padding(paddingValues.exclude(PaddingValuesSides.Bottom)),
             ) {
-                if (state == PatchingScreenState.Working) {
-                    LinearProgressIndicator(
-                        modifier = Modifier
-                            .height(4.dp)
-                            .fillMaxWidth()
-                    )
-                } else {
-                    HorizontalDivider(
-                        thickness = 2.dp,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-
                 LazyColumn(
                     state = listState,
                     verticalArrangement = Arrangement.spacedByLastAtBottom(0.dp),
