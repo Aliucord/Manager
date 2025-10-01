@@ -1,12 +1,15 @@
 package com.aliucord.manager.ui.widgets.updater
 
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.aliucord.manager.R
@@ -63,10 +66,27 @@ fun UpdaterDialog(
             Text(stringResource(R.string.updater_title, viewModel.targetVersion ?: ""))
         },
         text = {
-            Text(
-                text = stringResource(R.string.updater_body),
-                textAlign = TextAlign.Center,
-            )
+            val uriHandler = LocalUriHandler.current
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.updater_body),
+                    textAlign = TextAlign.Center,
+                )
+
+                TextButton(
+                    onClick = { uriHandler.openUri(viewModel.targetReleaseUrl!!) }
+                ) {
+                    Text(
+                        text = stringResource(R.string.updater_open_github),
+                        textAlign = TextAlign.Center,
+                        textDecoration = TextDecoration.Underline,
+                    )
+                }
+            }
         },
         icon = {
             Icon(

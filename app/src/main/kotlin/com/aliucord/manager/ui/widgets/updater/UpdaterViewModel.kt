@@ -29,6 +29,8 @@ class UpdaterViewModel(
 ) : ViewModel() {
     var showDialog by mutableStateOf(false)
         private set
+    var targetReleaseUrl by mutableStateOf<String?>(null)
+        private set
     var targetVersion by mutableStateOf<String?>(null)
         private set
     val downloadProgress: StateFlow<Float?>
@@ -143,7 +145,7 @@ class UpdaterViewModel(
         val releases = github.getManagerReleases().getOrThrow()
 
         // Find the latest release + APK release asset
-        val (version, apkUrl) = releases
+        val (version, release, apkUrl) = releases
             .mapNotNull { release ->
                 val version = SemVer.parseOrNull(release.tagName)
                     ?: return@mapNotNull null
@@ -151,9 +153,9 @@ class UpdaterViewModel(
                 val asset = release.assets.find { it.name == "aliucord-manager-${release.tagName}.apk" }
                     ?: return@mapNotNull null
 
-                version to asset.browserDownloadUrl
+                Triple(version, release, asset.browserDownloadUrl)
             }
-            .maxByOrNull { it.first }
+            .maxByOrNull { (version) -> version }
             ?: return
 
         // Check if currently installed version is greater
@@ -164,6 +166,7 @@ class UpdaterViewModel(
 
         Log.d(BuildConfig.TAG, "Found an update! $targetVersion $targetApkUrl")
         mainThread {
+            targetReleaseUrl = release.htmlUrl
             targetVersion = version.toString()
             targetApkUrl = apkUrl
             showDialog = true
