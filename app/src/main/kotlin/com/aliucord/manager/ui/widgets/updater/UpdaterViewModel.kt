@@ -175,7 +175,7 @@ class UpdaterViewModel(
 
     private fun launchReleasesPage() {
         try {
-            Intent(Intent.ACTION_VIEW, AliucordGithubService.LATEST_RELEASE_HTML_URL.toUri())
+            Intent(Intent.ACTION_VIEW, targetReleaseUrl!!.toUri())
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .also(application::startActivity)
         } catch (t: Throwable) {

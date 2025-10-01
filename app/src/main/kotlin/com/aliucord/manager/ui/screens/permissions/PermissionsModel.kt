@@ -80,7 +80,7 @@ class PermissionsModel(
     fun requestManageStoragePerms() {
         Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
             .setData("package:${BuildConfig.APPLICATION_ID}".toUri())
-            .let(activities.get<Activity>()::startActivity) // TODO: do this for all other intent launches
+            .let(activities.get<Activity>()::startActivity)
     }
 
     fun requestNotificationsPerms() {
@@ -100,7 +100,7 @@ class PermissionsModel(
     fun grantBatteryPerms() {
         if (Build.VERSION.SDK_INT < 23) return
 
-        application.requestNoBatteryOptimizations()
+        activities.get<Activity>().requestNoBatteryOptimizations()
     }
 
     fun refresh() = viewModelScope.launchBlock {

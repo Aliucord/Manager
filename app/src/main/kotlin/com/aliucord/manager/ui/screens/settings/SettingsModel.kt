@@ -1,5 +1,6 @@
 package com.aliucord.manager.ui.screens.settings
 
+import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.util.Log
@@ -9,12 +10,14 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
+import com.aliucord.manager.di.ActivityProvider
 import com.aliucord.manager.manager.*
 import com.aliucord.manager.ui.theme.Theme
 import com.aliucord.manager.util.*
 
 class SettingsModel(
     private val application: Application,
+    private val activities: ActivityProvider,
     private val paths: PathManager,
     val preferences: PreferencesManager,
 ) : ScreenModel {
@@ -88,10 +91,9 @@ class SettingsModel(
                     /* title = */ application.getString(R.string.log_action_export_apk),
                 )
             }
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         try {
-            application.startActivity(intent)
+            activities.get<Activity>().startActivity(intent)
         } catch (t: Throwable) {
             Log.w(BuildConfig.TAG, "Failed to share APK", t)
             application.showToast(R.string.status_failed)

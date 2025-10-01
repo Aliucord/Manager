@@ -1,7 +1,8 @@
 package com.aliucord.manager.ui.components.dialogs
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -10,12 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.theme.customColors
 
@@ -23,7 +24,7 @@ import com.aliucord.manager.ui.theme.customColors
 fun PlayProtectDialog(
     onDismiss: (neverShow: Boolean) -> Unit,
 ) {
-    val context = LocalContext.current
+    val activity = LocalActivity.currentOrThrow
     val interactionSource = remember(::MutableInteractionSource)
     var neverShow by rememberSaveable { mutableStateOf(false) }
     val rememberedNeverShow by rememberUpdatedState(neverShow)
@@ -31,7 +32,7 @@ fun PlayProtectDialog(
     AlertDialog(
         onDismissRequest = { onDismiss(rememberedNeverShow) },
         dismissButton = {
-            FilledTonalButton(onClick = context::launchPlayProtect) {
+            FilledTonalButton(onClick = activity::launchPlayProtect) {
                 Text(stringResource(R.string.play_protect_warning_open_gpp))
             }
         },
@@ -94,10 +95,9 @@ fun PlayProtectDialog(
     )
 }
 
-private fun Context.launchPlayProtect() {
+private fun Activity.launchPlayProtect() {
     Intent("com.google.android.gms.settings.VERIFY_APPS_SETTINGS")
         .setPackage("com.google.android.gms")
         .addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         .also(::startActivity)
 }

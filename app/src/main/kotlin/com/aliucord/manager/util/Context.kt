@@ -95,7 +95,7 @@ fun Context.isIgnoringBatteryOptimizations(): Boolean {
  * Launch a system dialog to enable unrestricted battery usage.
  */
 @SuppressLint("BatteryLife")
-fun Context.requestNoBatteryOptimizations() {
+fun Activity.requestNoBatteryOptimizations() {
     val intent = Intent(
         /* action = */ Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
         /* uri = */ Uri.fromParts("package", this.packageName, null)
@@ -103,7 +103,6 @@ fun Context.requestNoBatteryOptimizations() {
 
     with(intent) {
         addCategory(Intent.CATEGORY_DEFAULT)
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
     }
