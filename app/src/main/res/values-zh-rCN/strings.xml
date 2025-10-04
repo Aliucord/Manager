@@ -149,8 +149,9 @@
   <string name="status_failed">失败</string>
   <string name="installer_abort_title">真的要退出吗？</string>
   <string name="installer_abort_body">您确定要中止正在进行的安装吗？</string>
-  <string name="updater_body">Aliucord 管理器已发布新更新！可能需要此更新才能正常运行。您想更新吗？</string>
   <string name="updater_title">更新到 v%s</string>
+  <string name="updater_body">Aliucord 管理器已发布新更新！可能需要此更新才能正常运行。您想更新吗？</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">更新检查失败！</string>
   <string name="updater_update_fail">更新失败！请手动下载并安装更新！</string>
   <string name="downloader_err_unknown">下载失败（未知）</string>

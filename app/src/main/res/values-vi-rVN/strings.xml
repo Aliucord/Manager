@@ -149,8 +149,9 @@
   <string name="status_failed">Thất bại</string>
   <string name="installer_abort_title">Sẵn sàng thoát?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
-  <string name="updater_body">Một bản cập nhật mới đã được phát hành cho Aliucord Manager! Nó cần cập nhật để hoạt động đúng. Bạn có muốn cập nhật không?</string>
   <string name="updater_title">Cập nhật: v%s</string>
+  <string name="updater_body">Một bản cập nhật mới đã được phát hành cho Aliucord Manager! Nó cần cập nhật để hoạt động đúng. Bạn có muốn cập nhật không?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Kiểm tra cập nhật thất bại!</string>
   <string name="updater_update_fail">Cập nhật thất bại! Vui lòng tải và cài đặt thủ công!</string>
   <string name="downloader_err_unknown">Tải xuống thất bại (Không xác định)</string>

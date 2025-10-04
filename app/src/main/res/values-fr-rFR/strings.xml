@@ -149,8 +149,9 @@
   <string name="status_failed">Échec</string>
   <string name="installer_abort_title">Voulez-vous vraiment quitter ?</string>
   <string name="installer_abort_body">Êtes-vous sûr de vouloir abandonner une installation en cours ?</string>
-  <string name="updater_body">Une nouvelle mise à jour a été publiée pour Aliucord Manager ! Elle peut être nécessaire pour fonctionner correctement. Voulez-vous faire la mise à jour ?</string>
   <string name="updater_title">Mettre à jour vers v%s</string>
+  <string name="updater_body">Une nouvelle mise à jour a été publiée pour Aliucord Manager ! Elle peut être nécessaire pour fonctionner correctement. Voulez-vous faire la mise à jour ?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Échec lors de la vérification des mises à jour !</string>
   <string name="updater_update_fail">Échec de la mise à jour ! Veuillez télécharger et installer la mise à jour manuellement !</string>
   <string name="downloader_err_unknown">Téléchargement échoué (Inconnu)</string>

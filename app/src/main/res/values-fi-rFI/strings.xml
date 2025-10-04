@@ -149,8 +149,9 @@
   <string name="status_failed">Epäonnistunut</string>
   <string name="installer_abort_title">Haluatko varmasti poistua?</string>
   <string name="installer_abort_body">Oletko varma, että haluat perua asennuksen?</string>
-  <string name="updater_body">Uusi päivitys on saatavilla Aliucord-managerille! Se saattaa olla tarpeellinen kunnollisen toiminnan jatkuvuuden kannalta. Haluatko päivittää?</string>
   <string name="updater_title">Päivitä versioon %s</string>
+  <string name="updater_body">Uusi päivitys on saatavilla Aliucord-managerille! Se saattaa olla tarpeellinen kunnollisen toiminnan jatkuvuuden kannalta. Haluatko päivittää?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Päivitysten haku epäonnistui!</string>
   <string name="updater_update_fail">Päivitys epäonnistui! Lataa ja asenna päivitys manuaalisesti!</string>
   <string name="downloader_err_unknown">Lataus epäonnistui (Tuntematon)</string>

@@ -149,8 +149,9 @@
   <string name="status_failed">失敗</string>
   <string name="installer_abort_title">本当に終了しますか？</string>
   <string name="installer_abort_body">本当に進行中のインストールを中止してもよろしいですか？</string>
-  <string name="updater_body">Aliucord Managerの新しいアップデートがリリースされました！正常に機能するために必要な場合があります。アップデートしますか？</string>
   <string name="updater_title">v%sへ更新</string>
+  <string name="updater_body">Aliucord Managerの新しいアップデートがリリースされました！正常に機能するために必要な場合があります。アップデートしますか？</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">更新の確認に失敗しました！</string>
   <string name="updater_update_fail">更新に失敗しました！手動でダウンロードしてインストールしてください！</string>
   <string name="downloader_err_unknown">ダウンロードに失敗しました (不明)</string>

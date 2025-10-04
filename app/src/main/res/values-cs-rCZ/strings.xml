@@ -149,8 +149,9 @@
   <string name="status_failed">Chyba</string>
   <string name="installer_abort_title">Opravdu ukončit?</string>
   <string name="installer_abort_body">Opravdu chcete přerušit instalaci v průběhu?</string>
-  <string name="updater_body">Byla vydána nová aktualizace pro Správce Aliucord! Může být vyžadována pro správnou funkci. Chcete aktualizovat?</string>
   <string name="updater_title">Aktualizovat na v%s</string>
+  <string name="updater_body">Byla vydána nová aktualizace pro Správce Aliucord! Může být vyžadována pro správnou funkci. Chcete aktualizovat?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Nepodařilo se zkontrolovat aktualizace!</string>
   <string name="updater_update_fail">Aktualizace se nezdařila! Stáhněte a nainstalujte aktualizaci manuálně!</string>
   <string name="downloader_err_unknown">Stahování se nezdařilo (důvod neznámý)</string>

@@ -149,8 +149,9 @@
   <string name="status_failed">Kudarc</string>
   <string name="installer_abort_title">Komolyan kilépsz?</string>
   <string name="installer_abort_body">Biztos, hogy megszakítod a folyamatban levő telepítést?</string>
-  <string name="updater_body">Egy új frissítés lett kiadva az Aliucord Managerhez! Szükséges lehet, hogy a továbbiakban is megfelelően működjön. Akarod frissíteni?</string>
   <string name="updater_title">Frissítés v%s verzióra</string>
+  <string name="updater_body">Egy új frissítés lett kiadva az Aliucord Managerhez! Szükséges lehet, hogy a továbbiakban is megfelelően működjön. Akarod frissíteni?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Nem sikerült frissítéseket keresni!</string>
   <string name="updater_update_fail">Nem sikerült frissíteni! Töltsd le és telepítsd a frissítést manuálisan!</string>
   <string name="downloader_err_unknown">Letöltés sikertelen (Ismeretlen hiba)</string>

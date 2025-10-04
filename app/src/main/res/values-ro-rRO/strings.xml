@@ -149,8 +149,9 @@
   <string name="status_failed">Eșuat</string>
   <string name="installer_abort_title">Sigur ieșiți?</string>
   <string name="installer_abort_body">Sunteți sigur că chiar doriți să anulați o instalare în curs de desfășurare?</string>
-  <string name="updater_body">O nouă actualizare a fost lansată pentru Aliucord Manager! Poate fi necesară pentru a funcționa corect în viitor. Doriți să actualizați?</string>
   <string name="updater_title">Actualizează către v%s</string>
+  <string name="updater_body">O nouă actualizare a fost lansată pentru Aliucord Manager! Poate fi necesară pentru a funcționa corect în viitor. Doriți să actualizați?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Verificarea actualizărilor a eșuat!</string>
   <string name="updater_update_fail">Actualizarea a eșuat! Vă rugăm sa descărcați și să instalați actualizarea manual!</string>
   <string name="downloader_err_unknown">Descărcarea a eșuat (motiv necunoscut)</string>

@@ -149,8 +149,9 @@
   <string name="status_failed">失敗</string>
   <string name="installer_abort_title">確定離開？</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
-  <string name="updater_body">Aliucord Manager 已發布新更新！Aliucord Manager 可能需要它才能正常運行。您想更新嗎？</string>
   <string name="updater_title">更新到 v%s</string>
+  <string name="updater_body">Aliucord Manager 已發布新更新！Aliucord Manager 可能需要它才能正常運行。您想更新嗎？</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">無法下載（未知）</string>

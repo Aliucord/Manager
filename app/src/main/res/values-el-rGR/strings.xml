@@ -149,8 +149,9 @@
   <string name="status_failed">Αποτυχία</string>
   <string name="installer_abort_title">Έξοδος σίγουρα;</string>
   <string name="installer_abort_body">Είστε βέβαιοι ότι θέλετε να ακυρώσετε μια σε εξέλιξη εγκατάσταση; Τα προσωρινά αποθηκευμένα αρχεία θα καθαριστούν για να αποφευχθεί η διαφθορά.</string>
-  <string name="updater_body">Μια νέα ενημέρωση έχει κυκλοφορήσει για το Aliucord Manager! Μπορεί να απαιτείται για να λειτουργήσει σωστά. Θα θέλατε να ενημερώσετε;</string>
   <string name="updater_title">Ενημέρωση σε v%s</string>
+  <string name="updater_body">Μια νέα ενημέρωση έχει κυκλοφορήσει για το Aliucord Manager! Μπορεί να απαιτείται για να λειτουργήσει σωστά. Θα θέλατε να ενημερώσετε;</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Αποτυχία λήψης (Άγνωστη)</string>

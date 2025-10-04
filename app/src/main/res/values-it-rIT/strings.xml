@@ -149,8 +149,9 @@
   <string name="status_failed">Fallito</string>
   <string name="installer_abort_title">Vuoi veramente uscire?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
-  <string name="updater_body">È stato rilasciato un nuovo aggiornamento per Aliucord Manager! Potrebbe essere necessario per funzionare correttamente. Vuoi aggiornare?</string>
   <string name="updater_title">Aggiorna a v%s</string>
+  <string name="updater_body">È stato rilasciato un nuovo aggiornamento per Aliucord Manager! Potrebbe essere necessario per funzionare correttamente. Vuoi aggiornare?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Impossibile controllare gli aggiornamenti!</string>
   <string name="updater_update_fail">Impossibile aggiornare! Scarica e installa manualmente l\'aggiornamento!</string>
   <string name="downloader_err_unknown">Download non riuscito (Sconosciuto)</string>

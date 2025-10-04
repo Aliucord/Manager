@@ -149,8 +149,9 @@
   <string name="status_failed">Niepowodzenie</string>
   <string name="installer_abort_title">Na pewno chcesz wyjść?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
-  <string name="updater_body">Nowa aktualizacja dla Menadżera Aliucorda! Może być wymagana do prawidłowego działania. Czy chcesz zaktualizować?</string>
   <string name="updater_title">Aktualizowanie do v%s</string>
+  <string name="updater_body">Nowa aktualizacja dla Menadżera Aliucorda! Może być wymagana do prawidłowego działania. Czy chcesz zaktualizować?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Nie udało się sprawdzić aktualizacji!</string>
   <string name="updater_update_fail">Nie udało się zaktualizować! Proszę pobrać i zainstalować te aktualizacje ręcznie!</string>
   <string name="downloader_err_unknown">Pobieranie nie powiodło się (Powód nieznany)</string>

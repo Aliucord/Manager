@@ -149,8 +149,9 @@
   <string name="status_failed">Gagal</string>
   <string name="installer_abort_title">Yakin keluar?</string>
   <string name="installer_abort_body">Are you sure you really want to abort an in-progress installation? Cached files will be cleared to avoid corruption.</string>
-  <string name="updater_body">Perbaruan baru sudah dirilis untuk Aliucord Manager! Itu mungkin diperlukan untuk berfungsi dengan baik. Apakah kamu ingin perbarui?</string>
   <string name="updater_title">Diperbarui ke v%s</string>
+  <string name="updater_body">Perbaruan baru sudah dirilis untuk Aliucord Manager! Itu mungkin diperlukan untuk berfungsi dengan baik. Apakah kamu ingin perbarui?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Gagal untuk memeriksa update!</string>
   <string name="updater_update_fail">Gagal memperbarui! Mohon download dan pasang versi terbaru secara manual!</string>
   <string name="downloader_err_unknown">Unduhan gagal (Tidak diketahui)</string>

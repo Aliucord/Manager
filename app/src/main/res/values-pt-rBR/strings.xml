@@ -149,8 +149,9 @@
   <string name="status_failed">Falhou</string>
   <string name="installer_abort_title">Deseja realmente sair?</string>
   <string name="installer_abort_body">Tem certeza que deseja cancelar uma instalação em andamento?</string>
-  <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
   <string name="updater_title">Atualizado para v%s</string>
+  <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Falha ao checar atualizações</string>
   <string name="updater_update_fail">Falha ao atualizar! Por favor, baixe e instale a atualização manualmente!</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>

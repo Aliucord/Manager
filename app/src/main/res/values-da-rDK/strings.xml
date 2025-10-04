@@ -149,8 +149,9 @@
   <string name="status_failed">Mislykkedes</string>
   <string name="installer_abort_title">Afslut, sikker?</string>
   <string name="installer_abort_body">Sikker på, at den igangværende installation skal afbrydes?</string>
-  <string name="updater_body">Ny opdatering udgivet! Den kan være nødvendig for korrekt funktion af Aliucord Manager. Opdatér?</string>
   <string name="updater_title">Opdatér til v%s</string>
+  <string name="updater_body">Ny opdatering udgivet! Den kan være nødvendig for korrekt funktion af Aliucord Manager. Opdatér?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Download mislykkedes (ukendt)</string>

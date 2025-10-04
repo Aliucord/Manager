@@ -149,8 +149,9 @@
   <string name="status_failed">Fehlgeschlagen</string>
   <string name="installer_abort_title">Wirklich beenden?</string>
   <string name="installer_abort_body">Willst du wirklich die laufende Installation abbrechen?</string>
-  <string name="updater_body">Ein neues Update für den Aliucord Manager wurde veröffentlicht! Es kann erforderlich sein, um korrekt zu funktionieren. Möchtest du aktualisieren?</string>
   <string name="updater_title">Aktualisieren auf v%s</string>
+  <string name="updater_body">Ein neues Update für den Aliucord Manager wurde veröffentlicht! Es kann erforderlich sein, um korrekt zu funktionieren. Möchtest du aktualisieren?</string>
+  <string name="updater_open_github">View release on GitHub</string>
   <string name="updater_check_fail">Fehler bei der Überprüfung von Aktualisierungen!</string>
   <string name="updater_update_fail">Update fehlgeschlagen! Bitte das Update manuell herunterladen und installieren!</string>
   <string name="downloader_err_unknown">Download Fehler (unbekannt)</string>
