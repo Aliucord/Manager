@@ -14,6 +14,7 @@ compose = "1.9.1"
 compose-material3 = "1.3.2"
 compose-pipette = "1.0.1"
 desugaring = "2.1.5"
+dhizuku = "2.5.3"
 diff = "4.16"
 hiddenApi-bypass = "6.1"
 hiddenApi-refine = "4.4.0"
@@ -93,7 +94,8 @@ smali = { module = "com.android.tools.smali:smali", version.ref = "smali" }
 baksmali = { module = "com.android.tools.smali:smali-baksmali", version.ref = "smali" }
 zip = { module = "io.github.diamondminer88:zip-android", version.ref = "zip" }
 
-# Shizuku + Utils
+# Shizuku + Dhizuku + Utils
+dhizuku-api = { module = "io.github.iamr0s:Dhizuku-API", version.ref = "dhizuku" }
 shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku" }
 shizuku-provider = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku" }
 hiddenApi-bypass = { module = "org.lsposed.hiddenapibypass:hiddenapibypass", version.ref = "hiddenApi-bypass" }

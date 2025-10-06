@@ -5,6 +5,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.aliucord.manager.R
 import com.aliucord.manager.installers.Installer
+import com.aliucord.manager.installers.dhizuku.DhizukuInstaller
 import com.aliucord.manager.installers.intent.IntentInstaller
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.installers.root.RootInstaller
@@ -31,7 +32,8 @@ enum class InstallerSetting(val installerClass: KClass<out Installer>) {
     PM(PMInstaller::class),
     Root(RootInstaller::class),
     Intent(IntentInstaller::class),
-    Shizuku(ShizukuInstaller::class);
+    Shizuku(ShizukuInstaller::class),
+    Dhizuku(DhizukuInstaller::class);
 
     @Composable
     fun title() = when (this) {
@@ -39,6 +41,7 @@ enum class InstallerSetting(val installerClass: KClass<out Installer>) {
         Root -> stringResource(R.string.installer_root)
         Intent -> stringResource(R.string.installer_intent)
         Shizuku -> stringResource(R.string.installer_shizuku)
+        Dhizuku -> stringResource(R.string.installer_dhizuku)
     }
 
     @Composable
@@ -47,6 +50,7 @@ enum class InstallerSetting(val installerClass: KClass<out Installer>) {
         Root -> stringResource(R.string.installer_root_desc)
         Intent -> stringResource(R.string.installer_intent_desc)
         Shizuku -> stringResource(R.string.installer_shizuku_desc)
+        Dhizuku -> stringResource(R.string.installer_dhizuku_desc)
     }
 
     @Composable
@@ -55,5 +59,6 @@ enum class InstallerSetting(val installerClass: KClass<out Installer>) {
         Root -> painterResource(R.drawable.ic_hashtag)
         Intent -> painterResource(R.drawable.ic_launch)
         Shizuku -> painterResource(R.drawable.ic_shizuku)
+        Dhizuku -> painterResource(R.drawable.ic_dhizuku)
     }
 }

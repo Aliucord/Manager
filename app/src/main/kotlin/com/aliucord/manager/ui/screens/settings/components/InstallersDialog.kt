@@ -15,8 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aliucord.manager.R
-import com.aliucord.manager.manager.InstallerSetting
-import com.aliucord.manager.manager.ShizukuManager
+import com.aliucord.manager.manager.*
 import com.aliucord.manager.util.showToast
 import com.topjohnwu.superuser.Shell
 import org.koin.compose.koinInject
@@ -29,12 +28,15 @@ fun InstallersDialog(
 ) {
     val context = LocalContext.current
     val shizuku = koinInject<ShizukuManager>()
+    val dhizuku = koinInject<DhizukuManager>()
 
     var shizukuAvailable by remember { mutableStateOf(false) }
+    var dhizukuAvailable by remember { mutableStateOf(false) }
     var selectedInstaller by rememberSaveable { mutableStateOf(currentInstaller) }
 
     LaunchedEffect(Unit) {
         shizukuAvailable = shizuku.shizukuAvailable()
+        dhizukuAvailable = dhizuku.dhizukuAvailable()
     }
 
     // Check if selected installer is usable and ask for permissions when necessary
@@ -65,7 +67,12 @@ fun InstallersDialog(
 
             InstallerSetting.Shizuku -> {
                 if (!shizuku.requestPermissions()) {
-                    context.showToast(R.string.permissions_shizuku_denied)
+                    selectedInstaller = InstallerSetting.PM
+                }
+            }
+
+            InstallerSetting.Dhizuku -> {
+                if (!dhizuku.requestPermissions()) {
                     selectedInstaller = InstallerSetting.PM
                 }
             }
@@ -93,6 +100,7 @@ fun InstallersDialog(
                             InstallerSetting.Root -> true
                             InstallerSetting.Intent -> true
                             InstallerSetting.Shizuku -> shizukuAvailable
+                            InstallerSetting.Dhizuku -> dhizukuAvailable
                         },
                         onClick = { selectedInstaller = installer },
                     )

@@ -5,6 +5,7 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import com.aliucord.manager.di.*
+import com.aliucord.manager.installers.dhizuku.DhizukuInstaller
 import com.aliucord.manager.installers.intent.IntentInstaller
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.installers.root.RootInstaller
@@ -76,7 +77,9 @@ class ManagerApplication : Application() {
                 singleOf(::InstallerManager)
                 singleOf(::OverlayManager)
                 singleOf(::InstallLogManager)
+
                 singleOf(::ShizukuManager)
+                singleOf(::DhizukuManager)
 
                 singleOf(::AndroidDownloadManager)
                 singleOf(::KtorDownloadManager)
@@ -88,6 +91,7 @@ class ManagerApplication : Application() {
                 singleOf(::RootInstaller)
                 singleOf(::IntentInstaller)
                 singleOf(::ShizukuInstaller)
+                singleOf(::DhizukuInstaller)
             })
         }
 

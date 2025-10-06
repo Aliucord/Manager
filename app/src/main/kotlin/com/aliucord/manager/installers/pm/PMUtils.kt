@@ -4,20 +4,58 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInstaller
+import android.content.pm.*
 import android.content.pm.PackageInstaller.SessionParams
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
 import androidx.core.content.ContextCompat
 import com.aliucord.manager.installers.InstallerResult
-import com.aliucord.manager.util.isMiui
+import com.aliucord.manager.util.*
+import dev.rikka.tools.refine.Refine
 import java.io.File
 
 /**
  * Shared functionality between all types of installers that directly interface with the [PackageInstaller] API.
  */
 object PMUtils {
+    /**
+     * Gets a binded [PackageInstaller] service wrapper.
+     * This is used by remote installers such as Shizuku and Dhizuku.
+     */
+    fun getPackageInstaller(
+        context: Context,
+        iPackageInstaller: IPackageInstaller,
+        installerPackageName: String,
+    ): PackageInstaller {
+        HiddenAPI.disable()
+
+        val userId = context.getUserId() ?: 0
+
+        val hiddenPackageInstaller = if (Build.VERSION.SDK_INT >= 31) {
+            PackageInstallerHidden(
+                /* installer = */ iPackageInstaller,
+                /* installerPackageName = */ installerPackageName,
+                /* installerAttributionTag = */ null,
+                /* userId = */ userId,
+            )
+        } else if (Build.VERSION.SDK_INT >= 26) {
+            PackageInstallerHidden(
+                /* installer = */ iPackageInstaller,
+                /* installerPackageName = */ installerPackageName,
+                /* userId = */ userId,
+            )
+        } else {
+            PackageInstallerHidden(
+                /* context = */ context,
+                /* pm = */ context.packageManager,
+                /* installer = */ iPackageInstaller,
+                /* installerPackageName = */ installerPackageName,
+                /* userId = */ userId,
+            )
+        }
+        return Refine.unsafeCast(hiddenPackageInstaller)
+    }
+
     /**
      * Creates install sessions params for [PackageInstaller].
      * @param silent If this is an update, then the update will occur without user interaction.

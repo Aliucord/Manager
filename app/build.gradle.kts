@@ -196,6 +196,7 @@ dependencies {
     implementation(libs.axml)
     implementation(libs.bouncycastle)
     implementation(libs.binaryResources)
+    implementation(libs.dhizuku.api)
     implementation(libs.diff)
     implementation(libs.microg)
     implementation(libs.smali)
