@@ -5,6 +5,7 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import com.aliucord.manager.di.*
+import com.aliucord.manager.installers.intent.IntentInstaller
 import com.aliucord.manager.installers.pm.PMInstaller
 import com.aliucord.manager.installers.root.RootInstaller
 import com.aliucord.manager.installers.shizuku.ShizukuInstaller
@@ -85,6 +86,7 @@ class ManagerApplication : Application() {
             modules(module {
                 singleOf(::PMInstaller)
                 singleOf(::RootInstaller)
+                singleOf(::IntentInstaller)
                 singleOf(::ShizukuInstaller)
             })
         }

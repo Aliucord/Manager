@@ -37,6 +37,7 @@ fun InstallersDialog(
         shizukuAvailable = shizuku.shizukuAvailable()
     }
 
+    // Check if selected installer is usable and ask for permissions when necessary
     LaunchedEffect(selectedInstaller) {
         when (selectedInstaller) {
             InstallerSetting.PM -> {
@@ -56,6 +57,10 @@ fun InstallersDialog(
                     context.showToast(R.string.permissions_root_denied)
                     selectedInstaller = InstallerSetting.PM
                 }
+            }
+
+            InstallerSetting.Intent -> {
+                // We don't know whether this device supports this method until we try.
             }
 
             InstallerSetting.Shizuku -> {
@@ -86,6 +91,7 @@ fun InstallersDialog(
                         enabled = when (installer) {
                             InstallerSetting.PM -> true
                             InstallerSetting.Root -> true
+                            InstallerSetting.Intent -> true
                             InstallerSetting.Shizuku -> shizukuAvailable
                         },
                         onClick = { selectedInstaller = installer },
