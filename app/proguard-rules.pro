@@ -32,6 +32,11 @@
     static <1>$$serializer INSTANCE;
 }
 
+# Keep fields for APK verification, used through reflection
+-keepclassmembers public class com.android.apksig.** {
+    public *;
+}
+
 # Keep class names of patching steps since they're used via reflection
 -keepnames class com.aliucord.manager.patcher.steps.**
 

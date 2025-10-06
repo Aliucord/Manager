@@ -36,7 +36,7 @@ class DownloadDiscordStep : DownloadStep(), KoinComponent {
         }
 
         if (!result.isVerified)
-            throw VerifyError("Failed to verify APK signatures! This is an unoriginal APK that has been tampered with.")
+            throw SignatureVerificationException(result.allErrors)
 
         if (result.signerCertificates.singleOrNull()
                 ?.let { it.encoded.toByteString().sha256() == DISCORD_CERTIFICATE_SHA256.decodeHex() } != true
@@ -72,4 +72,10 @@ class DownloadDiscordStep : DownloadStep(), KoinComponent {
         fun getDiscordApkUrl(version: Int) =
             "${BuildConfig.MAVEN_URL}/com/discord/discord/$version/discord-$version.apk"
     }
+
+    private class SignatureVerificationException(errors: List<ApkVerifier.IssueWithParams>) : Exception(
+        "Failed to verify APK signatures! " +
+            "This is an unoriginal APK that has been tampered with. " +
+            "Verification errors: " + errors.joinToString()
+    )
 }
