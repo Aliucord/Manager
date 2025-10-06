@@ -11,7 +11,8 @@ import java.io.File
 import kotlin.coroutines.resume
 
 /**
- * APK installer using the [PackageInstaller] from the system's [PackageManager] service.
+ * Uses the [PackageInstaller] API from the system's [PackageManager] service.
+ * This installer invokes the API directly from this app's context.
  */
 class PMInstaller(
     private val context: Application,

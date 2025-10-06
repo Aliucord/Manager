@@ -144,7 +144,7 @@ fun PermissionsScreenContent(
                 )
             }
 
-            if (installer == InstallerSetting.PM) {
+            if (installer == InstallerSetting.PackageInstaller) {
                 item(key = "PERMS_UNKNOWN_SOURCES", contentType = "PERMISSION_BUTTON") {
                     PermissionButton(
                         name = stringResource(R.string.permissions_install_title),

@@ -45,7 +45,7 @@ class PermissionsModel(
 
     val requiredPermsGranted by derivedStateOf {
         // Unknown Sources permission is only required when the installer is PM
-        if (preferences.installer == InstallerSetting.PM && !unknownSourcesPermsGranted)
+        if (preferences.installer == InstallerSetting.PackageInstaller && !unknownSourcesPermsGranted)
             return@derivedStateOf false
 
         storagePermsGranted

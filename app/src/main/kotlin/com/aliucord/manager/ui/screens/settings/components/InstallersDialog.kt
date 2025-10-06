@@ -42,7 +42,7 @@ fun InstallersDialog(
     // Check if selected installer is usable and ask for permissions when necessary
     LaunchedEffect(selectedInstaller) {
         when (selectedInstaller) {
-            InstallerSetting.PM -> {
+            InstallerSetting.PackageInstaller -> {
                 // Once the Google sideloading block is in place,
                 // check whether it is applicable to the device, and if so then it needs
                 // to be inaccessible. (Disable button)
@@ -57,7 +57,7 @@ fun InstallersDialog(
 
                 if (Shell.isAppGrantedRoot() != true) {
                     context.showToast(R.string.permissions_root_denied)
-                    selectedInstaller = InstallerSetting.PM
+                    selectedInstaller = InstallerSetting.PackageInstaller
                 }
             }
 
@@ -67,13 +67,13 @@ fun InstallersDialog(
 
             InstallerSetting.Shizuku -> {
                 if (!shizuku.requestPermissions()) {
-                    selectedInstaller = InstallerSetting.PM
+                    selectedInstaller = InstallerSetting.PackageInstaller
                 }
             }
 
             InstallerSetting.Dhizuku -> {
                 if (!dhizuku.requestPermissions()) {
-                    selectedInstaller = InstallerSetting.PM
+                    selectedInstaller = InstallerSetting.PackageInstaller
                 }
             }
         }
@@ -96,7 +96,7 @@ fun InstallersDialog(
                         installer = installer,
                         selected = installer == selectedInstaller,
                         enabled = when (installer) {
-                            InstallerSetting.PM -> true
+                            InstallerSetting.PackageInstaller -> true
                             InstallerSetting.Root -> true
                             InstallerSetting.Intent -> true
                             InstallerSetting.Shizuku -> shizukuAvailable

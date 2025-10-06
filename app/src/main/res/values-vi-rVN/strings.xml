@@ -68,11 +68,9 @@
   <string name="settings_clear_cache">Xoá bộ nhớ đệm</string>
   <string name="settings_export_apk">Xuất APK</string>
   <string name="installer_pm">Trực tiếp</string>
-  <string name="installer_pm_desc">Gọi API PackageManager trực tiếp từ ngữ cảnh của ứng dụng. (Mặc định)</string>
+  <string name="installer_pm_desc">Gọi API PackageInstaller trực tiếp từ ngữ cảnh của ứng dụng. (Mặc định)</string>
   <string name="installer_root">Root</string>
-  <string name="installer_root_desc">Gọi cli PackageManager bằng cách sử dụng root của thiết bị như Magisk hoặc KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
-  <string name="installer_shizuku_desc">Gọi API PackageManager từ xa qua Shizuku. ADB, WADB, và Root đều hỗ trợ.</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>

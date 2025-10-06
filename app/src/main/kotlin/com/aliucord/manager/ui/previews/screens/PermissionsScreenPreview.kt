@@ -13,7 +13,7 @@ import com.aliucord.manager.ui.theme.ManagerTheme
 fun PermissionsScreenPreview() {
     ManagerTheme {
         PermissionsScreenContent(
-            installer = InstallerSetting.PM,
+            installer = InstallerSetting.PackageInstaller,
             openInstallersDialog = {},
             storagePermsGranted = true,
             onGrantStoragePerms = {},

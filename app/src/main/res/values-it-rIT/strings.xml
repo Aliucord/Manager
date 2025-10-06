@@ -68,11 +68,9 @@
   <string name="settings_clear_cache">Pulisci cache</string>
   <string name="settings_export_apk">Esporta APK</string>
   <string name="installer_pm">Diretto</string>
-  <string name="installer_pm_desc">Invoca l\'API di PackageManager direttamente dal contesto dell\'app. (Predefinito)</string>
+  <string name="installer_pm_desc">Invoca l\'API di PackageInstaller direttamente dal contesto dell\'app. (Predefinito)</string>
   <string name="installer_root">Root</string>
-  <string name="installer_root_desc">Invita il cli di PackageManager usando il root del dispositivo come Magisk o KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
-  <string name="installer_shizuku_desc">Invoca le API di PackageManager da remoto attraverso Shizuku. I backend ADB, WADB e Root sono tutti supportati.</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Scuro</string>
   <string name="theme_light">Chiaro</string>
