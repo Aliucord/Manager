@@ -37,6 +37,8 @@ class ShizukuInstaller(
         if (!shizuku.requestPermissions())
             throw IllegalStateException("Shizuku is not available!")
 
+        ShizukuSettingsWrapper.disableAdbVerify(context)
+
         // Construct install session and create it
         val params = createSessionParams()
         val packageInstaller = ShizukuPMWrapper.getPackageInstaller(context)
@@ -54,6 +56,8 @@ class ShizukuInstaller(
     override suspend fun waitInstall(apks: List<File>, silent: Boolean): InstallerResult {
         if (!shizuku.requestPermissions())
             throw IllegalStateException("Shizuku is not available!")
+
+        ShizukuSettingsWrapper.disableAdbVerify(context)
 
         return suspendCancellableCoroutine { continuation ->
             // Construct install session and create it
