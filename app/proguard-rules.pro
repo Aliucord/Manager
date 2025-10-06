@@ -52,4 +52,4 @@
 -keepnames class ** { *; }
 
 # Preserve the line number information for debugging stack traces.
--keepattributes LineNumberTable
+-keepattributes SourceFile,LineNumberTable
