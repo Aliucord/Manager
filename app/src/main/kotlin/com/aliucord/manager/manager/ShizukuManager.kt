@@ -4,11 +4,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import com.aliucord.manager.R
 import com.aliucord.manager.util.showToast
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import rikka.shizuku.Shizuku
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.resume
 import kotlin.random.Random
 
@@ -17,15 +16,14 @@ import kotlin.random.Random
  */
 class ShizukuManager(private val context: Context) {
     private var shizukuPermissionLock = Mutex()
-    private val shizukuAvailable: StateFlow<Boolean?>
-        field = MutableStateFlow(null)
+    private val shizukuAvailable = AtomicBoolean(false)
 
     init {
         Shizuku.addBinderReceivedListenerSticky {
-            shizukuAvailable.value = true
+            shizukuAvailable.set(true)
         }
         Shizuku.addBinderDeadListener {
-            shizukuAvailable.value = false
+            shizukuAvailable.set(false)
 
             if (shizukuPermissionLock.isLocked)
                 shizukuPermissionLock.unlock()
@@ -35,12 +33,12 @@ class ShizukuManager(private val context: Context) {
     /**
      * Determines whether Shizuku is available and the binder has been retrieved.
      */
-    fun shizukuAvailable(): Boolean = when (shizukuAvailable.value) {
-        true -> true
-        false -> false
-        null -> {
-            Shizuku.pingBinder().also { shizukuAvailable.value = it }
+    fun shizukuAvailable(): Boolean {
+        if (!shizukuAvailable.get()) {
+            return Shizuku.pingBinder()
+                .also(shizukuAvailable::set)
         }
+        return true
     }
 
     /**
@@ -73,7 +71,7 @@ class ShizukuManager(private val context: Context) {
         }
 
         return suspendCancellableCoroutine { continuation ->
-            val currentRequestCode = Random.Default.nextInt()
+            val currentRequestCode = Random.nextInt()
             val onPermissionRequestResult =
                 Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
                     if (requestCode != currentRequestCode)
