@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.*
 import com.aliucord.manager.R
 import com.aliucord.manager.installers.InstallerResult
+import com.aliucord.manager.installers.root.RootInstaller
 import com.aliucord.manager.installers.shizuku.ShizukuInstaller
 import com.aliucord.manager.manager.*
 import com.aliucord.manager.patcher.StepRunner
@@ -59,7 +60,8 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
         val installer = installers.getActiveInstaller()
 
         // Show [PlayProtectDialog] and wait until it gets dismissed
-        if (installer !is ShizukuInstaller
+        if (installer !is ShizukuInstaller &&
+            installer !is RootInstaller
             && prefs.showPlayProtectWarning
             && !prefs.devMode
             && !context.isPackageInstalled(options.packageName)

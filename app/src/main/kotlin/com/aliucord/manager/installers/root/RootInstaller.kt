@@ -54,6 +54,13 @@ class RootInstaller(private val context: Context) : Installer {
         return sessionId.value.toInt()
     }
 
+    /**
+     * Disable ADB install verification (bypass useless Play Protect).
+     */
+    private suspend fun disableAdbVerify() {
+        executeSU("settings put global verifier_verify_adb_installs 0")
+    }
+
     override suspend fun install(apks: List<File>, silent: Boolean) {
         coroutineScope.launch { waitInstall(apks, silent) }
     }
@@ -68,6 +75,7 @@ class RootInstaller(private val context: Context) : Installer {
         }
 
         obtainRoot()
+        disableAdbVerify()
 
         val sessionId = createInstallSession(
             totalSize = apks.sumOf(File::length),
