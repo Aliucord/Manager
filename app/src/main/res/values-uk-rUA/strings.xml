@@ -47,8 +47,9 @@
   <string name="permissions_battery_title">Background Battery</string>
   <string name="permissions_battery_desc">Ensures the installation process does not get automatically cancelled if the app is minimized.</string>
   <string name="permissions_notifs_desc">Used only to show the download progress if Aliucord Manager is minimized during installation.</string>
-  <string name="permissions_shizuku_denied">Failed to obtain Shizuku permissions</string>
   <string name="permissions_root_denied">Failed to obtain root permissions</string>
+  <string name="permissions_shizuku_denied">Failed to obtain Shizuku permissions</string>
+  <string name="permissions_dhizuku_denied">Failed to obtain Dhizuku permissions</string>
   <string name="installs_no_installs">Встановлень не знайдено!</string>
   <string name="launch_aliucord_fail">Не вдалося відкрити Aliucord</string>
   <string name="settings_header_advanced">Розширенні</string>
@@ -70,9 +71,13 @@
   <string name="installer_pm">Direct</string>
   <string name="installer_pm_desc">Invokes the PackageInstaller API directly from the app\'s context. (Default)</string>
   <string name="installer_root">Root</string>
+  <string name="installer_intent">Intent</string>
+  <string name="installer_intent_desc">Launches an intent to handle installation through the system\'s configured default installer.</string>
   <string name="installer_root_desc">Invokes PackageManager directly using device root such as Magisk or KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
   <string name="installer_shizuku_desc">Invokes the PackageInstaller API remotely through Shizuku. ADB, Wireless ADB, and Root backends are all supported.</string>
+  <string name="installer_dhizuku">Dhizuku</string>
+  <string name="installer_dhizuku_desc">Invokes the PackageInstaller API remotely through Dhizuku using DeviceOwner permissions.</string>
   <string name="theme_system">Системна</string>
   <string name="theme_dark">Темна</string>
   <string name="theme_light">Світла</string>
@@ -113,6 +118,7 @@
   <string name="installer_banner_failure">Встановлення не вдалося! Ви можете спробувати знову, або ж нажати на банер і відкрити сервер Aliucord для допомоги.</string>
   <string name="installer_banner_success">Aliucord успішно встановлено! *НЕ* видаляйте менеджер(цей додаток) оскільки він потрібен для роботи деяких типів оновлень.</string>
   <string name="install_error_unknown">Помилка встановлення (Невідома причина)</string>
+  <string name="install_error_unhandled_intent">No handlers available for %s!</string>
   <string name="install_error_blocked">Встановлення заблоковане</string>
   <string name="install_error_invalid">Одне чи більше APK були невірні або пошкодженні</string>
   <string name="install_error_conflict">Конфліктує з вже встановленим додатком, зазвичай із за не співпадаючих підписів</string>

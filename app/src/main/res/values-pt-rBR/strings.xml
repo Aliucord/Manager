@@ -47,8 +47,9 @@
   <string name="permissions_battery_title">Bateria em segundo plano</string>
   <string name="permissions_battery_desc">Assegura que o processo de instalação não será cancelado automaticamente se o aplicativo for minimizado.</string>
   <string name="permissions_notifs_desc">Usado apenas para mostrar o progresso de download se o Aliucord Manager for minimizado durante a instalação.</string>
-  <string name="permissions_shizuku_denied">Falha ao obter permissões de Shizuku</string>
   <string name="permissions_root_denied">Falha ao obter permissões de root</string>
+  <string name="permissions_shizuku_denied">Falha ao obter permissões de Shizuku</string>
+  <string name="permissions_dhizuku_denied">Failed to obtain Dhizuku permissions</string>
   <string name="installs_no_installs">Nenhuma instalação encontrada!</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_header_advanced">Avançado</string>
@@ -70,7 +71,13 @@
   <string name="installer_pm">Direto</string>
   <string name="installer_pm_desc">Invoca a API do PackageInstaller diretamente do contexto do aplicativo. (Padrão)</string>
   <string name="installer_root">Root</string>
+  <string name="installer_intent">Intent</string>
+  <string name="installer_intent_desc">Launches an intent to handle installation through the system\'s configured default installer.</string>
+  <string name="installer_root_desc">Invokes PackageManager directly using device root such as Magisk or KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
+  <string name="installer_shizuku_desc">Invokes the PackageInstaller API remotely through Shizuku. ADB, Wireless ADB, and Root backends are all supported.</string>
+  <string name="installer_dhizuku">Dhizuku</string>
+  <string name="installer_dhizuku_desc">Invokes the PackageInstaller API remotely through Dhizuku using DeviceOwner permissions.</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>
@@ -111,6 +118,7 @@
   <string name="installer_banner_failure">Falha na instalação! Você pode tentar novamente ou clicar neste banner para abrir o servidor do Aliucord para obter ajuda.</string>
   <string name="installer_banner_success">Aliucord instalado com sucesso! *NÃO* desinstale o gerenciador (este aplicativo), pois ele é necessário para executar certos tipos de atualizações.</string>
   <string name="install_error_unknown">Falha ao instalar (Razão desconhecida)</string>
+  <string name="install_error_unhandled_intent">No handlers available for %s!</string>
   <string name="install_error_blocked">A instalação foi bloqueada</string>
   <string name="install_error_invalid">Um ou mais APKs eram inválidos ou corrompidos</string>
   <string name="install_error_conflict">Conflitos com um app existente, geralmente devido a assinaturas incompatíveis</string>
@@ -149,7 +157,7 @@
   <string name="installer_abort_body">Tem certeza que deseja cancelar uma instalação em andamento?</string>
   <string name="updater_title">Atualizado para v%s</string>
   <string name="updater_body">Uma nova atualização foi lançada para o Aliucord Manager! Ela pode ser necessária para funcionar corretamente. Gostaria de atualizar?</string>
-  <string name="updater_open_github">View release on GitHub</string>
+  <string name="updater_open_github">Ver versão no GitHub</string>
   <string name="updater_check_fail">Falha ao checar atualizações</string>
   <string name="updater_update_fail">Falha ao atualizar! Por favor, baixe e instale a atualização manualmente!</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>

@@ -47,8 +47,9 @@
   <string name="permissions_battery_title">Background Battery</string>
   <string name="permissions_battery_desc">Biztosítja, hogy a telepítési folyamat ne szakadjon meg, ha az alkalmazás a háttérben fut.</string>
   <string name="permissions_notifs_desc">Kizárólag a letöltési folyamat megjelenítéséhez használt, ha az Aliucord Manager a háttérben fut telepítés közben.</string>
-  <string name="permissions_shizuku_denied">Shizuku jogosultságok megszerzése sikertelen</string>
   <string name="permissions_root_denied">Root jogosultságok megszerzése sikertelen</string>
+  <string name="permissions_shizuku_denied">Shizuku jogosultságok megszerzése sikertelen</string>
+  <string name="permissions_dhizuku_denied">Failed to obtain Dhizuku permissions</string>
   <string name="installs_no_installs">Nem található telepítés!</string>
   <string name="launch_aliucord_fail">Nem sikerült elindítani az Aliucordot</string>
   <string name="settings_header_advanced">Haladó</string>
@@ -70,7 +71,13 @@
   <string name="installer_pm">Közvetlen</string>
   <string name="installer_pm_desc">Közvetlenül meghívja a PackageInstaller API-t az alkalmazás környezetén belül. (Alapértelmezett)</string>
   <string name="installer_root">Root</string>
+  <string name="installer_intent">Intent</string>
+  <string name="installer_intent_desc">Launches an intent to handle installation through the system\'s configured default installer.</string>
+  <string name="installer_root_desc">Invokes PackageManager directly using device root such as Magisk or KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
+  <string name="installer_shizuku_desc">Invokes the PackageInstaller API remotely through Shizuku. ADB, Wireless ADB, and Root backends are all supported.</string>
+  <string name="installer_dhizuku">Dhizuku</string>
+  <string name="installer_dhizuku_desc">Invokes the PackageInstaller API remotely through Dhizuku using DeviceOwner permissions.</string>
   <string name="theme_system">Rendszer</string>
   <string name="theme_dark">Sötét</string>
   <string name="theme_light">Világos</string>
@@ -111,6 +118,7 @@
   <string name="installer_banner_failure">A telepítés sikertelen! Megpróbálhatod újra vagy kattints erre a bannerre, hogy megnyisd az Aliucord szerverét segítségért.</string>
   <string name="installer_banner_success">Sikeresen telepítetted az Aliucordot! NE TÖRÖLD le a managert (ezt az appot), mert szükséges bizonyos frissítésekhez.</string>
   <string name="install_error_unknown">Telepítőhiba (Ismeretlen hiba)</string>
+  <string name="install_error_unhandled_intent">No handlers available for %s!</string>
   <string name="install_error_blocked">A telepítés blokkolva lett</string>
   <string name="install_error_invalid">Egy vagy több APK érvénytelen vagy korrupt</string>
   <string name="install_error_conflict">Konfliktus lépett fel egy létező alkalmazással. Gyakori nem egyező alkalmazás-aláírás esetén</string>

@@ -47,8 +47,9 @@
   <string name="permissions_battery_title">백그라운드 배터리</string>
   <string name="permissions_battery_desc">앱이 최소화된 경우 설치 과정이 자동으로 취소되지 않도록 해요.</string>
   <string name="permissions_notifs_desc">설치 중에 Aliucord Manager가 최소화된 경우 다운로드 진행률을 표시할 때만 사용돼요.</string>
-  <string name="permissions_shizuku_denied">Shizuku 권한을 얻지 못했어요</string>
   <string name="permissions_root_denied">루트 권한을 얻지 못했어요</string>
+  <string name="permissions_shizuku_denied">Shizuku 권한을 얻지 못했어요</string>
+  <string name="permissions_dhizuku_denied">Failed to obtain Dhizuku permissions</string>
   <string name="installs_no_installs">설치된 앱이 없어요!</string>
   <string name="launch_aliucord_fail">Aliucord 실행 실패</string>
   <string name="settings_header_advanced">고급 설정</string>
@@ -70,7 +71,13 @@
   <string name="installer_pm">직접 설치</string>
   <string name="installer_pm_desc">앱에서 직접 PackageInstaller API를 호출해요. (기본)</string>
   <string name="installer_root">루트</string>
+  <string name="installer_intent">Intent</string>
+  <string name="installer_intent_desc">Launches an intent to handle installation through the system\'s configured default installer.</string>
+  <string name="installer_root_desc">Invokes PackageManager directly using device root such as Magisk or KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
+  <string name="installer_shizuku_desc">Invokes the PackageInstaller API remotely through Shizuku. ADB, Wireless ADB, and Root backends are all supported.</string>
+  <string name="installer_dhizuku">Dhizuku</string>
+  <string name="installer_dhizuku_desc">Invokes the PackageInstaller API remotely through Dhizuku using DeviceOwner permissions.</string>
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어둡게</string>
   <string name="theme_light">밝게</string>
@@ -111,6 +118,7 @@
   <string name="installer_banner_failure">설치하지 못했어요! 재시도하거나 이 배너를 눌러 Aliucord 서버에서 도움을 받을 수 있어요.</string>
   <string name="installer_banner_success">Aliucord를 설치했어요! 이 앱(Manager)은 업데이트를 수행하는 데 필요하니 제거하지 마세요.</string>
   <string name="install_error_unknown">설치 창 실패(알 수 없는 원인)</string>
+  <string name="install_error_unhandled_intent">No handlers available for %s!</string>
   <string name="install_error_blocked">설치가 차단됐어요</string>
   <string name="install_error_invalid">하나 이상의 APK가 잘못됐거나 손상됐어요</string>
   <string name="install_error_conflict">기존 앱과 충돌했어요. 보통 서명이 일치하지 않아서 발생해요</string>

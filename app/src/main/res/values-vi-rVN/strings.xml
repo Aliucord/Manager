@@ -47,8 +47,9 @@
   <string name="permissions_battery_title">Pin dưới nền</string>
   <string name="permissions_battery_desc">Đảm bảo quá trình cài đặt không bị tự động hủy nếu ứng dụng được thu nhỏ.</string>
   <string name="permissions_notifs_desc">Chỉ được sử dụng để hiển thị tiến trình tải xuống nếu Aliucord Manager được thu nhỏ trong quá trình cài đặt</string>
-  <string name="permissions_shizuku_denied">Nhận quyền của Shizuku thất bại</string>
   <string name="permissions_root_denied">Nhận quyền root thất bại</string>
+  <string name="permissions_shizuku_denied">Nhận quyền của Shizuku thất bại</string>
+  <string name="permissions_dhizuku_denied">Failed to obtain Dhizuku permissions</string>
   <string name="installs_no_installs">No installations founds!</string>
   <string name="launch_aliucord_fail">Không thể khởi động Aliucord</string>
   <string name="settings_header_advanced">Nâng cao</string>
@@ -70,7 +71,13 @@
   <string name="installer_pm">Trực tiếp</string>
   <string name="installer_pm_desc">Gọi API PackageInstaller trực tiếp từ ngữ cảnh của ứng dụng. (Mặc định)</string>
   <string name="installer_root">Root</string>
+  <string name="installer_intent">Intent</string>
+  <string name="installer_intent_desc">Launches an intent to handle installation through the system\'s configured default installer.</string>
+  <string name="installer_root_desc">Invokes PackageManager directly using device root such as Magisk or KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
+  <string name="installer_shizuku_desc">Invokes the PackageInstaller API remotely through Shizuku. ADB, Wireless ADB, and Root backends are all supported.</string>
+  <string name="installer_dhizuku">Dhizuku</string>
+  <string name="installer_dhizuku_desc">Invokes the PackageInstaller API remotely through Dhizuku using DeviceOwner permissions.</string>
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>
@@ -111,6 +118,7 @@
   <string name="installer_banner_failure">Cài đặt thất bại! Bạn có thể thử lại hoặc nhấn vào biểu ngữ để mở server Aliucord để được hỗ trợ.</string>
   <string name="installer_banner_success">Cài đặt Aliucord thành công! Tuyệt đối *KHÔNG* được gỡ cài đặt trình quản lý (ứng dụng này) vì ứng dụng này sẽ cần thiết cho việc cập nhật.</string>
   <string name="install_error_unknown">Failed to install (Unknown reason)</string>
+  <string name="install_error_unhandled_intent">No handlers available for %s!</string>
   <string name="install_error_blocked">Cài đặt đã bị chặn</string>
   <string name="install_error_invalid">Một hoặc nhiều tệp APK không hợp lệ hoặc bị hỏng</string>
   <string name="install_error_conflict">Xung đột với một ứng dụng có sẵn, thường do giấy phép chữ ký không hợp lệ</string>
