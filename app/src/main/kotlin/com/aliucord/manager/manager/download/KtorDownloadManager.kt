@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.storage.StorageManager
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
+import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.download.IDownloadManager.Result
 import com.aliucord.manager.patcher.util.InsufficientStorageException
@@ -14,8 +16,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.prepareGet
 import io.ktor.client.statement.bodyAsChannel
-import io.ktor.http.HttpHeaders
-import io.ktor.http.contentLength
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.*
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.CancellationException
 import java.io.File
@@ -36,7 +38,6 @@ class KtorDownloadManager(
         out.parentFile?.mkdirs()
 
         val tmpOut = out.resolveSibling(out.name + ".tmp")
-            .apply { exists() || createNewFile() }
 
         try {
             val httpStmt = http.prepareGet(url) {
@@ -50,6 +51,17 @@ class KtorDownloadManager(
             }
 
             httpStmt.execute { resp ->
+                if (!resp.status.isSuccess()) {
+                    val body = try {
+                        resp.bodyAsText().take(2048)
+                    } catch (e: Exception) {
+                        Log.e(BuildConfig.TAG, "Failed to read downloader error response", e)
+                        "<failed to read>"
+                    }
+
+                    throw DownloadException(url = url, status = resp.status, body = body)
+                }
+
                 val channel = resp.bodyAsChannel()
                 val total = resp.contentLength() ?: 0
                 var retrieved = 0L
@@ -92,6 +104,13 @@ class KtorDownloadManager(
         } catch (_: CancellationException) {
             tmpOut.delete()
             return Result.Cancelled(systemTriggered = false)
+        } catch (e: DownloadException) {
+            tmpOut.delete()
+            return Error(
+                error = e,
+                localizedError = R.string.downloader_err_code,
+                localizedErrorArgs = arrayOf(e.status.value),
+            )
         } catch (e: SocketTimeoutException) {
             tmpOut.delete()
             return Error(e, localizedError = R.string.downloader_err_timeout)
@@ -114,10 +133,16 @@ class KtorDownloadManager(
         private val error: Throwable,
         @StringRes
         private val localizedError: Int? = null,
+        private val localizedErrorArgs: Array<Any> = arrayOf(),
     ) : Result.Error() {
         override fun toString(): String = error.stackTraceToString()
         override fun getDebugReason(): String = error.message ?: "Unknown exception"
-        override fun getLocalizedReason(context: Context): String? = localizedError?.let(context::getString)
+        override fun getLocalizedReason(context: Context): String? =
+            localizedError?.let { context.getString(it, *localizedErrorArgs) }
+
         override fun getError(): Throwable? = error
     }
+
+    private class DownloadException(val url: String, val status: HttpStatusCode, val body: String) :
+        IOException("Failed to download $url, received status code $status, response: $body")
 }
