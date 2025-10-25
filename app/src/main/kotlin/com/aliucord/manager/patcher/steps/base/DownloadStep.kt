@@ -38,7 +38,7 @@ abstract class DownloadStep : Step(), KoinComponent {
      * @throws Throwable If verification fails.
      */
     @CallSuper
-    open suspend fun verify() {
+    open suspend fun verify(container: StepRunner) {
         if (!targetFile.exists())
             throw Error("Downloaded file is missing!")
 
@@ -55,7 +55,7 @@ abstract class DownloadStep : Step(), KoinComponent {
             container.log("File exists, verifying...")
 
             try {
-                verify()
+                verify(container)
                 state = StepState.Skipped
                 container.log("File verified, skipping download")
                 return
@@ -87,7 +87,7 @@ abstract class DownloadStep : Step(), KoinComponent {
                 container.log("Successfully downloaded file, verifying...")
 
                 try {
-                    verify()
+                    verify(container)
                 } catch (t: Throwable) {
                     mainThread { context.showToast(R.string.installer_dl_verify_fail) }
                     container.log("Failed to verify file, deleting...")

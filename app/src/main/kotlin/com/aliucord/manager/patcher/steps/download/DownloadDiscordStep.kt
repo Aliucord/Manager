@@ -6,6 +6,7 @@ import androidx.compose.runtime.Stable
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
 import com.android.apksig.ApkVerifier
 import okio.ByteString.Companion.decodeHex
@@ -26,11 +27,15 @@ class DownloadDiscordStep : DownloadStep(), KoinComponent {
     override val targetFile = paths.discordApkVersionCache(DISCORD_KT_VERSION)
         .resolve("discord.apk")
 
-    override suspend fun verify() {
-        super.verify()
+    override suspend fun verify(container: StepRunner) {
+        super.verify(container)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            container.log("Verifying APK signature")
             verifySignature()
+        } else {
+            container.log("Skipping APK signature verification, API level too old")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.P) // Requires Type#getTypeName()
