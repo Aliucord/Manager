@@ -1,5 +1,7 @@
 package com.aliucord.manager.patcher.steps.download
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
@@ -27,6 +29,12 @@ class DownloadDiscordStep : DownloadStep(), KoinComponent {
     override suspend fun verify() {
         super.verify()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            verifySignature()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P) // Requires Type#getTypeName()
+    private fun verifySignature() {
         // Verify the signature of the APK to ensure it's the original
         val verifier = ApkVerifier.Builder(targetFile).build()
         val result = try {
