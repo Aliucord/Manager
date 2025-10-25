@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Fehler bei der Überprüfung von Aktualisierungen!</string>
   <string name="updater_update_fail">Update fehlgeschlagen! Bitte das Update manuell herunterladen und installieren!</string>
   <string name="downloader_err_unknown">Download Fehler (unbekannt)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Download fehlgeschlagen (Zeitüberschreitung)</string>
   <string name="downloader_err_response">Download fehlgeschlagen (Ungültige Antwort)</string>
   <string name="downloader_err_file_exists">Download fehlgeschlagen (Datei bereits vorhanden)</string>

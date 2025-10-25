@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Nepodařilo se zkontrolovat aktualizace!</string>
   <string name="updater_update_fail">Aktualizace se nezdařila! Stáhněte a nainstalujte aktualizaci manuálně!</string>
   <string name="downloader_err_unknown">Stahování se nezdařilo (důvod neznámý)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Stahování se nezdařilo (Překročen časový limit)</string>
   <string name="downloader_err_response">Stahování se nezdařilo (neplatná odpověď)</string>
   <string name="downloader_err_file_exists">Stahování se nezdařilo (soubor již existuje)</string>

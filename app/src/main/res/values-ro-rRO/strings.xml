@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Verificarea actualizărilor a eșuat!</string>
   <string name="updater_update_fail">Actualizarea a eșuat! Vă rugăm sa descărcați și să instalați actualizarea manual!</string>
   <string name="downloader_err_unknown">Descărcarea a eșuat (motiv necunoscut)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Descărcarea a eșuat (expirare după un anumit timp)</string>
   <string name="downloader_err_response">Descărcarea a eșuat (răspuns nevalid)</string>
   <string name="downloader_err_file_exists">Descărcarea a eșuat (fișierul există deja)</string>

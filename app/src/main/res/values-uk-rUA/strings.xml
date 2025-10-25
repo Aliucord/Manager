@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Не вдалося перевірити на наявність оновлень!</string>
   <string name="updater_update_fail">Не вдалося оновити! Будь ласка, завантажте та встановіть його вручну!</string>
   <string name="downloader_err_unknown">Помилка завантаження (Невідома)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Помилка завантаження (Час очікування вийшов)</string>
   <string name="downloader_err_response">Помилка завантаження (Неправильна відповідь)</string>
   <string name="downloader_err_file_exists">Помилка завантаження (Файл існує)</string>

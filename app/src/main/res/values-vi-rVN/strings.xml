@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Kiểm tra cập nhật thất bại!</string>
   <string name="updater_update_fail">Cập nhật thất bại! Vui lòng tải và cài đặt thủ công!</string>
   <string name="downloader_err_unknown">Tải xuống thất bại (Không xác định)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Tải xuống thất bại (Hết thời gian chờ)</string>
   <string name="downloader_err_response">Tải xuống thất bại (Phản hồi không hợp lệ)</string>
   <string name="downloader_err_file_exists">Tải xuống thất bại (Tệp đã tồn tại)</string>

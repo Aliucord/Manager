@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Falha ao checar atualizações</string>
   <string name="updater_update_fail">Falha ao atualizar! Por favor, baixe e instale a atualização manualmente!</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Falha no Download (tempo esgotado)</string>
   <string name="downloader_err_response">Download falhou (Resposta inválida)</string>
   <string name="downloader_err_file_exists">Download falhou (Arquivo já existe)</string>

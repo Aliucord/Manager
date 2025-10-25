@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Nem sikerült frissítéseket keresni!</string>
   <string name="updater_update_fail">Nem sikerült frissíteni! Töltsd le és telepítsd a frissítést manuálisan!</string>
   <string name="downloader_err_unknown">Letöltés sikertelen (Ismeretlen hiba)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Letöltés sikertelen (Időtúllépés)</string>
   <string name="downloader_err_response">Letöltés sikertelen (Ismeretlen válasz)</string>
   <string name="downloader_err_file_exists">Letöltés sikertelen (Már létezik)</string>

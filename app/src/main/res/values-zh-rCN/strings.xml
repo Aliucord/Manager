@@ -161,6 +161,7 @@
   <string name="updater_check_fail">更新检查失败！</string>
   <string name="updater_update_fail">更新失败！请手动下载并安装更新！</string>
   <string name="downloader_err_unknown">下载失败（未知）</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">下载失败（超时）</string>
   <string name="downloader_err_response">下载失败（无效响应）</string>
   <string name="downloader_err_file_exists">下载失败（文件已存在）</string>

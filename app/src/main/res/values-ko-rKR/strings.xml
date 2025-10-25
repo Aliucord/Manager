@@ -161,6 +161,7 @@
   <string name="updater_check_fail">업데이트 확인에 실패했어요!</string>
   <string name="updater_update_fail">업데이트에 실패했어요! 업데이트를 수동으로 다운로드하고 설치해 주세요!</string>
   <string name="downloader_err_unknown">다운로드 실패(알 수 없음)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">다운로드 실패(시간 초과)</string>
   <string name="downloader_err_response">다운로드 실패(잘못된 응답)</string>
   <string name="downloader_err_file_exists">다운로드 실패(파일이 존재함)</string>

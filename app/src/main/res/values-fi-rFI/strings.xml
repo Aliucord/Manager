@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Päivitysten haku epäonnistui!</string>
   <string name="updater_update_fail">Päivitys epäonnistui! Lataa ja asenna päivitys manuaalisesti!</string>
   <string name="downloader_err_unknown">Lataus epäonnistui (Tuntematon)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Lataus epäonnistui (Aikakatkaisu)</string>
   <string name="downloader_err_response">Lataus epäonnistui (Virheellinen vastaus)</string>
   <string name="downloader_err_file_exists">Lataus epäonnistui (Tiedosto on olemassa)</string>

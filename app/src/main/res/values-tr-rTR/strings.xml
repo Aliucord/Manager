@@ -162,6 +162,7 @@ lütfen silin!</string>
   <string name="updater_check_fail">Güncellemeler kontrol edilemedi!</string>
   <string name="updater_update_fail">Güncelleme başarısız! Lütfen güncellemeyi kendiniz elle indirip yükleyin!</string>
   <string name="downloader_err_unknown">İndirme başarısız (Bilinmiyor)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">İndirme başarısız (Zamanaşımı)</string>
   <string name="downloader_err_response">İndirme başarısız (İletişim sorunu)</string>
   <string name="downloader_err_file_exists">Kurulum başarısız (Dosya mevcut)</string>

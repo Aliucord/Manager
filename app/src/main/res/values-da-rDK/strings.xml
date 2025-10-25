@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Download mislykkedes (ukendt)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Download mislykkedes (timeout)</string>
   <string name="downloader_err_response">Download mislykkedes (ugyldigt svar)</string>
   <string name="downloader_err_file_exists">Download mislykkedes (fil findes)</string>

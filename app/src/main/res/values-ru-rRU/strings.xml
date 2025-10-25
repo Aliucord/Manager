@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Не удалось проверить наличие обновлений!</string>
   <string name="updater_update_fail">Не удалось установить обновление! Пожалуйста, загрузите и установите его вручную!</string>
   <string name="downloader_err_unknown">Сбой загрузки (Неизвестно)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Сбой загрузки (Таймаут)</string>
   <string name="downloader_err_response">Сбой загрузки (Неверный ответ)</string>
   <string name="downloader_err_file_exists">Сбой загрузки (Файл существует)</string>

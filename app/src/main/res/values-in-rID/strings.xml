@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Gagal untuk memeriksa update!</string>
   <string name="updater_update_fail">Gagal memperbarui! Mohon download dan pasang versi terbaru secara manual!</string>
   <string name="downloader_err_unknown">Unduhan gagal (Tidak diketahui)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Unduhan gagal (Waktu habis)</string>
   <string name="downloader_err_response">Unduhan gagal (Reaksi tidak benar)</string>
   <string name="downloader_err_file_exists">Unduhan gagal (Berkas sudah ada)</string>

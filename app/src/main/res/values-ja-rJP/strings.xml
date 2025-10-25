@@ -161,6 +161,7 @@
   <string name="updater_check_fail">更新の確認に失敗しました！</string>
   <string name="updater_update_fail">更新に失敗しました！手動でダウンロードしてインストールしてください！</string>
   <string name="downloader_err_unknown">ダウンロードに失敗しました (不明)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">ダウンロード失敗（タイムアウト）</string>
   <string name="downloader_err_response">ダウンロードに失敗しました (無効な応答)</string>
   <string name="downloader_err_file_exists">ダウンロードに失敗しました (ファイルが既に存在しています)</string>

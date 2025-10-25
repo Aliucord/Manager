@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Nabigong suriin para sa mga update!</string>
   <string name="updater_update_fail">Nabigong i-update! Mangyaring manwal na i-download at i-install ang update!</string>
   <string name="downloader_err_unknown">Nabigo ang pag-download (Hindi alam)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Nabigo ang pag-download (Nag-time out)</string>
   <string name="downloader_err_response">Nabigong i-download (Hindi wastong sagot)</string>
   <string name="downloader_err_file_exists">Nabigo ang pag-download (Umiiral ang file)</string>

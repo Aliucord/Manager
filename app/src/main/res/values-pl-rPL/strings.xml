@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Nie udało się sprawdzić aktualizacji!</string>
   <string name="updater_update_fail">Nie udało się zaktualizować! Proszę pobrać i zainstalować te aktualizacje ręcznie!</string>
   <string name="downloader_err_unknown">Pobieranie nie powiodło się (Powód nieznany)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Pobieranie nie powiodło się (Upłynął limit czasu)</string>
   <string name="downloader_err_response">Pobieranie nie powiodło się (Nieprawidłowa odpowiedź)</string>
   <string name="downloader_err_file_exists">Pobieranie nie powiodło się (Plik istnieje)</string>

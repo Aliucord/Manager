@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Falha na verificação de atualizações!</string>
   <string name="updater_update_fail">Falha na atualização! Transfira e instale a atualização manualmente!</string>
   <string name="downloader_err_unknown">A transferência falhou (Desconhecido)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">A transferência falhou (Tempo esgotado)</string>
   <string name="downloader_err_response">A transferência falhou (Resposta inválida)</string>
   <string name="downloader_err_file_exists">A transferência falhou (Ficheiro existente) </string>

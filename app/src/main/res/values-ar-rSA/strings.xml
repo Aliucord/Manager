@@ -161,6 +161,7 @@
   <string name="updater_check_fail">فشل في التحقق من وجود تحديثات</string>
   <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">فشل التنزيل (مجهول)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">فشل التنزيل (المهلة)</string>
   <string name="downloader_err_response">فشل التحميل (استجابة غير صالحة)</string>
   <string name="downloader_err_file_exists">فشل التنزيل (الملف موجود)</string>

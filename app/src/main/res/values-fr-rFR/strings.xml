@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Échec lors de la vérification des mises à jour !</string>
   <string name="updater_update_fail">Échec de la mise à jour ! Veuillez télécharger et installer la mise à jour manuellement !</string>
   <string name="downloader_err_unknown">Téléchargement échoué (Inconnu)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Téléchargement échoué (Délai d\'attente)</string>
   <string name="downloader_err_response">Téléchargement échoué (Réponse invalide)</string>
   <string name="downloader_err_file_exists">Téléchargement échoué (Fichier existant)</string>

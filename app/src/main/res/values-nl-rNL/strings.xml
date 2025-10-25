@@ -29,7 +29,7 @@
   <string name="action_exit_anyways">Toch afsluiten</string>
   <string name="action_open_info">Informatie openen</string>
   <string name="action_reset_default">Fabrieksinstellingen</string>
-  <string name="intent_reinstall_fail">Failed to automatically reinstall! Please try doing it manually.</string>
+  <string name="intent_reinstall_fail">Automatisch herinstalleren mislukt! Probeer het handmatig.</string>
   <string name="intent_import_component_success">Successfully imported %s</string>
   <string name="intent_import_component_failure">Failed to import custom component!</string>
   <string name="permissions_title">Grant Permissions</string>
@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Failed to check for updates!</string>
   <string name="updater_update_fail">Failed to update! Please download and install the update manually!</string>
   <string name="downloader_err_unknown">Download failed (Unknown)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Download failed (Timeout)</string>
   <string name="downloader_err_response">Download failed (Invalid response)</string>
   <string name="downloader_err_file_exists">Download failed (File exists)</string>

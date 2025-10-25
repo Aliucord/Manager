@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Error al buscar actualizaciones.</string>
   <string name="updater_update_fail">¡Error al actualizar! Por favor descarga e instala la actualización manualmente.</string>
   <string name="downloader_err_unknown">Descarga fallida (error desconocido)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Descarga fallida (Tiempo de espera agotado)</string>
   <string name="downloader_err_response">Descarga fallida (respuesta no válida)</string>
   <string name="downloader_err_file_exists">Descarga fallida (el archivo existe)</string>

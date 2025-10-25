@@ -161,6 +161,7 @@
   <string name="updater_check_fail">Impossibile controllare gli aggiornamenti!</string>
   <string name="updater_update_fail">Impossibile aggiornare! Scarica e installa manualmente l\'aggiornamento!</string>
   <string name="downloader_err_unknown">Download non riuscito (Sconosciuto)</string>
+  <string name="downloader_err_code">Download failed (%s)</string>
   <string name="downloader_err_timeout">Download non riuscito (Timeout)</string>
   <string name="downloader_err_response">Download non riuscito (Risposta non valida)</string>
   <string name="downloader_err_file_exists">Download non riuscito (File esistente)</string>
