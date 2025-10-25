@@ -23,6 +23,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
 
       - name: Build with Gradle
         run: ./gradlew :app:assembleDebug :app:assembleStaging --stacktrace
