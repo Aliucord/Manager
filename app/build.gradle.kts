@@ -2,7 +2,6 @@
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -30,8 +29,8 @@ android {
     defaultConfig {
         minSdk = 24
         targetSdk = 36
-        versionCode = 10_00_03
-        versionName = "1.0.3"
+        versionCode = 10_01_00
+        versionName = "1.1.0"
 
         vectorDrawables {
             useSupportLibrary = true

@@ -49,7 +49,7 @@ legacy installer. It is deprecated and does not work anymore.
     - [JDK 21+](https://adoptium.net/temurin/releases/?os=any&arch=any&version=21)
 2. Clone the repo:
    ```shell
-   git clone https://github.com/rushiiMachine/Manager && cd Manager
+   git clone https://github.com/Aliucord/Manager && cd Manager
    ```
 3. Build the project:
    #### Linux/macOS
