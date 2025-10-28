@@ -25,7 +25,7 @@ class DownloadKotlinStep : DownloadStep(), IDexProvider, KoinComponent {
         const val ORG = "Aliucord"
         const val MAIN_REPO = "Aliucord"
 
-        const val URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/main/installer/android/app/src/main/assets/kotlin/classes.dex"
+        const val URL = "https://cdn.jsdelivr.net/gh/$ORG/$MAIN_REPO@main/installer/android/app/src/main/assets/kotlin/classes.dex"
     }
 
     override val dexCount = 1
