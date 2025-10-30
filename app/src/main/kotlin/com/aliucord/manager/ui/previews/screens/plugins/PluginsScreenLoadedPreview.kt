@@ -28,6 +28,8 @@ private fun PluginsScreenLoadedPreview() {
             onPluginUninstall = {},
             onPluginChangelog = {},
             onPluginToggle = { name, enabled -> },
+            safeMode = false,
+            setSafeMode = {}
         )
     }
 }

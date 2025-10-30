@@ -24,6 +24,8 @@ private fun PluginsScreenFailedPreview() {
             onPluginUninstall = {},
             onPluginChangelog = {},
             onPluginToggle = { name, enabled -> },
+            safeMode = false,
+            setSafeMode = {}
         )
     }
 }

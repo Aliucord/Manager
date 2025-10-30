@@ -45,6 +45,9 @@ class PluginsModel(
     val searchText: StateFlow<String>
         private field = MutableStateFlow("")
 
+    var pluginsSafeMode = MutableStateFlow(false)
+        private set
+
     val filteredPlugins: StateFlow<ImmutableList<PluginItem>> = searchText
         .combine(plugins) { searchText, plugins ->
             if (searchText.isBlank()) {
@@ -61,6 +64,29 @@ class PluginsModel(
             started = SharingStarted.WhileSubscribed(replayExpiration = Duration.ZERO),
             initialValue = plugins.value,
         )
+
+    @OptIn(ExperimentalSerializationApi::class)
+    private fun loadSafeMode() = screenModelScope.launchIO {
+        val settings = paths.coreSettingsFile.inputStream()
+            .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
+
+        val safeMode = settings["AC_SAFE_MODE"]?.jsonPrimitive?.booleanOrNull ?: false
+        pluginsSafeMode.value = safeMode
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    fun setSafeMode(safeMode: Boolean) = screenModelScope.launchIO {
+        val settings = paths.coreSettingsFile.inputStream()
+            .use { Json.decodeFromStream<MutableMap<String, JsonElement>>(it) }
+
+        settings["AC_SAFE_MODE"] = JsonPrimitive(safeMode)
+
+        paths.coreSettingsFile.outputStream().use { out ->
+            Json.encodeToStream(settings, out)
+        }
+
+        pluginsSafeMode.value = safeMode
+    }
 
     fun setSearchText(search: String) {
         searchText.value = search
@@ -137,6 +163,7 @@ class PluginsModel(
     fun refreshData() = screenModelScope.launchIO {
         loadPlugins()
         loadPluginsEnabled()
+        loadSafeMode()
     }
 
     private suspend fun loadPluginsEnabled() {

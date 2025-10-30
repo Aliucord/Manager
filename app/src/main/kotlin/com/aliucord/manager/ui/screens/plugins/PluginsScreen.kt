@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -19,6 +20,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.BackButton
+import com.aliucord.manager.ui.components.settings.SettingsSwitch
 import com.aliucord.manager.ui.screens.plugins.components.*
 import com.aliucord.manager.ui.screens.plugins.components.dialogs.UninstallPluginDialog
 import com.aliucord.manager.ui.screens.plugins.model.PluginItem
@@ -66,6 +68,8 @@ class PluginsScreen : Screen, Parcelable {
             onPluginUninstall = model::showUninstallDialog,
             onPluginChangelog = model::showChangelogDialog,
             onPluginToggle = model::setPluginEnabled,
+            safeMode = model.pluginsSafeMode.collectAsState().value,
+            setSafeMode = model::setSafeMode,
         )
     }
 }
@@ -79,6 +83,8 @@ fun PluginsScreenContent(
     onPluginUninstall: (PluginItem) -> Unit,
     onPluginChangelog: (PluginItem) -> Unit,
     onPluginToggle: (name: String, enabled: Boolean) -> Unit,
+    safeMode: Boolean,
+    setSafeMode: (Boolean) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -89,17 +95,28 @@ fun PluginsScreenContent(
         }
     ) { paddingValues ->
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues.exclude(PaddingValuesSides.Bottom))
-                .padding(horizontal = 20.dp)
+                .padding(paddingValues.exclude(PaddingValuesSides.Bottom)),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            PluginSearch(
-                currentFilter = searchText,
-                onFilterChange = setSearchText,
-                modifier = Modifier.fillMaxWidth()
+            SettingsSwitch(
+                label = stringResource(R.string.plugins_safe_mode_title),
+                secondaryLabel = stringResource(R.string.plugins_safe_mode_desc),
+                icon = { Icon(painterResource(R.drawable.ic_security), null) },
+                pref = safeMode,
+                onPrefChange = setSafeMode
             )
+
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp)
+            ) {
+                PluginSearch(
+                    currentFilter = searchText,
+                    onFilterChange = setSearchText,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
 
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -126,10 +143,10 @@ fun PluginsScreenContent(
                                 onSetEnabled = { onPluginToggle(plugin.manifest.name, it) },
                             )
                         }
-                    }
 
-                    else -> item(key = "PLUGINS_NONE") {
-                        PluginsNone(modifier = Modifier.fillParentMaxSize())
+                        else -> item("PLUGINS_NONE") {
+                            PluginsNone(Modifier.fillParentMaxSize())
+                        }
                     }
                 }
             }
