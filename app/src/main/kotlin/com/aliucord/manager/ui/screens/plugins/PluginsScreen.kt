@@ -118,30 +118,32 @@ fun PluginsScreenContent(
                         .fillMaxWidth()
                 )
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = paddingValues
-                    .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
-                    .add(PaddingValues(vertical = 12.dp)),
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                when {
-                    isError -> item(key = "ERROR") {
-                        PluginsError(modifier = Modifier.fillParentMaxSize())
-                    }
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = paddingValues
+                        .exclude(PaddingValuesSides.Horizontal + PaddingValuesSides.Top)
+                        .add(PaddingValues(vertical = 12.dp)),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    when {
+                        isError -> item(key = "ERROR") {
+                            PluginsError(modifier = Modifier.fillParentMaxSize())
+                        }
 
-                    plugins.isNotEmpty() -> {
-                        items(
-                            items = plugins,
-                            contentType = { "PLUGIN" },
-                            key = { it.path },
-                        ) { plugin ->
-                            PluginCard(
-                                plugin = plugin,
-                                onClickDelete = { onPluginUninstall(plugin) },
-                                onClickShowChangelog = { onPluginChangelog(plugin) },
-                                onSetEnabled = { onPluginToggle(plugin.manifest.name, it) },
-                            )
+                        plugins.isNotEmpty() -> {
+                            items(
+                                items = plugins,
+                                contentType = { "PLUGIN" },
+                                key = { it.path },
+                            ) { plugin ->
+                                PluginCard(
+                                    plugin = plugin,
+                                    onClickDelete = { onPluginUninstall(plugin) },
+                                    onClickShowChangelog = { onPluginChangelog(plugin) },
+                                    onSetEnabled = { onPluginToggle(plugin.manifest.name, it) },
+                                )
+                            }
+
                         }
 
                         else -> item("PLUGINS_NONE") {
