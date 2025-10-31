@@ -70,7 +70,7 @@ class PluginsModel(
         val settings = paths.coreSettingsFile.inputStream()
             .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
 
-        val safeMode = settings["AC_SAFE_MODE"]?.jsonPrimitive?.booleanOrNull ?: false
+        val safeMode = settings["AC_aliucord_safe_mode_enabled"]?.jsonPrimitive?.booleanOrNull ?: false
         pluginsSafeMode.value = safeMode
     }
 
@@ -79,7 +79,7 @@ class PluginsModel(
         val settings = paths.coreSettingsFile.inputStream()
             .use { Json.decodeFromStream<MutableMap<String, JsonElement>>(it) }
 
-        settings["AC_SAFE_MODE"] = JsonPrimitive(safeMode)
+        settings["AC_aliucord_safe_mode_enabled"] = JsonPrimitive(safeMode)
 
         paths.coreSettingsFile.outputStream().use { out ->
             Json.encodeToStream(settings, out)
