@@ -85,6 +85,6 @@ class DownloadPatchesStep : DownloadStep(), KoinComponent {
         const val ORG = "Aliucord"
         const val MAIN_REPO = "Aliucord"
 
-        const val URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/patches.zip"
+        const val URL = "https://builds.aliucord.com/patches.zip"
     }
 }

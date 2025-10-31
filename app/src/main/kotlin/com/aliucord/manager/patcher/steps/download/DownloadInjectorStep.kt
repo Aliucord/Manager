@@ -87,7 +87,7 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
         const val ORG = "Aliucord"
         const val MAIN_REPO = "Aliucord"
 
-        const val URL = "https://raw.githubusercontent.com/$ORG/$MAIN_REPO/builds/Injector.dex"
+        const val URL = "https://builds.aliucord.com/Injector.dex"
     }
 
     override val dexCount = 1
