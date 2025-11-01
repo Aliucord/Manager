@@ -3,6 +3,8 @@ package com.aliucord.manager.ui.screens.settings.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -90,7 +92,7 @@ fun InstallersDialog(
         },
         title = { Text(stringResource(R.string.setting_installer)) },
         text = {
-            Column {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 for (installer in InstallerSetting.entries) key(installer) {
                     InstallerItem(
                         installer = installer,
