@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">Ingen plugins installeret!</string>
   <string name="plugins_changelog_media">Ændringslog Medie</string>
   <string name="plugins_error">En fejl opstod under behandlingen af plugins!</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">Tilbage</string>
   <string name="navigation_about">Om</string>
   <string name="navigation_logs">Logs</string>

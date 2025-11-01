@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">Δεν υπάρχουν εγκατεστημένα plugins!</string>
   <string name="plugins_changelog_media">Πολυμέσα Αλλαγών</string>
   <string name="plugins_error">Παρουσιάστηκε σφάλμα κατά την επεξεργασία των plugins!</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">Πίσω</string>
   <string name="navigation_about">Σχετικά με</string>
   <string name="navigation_logs">Logs</string>

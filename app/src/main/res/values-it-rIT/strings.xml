@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">Nessun plugin installato!</string>
   <string name="plugins_changelog_media">Changelog Media</string>
   <string name="plugins_error">Si è verificato un errore durante l\'elaborazione dei plugin!</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">Indietro</string>
   <string name="navigation_about">Informazioni</string>
   <string name="navigation_logs">Registri</string>
@@ -161,7 +163,7 @@
   <string name="updater_check_fail">Impossibile controllare gli aggiornamenti!</string>
   <string name="updater_update_fail">Impossibile aggiornare! Scarica e installa manualmente l\'aggiornamento!</string>
   <string name="downloader_err_unknown">Download non riuscito (Sconosciuto)</string>
-  <string name="downloader_err_code">Download failed (%s)</string>
+  <string name="downloader_err_code">Download fallito (%s)</string>
   <string name="downloader_err_timeout">Download non riuscito (Timeout)</string>
   <string name="downloader_err_response">Download non riuscito (Risposta non valida)</string>
   <string name="downloader_err_file_exists">Download non riuscito (File esistente)</string>

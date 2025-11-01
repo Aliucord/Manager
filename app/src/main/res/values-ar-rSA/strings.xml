@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">لا توجد إضافات مثبتة!</string>
   <string name="plugins_changelog_media">سجل التغييرات الوسائط </string>
   <string name="plugins_error">حدث خطأ أثناء معالجة الإضافات!</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">Back</string>
   <string name="navigation_about">About</string>
   <string name="navigation_logs">Logs</string>

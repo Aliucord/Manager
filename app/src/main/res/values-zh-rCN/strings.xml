@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">没有已安装的插件！</string>
   <string name="plugins_changelog_media">更新日志媒体</string>
   <string name="plugins_error">处理插件时发生错误！</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">返回</string>
   <string name="navigation_about">关于</string>
   <string name="navigation_logs">Logs</string>

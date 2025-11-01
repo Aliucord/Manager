@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">Geen plug-ins geïnstalleerd!</string>
   <string name="plugins_changelog_media">Wijzigingslogboek Media</string>
   <string name="plugins_error">Een fout is gebeurd tijdens het verwerken van de plug-ins!</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">Terug</string>
   <string name="navigation_about">Over</string>
   <string name="navigation_logs">Logs</string>

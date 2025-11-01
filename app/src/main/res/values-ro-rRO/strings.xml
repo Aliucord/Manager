@@ -88,6 +88,8 @@
   <string name="plugins_none_installed">Nu există plugin-uri instalate!</string>
   <string name="plugins_changelog_media">Jurnal modificări media</string>
   <string name="plugins_error">A apărut o eroare în timpul procesării plugin-urilor!</string>
+  <string name="plugins_safe_mode_title">Safe mode</string>
+  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
   <string name="navigation_back">Înapoi</string>
   <string name="navigation_about">Despre</string>
   <string name="navigation_logs">Logs</string>
