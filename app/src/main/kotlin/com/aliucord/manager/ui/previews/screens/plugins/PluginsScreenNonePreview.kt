@@ -24,6 +24,8 @@ private fun PluginsScreenNonePreview() {
             onPluginUninstall = {},
             onPluginChangelog = {},
             onPluginToggle = { name, enabled -> },
+            safeMode = false,
+            setSafeMode = {}
         )
     }
 }
