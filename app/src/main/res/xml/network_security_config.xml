@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<network-security-config>
+  <base-config>
+    <trust-anchors>
+      <certificates src="system" />
+      <certificates src="@raw/isrg_root_x1" />
+      <certificates src="@raw/isrg_root_x2" />
+      <certificates src="@raw/gts_root_r1" />
+      <certificates src="@raw/gts_root_r2" />
+      <certificates src="@raw/gts_root_r3" />
+      <certificates src="@raw/gts_root_r4" />
+      <certificates src="@raw/globalsign_root_r4" />
+    </trust-anchors>
+  </base-config>
+</network-security-config>
