@@ -126,8 +126,8 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildFeatures {
@@ -152,7 +152,7 @@ kotlin {
         val reportsDir = layout.buildDirectory.asFile.get()
             .resolve("reports").absolutePath
 
-        jvmTarget = JvmTarget.JVM_1_8
+        jvmTarget = JvmTarget.JVM_21
         freeCompilerArgs.addAll(
             "-opt-in=kotlin.time.ExperimentalTime",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",

@@ -2,6 +2,7 @@ package com.aliucord.manager.manager
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import com.aliucord.manager.R
 import com.aliucord.manager.util.showToast
 import com.rosan.dhizuku.api.Dhizuku
@@ -22,6 +23,9 @@ class DhizukuManager(private val context: Context) {
      * Determines whether Dhizuku is available and the binder has been retrieved.
      */
     fun dhizukuAvailable(): Boolean {
+        // Dhziuku requires at least Android 8.0
+        if (Build.VERSION.SDK_INT < 26) return false
+
         if (!dhizukuAvailable.get()) {
             return Dhizuku.init(context)
                 .also(dhizukuAvailable::set)
