@@ -4,14 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import android.os.storage.StorageManager
-import android.text.format.Formatter
 import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
-import com.aliucord.manager.util.IS_PROBABLY_EMULATOR
-import com.aliucord.manager.util.isPlayProtectEnabled
+import com.aliucord.manager.util.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -131,8 +129,8 @@ class InstallLogManager(
             Developer mode: ${if (prefs.devMode) "On" else "Off"}
             External storage: ${if (prefs.devMode || prefs.keepPatchedApks) "Yes" else "No"}
 
-            Disk Free: ${Formatter.formatShortFileSize(application, diskFreeSize)}
-            Cache Quota: ${Formatter.formatShortFileSize(application, cacheQuotaSize)}
+            Disk Free: ${diskFreeSize.formatShortFileSize()}
+            Cache Quota: ${cacheQuotaSize.formatShortFileSize()}
 
             Android API: ${Build.VERSION.SDK_INT}
             Supported ABIs: ${Build.SUPPORTED_ABIS.joinToString()}

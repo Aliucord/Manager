@@ -4,8 +4,34 @@ import android.os.Build
 import androidx.collection.ObjectList
 import java.io.BufferedReader
 import java.io.IOException
-import kotlin.math.pow
-import kotlin.math.truncate
+import java.lang.Long.signum
+import java.text.StringCharacterIterator
+import java.util.Locale
+import kotlin.math.*
+
+/**
+ * Formats this number as bytes to a human readable short file size in terms of 1024b = 1KiB
+ */
+// https://stackoverflow.com/a/3758880/13964629
+fun Long.formatShortFileSize(): String {
+    val bytes = this
+
+    val absB = if (bytes == Long.MIN_VALUE) Long.MAX_VALUE else abs(bytes)
+    if (absB < 1024) {
+        return "$bytes B"
+    }
+    var value = absB
+    val ci = StringCharacterIterator("KMGTPE")
+    var i = 40
+    while (i >= 0 && absB > 0xfffccccccccccccL shr i) {
+        value = value shr 10
+        ci.next()
+        i -= 10
+    }
+    value *= signum(bytes).toLong()
+    return String.format(Locale.ROOT, "%.1f %ciB", value / 1024.0, ci.current())
+}
+
 
 /**
  * Truncates this value to a specific number of [decimals] digits.
