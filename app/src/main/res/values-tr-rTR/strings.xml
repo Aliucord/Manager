@@ -141,12 +141,12 @@ lütfen silin!</string>
   <string name="patch_step_dl_aliuhook">Aliuhook kütüphanesi indiriliyor</string>
   <string name="patch_step_dl_smali">Smali yamaları indiriliyor</string>
   <string name="patch_step_copy_deps">Bağımlılıklar kopyalanıyor</string>
-  <string name="patch_step_patch_manifests">APK üstveri dosyaları yamalanıyor</string>
+  <string name="patch_step_patch_manifests">APK manifest dosyaları yamalanıyor</string>
   <string name="patch_step_patch_icon">Uygulama simgesi yamalanıyor</string>
   <string name="patch_step_add_aliuhook">Aliuhook kitaplığı ekleniyor</string>
   <string name="patch_step_patch_smali">Smali yamaları uygulanıyor</string>
   <string name="patch_step_reorganize_dex">APK\'ya .dex dosyaları ekleniyor</string>
-  <string name="patch_step_save_metadata">Üstverileri depola</string>
+  <string name="patch_step_save_metadata">Metaverileri depola</string>
   <string name="patch_step_alignment">Aligning APKs</string>
   <string name="patch_step_signing">APKlar İmzalanıyor</string>
   <string name="patch_step_install">APKlar Kuruluyor</string>
@@ -179,7 +179,7 @@ lütfen silin!</string>
   <string name="patchopts_appname_title">Uygulama Adı</string>
   <string name="patchopts_appname_desc">Uygulama adı ana ekranınızda uygulamanın nasıl adlandırılacağı ile ilgilidir. İkincil indirmelerde kullanım kolaylığı için değiştirilmelidir.</string>
   <string name="patchopts_debuggable_title">Hata ayıklanabilir</string>
-  <string name="patchopts_debuggable_desc">Hata ayıklanabilir üstveri dosyası depolama birimini etkinleştir. Bunu sadece ne yaptığınızı biliyorsanız kullanın!</string>
+  <string name="patchopts_debuggable_desc">Hata ayıklanabilir manifest flag\'ini etkinleştir. Bunu sadece ne yaptığınızı biliyorsanız kullanın!</string>
   <string name="patchopts_icon_title">Uygulama simgesini değiştir</string>
   <string name="patchopts_icon_desc">Discord\'un simgesini Aliucord\'un simgesine değişir.</string>
   <string name="patchopts_divider_basic">Temel</string>

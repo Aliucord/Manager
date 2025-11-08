@@ -49,7 +49,7 @@
   <string name="permissions_notifs_desc">Usado apenas para mostrar o progresso de download se o Aliucord Manager for minimizado durante a instalação.</string>
   <string name="permissions_root_denied">Falha ao obter permissões de root</string>
   <string name="permissions_shizuku_denied">Falha ao obter permissões de Shizuku</string>
-  <string name="permissions_dhizuku_denied">Failed to obtain Dhizuku permissions</string>
+  <string name="permissions_dhizuku_denied">Falha ao obter as permissões do Dhizuku</string>
   <string name="installs_no_installs">Nenhuma instalação encontrada!</string>
   <string name="launch_aliucord_fail">Falha ao executar Aliucord</string>
   <string name="settings_header_advanced">Avançado</string>
