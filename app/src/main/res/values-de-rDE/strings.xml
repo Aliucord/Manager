@@ -36,7 +36,7 @@
   <string name="permissions_subtitle">Aliucord Manager benötigt Berechtigungen:</string>
   <string name="permissions_legend">%s zeigt erforderliche Berechtigungen an!</string>
   <string name="permissions_grant">Zulassen</string>
-  <string name="permissions_granted">Zugelasst</string>
+  <string name="permissions_granted">Zugelassen</string>
   <string name="permissions_header_options">Optionen</string>
   <string name="permissions_header_permissions">Berechtigungen</string>
   <string name="permissions_install_title">Aus unbekannten Quellen installieren</string>
