@@ -82,9 +82,6 @@ class DownloadPatchesStep : DownloadStep(), KoinComponent {
     }
 
     private companion object {
-        const val ORG = "Aliucord"
-        const val MAIN_REPO = "Aliucord"
-
         const val URL = "https://builds.aliucord.com/patches.zip"
     }
 }

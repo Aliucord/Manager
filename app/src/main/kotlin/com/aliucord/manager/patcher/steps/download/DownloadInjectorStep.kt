@@ -84,9 +84,6 @@ class DownloadInjectorStep : DownloadStep(), IDexProvider, KoinComponent {
     }
 
     private companion object {
-        const val ORG = "Aliucord"
-        const val MAIN_REPO = "Aliucord"
-
         const val URL = "https://builds.aliucord.com/Injector.dex"
     }
 

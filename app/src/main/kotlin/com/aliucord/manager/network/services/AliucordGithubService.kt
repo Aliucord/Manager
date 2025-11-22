@@ -34,7 +34,6 @@ class AliucordGithubService(
 
     companion object {
         const val ORG = "Aliucord"
-        const val MAIN_REPO = "Aliucord"
         const val MANAGER_REPO = "Manager"
 
         const val DATA_JSON_URL = "https://builds.aliucord.com/data.json"

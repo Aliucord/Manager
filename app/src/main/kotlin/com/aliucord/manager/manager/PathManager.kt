@@ -122,11 +122,11 @@ class PathManager(
     fun customSmaliPatches() = listVersionedFiles(customPatchesDir)
 
     /**
-     * Singular Kotlin file of the most up-to-date version
-     * since the stdlib is backwards compatible.
+     * Resolve a specific path for a versioned Kotlin stdlib dex.
      */
-    fun cachedKotlinDex() = patchingDownloadDir
-        .resolve("kotlin.dex")
+    fun cachedKotlinDex(version: SemVer) = patchingDownloadDir
+        .resolve("kotlin").apply { mkdirs() }
+        .resolve("$version.dex")
 
     /**
      * The temporary working directory of a currently executing patching process.

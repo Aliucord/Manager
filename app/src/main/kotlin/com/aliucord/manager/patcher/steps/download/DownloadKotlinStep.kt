@@ -3,9 +3,12 @@ package com.aliucord.manager.patcher.steps.download
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.PathManager
+import com.aliucord.manager.network.utils.SemVer
+import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
 import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.patch.ReorganizeDexStep
+import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -17,15 +20,26 @@ import org.koin.core.component.inject
 class DownloadKotlinStep : DownloadStep(), IDexProvider, KoinComponent {
     private val paths: PathManager by inject()
 
+    /**
+     * This is populated right before the download starts (ref: [execute])
+     */
+    lateinit var targetVersion: SemVer
+        private set
+
     override val localizedName = R.string.patch_step_dl_kotlin
     override val targetUrl = URL
-    override val targetFile = paths.cachedKotlinDex()
+    override val targetFile get() = paths.cachedKotlinDex(targetVersion)
+
+    override suspend fun execute(container: StepRunner) {
+        targetVersion = container.getStep<FetchInfoStep>()
+            .data.injectorVersion
+        container.log("Downloading Kotlin stdlib version $targetVersion")
+
+        super.execute(container)
+    }
 
     private companion object {
-        const val ORG = "Aliucord"
-        const val MAIN_REPO = "Aliucord"
-
-        const val URL = "https://cdn.jsdelivr.net/gh/$ORG/$MAIN_REPO@main/installer/android/app/src/main/assets/kotlin/classes.dex"
+        const val URL = "https://builds.aliucord.com/kotlin.dex"
     }
 
     override val dexCount = 1

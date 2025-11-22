@@ -38,4 +38,9 @@ data class InstallMetadata(
      * Version of the smali patches that were applied onto the APK.
      */
     val patchesVersion: SemVer,
+
+    /**
+     * Version of the Kotlin stdlib that was injected into the end of the APK.
+     */
+    val kotlinVersion: SemVer,
 )
