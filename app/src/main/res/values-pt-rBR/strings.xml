@@ -72,12 +72,12 @@
   <string name="installer_pm_desc">Invoca a API do PackageInstaller diretamente do contexto do aplicativo. (Padrão)</string>
   <string name="installer_root">Root</string>
   <string name="installer_intent">Intent</string>
-  <string name="installer_intent_desc">Launches an intent to handle installation through the system\'s configured default installer.</string>
-  <string name="installer_root_desc">Invokes PackageManager directly using device root such as Magisk or KernelSU.</string>
+  <string name="installer_intent_desc">Lança um Intent para lidar com a instalação através do instalador padrão configurado pelo sistema.</string>
+  <string name="installer_root_desc">Invoca o PackageManager diretamente usando o root do dispositivo como Magisk ou KernelSU.</string>
   <string name="installer_shizuku">Shizuku</string>
-  <string name="installer_shizuku_desc">Invokes the PackageInstaller API remotely through Shizuku. ADB, Wireless ADB, and Root backends are all supported.</string>
+  <string name="installer_shizuku_desc">Invoca a API do PackageManager remotamente através do Shizuku. As backends ADB, WADB e Root são suportadas.</string>
   <string name="installer_dhizuku">Dhizuku</string>
-  <string name="installer_dhizuku_desc">Invokes the PackageInstaller API remotely through Dhizuku using DeviceOwner permissions.</string>
+  <string name="installer_dhizuku_desc">Invoca a API do PackageInstaller remotamente através do Dhizuku usando as permissões do Proprietário.</string>
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Escuro</string>
   <string name="theme_light">Claro</string>
@@ -88,8 +88,8 @@
   <string name="plugins_none_installed">Nenhum plugin instalado!</string>
   <string name="plugins_changelog_media">Mídia de registro</string>
   <string name="plugins_error">Ocorreu um erro ao processar os plugins!</string>
-  <string name="plugins_safe_mode_title">Safe mode</string>
-  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
+  <string name="plugins_safe_mode_title">Modo seguro</string>
+  <string name="plugins_safe_mode_desc">Temporariamente desativa todos os plugins ao iniciar o Aliucord</string>
   <string name="navigation_back">Voltar</string>
   <string name="navigation_about">Sobre</string>
   <string name="navigation_logs">Logs</string>
@@ -120,7 +120,7 @@
   <string name="installer_banner_failure">Falha na instalação! Você pode tentar novamente ou clicar neste banner para abrir o servidor do Aliucord para obter ajuda.</string>
   <string name="installer_banner_success">Aliucord instalado com sucesso! *NÃO* desinstale o gerenciador (este aplicativo), pois ele é necessário para executar certos tipos de atualizações.</string>
   <string name="install_error_unknown">Falha ao instalar (Razão desconhecida)</string>
-  <string name="install_error_unhandled_intent">No handlers available for %s!</string>
+  <string name="install_error_unhandled_intent">Nenhum manipulador disponível para %s!</string>
   <string name="install_error_blocked">A instalação foi bloqueada</string>
   <string name="install_error_invalid">Um ou mais APKs eram inválidos ou corrompidos</string>
   <string name="install_error_conflict">Conflitos com um app existente, geralmente devido a assinaturas incompatíveis</string>
@@ -163,7 +163,7 @@
   <string name="updater_check_fail">Falha ao checar atualizações</string>
   <string name="updater_update_fail">Falha ao atualizar! Por favor, baixe e instale a atualização manualmente!</string>
   <string name="downloader_err_unknown">Download falhou (Desconhecido)</string>
-  <string name="downloader_err_code">Download failed (%s)</string>
+  <string name="downloader_err_code">Falha no download (%s)</string>
   <string name="downloader_err_timeout">Falha no Download (tempo esgotado)</string>
   <string name="downloader_err_response">Download falhou (Resposta inválida)</string>
   <string name="downloader_err_file_exists">Download falhou (Arquivo já existe)</string>

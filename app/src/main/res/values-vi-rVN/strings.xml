@@ -81,7 +81,7 @@
   <string name="theme_system">Hệ thống</string>
   <string name="theme_dark">Tối</string>
   <string name="theme_light">Sáng</string>
-  <string name="plugins_title">Tiện ích mở rộng</string>
+  <string name="plugins_title">Tiện ích</string>
   <string name="plugins_view_changelog">Xem nhật ký thay đổi tại %1$s</string>
   <string name="plugins_delete_plugin">Gỡ cài đặt %s</string>
   <string name="plugins_delete_plugin_body">Bạn có chắc chắn muốn gỡ cài đặt tiện ích này không?</string>
