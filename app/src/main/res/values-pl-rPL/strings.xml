@@ -246,4 +246,5 @@
   <string name="fun_fact_9">Aliucord jest w stanie odpalić WearOS</string>
   <string name="fun_fact_10">Aliucord używa *prawdziwe* stare UI, z połowy 2022!</string>
   <string name="fun_fact_11">Była próba uruchomienia Aliucorda na iOS…</string>
+  <string name="time_elapsed_seconds">%.2fs</string>
 </resources>

@@ -247,4 +247,5 @@ lütfen silin!</string>
   <string name="fun_fact_9">Aliucord WearOS\'te çalışabilir</string>
   <string name="fun_fact_10">Aliucord *gerçek* eski arayüzü kullanıyor; 2022\'nin ortalarından kalanı!</string>
   <string name="fun_fact_11">Aliucord\'u iOS\'te çalıştırmak için bir deneme vardı…</string>
+  <string name="time_elapsed_seconds">%.2fs</string>
 </resources>

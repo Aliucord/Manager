@@ -246,4 +246,5 @@
   <string name="fun_fact_9">Aliucord può girare su WearOS</string>
   <string name="fun_fact_10">Aliucord utilizza la *vera* vecchia UI, quella del 2022!</string>
   <string name="fun_fact_11">C\'è stato un tentativo di far funzionare Aliucord su iOS…</string>
+  <string name="time_elapsed_seconds">%.2fs</string>
 </resources>

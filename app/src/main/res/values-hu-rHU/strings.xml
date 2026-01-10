@@ -246,4 +246,5 @@
   <string name="fun_fact_9">Az Aliucord képes WearOS-en futni</string>
   <string name="fun_fact_10">Az Aliucord az *igazi* régi felületet használja, 2022 közepéről!</string>
   <string name="fun_fact_11">Volt egy próbálkozás az Aliucord futtatására iOS-en…</string>
+  <string name="time_elapsed_seconds">%.2fs</string>
 </resources>

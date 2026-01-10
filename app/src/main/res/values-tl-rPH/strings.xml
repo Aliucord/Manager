@@ -246,4 +246,5 @@
   <string name="fun_fact_9">Maaaring tumakbo sa WearOS ang Aliucord</string>
   <string name="fun_fact_10">Ginagamit ng Aliucord ang *totoong* lumang UI, mula sa gitnang 2022!</string>
   <string name="fun_fact_11">May isang pagtatangka para patakbuhin ang Aliucord sa iOS…</string>
+  <string name="time_elapsed_seconds">%.2fs</string>
 </resources>

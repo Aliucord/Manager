@@ -246,4 +246,5 @@
   <string name="fun_fact_9">Aliucord 可在 WearOS 上运行</string>
   <string name="fun_fact_10">从 2022 年中期开始，Aliucord 将使用*真正的*旧 UI！</string>
   <string name="fun_fact_11">曾尝试在 iOS 上运行 Aliucord…</string>
+  <string name="time_elapsed_seconds">%.2fs</string>
 </resources>
