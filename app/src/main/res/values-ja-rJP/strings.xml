@@ -247,5 +247,5 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="fun_fact_9">AliucordはWearOSで実行できます</string>
   <string name="fun_fact_10">Aliucordは本物の昔のUIを使ってるよ、2022年中頃のやつ！</string>
   <string name="fun_fact_11">AliucordをiOSで実行する試みがありました…</string>
-  <string name="time_elapsed_seconds">%.2fs</string>
+  <string name="time_elapsed_seconds">%.2f秒</string>
 </resources>
