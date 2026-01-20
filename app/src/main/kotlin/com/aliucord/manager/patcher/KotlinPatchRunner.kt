@@ -4,13 +4,18 @@ import com.aliucord.manager.patcher.steps.download.*
 import com.aliucord.manager.patcher.steps.install.*
 import com.aliucord.manager.patcher.steps.patch.*
 import com.aliucord.manager.patcher.steps.prepare.*
+import com.aliucord.manager.ui.screens.patchopts.PatchCustomComponent
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Used for installing the old Kotlin Discord app.
  */
-class KotlinPatchRunner(options: PatchOptions) : StepRunner() {
+class KotlinPatchRunner(
+    options: PatchOptions,
+    customInjector: PatchCustomComponent? = null,
+    customPatches: PatchCustomComponent? = null,
+) : StepRunner() {
     override val steps = persistentListOf(
         // Prepare
         FetchInfoStep(),
@@ -19,10 +24,10 @@ class KotlinPatchRunner(options: PatchOptions) : StepRunner() {
 
         // Download
         DownloadDiscordStep(),
-        DownloadInjectorStep(),
+        DownloadInjectorStep(customInjector),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
-        DownloadPatchesStep(),
+        DownloadPatchesStep(customPatches),
         CopyDependenciesStep(),
 
         // Patch

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Environment
 import com.aliucord.manager.network.utils.SemVer
 import java.io.File
+import java.io.IOException
 
 /**
  * A central place to provide all system paths that are used.
@@ -93,14 +94,16 @@ class PathManager(
     /**
      * Resolve a specific path for a cached injector.
      */
-    fun cachedInjectorDex(version: SemVer, custom: Boolean = false) = patchingDownloadDir
+    fun cachedInjector(version: SemVer) = patchingDownloadDir
         .resolve("injector").apply { mkdirs() }
-        .resolve("$version${if (custom) ".custom" else ""}.dex")
+        .resolve("$version.dex")
 
     /**
      * Get all the versions of custom injector builds.
      */
-    fun customInjectorDexs() = listVersionedFiles(customInjectorsDir)
+    fun customInjectors() = customInjectorsDir.listFiles()
+        ?.asList()
+        ?: throw IOException("Failed to list directory")
 
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
@@ -112,14 +115,16 @@ class PathManager(
     /**
      * Resolve a specific path for a versioned smali patches archive.
      */
-    fun cachedSmaliPatches(version: SemVer, custom: Boolean = false) = patchingDownloadDir
+    fun cachedSmaliPatches(version: SemVer) = patchingDownloadDir
         .resolve("patches").apply { mkdirs() }
-        .resolve("$version${if (custom) ".custom" else ""}.zip")
+        .resolve("$version.zip")
 
     /**
      * Get all the versions of custom smali bundles.
      */
-    fun customSmaliPatches() = listVersionedFiles(customPatchesDir)
+    fun customSmaliPatches() = customPatchesDir.listFiles()
+        ?.asList()
+        ?: throw IOException("Failed to list directory")
 
     /**
      * Resolve a specific path for a versioned Kotlin stdlib dex.
@@ -138,20 +143,4 @@ class PathManager(
      * The APK that is worked on during the patching process.
      */
     fun patchedApk() = patchingWorkingDir().resolve("patched.apk")
-
-    private companion object {
-        /**
-         * List all the files in a directory that follow SemVer naming.
-         */
-        private fun listVersionedFiles(dir: File): List<SemVer>? {
-            if (!dir.exists()) return null
-
-            val files = dir.listFiles()
-                ?: throw Error("Failed to list directory")
-
-            return files
-                .map { it.nameWithoutExtension }
-                .mapNotNull(SemVer::parseOrNull)
-        }
-    }
 }
