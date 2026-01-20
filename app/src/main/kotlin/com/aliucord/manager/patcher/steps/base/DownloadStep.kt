@@ -18,20 +18,26 @@ import org.koin.core.component.inject
 import java.io.File
 
 @Stable
-abstract class DownloadStep : Step(), KoinComponent {
+abstract class DownloadStep<IVersion> : Step(), KoinComponent {
     private val context: Context by inject()
     private val downloader: KtorDownloadManager by inject()
 
     /**
-     * The remote url to download
+     * The version of the file that is/will be downloaded.
+     * The return type is dynamic as different dependencies have varying version formats.
      */
-    abstract val targetUrl: String
+    abstract fun getVersion(container: StepRunner): IVersion
 
     /**
-     * Target path to store the download in. If this file already exists,
-     * then the cached version is used and the step is marked as cancelled/skipped.
+     * The remote url to be downloaded to the [getStoredFile].
      */
-    abstract val targetFile: File
+    abstract fun getRemoteUrl(container: StepRunner): String
+
+    /**
+     * Target path to store the download in. If this file already exists at the time
+     * of execution, then the cached version is used and the step is marked as skipped.
+     */
+    abstract fun getStoredFile(container: StepRunner): File
 
     /**
      * Verify that the download completely successfully without errors.
@@ -39,19 +45,23 @@ abstract class DownloadStep : Step(), KoinComponent {
      */
     @CallSuper
     open suspend fun verify(container: StepRunner) {
-        if (!targetFile.exists())
-            throw Error("Downloaded file is missing!")
+        val file = getStoredFile(container)
 
-        if (targetFile.length() <= 0)
+        if (!file.exists())
+            throw Error("Downloaded file is missing!")
+        if (file.length() <= 0)
             throw Error("Downloaded file is empty!")
     }
 
     override val group = StepGroup.Download
 
     override suspend fun execute(container: StepRunner) {
-        container.log("Checking if file cached: ${targetFile.absolutePath}")
+        val version = getVersion(container)
+        val file = getStoredFile(container)
+        val url = getRemoteUrl(container)
 
-        if (targetFile.exists()) {
+        container.log("Checking if file cached: ${file.absolutePath}")
+        if (file.exists()) {
             container.log("File exists, verifying...")
 
             try {
@@ -60,19 +70,20 @@ abstract class DownloadStep : Step(), KoinComponent {
                 container.log("File verified, skipping download")
                 return
             } catch (t: Throwable) {
-                targetFile.delete()
+                file.delete()
                 container.log("Verification error: " + Log.getStackTraceString(t))
                 container.log("File failed verification, deleting and redownloading")
             }
         }
 
-        container.log("Downloading file at url: $targetUrl")
+        container.log("Downloading file version: $version at url: $url")
         var lastLogProgress = 0f
-        val result = downloader.download(targetUrl, targetFile) { newProgress ->
+        val result = downloader.download(url, file) { newProgress ->
             progress = newProgress ?: -1f
 
             if (newProgress != null && newProgress > lastLogProgress + 0.1f) {
                 container.log("Download progress: ${(newProgress * 100.0).toPrecision(0)}% after ${getDuration()}ms")
+                @Suppress("AssignedValueIsNeverRead") // incorrect
                 lastLogProgress = newProgress
             }
         }
@@ -93,7 +104,7 @@ abstract class DownloadStep : Step(), KoinComponent {
                     container.log("Failed to verify file, deleting...")
 
                     try {
-                        targetFile.delete()
+                        file.delete()
                     } catch (_: Throwable) {
                         // Ignore
                     }

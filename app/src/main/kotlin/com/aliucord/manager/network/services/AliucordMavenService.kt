@@ -10,7 +10,7 @@ import io.ktor.http.*
 class AliucordMavenService(private val http: HttpService) {
     suspend fun getAliuhookVersion(force: Boolean = false): ApiResponse<SemVer> {
         val metadataResponse = http.request<String> {
-            url(ALIUHOOK_METADATA_URL)
+            url("${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/maven-metadata.xml")
 
             if (!force) {
                 cacheControl(CacheControl.MaxAge(maxAgeSeconds = 60 * 30)) // 30 min
@@ -30,10 +30,6 @@ class AliucordMavenService(private val http: HttpService) {
         }
     }
 
-    companion object {
-        private const val ALIUHOOK_METADATA_URL = "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/maven-metadata.xml"
-
-        fun getAliuhookUrl(version: String): String =
-            "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"
-    }
+    fun getAliuhookUrl(version: SemVer): String =
+        "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"
 }

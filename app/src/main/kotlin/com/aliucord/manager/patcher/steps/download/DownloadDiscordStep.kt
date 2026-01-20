@@ -13,35 +13,37 @@ import okio.ByteString.Companion.decodeHex
 import okio.ByteString.Companion.toByteString
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
 
 /**
  * If not already cached, then download the raw unmodified v126.21 (Kotlin) Discord APK
  * from a redirect to an APK mirror site provided by the Aliucord backend.
  */
 @Stable
-class DownloadDiscordStep : DownloadStep(), KoinComponent {
+class DownloadDiscordStep : DownloadStep<Int>(), KoinComponent {
     private val paths: PathManager by inject()
 
     override val localizedName = R.string.patch_step_dl_kt_apk
-    override val targetUrl = getDiscordApkUrl(DISCORD_KT_VERSION)
-    override val targetFile = paths.discordApkVersionCache(DISCORD_KT_VERSION)
-        .resolve("discord.apk")
+
+    override fun getVersion(container: StepRunner) = DISCORD_KT_VERSION
+    override fun getRemoteUrl(container: StepRunner) = getDiscordApkUrl(DISCORD_KT_VERSION)
+    override fun getStoredFile(container: StepRunner) = paths.cachedDiscordApk(DISCORD_KT_VERSION)
 
     override suspend fun verify(container: StepRunner) {
         super.verify(container)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             container.log("Verifying APK signature")
-            verifySignature()
+            verifySignature(getStoredFile(container))
         } else {
             container.log("Skipping APK signature verification, API level too old")
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.P) // Requires Type#getTypeName()
-    private fun verifySignature() {
+    private fun verifySignature(apk: File) {
         // Verify the signature of the APK to ensure it's the original
-        val verifier = ApkVerifier.Builder(targetFile).build()
+        val verifier = ApkVerifier.Builder(apk).build()
         val result = try {
             verifier.verify()
         } catch (e: Exception) {

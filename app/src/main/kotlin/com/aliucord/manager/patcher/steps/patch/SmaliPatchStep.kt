@@ -34,7 +34,7 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         val apk = container.getStep<CopyDependenciesStep>().patchedApk
-        val patchesZip = container.getStep<DownloadPatchesStep>().targetFile
+        val patchesZip = container.getStep<DownloadPatchesStep>().getStoredFile(container)
 
         val patches = mutableListOf<LoadedPatch>()
 
@@ -132,7 +132,7 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
 
     override val dexPriority = 2
     override val dexCount = 1
-    override fun getDexFiles() = listOf(outDex.readBytes())
+    override fun getDexFiles(container: StepRunner) = listOf(outDex.readBytes())
 }
 
 private data class LoadedPatch(

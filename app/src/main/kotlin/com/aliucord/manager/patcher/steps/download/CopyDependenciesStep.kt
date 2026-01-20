@@ -31,7 +31,7 @@ class CopyDependenciesStep : Step(), KoinComponent {
     override val localizedName = R.string.patch_step_copy_deps
 
     override suspend fun execute(container: StepRunner) {
-        val srcApk = container.getStep<DownloadDiscordStep>().targetFile
+        val srcApk = container.getStep<DownloadDiscordStep>().getStoredFile(container)
         val dir = paths.patchingWorkingDir()
 
         container.log("Clearing patched directory")

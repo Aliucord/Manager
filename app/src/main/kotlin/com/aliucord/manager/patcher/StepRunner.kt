@@ -90,8 +90,8 @@ abstract class StepRunner : KoinComponent {
                 // If this is a patch step and it failed, then clear download cache just in case
                 if (step.group == StepGroup.Patch && !preferences.devMode) {
                     log("Deleting download cache")
-                    for (downloadStep in steps.asSequence().filterIsInstance<DownloadStep>()) {
-                        downloadStep.targetFile.delete()
+                    for (downloadStep in steps.asSequence().filterIsInstance<DownloadStep<*>>()) {
+                        downloadStep.getStoredFile(this@StepRunner).delete()
                     }
                 }
 

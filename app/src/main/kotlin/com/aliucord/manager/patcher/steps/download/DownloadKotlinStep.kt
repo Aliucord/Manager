@@ -8,7 +8,6 @@ import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
 import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.patch.ReorganizeDexStep
-import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -17,32 +16,21 @@ import org.koin.core.component.inject
  * Provides [ReorganizeDexStep] with the dex through the [IDexProvider] implementation.
  */
 @Stable
-class DownloadKotlinStep : DownloadStep(), IDexProvider, KoinComponent {
+class DownloadKotlinStep : DownloadStep<SemVer>(), IDexProvider, KoinComponent {
     private val paths: PathManager by inject()
 
-    /**
-     * This is populated right before the download starts (ref: [execute])
-     */
-    lateinit var targetVersion: SemVer
-        private set
-
     override val localizedName = R.string.patch_step_dl_kotlin
-    override val targetUrl = URL
-    override val targetFile get() = paths.cachedKotlinDex(targetVersion)
 
-    override suspend fun execute(container: StepRunner) {
-        targetVersion = container.getStep<FetchInfoStep>()
-            .data.injectorVersion
-        container.log("Downloading Kotlin stdlib version $targetVersion")
+    override fun getVersion(container: StepRunner) = SemVer(1, 5, 21)
+    override fun getRemoteUrl(container: StepRunner) = URL
+    override fun getStoredFile(container: StepRunner) = paths.cachedKotlinDex(getVersion(container))
 
-        super.execute(container)
-    }
+    override val dexCount = 1
+    override val dexPriority = -1
+    override fun getDexFiles(container: StepRunner) =
+        listOf(getStoredFile(container).readBytes())
 
     private companion object {
         const val URL = "https://builds.aliucord.com/kotlin.dex"
     }
-
-    override val dexCount = 1
-    override val dexPriority = -1
-    override fun getDexFiles() = listOf(targetFile.readBytes())
 }

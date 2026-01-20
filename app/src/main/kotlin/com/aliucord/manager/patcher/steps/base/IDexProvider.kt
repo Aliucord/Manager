@@ -1,5 +1,7 @@
 package com.aliucord.manager.patcher.steps.base
 
+import com.aliucord.manager.patcher.StepRunner
+
 interface IDexProvider {
     /**
      * The priority of the .dex files supplied by [getDexFiles].
@@ -16,5 +18,5 @@ interface IDexProvider {
     /**
      * Any dex files to be added into the APK.
      */
-    fun getDexFiles(): List<ByteArray>
+    fun getDexFiles(container: StepRunner): List<ByteArray>
 }

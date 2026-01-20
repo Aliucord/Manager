@@ -71,7 +71,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
                         "${dexProvider.javaClass.simpleName} with priority of ${dexProvider.dexPriority}"
                 )
 
-                for (dexBytes in dexProvider.getDexFiles()) {
+                for (dexBytes in dexProvider.getDexFiles(container)) {
                     container.log("Writing dex file ${getDexName(idx)} unaligned uncompressed")
                     zip.writeEntry(getDexName(idx++), dexBytes, ZipCompression.NONE)
                 }
@@ -100,7 +100,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
                         "${dexProvider.javaClass.simpleName} with priority of ${dexProvider.dexPriority}"
                 )
 
-                for (dexBytes in dexProvider.getDexFiles()) {
+                for (dexBytes in dexProvider.getDexFiles(container)) {
                     container.log("Writing dex file ${getDexName(idx)} unaligned uncompressed")
                     zip.writeEntry(getDexName(dexCount++), dexBytes, ZipCompression.NONE)
                 }

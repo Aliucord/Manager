@@ -97,11 +97,16 @@ class PatchingScreenModel(
     fun cancelInstall() = screenModelScope.launchIO {
         runnerJob?.cancel("Manual cancellation")
 
-        val incompleteDownloadStep = stepRunner?.steps
-            ?.filterIsInstance<DownloadStep>()
-            ?.lastOrNull { it.state == StepState.Running }
+        // Delete any in-progress downloads to be safe
+        stepRunner?.also { container ->
+            val incompleteDownloadStep = container.steps
+                .filterIsInstance<DownloadStep<*>>()
+                .lastOrNull { it.state == StepState.Running }
 
-        incompleteDownloadStep?.targetFile?.delete()
+            // TODO: does this error when missing?
+            incompleteDownloadStep?.getStoredFile(container)?.delete()
+        }
+
         paths.patchingWorkingDir().deleteRecursively()
     }
 

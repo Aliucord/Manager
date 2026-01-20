@@ -83,12 +83,12 @@ class PathManager(
     }
 
     /**
-     * Create a new subfolder in the Discord APK cache for a specific version.
+     * Create a new subfolder in the Discord APK cache for a specific version and split.
      */
-    fun discordApkVersionCache(version: Int): File = patchingDownloadDir
-        .resolve("discord")
-        .resolve(version.toString())
+    fun cachedDiscordApk(version: Int, split: String = "base"): File = patchingDownloadDir
+        .resolve("discord/$version")
         .apply { mkdirs() }
+        .resolve("$split.apk")
 
     /**
      * Resolve a specific path for a cached injector.
@@ -125,7 +125,7 @@ class PathManager(
      * Resolve a specific path for a versioned Kotlin stdlib dex.
      */
     fun cachedKotlinDex(version: SemVer) = patchingDownloadDir
-        .resolve("kotlin").apply { mkdirs() }
+        .resolve("kotlin-stdlib").apply { mkdirs() }
         .resolve("$version.dex")
 
     /**
