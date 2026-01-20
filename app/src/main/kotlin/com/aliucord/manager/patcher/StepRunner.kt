@@ -32,8 +32,14 @@ abstract class StepRunner : KoinComponent {
     private val context: Context by inject()
     private val preferences: PreferencesManager by inject()
 
+    /**
+     * The log history from this runner and all steps.
+     */
     private val logEntries: MutableList<String> = mutableListOf()
 
+    /**
+     * The steps to be run, defined by specific step runners.
+     */
     abstract val steps: ImmutableList<Step>
 
     /**
@@ -55,7 +61,7 @@ abstract class StepRunner : KoinComponent {
     }
 
     /**
-     * Adds a log entry without any associated log level.
+     * Adds a log entry to this installation run without any associated log level.
      */
     fun log(text: String) {
         logEntries += text
@@ -79,7 +85,7 @@ abstract class StepRunner : KoinComponent {
 
             if (error != null) {
                 log("Failed on step: $stepName after ${step.getDuration()}ms")
-                showErrorNotification()
+                maybeShowErrorNotification()
 
                 // If this is a patch step and it failed, then clear download cache just in case
                 if (step.group == StepGroup.Patch && !preferences.devMode) {
@@ -106,15 +112,19 @@ abstract class StepRunner : KoinComponent {
         return null
     }
 
-    private fun showErrorNotification() {
-        // If app backgrounded
-        if (ProcessLifecycleOwner.get().lifecycle.currentState == Lifecycle.State.CREATED) {
-            InstallNotifications.createNotification(
-                context = context,
-                id = ERROR_NOTIF_ID,
-                title = R.string.notif_install_fail_title,
-                description = R.string.notif_install_fail_desc,
-            )
-        }
+    /**
+     * Shows a system notification to notify the user that the installation failed,
+     * if manager is currently backgrounded while the installation was running.
+     */
+    private fun maybeShowErrorNotification() {
+        if (ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))
+            return // Is currently foreground
+
+        InstallNotifications.createNotification(
+            context = context,
+            id = ERROR_NOTIF_ID,
+            title = R.string.notif_install_fail_title,
+            description = R.string.notif_install_fail_desc,
+        )
     }
 }
