@@ -13,6 +13,9 @@ import com.aliucord.manager.patcher.steps.base.Step
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+/**
+ * Fetches versions data from various sources to be used during the installation.
+ */
 @Stable
 class FetchInfoStep : Step(), KoinComponent {
     private val github: AliucordGithubService by inject()

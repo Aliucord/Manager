@@ -246,13 +246,15 @@ class HomeModel(
             @OptIn(ExperimentalSerializationApi::class)
             json.decodeFromStream<InstallMetadata>(metadataFile.inputStream())
         } catch (t: Throwable) {
-            Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package ${pkg.packageName}", t)
+            // If it failed to parse, then it's outdated
+            Log.d(BuildConfig.TAG, "Failed to parse Aliucord InstallMetadata from package ${pkg.packageName}", t)
             return false
         }
 
         // Check that all the installation components are up-to-date
         return remoteBuildData.injectorVersion == installMetadata.injectorVersion
             && remoteBuildData.patchesVersion == installMetadata.patchesVersion
+            && remoteBuildData.kotlinVersion == installMetadata.kotlinVersion
             && latestAliuhookVersion == installMetadata.aliuhookVersion
     }
 }

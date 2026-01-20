@@ -8,6 +8,7 @@ import com.aliucord.manager.patcher.StepRunner
 import com.aliucord.manager.patcher.steps.base.DownloadStep
 import com.aliucord.manager.patcher.steps.base.IDexProvider
 import com.aliucord.manager.patcher.steps.patch.ReorganizeDexStep
+import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -21,9 +22,13 @@ class DownloadKotlinStep : DownloadStep<SemVer>(), IDexProvider, KoinComponent {
 
     override val localizedName = R.string.patch_step_dl_kotlin
 
-    override fun getVersion(container: StepRunner) = SemVer(1, 5, 21)
     override fun getRemoteUrl(container: StepRunner) = URL
-    override fun getStoredFile(container: StepRunner) = paths.cachedKotlinDex(getVersion(container))
+
+    override fun getVersion(container: StepRunner) =
+        container.getStep<FetchInfoStep>().data.kotlinVersion
+
+    override fun getStoredFile(container: StepRunner) =
+        paths.cachedKotlinDex(getVersion(container))
 
     override val dexCount = 1
     override val dexPriority = -1
