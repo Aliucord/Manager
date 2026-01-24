@@ -27,8 +27,8 @@
   <string name="action_copied">Kopyalandı!</string>
   <string name="action_cleared_cache">Önbellek temizlendi!</string>
   <string name="action_exit_anyways">Yine de Çık</string>
-  <string name="action_open_info">Hakkında\'yı Aç</string>
-  <string name="action_reset_default">Varsayılana geri dön</string>
+  <string name="action_open_info">Hakkında Bölümünü Aç</string>
+  <string name="action_reset_default">Varsayılanlara sıfırla</string>
   <string name="intent_reinstall_fail">Otomatik yeniden kurulum başarısız! Lütfen elle yapıp tekrar deneyin.</string>
   <string name="intent_import_component_success">%s başarıyla içeri aktarıldı</string>
   <string name="intent_import_component_failure">Failed to import custom component!</string>
@@ -89,7 +89,7 @@
   <string name="plugins_changelog_media">Güncelleme Geçmişi Medyası</string>
   <string name="plugins_error">Eklentiler işlenirken bir hata oluştu!</string>
   <string name="plugins_safe_mode_title">Safe mode</string>
-  <string name="plugins_safe_mode_desc">Temporarily disables all plugins when starting Aliucord</string>
+  <string name="plugins_safe_mode_desc">Aliucord\'u başlatırken geçici olarak tüm eklentileri devre dışı bırakır</string>
   <string name="navigation_back">Geri</string>
   <string name="navigation_about">Hakkında</string>
   <string name="navigation_logs">Günlükler</string>
@@ -247,5 +247,5 @@ lütfen silin!</string>
   <string name="fun_fact_9">Aliucord WearOS\'te çalışabilir</string>
   <string name="fun_fact_10">Aliucord *gerçek* eski arayüzü kullanıyor; 2022\'nin ortalarından kalanı!</string>
   <string name="fun_fact_11">Aliucord\'u iOS\'te çalıştırmak için bir deneme vardı…</string>
-  <string name="time_elapsed_seconds">%.2fs</string>
+  <string name="time_elapsed_seconds">%.2fsn</string>
 </resources>
