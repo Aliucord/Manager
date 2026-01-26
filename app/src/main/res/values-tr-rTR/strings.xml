@@ -234,8 +234,6 @@ lütfen silin!</string>
   <string name="play_protect_warning_ok">Devam et</string>
   <string name="play_protect_warning_open_gpp">Play Protect\'i Aç</string>
   <string name="play_protect_warning_disable">Bunu tekrar gösterme</string>
-  <string name="custom_component_picker_title">Özel Birim</string>
-  <string name="custom_component_picker_desc">Özel yerel bir yama birimi (%s) bulundu. Kullanmak ister misiniz?</string>
   <string name="fun_fact_prefix">İlginç Bilgi: %s</string>
   <string name="fun_fact_1">Google Play Protect\'in işe yaramaz olduğunu biliyor muydunuz?</string>
   <string name="fun_fact_2">Aliucord\'un 150\'den fazla eklentiyle bile Discord\'un yeni uygulamasından daha hızlı yürüdüğünü biliyor muydunuz?</string>

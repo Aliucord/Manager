@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Folytatás</string>
   <string name="play_protect_warning_open_gpp">Play Protect megnyitása</string>
   <string name="play_protect_warning_disable">Ne mutasd ezt újra</string>
-  <string name="custom_component_picker_title">Egyedi komponens</string>
-  <string name="custom_component_picker_desc">Egy egyedi helyi verzió egy patch komponenshez (%s) elérhető. Szeretnéd használni?</string>
   <string name="fun_fact_prefix">Érdekesség: %s</string>
   <string name="fun_fact_1">Tudtad, hogy a Google Play Protect használhatatlan?</string>
   <string name="fun_fact_2">Tudtad, hogy az Aliucord több, mint 150 bővítménnyel valahogy gyorsabban fut, mint a Discord új alkalmazása?</string>

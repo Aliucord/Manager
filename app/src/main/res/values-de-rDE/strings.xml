@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Weiter</string>
   <string name="play_protect_warning_open_gpp">Play Protect öffnen</string>
   <string name="play_protect_warning_disable">Nicht erneut anzeigen</string>
-  <string name="custom_component_picker_title">Benutzerdefinierte Komponente</string>
-  <string name="custom_component_picker_desc">Eine benutzerdefinierte lokale Version für eine Patching Komponente (%s) wurde gefunden. Möchtest du sie verwenden?</string>
   <string name="fun_fact_prefix">Fun Fact: %s</string>
   <string name="fun_fact_1">Wusstest du, dass Google Play Protect nutzlos ist?</string>
   <string name="fun_fact_2">Wusstest du, dass Aliucord mit 150+ Plugins irgendwie besser läuft als Discords neue App?</string>

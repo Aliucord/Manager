@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Продовжити</string>
   <string name="play_protect_warning_open_gpp">Відкрити Play Захист</string>
   <string name="play_protect_warning_disable">Не показувати знову</string>
-  <string name="custom_component_picker_title">Сторонні компоненти</string>
-  <string name="custom_component_picker_desc">Знайдена стороння локальна версія для патченого компонента (%s). Чи бажаєте його використати?</string>
   <string name="fun_fact_prefix">Цікаві факти: %s</string>
   <string name="fun_fact_1">Ви знали, що Google Play Захист безкорисний?</string>
   <string name="fun_fact_2">Ви знали, що Aliucord з 150+ плагінами якось працює краще ніж новий додаток Discord?</string>

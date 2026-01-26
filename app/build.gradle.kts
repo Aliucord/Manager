@@ -141,6 +141,7 @@ android {
 
     lint {
         disable += "ModifierParameter"
+        disable += "ExtraTranslation"
     }
 }
 

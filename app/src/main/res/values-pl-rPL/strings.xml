@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Kontynuuj</string>
   <string name="play_protect_warning_open_gpp">Otwórz Play Protect</string>
   <string name="play_protect_warning_disable">Nie pokazuj ponownie</string>
-  <string name="custom_component_picker_title">Niestandardowy komponent</string>
-  <string name="custom_component_picker_desc">Znaleziono niestandardową wersję lokalną dla modyfikatora komponentu (%s). Czy chcesz go użyć?</string>
   <string name="fun_fact_prefix">Ciekawostka: %s</string>
   <string name="fun_fact_1">Czy wiedziałeś, że Google Play Protect jest bezużyteczny?</string>
   <string name="fun_fact_2">Czy wiedziałeś, że Aliucord z ponad 150 wtyczkami jakoś działa lepiej niż nowa aplikacja Discorda?</string>

@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">繼續</string>
   <string name="play_protect_warning_open_gpp">開啟 Play Protect</string>
   <string name="play_protect_warning_disable">不再顯示</string>
-  <string name="custom_component_picker_title">Custom Component</string>
-  <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
   <string name="fun_fact_prefix">冷知識：%s</string>
   <string name="fun_fact_1">你知道 Google Play Protect 根本毫無用處嗎？</string>
   <string name="fun_fact_2">你知道安裝了超過 150 個插件的 Aliucord 依舊比新的原生 Discord 應用程式還快嗎？</string>

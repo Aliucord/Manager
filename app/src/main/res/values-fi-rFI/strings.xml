@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Jatka</string>
   <string name="play_protect_warning_open_gpp">Avaa Play Protect</string>
   <string name="play_protect_warning_disable">Älä näytä tätä uudestaan</string>
-  <string name="custom_component_picker_title">Mukautettu komponentti</string>
-  <string name="custom_component_picker_desc">Mukautettu paikallinen versio paikkauskomponentista (%s) on löytynyt. Haluaisitko käyttää sitä?</string>
   <string name="fun_fact_prefix">Kiva fakta: %s</string>
   <string name="fun_fact_1">Tiesitkö, että Googlen Play Protect on hyödyton?</string>
   <string name="fun_fact_2">Tiesitkö, että Aliucord yli 150 laajennuksella toimii paremmin kuin Discordin uusi sovellus?</string>

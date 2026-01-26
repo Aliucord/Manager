@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Tiếp tục</string>
   <string name="play_protect_warning_open_gpp">Mở Play Protect</string>
   <string name="play_protect_warning_disable">Không hiển thị lại</string>
-  <string name="custom_component_picker_title">Thành phần tùy chỉnh</string>
-  <string name="custom_component_picker_desc">Đã tìm thấy phiên bản nội bộ tùy chỉnh cho thành phần vá lỗi (%s). Bạn có muốn sử dụng không?</string>
   <string name="fun_fact_prefix">Fact: %s</string>
   <string name="fun_fact_1">Bạn có biết rằng Google Play Protect thật sự vô dụng?</string>
   <string name="fun_fact_2">Bạn có biết Aliucord với hơn 150 plugin lại chạy tốt hơn ứng dụng mới của Discord không?</string>

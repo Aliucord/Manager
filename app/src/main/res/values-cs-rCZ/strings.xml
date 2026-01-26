@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Pokračovat</string>
   <string name="play_protect_warning_open_gpp">Otevřít Play Protect</string>
   <string name="play_protect_warning_disable">Znovu nezobrazovat</string>
-  <string name="custom_component_picker_title">Vlastní komponent</string>
-  <string name="custom_component_picker_desc">Byla nalezena lokální verze pro komponentu záplat (%s). Chcete ji použít?</string>
   <string name="fun_fact_prefix">Zábavný fakt: %s</string>
   <string name="fun_fact_1">Věděli jste, že ochrana Google Play je k ničemu?</string>
   <string name="fun_fact_2">Víte že Aliucord s více než 150 pluginy záhadně běží lépe než nová aplikace Discord?</string>

@@ -234,8 +234,6 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="play_protect_warning_ok">続行</string>
   <string name="play_protect_warning_open_gpp">Playプロテクトを開く</string>
   <string name="play_protect_warning_disable">再度表示しない</string>
-  <string name="custom_component_picker_title">カスタムコンポーネント</string>
-  <string name="custom_component_picker_desc">パッチ適用コンポーネント（%s）のカスタムローカルバージョンが見つかりました。使用しますか？</string>
   <string name="fun_fact_prefix">面白い事実：%s</string>
   <string name="fun_fact_1">知ってましたか？Google Play Protectは役に立たないって。</string>
   <string name="fun_fact_2">150+のプラグインが入ったAliucordが、なぜかDiscordの新しいアプリよりも動作が良いって知ってた？</string>

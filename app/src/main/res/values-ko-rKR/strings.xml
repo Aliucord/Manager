@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">계속</string>
   <string name="play_protect_warning_open_gpp">Play 프로텍트 열기</string>
   <string name="play_protect_warning_disable">다시 보지 않기</string>
-  <string name="custom_component_picker_title">사용자 지정 요소</string>
-  <string name="custom_component_picker_desc">사용자 지정 버전의 패치 요소(%s)를 찾았어요. 정말로 사용할까요?</string>
   <string name="fun_fact_prefix">사실 %s</string>
   <string name="fun_fact_1">Google Play 프로텍트는 쓸모없대요.</string>
   <string name="fun_fact_2">Discord의 새 버전보다 플러그인 150개 이상이 있는 Aliucord가 더 잘 돌아간대요.</string>

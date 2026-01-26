@@ -233,8 +233,6 @@
   <string name="play_protect_warning_ok">Fortsæt</string>
   <string name="play_protect_warning_open_gpp">Åbn Play Protect</string>
   <string name="play_protect_warning_disable">Vis ikke dette igen</string>
-  <string name="custom_component_picker_title">Tilpasset komponent</string>
-  <string name="custom_component_picker_desc">En tilpasset lokal version til en patching-komponent (%s) er fundet. Anvend denne?</string>
   <string name="fun_fact_prefix">Sjove fakta: %s</string>
   <string name="fun_fact_1">Vidste du, at Google Play Protect er ubrugeligt?</string>
   <string name="fun_fact_2">Vidste du, at Aliucord med 150+ plugins på en eller anden måde kører bedre end Discords nye app?</string>
