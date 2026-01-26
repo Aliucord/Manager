@@ -251,6 +251,14 @@ class HomeModel(
             return false
         }
 
+        // TODO: indicate this is a custom installation in the UI
+        // If this installation used custom components, then assume that updates aren't needed
+        if (installMetadata.options.customInjector != null ||
+            installMetadata.options.customPatches != null
+        ) {
+            return true
+        }
+
         // Check that all the installation components are up-to-date
         return remoteBuildData.injectorVersion == installMetadata.injectorVersion
             && remoteBuildData.patchesVersion == installMetadata.patchesVersion

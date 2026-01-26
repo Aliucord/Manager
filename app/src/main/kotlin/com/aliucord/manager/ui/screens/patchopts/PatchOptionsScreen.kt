@@ -23,6 +23,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.aliucord.manager.R
 import com.aliucord.manager.ui.components.*
+import com.aliucord.manager.ui.screens.componentopts.PatchComponent
 import com.aliucord.manager.ui.screens.iconopts.*
 import com.aliucord.manager.ui.screens.patching.PatchingScreen
 import com.aliucord.manager.ui.screens.patchopts.components.PackageNameStateLabel
@@ -74,6 +75,11 @@ class PatchOptionsScreen(
             packageNameState = model.packageNameState,
             setPackageName = model::changePackageName,
 
+            customInjector = model.customInjector,
+            customPatches = model.customPatches,
+            onSelectCustomInjector = { model.selectCustomInjector(navigator) },
+            onSelectCustomPatches = { model.selectCustomPatches(navigator) },
+
             isConfigValid = model.isConfigValid,
             onInstall = onInstall@{
                 val iconConfig = iconModel.generateConfig()
@@ -109,6 +115,11 @@ fun PatchOptionsScreenContent(
     packageName: String,
     packageNameState: PackageNameState,
     setPackageName: (String) -> Unit,
+
+    customInjector: PatchComponent?,
+    onSelectCustomInjector: () -> Unit,
+    customPatches: PatchComponent?,
+    onSelectCustomPatches: () -> Unit,
 
     isConfigValid: Boolean,
     onInstall: () -> Unit,
@@ -224,6 +235,34 @@ fun PatchOptionsScreenContent(
                     value = debuggable,
                     onValueChange = setDebuggable,
                 )
+
+                IconPatchOption(
+                    icon = painterResource(R.drawable.ic_extension),
+                    name = stringResource(R.string.patchopts_custom_injector_title),
+                    description = stringResource(R.string.patchopts_custom_injector_desc),
+                    modifier = Modifier.clickable(onClick = onSelectCustomInjector),
+                ) {
+                    FilledTonalButton(onClick = onSelectCustomInjector) {
+                        Text(
+                            text = customInjector?.version?.toString()
+                                ?: stringResource(R.string.componentopts_selected_none)
+                        )
+                    }
+                }
+
+                IconPatchOption(
+                    icon = painterResource(R.drawable.ic_extension),
+                    name = stringResource(R.string.patchopts_custom_patches_title),
+                    description = stringResource(R.string.patchopts_custom_patches_desc),
+                    modifier = Modifier.clickable(onClick = onSelectCustomPatches),
+                ) {
+                    FilledTonalButton(onClick = onSelectCustomPatches) {
+                        Text(
+                            text = customPatches?.version?.toString()
+                                ?: stringResource(R.string.componentopts_selected_none)
+                        )
+                    }
+                }
             }
 
             Spacer(Modifier.weight(1f))

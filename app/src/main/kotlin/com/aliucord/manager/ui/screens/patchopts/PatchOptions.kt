@@ -3,6 +3,7 @@ package com.aliucord.manager.ui.screens.patchopts
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import com.aliucord.manager.ui.screens.componentopts.PatchComponent
 import com.aliucord.manager.util.serialization.ColorParceler
 import com.aliucord.manager.util.serialization.ColorSerializer
 import kotlinx.parcelize.Parcelize
@@ -33,6 +34,16 @@ data class PatchOptions(
      * Replacement of the user-facing launcher icon.
      */
     val iconReplacement: IconReplacement,
+
+    /**
+     * A custom build of injector that was used rather than the latest.
+     */
+    val customInjector: PatchComponent? = null,
+
+    /**
+     * A custom smali patches bundle that was used rather than the latest.
+     */
+    val customPatches: PatchComponent? = null,
 ) : Parcelable {
     @Immutable
     @Parcelize
@@ -109,6 +120,8 @@ data class PatchOptions(
             packageName = "com.aliucord",
             debuggable = false,
             iconReplacement = IconReplacement.CustomColor(IconReplacement.AliucordColor),
+            customInjector = null,
+            customPatches = null,
         )
     }
 }

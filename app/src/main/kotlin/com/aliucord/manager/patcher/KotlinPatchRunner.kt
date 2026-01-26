@@ -4,7 +4,6 @@ import com.aliucord.manager.patcher.steps.download.*
 import com.aliucord.manager.patcher.steps.install.*
 import com.aliucord.manager.patcher.steps.patch.*
 import com.aliucord.manager.patcher.steps.prepare.*
-import com.aliucord.manager.ui.screens.patchopts.PatchCustomComponent
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import kotlinx.collections.immutable.persistentListOf
 
@@ -13,8 +12,6 @@ import kotlinx.collections.immutable.persistentListOf
  */
 class KotlinPatchRunner(
     options: PatchOptions,
-    customInjector: PatchCustomComponent? = null,
-    customPatches: PatchCustomComponent? = null,
 ) : StepRunner() {
     override val steps = persistentListOf(
         // Prepare
@@ -24,10 +21,10 @@ class KotlinPatchRunner(
 
         // Download
         DownloadDiscordStep(),
-        DownloadInjectorStep(customInjector),
+        DownloadInjectorStep(options.customInjector),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
-        DownloadPatchesStep(customPatches),
+        DownloadPatchesStep(options.customPatches),
         CopyDependenciesStep(),
 
         // Patch

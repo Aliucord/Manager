@@ -22,6 +22,7 @@
   <string name="action_update_install">Update Install</string>
   <string name="action_update">Update</string>
   <string name="action_clear">Clear</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Launch</string>
   <string name="action_close">Close</string>
   <string name="action_search">Search</string>
@@ -207,6 +208,10 @@
   <string name="patchopts_debuggable_desc">Enable the debuggable manifest flag. Only use this if you know what you are doing!</string>
   <string name="patchopts_icon_title">Replace app icon</string>
   <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -236,6 +241,11 @@
   <string name="iconopts_image_preview_desc">A full, uncropped preview of the selected image.</string>
   <string name="iconopts_image_preview_none">No image selected</string>
 
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
+
   <string name="log_title">Log</string>
   <string name="log_section_install_info">Installation Info</string>
   <string name="log_section_env_info">Environment Info</string>
@@ -264,9 +274,6 @@
   <string name="play_protect_warning_ok">Continue</string>
   <string name="play_protect_warning_open_gpp">Open Play Protect</string>
   <string name="play_protect_warning_disable">Don\'t show this again</string>
-
-  <string name="custom_component_picker_title">Custom Component</string>
-  <string name="custom_component_picker_desc">A custom local version for a patching component (%s) has been found. Would you like to use it?</string>
 
   <string name="fun_fact_prefix">Fun Fact: %s</string>
   <string name="fun_fact_1">Did you know that Google Play Protect is useless?</string>

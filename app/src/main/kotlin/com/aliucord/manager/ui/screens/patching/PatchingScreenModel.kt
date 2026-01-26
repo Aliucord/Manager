@@ -103,7 +103,6 @@ class PatchingScreenModel(
                 .filterIsInstance<DownloadStep<*>>()
                 .lastOrNull { it.state == StepState.Running }
 
-            // TODO: does this error when missing?
             incompleteDownloadStep?.getStoredFile(container)?.delete()
         }
 

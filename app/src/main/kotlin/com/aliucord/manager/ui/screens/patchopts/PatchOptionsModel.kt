@@ -5,8 +5,13 @@ import android.content.pm.PackageManager.NameNotFoundException
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import cafe.adriel.voyager.navigator.Navigator
 import com.aliucord.manager.manager.PreferencesManager
+import com.aliucord.manager.ui.screens.componentopts.ComponentOptionsScreen
+import com.aliucord.manager.ui.screens.componentopts.PatchComponent
+import com.aliucord.manager.ui.util.pushForResult
 import com.aliucord.manager.util.*
+import kotlinx.coroutines.launch
 
 class PatchOptionsModel(
     prefilledOptions: PatchOptions,
@@ -45,6 +50,30 @@ class PatchOptionsModel(
         debuggable = value
     }
 
+    // ---------- Custom components state ----------
+    var customInjector by mutableStateOf<PatchComponent?>(null)
+        private set
+    var customPatches by mutableStateOf<PatchComponent?>(null)
+        private set
+
+    fun selectCustomInjector(navigator: Navigator) = screenModelScope.launch {
+        customInjector = navigator.pushForResult(
+            ComponentOptionsScreen(
+                default = customInjector,
+                componentType = PatchComponent.Type.Injector,
+            )
+        )
+    }
+
+    fun selectCustomPatches(navigator: Navigator) = screenModelScope.launch {
+        customPatches = navigator.pushForResult(
+            ComponentOptionsScreen(
+                default = customPatches,
+                componentType = PatchComponent.Type.Patches,
+            )
+        )
+    }
+
     // ---------- Config generation ----------
     val isConfigValid by derivedStateOf {
         val invalidChecks = arrayOf(
@@ -63,6 +92,8 @@ class PatchOptionsModel(
             packageName = packageName,
             debuggable = debuggable,
             iconReplacement = icon,
+            customInjector = customInjector,
+            customPatches = customPatches,
         )
     }
 

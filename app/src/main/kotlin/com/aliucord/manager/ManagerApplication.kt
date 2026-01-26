@@ -15,6 +15,7 @@ import com.aliucord.manager.manager.download.AndroidDownloadManager
 import com.aliucord.manager.manager.download.KtorDownloadManager
 import com.aliucord.manager.network.services.*
 import com.aliucord.manager.ui.screens.about.AboutModel
+import com.aliucord.manager.ui.screens.componentopts.ComponentOptionsModel
 import com.aliucord.manager.ui.screens.home.HomeModel
 import com.aliucord.manager.ui.screens.iconopts.IconOptionsModel
 import com.aliucord.manager.ui.screens.log.LogScreenModel
@@ -64,6 +65,7 @@ class ManagerApplication : Application() {
                 factoryOf(::SettingsModel)
                 factoryOf(::PatchOptionsModel)
                 factoryOf(::IconOptionsModel)
+                factoryOf(::ComponentOptionsModel)
                 factoryOf(::LogScreenModel)
                 factoryOf(::LogsListScreenModel)
                 factoryOf(::PermissionsModel)

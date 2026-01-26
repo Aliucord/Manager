@@ -10,10 +10,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SettingsItem(
-    modifier: Modifier = Modifier,
-    icon: @Composable (() -> Unit) = { },
     text: @Composable () -> Unit,
     secondaryText: @Composable (() -> Unit) = { },
+    icon: @Composable (() -> Unit) = { },
+    modifier: Modifier = Modifier,
     trailing: @Composable (() -> Unit) = { },
 ) {
     Row(
@@ -30,7 +30,7 @@ fun SettingsItem(
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.Companion.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(modifier = Modifier.size(20.dp)) {
                     icon()

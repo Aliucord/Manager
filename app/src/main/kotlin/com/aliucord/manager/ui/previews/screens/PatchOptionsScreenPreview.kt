@@ -4,8 +4,11 @@ import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.*
+import com.aliucord.manager.network.utils.SemVer
+import com.aliucord.manager.ui.screens.componentopts.PatchComponent
 import com.aliucord.manager.ui.screens.patchopts.*
 import com.aliucord.manager.ui.theme.ManagerTheme
+import kotlin.time.Clock
 
 // This preview has scrollable/interactable content that cannot be tested from an IDE preview
 
@@ -32,6 +35,10 @@ private fun PatchOptionsScreenPreview(
             packageName = parameters.packageName,
             packageNameState = parameters.packageNameState,
             setPackageName = {},
+            customInjector = parameters.customInjector,
+            onSelectCustomInjector = {},
+            customPatches = parameters.customPatches,
+            onSelectCustomPatches = {},
             isConfigValid = parameters.isConfigValid,
             onInstall = {},
         )
@@ -50,6 +57,8 @@ private data class PatchOptionsParameters(
     val appNameIsError: Boolean,
     val packageName: String,
     val packageNameState: PackageNameState,
+    val customInjector: PatchComponent?,
+    val customPatches: PatchComponent?,
     val isConfigValid: Boolean,
 )
 
@@ -67,6 +76,8 @@ private class PatchOptionsParametersProvider : PreviewParameterProvider<PatchOpt
             appNameIsError = false,
             packageName = PatchOptions.Default.packageName,
             packageNameState = PackageNameState.Ok,
+            customInjector = null,
+            customPatches = null,
             isConfigValid = true,
         ),
         PatchOptionsParameters(
@@ -80,6 +91,8 @@ private class PatchOptionsParametersProvider : PreviewParameterProvider<PatchOpt
             appNameIsError = true,
             packageName = "a b",
             packageNameState = PackageNameState.Invalid,
+            customInjector = null,
+            customPatches = null,
             isConfigValid = false,
         ),
         PatchOptionsParameters(
@@ -93,6 +106,12 @@ private class PatchOptionsParametersProvider : PreviewParameterProvider<PatchOpt
             appNameIsError = false,
             packageName = PatchOptions.Default.packageName,
             packageNameState = PackageNameState.Taken,
+            customInjector = PatchComponent(
+                type = PatchComponent.Type.Injector,
+                version = SemVer(1, 2, 3),
+                timestamp = Clock.System.now(),
+            ),
+            customPatches = null,
             isConfigValid = true,
         ),
     )

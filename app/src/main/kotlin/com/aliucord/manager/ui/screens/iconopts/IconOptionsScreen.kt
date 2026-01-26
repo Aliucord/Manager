@@ -54,7 +54,8 @@ class IconOptionsScreen : Screen, Parcelable {
 
     @Composable
     override fun Content() {
-        // Retrieves a global model owned by the navigator
+        // Retrieves an IconOptionsModel owned by the previous PatchOptionsScreen up the stack
+        // This allows us to share state between screens
         val navigator = LocalNavigator.currentOrThrow
         val modelScreen by remember {
             derivedStateOf {
@@ -62,7 +63,8 @@ class IconOptionsScreen : Screen, Parcelable {
                     ?: error("No PatchOptionsScreen in stack")
             }
         }
-        val model = modelScreen.koinScreenModel<IconOptionsModel>() // Parameters are already injected in PatchOptionsScreen
+        // Parameters are already injected by PatchOptionsScreen
+        val model = modelScreen.koinScreenModel<IconOptionsModel>()
 
         IconOptionsScreenContent(
             mode = model.mode,

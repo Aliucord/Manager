@@ -5,13 +5,13 @@ import com.aliucord.manager.R
 import com.aliucord.manager.manager.PathManager
 import com.aliucord.manager.network.utils.SemVer
 import com.aliucord.manager.patcher.StepRunner
-import com.aliucord.manager.patcher.steps.base.DownloadStep
-import com.aliucord.manager.patcher.steps.base.IDexProvider
+import com.aliucord.manager.patcher.steps.base.*
 import com.aliucord.manager.patcher.steps.patch.ReorganizeDexStep
 import com.aliucord.manager.patcher.steps.prepare.FetchInfoStep
-import com.aliucord.manager.ui.screens.patchopts.PatchCustomComponent
+import com.aliucord.manager.ui.screens.componentopts.PatchComponent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.FileNotFoundException
 
 /**
  * Download a compiled dex file to be injected into the APK as the first `classes.dex` to override an entry point class.
@@ -19,7 +19,7 @@ import org.koin.core.component.inject
  */
 @Stable
 class DownloadInjectorStep(
-    private val custom: PatchCustomComponent?,
+    private val custom: PatchComponent?,
 ) : DownloadStep<SemVer>(), IDexProvider, KoinComponent {
     private val paths: PathManager by inject()
 
@@ -31,7 +31,7 @@ class DownloadInjectorStep(
         custom?.version ?: container.getStep<FetchInfoStep>().data.injectorVersion
 
     override fun getStoredFile(container: StepRunner) =
-        custom?.file ?: paths.cachedInjector(getVersion(container))
+        custom?.getFile(paths) ?: paths.cachedInjector(getVersion(container))
 
     override val dexCount = 1
     override val dexPriority = 3
@@ -40,7 +40,17 @@ class DownloadInjectorStep(
 
     override suspend fun execute(container: StepRunner) {
         if (custom != null) {
-            container.log("Using custom injector with version ${custom.version} built ${custom.buildTime}")
+            container.log("Using custom injector with version ${custom.version} built ${custom.timestamp}")
+
+            if (!custom.getFile(paths).exists()) {
+                throw FileNotFoundException(
+                    "Selected custom component does not exist on disk! If this is an update, " +
+                        "updates cannot occur when the originally selected custom component has been deleted."
+                )
+            }
+
+            state = StepState.Skipped
+            return
         }
 
         super.execute(container)

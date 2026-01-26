@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Environment
 import com.aliucord.manager.network.utils.SemVer
 import java.io.File
-import java.io.IOException
 
 /**
  * A central place to provide all system paths that are used.
@@ -101,9 +100,7 @@ class PathManager(
     /**
      * Get all the versions of custom injector builds.
      */
-    fun customInjectors() = customInjectorsDir.listFiles()
-        ?.asList()
-        ?: throw IOException("Failed to list directory")
+    fun customInjectors() = customInjectorsDir.listFiles()?.asList() ?: emptyList()
 
     /**
      * Resolve a specific path for a versioned cached Aliuhook build
@@ -122,9 +119,7 @@ class PathManager(
     /**
      * Get all the versions of custom smali bundles.
      */
-    fun customSmaliPatches() = customPatchesDir.listFiles()
-        ?.asList()
-        ?: throw IOException("Failed to list directory")
+    fun customSmaliPatches() = customPatchesDir.listFiles()?.asList() ?: emptyList()
 
     /**
      * Resolve a specific path for a versioned Kotlin stdlib dex.
