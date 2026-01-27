@@ -20,18 +20,18 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import java.io.File
 import kotlin.time.Duration
 
+@OptIn(ExperimentalSerializationApi::class)
 class PluginsModel(
     private val context: Application,
     private val paths: PathManager,
     private val json: Json,
 ) : ScreenModel {
     private val plugins = MutableStateFlow<ImmutableList<PluginItem>>(emptyImmutableList())
-    private val aliucordJsonMutex = Mutex()
 
     var error by mutableStateOf(false)
         private set
@@ -65,28 +65,7 @@ class PluginsModel(
             initialValue = plugins.value,
         )
 
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun loadSafeMode() = screenModelScope.launchIO {
-        val settings = paths.coreSettingsFile.inputStream()
-            .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
-
-        val safeMode = settings["AC_aliucord_safe_mode_enabled"]?.jsonPrimitive?.booleanOrNull ?: false
-        pluginsSafeMode.value = safeMode
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    fun setSafeMode(safeMode: Boolean) = screenModelScope.launchIO {
-        val settings = paths.coreSettingsFile.inputStream()
-            .use { Json.decodeFromStream<MutableMap<String, JsonElement>>(it) }
-
-        settings["AC_aliucord_safe_mode_enabled"] = JsonPrimitive(safeMode)
-
-        paths.coreSettingsFile.outputStream().use { out ->
-            Json.encodeToStream(settings, out)
-        }
-
-        pluginsSafeMode.value = safeMode
-    }
+    // ---- State setters ---- //
 
     fun setSearchText(search: String) {
         searchText.value = search
@@ -107,6 +86,8 @@ class PluginsModel(
     fun hideUninstallDialog() {
         showUninstallDialog = null
     }
+
+    // ---- IO state setters ---- //
 
     fun uninstallPlugin(plugin: PluginItem) = screenModelScope.launchIO {
         if (!plugins.value.any { it.path == plugin.path }) {
@@ -134,84 +115,93 @@ class PluginsModel(
     }
 
     fun setPluginEnabled(pluginName: String, enabled: Boolean) = screenModelScope.launchIO {
-        aliucordJsonMutex.withLock {
-            @OptIn(ExperimentalSerializationApi::class)
-            try {
-                val settings = paths.coreSettingsFile.inputStream()
-                    .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
-                    .toMutableMap()
-
-                settings["AC_PM_$pluginName"] = JsonPrimitive(enabled)
-
-                paths.coreSettingsFile.outputStream()
-                    .use { json.encodeToStream(settings, it) }
-            } catch (t: Throwable) {
-                Log.e(BuildConfig.TAG, "Failed to write Aliucord.json", t)
-                mainThread { error = true }
+        try {
+            editAliucordSettings {
+                put(JsonPrimitive("AC_PM_$pluginName"), JsonPrimitive(enabled))
             }
-        }
-
-        mainThread {
-            plugins.value.forEach {
-                if (it.manifest.name == pluginName)
-                    it.enabled = enabled
+            mainThread {
+                plugins.value.forEach {
+                    if (it.manifest.name == pluginName)
+                        it.enabled = enabled
+                }
             }
+        } catch (e: Exception) {
+            Log.e(BuildConfig.TAG, "Failed to toggle plugin", e)
+            mainThread { context.showToast(R.string.status_failed) }
         }
     }
+
+    fun setSafeMode(safeMode: Boolean) = screenModelScope.launchIO {
+        try {
+            editAliucordSettings {
+                put(JsonPrimitive("AC_aliucord_safe_mode_enabled"), JsonPrimitive(safeMode))
+            }
+            pluginsSafeMode.value = safeMode
+        } catch (e: Exception) {
+            Log.e(BuildConfig.TAG, "Failed to toggle plugin", e)
+            mainThread { context.showToast(R.string.status_failed) }
+        }
+    }
+
+    // ---- State loading ---- //
 
     // Called by screen to load initial data
     fun refreshData() = screenModelScope.launchIO {
-        loadPlugins()
-        loadPluginsEnabled()
-        loadSafeMode()
-    }
-
-    private suspend fun loadPluginsEnabled() {
-        if (!paths.coreSettingsFile.exists()) return
-
-        aliucordJsonMutex.withLock {
-            @OptIn(ExperimentalSerializationApi::class)
-            val pluginToggles = try {
-                paths.coreSettingsFile.inputStream()
-                    .use { Json.decodeFromStream<Map<String, JsonElement>>(it) }
-                    .filterKeys { it.startsWith("AC_PM_") }
-                    .mapKeys { it.key.substring("AC_PM_".length) }
-                    .mapValues { it.value.jsonPrimitive.boolean }
-            } catch (t: Throwable) {
-                Log.e(BuildConfig.TAG, "Failed to load Aliucord.json", t)
-                mainThread { error = true }
-                emptyMap()
-            }
-
+        try {
+            loadSafeMode()
+            loadPlugins()
+            loadPluginsEnabled()
+        } catch (e: Exception) {
+            Log.e(BuildConfig.TAG, "Failed to load plugins state", e)
             mainThread {
-                plugins.value.forEach {
-                    if (!pluginToggles.getOrDefault(it.manifest.name, true))
-                        it.enabled = false
-                }
+                context.showToast(R.string.plugins_error)
+                error = true
             }
         }
     }
 
-    private suspend fun loadPlugins() {
-        try {
-            if (!paths.pluginsDir.exists() && !paths.pluginsDir.mkdirs())
-                throw IllegalStateException("Failed to create plugins directory")
+    private fun loadSafeMode() = screenModelScope.launchIO {
+        @Serializable
+        data class SafeModeSettings(
+            @SerialName("AC_aliucord_safe_mode_enabled")
+            val safeMode: Boolean,
+        )
 
-            val pluginFiles = paths.pluginsDir.listFiles { file -> file.extension == "zip" }
-                ?: throw IllegalStateException("Failed to read plugins directory")
+        pluginsSafeMode.value = readAliucordSettings<SafeModeSettings>()?.safeMode ?: false
+    }
 
-            val pluginItems = pluginFiles.map {
+    private suspend fun loadPluginsEnabled() {
+        val pluginToggles = readAliucordSettings<Map<JsonPrimitive, JsonElement>>()
+            ?.filterKeys { it.isString && it.content.startsWith("AC_PM_") }
+            ?.filterValues { (it as? JsonPrimitive)?.booleanOrNull == true }
+            ?.mapKeys { (key, _) -> key.content.substring("AC_PM_".length) }
+            ?.mapValues { (_, value) -> value.jsonPrimitive.boolean }
+
+        if (pluginToggles != null) mainThread {
+            plugins.value.forEach {
+                if (!pluginToggles.getOrDefault(it.manifest.name, true))
+                    it.enabled = false
+            }
+        }
+    }
+
+    private fun loadPlugins() {
+        if (!paths.pluginsDir.exists() && !paths.pluginsDir.mkdirs())
+            throw IllegalStateException("Failed to create plugins directory")
+
+        val pluginFiles = paths.pluginsDir.listFiles { file -> file.extension == "zip" }
+            ?: throw IllegalStateException("Failed to read plugins directory")
+
+        val pluginItems = pluginFiles
+            .map {
                 PluginItem(
                     manifest = loadPluginManifest(it),
                     path = it.absolutePath,
                 )
             }
+            .sortedBy { it.manifest.name }
 
-            plugins.value = pluginItems.toUnsafeImmutable()
-        } catch (t: Throwable) {
-            Log.e(BuildConfig.TAG, "Failed to load plugins", t)
-            mainThread { error = true }
-        }
+        plugins.value = pluginItems.toUnsafeImmutable()
     }
 
     private fun loadPluginManifest(pluginFile: File): PluginManifest {
@@ -220,11 +210,65 @@ class PluginsModel(
                 ?: throw Exception("Plugin ${pluginFile.name} has no manifest")
 
             try {
-                @OptIn(ExperimentalSerializationApi::class)
                 json.decodeFromStream(manifest.read().inputStream())
             } catch (t: Throwable) {
                 throw Exception("Failed to parse plugin manifest for ${pluginFile.name}", t)
             }
         }
+    }
+
+    // ---- Aliucord settings ---- //
+
+    /**
+     * Reads Aliucord core's settings, applies [block] to it, and writes it back.
+     */
+    private suspend fun editAliucordSettings(block: (MutableMap<JsonPrimitive, JsonElement>).() -> Unit) {
+        SETTINGS_MUTEX.withLock {
+            val settings = try {
+                if (paths.coreSettingsFile.exists()) {
+                    json.decodeFromStream<MutableMap<JsonPrimitive, JsonElement>>(paths.coreSettingsFile.inputStream())
+                } else {
+                    mutableMapOf()
+                }
+            } catch (e: Exception) {
+                Log.e(BuildConfig.TAG, "Aliucord settings are corrupted!", e)
+                mutableMapOf()
+            }
+
+            // Apply modifier block
+            block(settings)
+
+            paths.coreSettingsFile.parentFile!!.mkdirs()
+            paths.coreSettingsFile.outputStream()
+                .use { out -> json.encodeToStream(settings, out) }
+        }
+    }
+
+    /**
+     * Reads Aliucord core's settings and parses it into a specific model.
+     * This should not be used for future writes.
+     *
+     * @return The parsed settings model, or null if settings are missing or corrupt.
+     */
+    private suspend inline fun <reified T> readAliucordSettings(): T? {
+        return SETTINGS_MUTEX.withLock {
+            try {
+                if (paths.coreSettingsFile.exists()) {
+                    json.decodeFromStream<T>(paths.coreSettingsFile.inputStream())
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e(BuildConfig.TAG, "Aliucord settings are corrupted!", e)
+                null
+            }
+        }
+    }
+
+    private companion object {
+        /**
+         * Global lock on the main Aliucord settings.
+         */
+        private val SETTINGS_MUTEX = Mutex()
     }
 }
