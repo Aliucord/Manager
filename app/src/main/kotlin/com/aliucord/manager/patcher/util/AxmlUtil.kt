@@ -27,7 +27,7 @@ object AxmlUtil {
     /**
      * Get the only top-level chunk in an axml file.
      */
-    private fun BinaryResourceFile.getMainAxmlChunk(): XmlChunk {
+    fun BinaryResourceFile.getMainAxmlChunk(): XmlChunk {
         if (this.chunks.size > 1)
             error("More than 1 top level chunk in axml")
 
@@ -163,8 +163,9 @@ object AxmlUtil {
      * This is then used to get the filename of the resource from `resources.arsc`.
      */
     fun readManifestIconInfo(apk: File): ManifestIconInfo {
-        val manifestBytes = ZipReader(apk).use { it.openEntry("AndroidManifest.xml")?.read() }
-            ?: error("APK missing manifest")
+        val manifestBytes = ZipReader(apk).use {
+            it.openEntry("AndroidManifest.xml")?.read()
+        } ?: error("APK missing manifest")
         val manifest = BinaryResourceFile(manifestBytes)
         val mainChunk = manifest.getMainAxmlChunk()
 

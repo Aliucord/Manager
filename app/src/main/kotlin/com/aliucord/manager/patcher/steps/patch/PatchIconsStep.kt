@@ -28,7 +28,7 @@ import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileNames
 import com.aliucord.manager.patcher.util.AxmlUtil
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
-import com.aliucord.manager.util.getResBytes
+import com.aliucord.manager.util.getRawBytes
 import com.github.diamondminer88.zip.ZipWriter
 import com.google.devrel.gmscore.tools.apk.arsc.*
 import org.koin.core.component.KoinComponent
@@ -184,12 +184,12 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
                 }
 
                 container.log("Writing monochrome icon AXML to apk")
-                it.writeEntry("res/ic_aliucord_monochrome.xml", context.getResBytes(monochromeIconId))
+                it.writeEntry("res/ic_aliucord_monochrome.xml", context.resources.getRawBytes(monochromeIconId))
             }
 
             if (options.iconReplacement is IconReplacement.OldDiscord) {
                 container.log("Writing custom icon foreground to apk")
-                it.writeEntry("res/ic_foreground_replacement.xml", context.getResBytes(R.drawable.ic_discord_old_monochrome))
+                it.writeEntry("res/ic_foreground_replacement.xml", context.resources.getRawBytes(R.drawable.ic_discord_old_monochrome))
             } else if (options.iconReplacement is IconReplacement.CustomImage) {
                 container.log("Writing custom icon foreground to apk")
                 it.writeEntry("res/ic_foreground_replacement.png", options.iconReplacement.imageBytes)

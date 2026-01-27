@@ -31,6 +31,7 @@ class KotlinPatchRunner(
         SmaliPatchStep(),
         PatchIconsStep(options),
         PatchManifestStep(options),
+        PatchCertsStep(),
         ReorganizeDexStep(),
         AddAliuhookLibsStep(),
         SaveMetadataStep(options),

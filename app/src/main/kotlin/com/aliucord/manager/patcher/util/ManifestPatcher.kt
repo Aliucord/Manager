@@ -16,7 +16,6 @@ object ManifestPatcher {
     private const val USE_EMBEDDED_DEX = "useEmbeddedDex"
     private const val EXTRACT_NATIVE_LIBS = "extractNativeLibs"
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
-    private const val NETWORK_SECURITY_CONFIG = "networkSecurityConfig"
     private const val LABEL = "label"
     private const val PACKAGE = "package"
     private const val COMPILE_SDK_VERSION = "compileSdkVersion"
@@ -128,7 +127,6 @@ object ManifestPatcher {
                                 private var addMetadata = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
-                                    if (name == NETWORK_SECURITY_CONFIG) return
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
                                     if (name == USE_EMBEDDED_DEX) addUseEmbeddedDex = false
                                     if (name == EXTRACT_NATIVE_LIBS) addExtractNativeLibs = false

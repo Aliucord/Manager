@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.*
@@ -16,8 +17,7 @@ import androidx.annotation.AnyRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import com.aliucord.manager.BuildConfig
-import com.aliucord.manager.R
+import com.aliucord.manager.*
 import com.google.android.gms.safetynet.SafetyNet
 import java.io.File
 import java.io.InputStream
@@ -111,13 +111,13 @@ fun Activity.requestNoBatteryOptimizations() {
 }
 
 /**
- * Get the raw bytes for a resource.
+ * Get the raw bytes for any resource stored as a file within the APK.
  * @param id The resource identifier
- * @return The resource's raw bytes as stored inside the APK
+ * @return The resource's raw bytes as stored inside the APK (no parsing is done).
  */
-fun Context.getResBytes(@AnyRes id: Int): ByteArray {
+fun Resources.getRawBytes(@AnyRes id: Int): ByteArray {
     val tValue = TypedValue()
-    this.resources.getValue(
+    this.getValue(
         /* id = */ id,
         /* outValue = */ tValue,
         /* resolveRefs = */ true,
@@ -125,7 +125,7 @@ fun Context.getResBytes(@AnyRes id: Int): ByteArray {
 
     val resPath = tValue.string.toString()
 
-    return this.javaClass.classLoader
+    return ManagerApplication::class.java.classLoader
         ?.getResourceAsStream(resPath)
         ?.use(InputStream::readBytes)
         ?: error("Failed to get resource file $resPath from APK")

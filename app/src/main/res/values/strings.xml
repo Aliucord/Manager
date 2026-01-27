@@ -162,6 +162,7 @@
   <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Copying dependencies</string>
   <string name="patch_step_patch_manifests">Patching APK manifest</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Patching app icon</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
