@@ -195,14 +195,14 @@ class PatchingScreenModel(
         )
     }
 
-    private companion object {
+    companion object {
         // Global state to avoid showing the warning more than once per launch
         private var alreadyShownNetworkWarning = false
 
         /**
          * Random fun facts to show on the installation screen.
          */
-        val FUN_FACTS = arrayOf(
+        private val FUN_FACTS = arrayOf(
             R.string.fun_fact_1,
             R.string.fun_fact_2,
             R.string.fun_fact_3,

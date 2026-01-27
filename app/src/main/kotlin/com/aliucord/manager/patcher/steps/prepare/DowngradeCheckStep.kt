@@ -1,6 +1,6 @@
 package com.aliucord.manager.patcher.steps.prepare
 
-import android.content.Context
+import android.app.Application
 import android.content.pm.PackageManager.NameNotFoundException
 import com.aliucord.manager.R
 import com.aliucord.manager.installers.InstallerResult
@@ -19,7 +19,7 @@ import org.koin.core.component.inject
  * (Prevent conflicts from downgrading)
  */
 class DowngradeCheckStep(private val options: PatchOptions) : Step(), KoinComponent {
-    private val context: Context by inject()
+    private val context: Application by inject()
     private val installers: InstallerManager by inject()
 
     override val group = StepGroup.Prepare

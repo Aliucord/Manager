@@ -10,11 +10,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InstallMetadata(
     /**
-     * The user-selected options for this installation.
-     */
-    val options: PatchOptions,
-
-    /**
      * Whether the manager is a real release or built from source.
      */
     val customManager: Boolean,
@@ -43,4 +38,9 @@ data class InstallMetadata(
      * Version of the Kotlin stdlib that was injected into the end of the APK.
      */
     val kotlinVersion: SemVer,
+
+    /**
+     * The user-selected options for this installation.
+     */
+    val options: PatchOptions,
 )

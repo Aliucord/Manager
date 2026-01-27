@@ -38,7 +38,7 @@ class KotlinPatchRunner(
 
         // Install
         AlignmentStep(),
-        SigningStep(),
+        SigningStep(options),
         InstallStep(options),
         CleanupStep(),
     )

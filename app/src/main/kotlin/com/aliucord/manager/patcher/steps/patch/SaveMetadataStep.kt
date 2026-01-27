@@ -33,13 +33,13 @@ class SaveMetadataStep(private val options: PatchOptions) : Step(), KoinComponen
         val kotlin = container.getStep<DownloadKotlinStep>()
 
         val metadata = InstallMetadata(
-            options = options,
             customManager = !BuildConfig.RELEASE,
             managerVersion = SemVer.parse(BuildConfig.VERSION_NAME),
             aliuhookVersion = aliuhook.getVersion(container),
             injectorVersion = injector.getVersion(container),
             patchesVersion = patches.getVersion(container),
             kotlinVersion = kotlin.getVersion(container),
+            options = options,
         )
 
         container.log("Writing serialized install metadata to APK")

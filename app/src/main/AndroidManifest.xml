@@ -28,6 +28,7 @@
       android:allowBackup="true"
       android:dataExtractionRules="@xml/new_backup_rules"
       android:fullBackupContent="@xml/old_backup_rules"
+      android:hasFragileUserData="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:largeHeap="true"
@@ -35,7 +36,8 @@
       android:requestLegacyExternalStorage="true"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
-      android:theme="@style/Theme.AppCompat.NoActionBar">
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      tools:targetApi="29">
 
     <receiver
         android:name=".installers.pm.PMIntentReceiver"

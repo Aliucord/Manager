@@ -1,6 +1,6 @@
 package com.aliucord.manager.manager
 
-import android.content.Context
+import android.app.Application
 import android.os.Environment
 import com.aliucord.manager.network.utils.SemVer
 import java.io.File
@@ -8,8 +8,9 @@ import java.io.File
 /**
  * A central place to provide all system paths that are used.
  */
+// TODO: clarify and cleanup when these directories are generated
 class PathManager(
-    private val context: Context,
+    private val context: Application,
 ) {
     /**
      * The Aliucord folder in which plugins/settings/themes are stored.
@@ -28,9 +29,14 @@ class PathManager(
     val coreSettingsFile = aliucordDir.resolve("settings/Aliucord.json")
 
     /**
-     * Global keystore used for signing APKs.
+     * The old global keystore used for signing APKs stored in external storage.
      */
-    val keystoreFile = aliucordDir.resolve("ks.keystore")
+    val legacyKeystoreFile = aliucordDir.resolve("ks.keystore")
+
+    /**
+     * The new global keystore used for signing APKs stored in Manager's internal storage.
+     */
+    val keystoreFile = context.filesDir.resolve("aliucord.keystore")
 
     /**
      * The internal directory used for downloading components related to patching, and

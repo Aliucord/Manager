@@ -37,6 +37,7 @@ import com.aliucord.manager.ui.components.dialogs.NetworkWarningDialog
 import com.aliucord.manager.ui.screens.log.LogScreen
 import com.aliucord.manager.ui.screens.patching.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
+import com.aliucord.manager.ui.screens.patchopts.PatchOptionsScreen
 import com.aliucord.manager.ui.theme.customColors
 import com.aliucord.manager.ui.util.paddings.*
 import com.aliucord.manager.ui.util.spacedByLastAtBottom
@@ -52,7 +53,13 @@ import org.koin.core.parameter.parametersOf
 val VERTICAL_PADDING: Dp = 18.dp
 
 @Parcelize
-class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
+class PatchingScreen(
+    /**
+     * User-selected patching options. This may originate from [PatchOptionsScreen] or
+     * from an existing installation, to update it.
+     */
+    private val options: PatchOptions,
+) : Screen, Parcelable {
     @IgnoredOnParcel
     override val key = "Patching"
 
@@ -60,7 +67,7 @@ class PatchingScreen(private val data: PatchOptions) : Screen, Parcelable {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
-        val model = koinScreenModel<PatchingScreenModel> { parametersOf(data) }
+        val model = koinScreenModel<PatchingScreenModel> { parametersOf(options) }
 
         val state by model.state.collectAsState()
         val listState = rememberLazyListState()
