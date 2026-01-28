@@ -46,17 +46,21 @@ class ComponentOptionsModel(
         // ${timestamp}_${componentVersion}.${componentFile.extension}
         val componentNameRegex = """^(\d+)_(\d+\.\d+.\d+)\.\w+$""".toRegex()
 
-        for (file in files) {
-            val match = componentNameRegex.find(file.name) ?: continue
+        val newComponents = files.mapNotNull { file ->
+            val match = componentNameRegex.find(file.name)
+                ?: return@mapNotNull null
             val (_, timestamp, version) = match.groupValues
 
-            val component = PatchComponent(
+            PatchComponent(
                 type = type,
                 version = SemVer.parse(version),
                 timestamp = Instant.fromEpochMilliseconds(timestamp.toLong()),
             )
+        }.sortedByDescending { it.timestamp }
 
-            mainThread { components += component }
+        mainThread {
+            components.clear()
+            components.addAll(newComponents)
         }
     }
 
