@@ -65,7 +65,11 @@ class RootInstaller(private val context: Context) : Installer {
         coroutineScope.launch { waitInstall(apks, silent) }
     }
 
-    override suspend fun waitInstall(apks: List<File>, silent: Boolean): InstallerResult {
+    override suspend fun waitInstall(
+        apks: List<File>,
+        silent: Boolean,
+        onProgressUpdate: Installer.ProgressListener?,
+    ): InstallerResult {
         val invalidChars = """\W""".toRegex()
         for (apk in apks) {
             if (hasDangerousCharacter(apk.canonicalPath) || hasDangerousCharacter(apk.name))

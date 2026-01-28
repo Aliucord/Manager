@@ -22,7 +22,7 @@ fun UpdaterDialog(
     if (!viewModel.showDialog) return
 
     val isWorking by viewModel.isWorking.collectAsState()
-    val downloadProgress by viewModel.downloadProgress.collectAsState()
+    val downloadProgress by viewModel.progress.collectAsState()
     val downloadInProgress by remember { derivedStateOf { downloadProgress != null } }
 
     AlertDialog(

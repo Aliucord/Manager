@@ -33,7 +33,7 @@ class UpdaterViewModel(
         private set
     var targetVersion by mutableStateOf<String?>(null)
         private set
-    val downloadProgress: StateFlow<Float?>
+    val progress: StateFlow<Float?>
         field = MutableStateFlow(null)
     val isWorking: StateFlow<Boolean>
         field = MutableStateFlow(false)
@@ -59,7 +59,7 @@ class UpdaterViewModel(
         if (!isWorking.compareAndSet(expect = false, update = true))
             return@launchIO
 
-        downloadProgress.value = null
+        progress.value = null
 
         val url = targetApkUrl ?: return@launchIO
         val apkFile = application.cacheDir.resolve("manager.apk")
@@ -73,7 +73,7 @@ class UpdaterViewModel(
             val downloadResult = downloader.download(
                 url = url,
                 out = apkFile,
-                onProgressUpdate = { downloadProgress.value = it },
+                onProgressUpdate = { progress.value = it },
             )
 
             when (downloadResult) {
@@ -89,13 +89,16 @@ class UpdaterViewModel(
                     throw IllegalStateException("Failed to download update: ${downloadResult.getDebugReason()}", downloadResult.getError())
             }
 
-            downloadProgress.value = null
+            progress.value = null
 
             val installer = installers.getActiveInstaller()
             val installResult = installer.waitInstall(
                 apks = listOf(apkFile),
                 silent = true,
+                onProgressUpdate = { progress.value = it },
             )
+
+            progress.value = null
 
             when (installResult) {
                 InstallerResult.Success -> {

@@ -5,10 +5,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.*
+import android.content.pm.PackageInstaller.SessionCallback
 import android.content.pm.PackageInstaller.SessionParams
-import android.os.Build
-import android.os.Process
+import android.content.pm.PackageInstallerHidden.SessionParamsHidden
+import android.os.*
 import androidx.core.content.ContextCompat
+import com.aliucord.manager.installers.Installer
 import com.aliucord.manager.installers.InstallerResult
 import com.aliucord.manager.util.*
 import dev.rikka.tools.refine.Refine
@@ -62,7 +64,7 @@ object PMUtils {
      */
     @Suppress("DEPRECATION")
     fun createInstallSessionParams(silent: Boolean): SessionParams {
-        return SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
+        val params = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
             if (Build.VERSION.SDK_INT >= 24) setOriginatingUid(Process.myUid())
             if (Build.VERSION.SDK_INT >= 26) setInstallReason(PackageManager.INSTALL_REASON_USER)
             if (Build.VERSION.SDK_INT >= 30) setAutoRevokePermissionsMode(false)
@@ -78,6 +80,15 @@ object PMUtils {
 
             if (Build.VERSION.SDK_INT >= 34) setPackageSource(PackageInstaller.PACKAGE_SOURCE_OTHER)
         }
+
+        val hiddenParams = Refine.unsafeCast<SessionParamsHidden>(params)
+        HiddenAPI.disable()
+        hiddenParams.installFlags = hiddenParams.installFlags or
+            PackageManagerHidden.INSTALL_REPLACE_EXISTING or
+            PackageManagerHidden.INSTALL_ALLOW_TEST or
+            (if (Build.VERSION.SDK_INT >= 34) PackageManagerHidden.INSTALL_BYPASS_LOW_TARGET_SDK_BLOCK else 0)
+
+        return Refine.unsafeCast<SessionParams>(hiddenParams)
     }
 
     /**
@@ -114,9 +125,33 @@ object PMUtils {
         return relayReceiver
     }
 
-    // TODO: Install progress?
-    //       PackageInstaller.Session#setStagingProgress
-    //       PackageInstaller.SessionCallback#onProgressChanged(int, float)
+    /**
+     * Creates a session callback listener that is then registered to receive
+     * installation progress updates from the system.
+     */
+    fun registerSessionCallback(
+        sessionId: Int,
+        packageInstaller: PackageInstaller,
+        onProgressUpdate: Installer.ProgressListener,
+    ): SessionCallback {
+        val callback = object : SessionCallback() {
+            override fun onActiveChanged(callbackSessionId: Int, active: Boolean) {}
+            override fun onBadgingChanged(callbackSessionId: Int) {}
+            override fun onCreated(callbackSessionId: Int) {}
+            override fun onFinished(callbackSessionId: Int, success: Boolean) {}
+
+            override fun onProgressChanged(callbackSessionId: Int, progress: Float) {
+                if (sessionId != callbackSessionId) return
+
+                onProgressUpdate.onUpdate(progress)
+            }
+        }
+
+        // Register callback to receive invocations on main thread
+        packageInstaller.registerSessionCallback(callback, Handler(Looper.getMainLooper()))
+
+        return callback
+    }
 
     /**
      * Start a [PackageInstaller] session for installation.
@@ -147,10 +182,27 @@ object PMUtils {
         session.use { session ->
             val bufferSize = 1 * 1024 * 1024 // 1MiB
 
-            for (apk in apks) {
-                session.openWrite(apk.name, 0, apk.length()).use { outStream ->
-                    apk.inputStream().use { it.copyTo(outStream, bufferSize) }
-                    session.fsync(outStream)
+            for (apkIdx in 0..apks.lastIndex) {
+                val apk = apks[apkIdx]
+                val apkSize = apk.length()
+                val filesProgress = (apkIdx + 1f) / apks.size
+
+                session.openWrite(apk.name, 0, apkSize).use { out ->
+                    apk.inputStream().use { input ->
+                        val buffer = ByteArray(bufferSize)
+                        var bytesCopied: Long = 0
+                        var bytes = input.read(buffer)
+                        while (bytes >= 0) {
+                            out.write(buffer, 0, bytes)
+                            bytesCopied += bytes
+
+                            val apkProgress = bytes.toFloat() / apkSize
+                            session.setStagingProgress(apkProgress * filesProgress)
+
+                            bytes = input.read(buffer)
+                        }
+                    }
+                    session.fsync(out)
                 }
             }
 

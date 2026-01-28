@@ -83,7 +83,11 @@ class ShizukuInstaller(
         )
     }
 
-    override suspend fun waitInstall(apks: List<File>, silent: Boolean): InstallerResult {
+    override suspend fun waitInstall(
+        apks: List<File>,
+        silent: Boolean,
+        onProgressUpdate: Installer.ProgressListener?,
+    ): InstallerResult {
         if (!shizuku.requestPermissions())
             throw IllegalStateException("Shizuku is not available!")
 
@@ -107,10 +111,20 @@ class ShizukuInstaller(
                 onResult = continuation::resume,
             )
 
+            // Create and register a progress callback
+            val sessionCallback = onProgressUpdate?.let { onProgressUpdate ->
+                PMUtils.registerSessionCallback(
+                    sessionId = sessionId,
+                    packageInstaller = packageInstaller,
+                    onProgressUpdate = onProgressUpdate,
+                )
+            }
+
             // Unregister PMResultReceiver when this coroutine finishes or errors
             // Explicitly cancel the install session if it did not finish.
             continuation.invokeOnCancellation {
                 context.unregisterReceiver(relayReceiver)
+                sessionCallback?.let { packageInstaller.unregisterSessionCallback(it) }
                 packageInstaller.abandonSession(sessionId)
             }
 

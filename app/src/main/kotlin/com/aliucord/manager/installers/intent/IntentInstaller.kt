@@ -34,7 +34,11 @@ class IntentInstaller(
 
     @Suppress("DEPRECATION")
     @SuppressLint("RequestInstallPackagesPolicy")
-    override suspend fun waitInstall(apks: List<File>, silent: Boolean): InstallerResult {
+    override suspend fun waitInstall(
+        apks: List<File>,
+        silent: Boolean,
+        onProgressUpdate: Installer.ProgressListener?,
+    ): InstallerResult {
         val file = apks.singleOrNull()
             ?: throw IllegalArgumentException("IntentInstaller only supports installing a single APK")
         val fileUri = if (Build.VERSION.SDK_INT >= 24) {

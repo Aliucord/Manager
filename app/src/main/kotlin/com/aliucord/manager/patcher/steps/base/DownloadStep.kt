@@ -81,8 +81,10 @@ abstract class DownloadStep<IVersion> : Step(), KoinComponent {
         val result = downloader.download(url, file) { newProgress ->
             progress = newProgress ?: -1f
 
-            if (newProgress != null && newProgress > lastLogProgress + 0.1f) {
-                container.log("Download progress: ${(newProgress * 100.0).toPrecision(0)}% after ${getDuration()}ms")
+            newProgress?.let { newProgress ->
+                if (newProgress > lastLogProgress + 0.1f) {
+                    container.log("Download progress: ${(newProgress * 100.0).toPrecision(0)}% after ${getDuration()}ms")
+                }
                 @Suppress("AssignedValueIsNeverRead") // incorrect
                 lastLogProgress = newProgress
             }

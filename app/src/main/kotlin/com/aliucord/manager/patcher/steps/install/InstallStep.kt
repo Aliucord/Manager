@@ -15,8 +15,7 @@ import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
 import com.aliucord.manager.ui.components.dialogs.PlayProtectDialog
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.util.InstallNotifications
-import com.aliucord.manager.util.isPackageInstalled
-import com.aliucord.manager.util.isPlayProtectEnabled
+import com.aliucord.manager.util.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -75,9 +74,19 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
         }
 
         container.log("Installing ${apk.absolutePath}, silent: ${!prefs.devMode}")
+        var lastProgress = 0f
         val result = installer.waitInstall(
             apks = listOf(apk),
             silent = !prefs.devMode,
+            onProgressUpdate = { newProgress ->
+                this@InstallStep.progress = newProgress
+
+                if (newProgress > lastProgress + 0.1f) {
+                    container.log("Install progress: ${(newProgress * 100.0).toPrecision(0)}% after ${getDuration()}ms")
+                }
+                @Suppress("AssignedValueIsNeverRead") // incorrect
+                lastProgress = newProgress
+            },
         )
 
         when (result) {

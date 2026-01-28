@@ -39,7 +39,11 @@ class PMInstaller(
         )
     }
 
-    override suspend fun waitInstall(apks: List<File>, silent: Boolean) = suspendCancellableCoroutine { continuation ->
+    override suspend fun waitInstall(
+        apks: List<File>,
+        silent: Boolean,
+        onProgressUpdate: Installer.ProgressListener?,
+    ) = suspendCancellableCoroutine { continuation ->
         // Create a new install session
         val sessionId = createInstallSession(silent)
 
@@ -51,10 +55,20 @@ class PMInstaller(
             onResult = continuation::resume,
         )
 
+        // Create and register a progress callback
+        val sessionCallback = onProgressUpdate?.let { onProgressUpdate ->
+            PMUtils.registerSessionCallback(
+                sessionId = sessionId,
+                packageInstaller = _packageInstaller,
+                onProgressUpdate = onProgressUpdate,
+            )
+        }
+
         // Unregister PMResultReceiver when this coroutine finishes or errors
         // Explicitly cancel the install session if it did not finish.
         continuation.invokeOnCancellation {
             context.unregisterReceiver(relayReceiver)
+            sessionCallback?.let { _packageInstaller.unregisterSessionCallback(it) }
             _packageInstaller.abandonSession(sessionId)
         }
 
