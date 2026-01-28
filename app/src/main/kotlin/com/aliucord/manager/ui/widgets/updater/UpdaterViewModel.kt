@@ -34,9 +34,9 @@ class UpdaterViewModel(
     var targetVersion by mutableStateOf<String?>(null)
         private set
     val downloadProgress: StateFlow<Float?>
-        private field = MutableStateFlow(null)
+        field = MutableStateFlow(null)
     val isWorking: StateFlow<Boolean>
-        private field = MutableStateFlow(false)
+        field = MutableStateFlow(false)
 
     private var targetApkUrl: String? = null
 

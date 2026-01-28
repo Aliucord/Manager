@@ -10,7 +10,6 @@ import androidx.core.content.getSystemService
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.util.*
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -53,7 +52,6 @@ class InstallLogManager(
         if (!path.exists()) return null
 
         return try {
-            @OptIn(ExperimentalSerializationApi::class)
             json.decodeFromStream(path.inputStream())
         } catch (t: Throwable) {
             Log.e(BuildConfig.TAG, "Failed to open install log $id", t)

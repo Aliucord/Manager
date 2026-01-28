@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hiddenApi.refine)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -145,22 +144,29 @@ android {
     }
 }
 
+composeCompiler {
+    // Temporary workaround for https://youtrack.jetbrains.com/projects/KT/issues/KT-83266/
+    // Remove once updated to Kotlin 2.3.10
+    includeComposeMappingFile.set(false)
+}
+
 kotlin {
-    sourceSets.all {
-        languageSettings.enableLanguageFeature("ExplicitBackingFields")
-    }
     compilerOptions {
         val reportsDir = layout.buildDirectory.asFile.get()
             .resolve("reports").absolutePath
 
         jvmTarget = JvmTarget.JVM_21
+        optIn.addAll(
+            "androidx.compose.animation.ExperimentalAnimationApi",
+            "androidx.compose.foundation.ExperimentalFoundationApi",
+            "androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "androidx.compose.material3.ExperimentalMaterial3Api",
+            "kotlin.time.ExperimentalTime",
+            "kotlinx.serialization.ExperimentalSerializationApi",
+        )
         freeCompilerArgs.addAll(
-            "-opt-in=kotlin.time.ExperimentalTime",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${reportsDir}",
+            "-XXLanguage:+ExplicitBackingFields",
             "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode", // @StringRes in field parameters of a class warning
         )
     }

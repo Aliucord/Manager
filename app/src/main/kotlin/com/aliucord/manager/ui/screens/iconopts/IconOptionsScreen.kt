@@ -261,8 +261,6 @@ private fun CustomColorOptions(
     color: HsvColor,
     setColor: (HsvColor) -> Unit,
 ) {
-    val color by rememberUpdatedState(color)
-
     // This color is separated from the live color and intentionally lags behind while the RGBTextField is being edited.
     // When this changes, then the text inside the RGBTextField is reset to the fully formatted color.
     // As such, this only happens when the color is changed via the other color pickers.
@@ -278,9 +276,9 @@ private fun CustomColorOptions(
             modifier = Modifier.fillMaxWidth(),
         ) {
             CircularColorPicker(
-                hue = color.hue,
-                saturation = color.saturation,
-                value = color.value,
+                hue = { color.hue },
+                saturation = { color.saturation },
+                value = { color.value },
                 onColorChange = { hue, saturation ->
                     color.copy(hue = hue, saturation = saturation).let {
                         setColor(it)

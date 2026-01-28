@@ -38,7 +38,6 @@ import com.aliucord.manager.util.*
 import com.github.diamondminer88.zip.ZipReader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import org.koin.android.ext.android.inject
@@ -191,7 +190,6 @@ class MainActivity : ComponentActivity() {
             val metadataFile = ZipReader(applicationInfo.publicSourceDir)
                 .use { it.openEntry("aliucord.json")?.read() }
 
-            @OptIn(ExperimentalSerializationApi::class)
             metadataFile?.let { json.decodeFromStream<InstallMetadata>(it.inputStream()) }
         } catch (t: Throwable) {
             Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package $packageName", t)

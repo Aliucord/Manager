@@ -20,12 +20,12 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import java.io.File
 import kotlin.time.Duration
 
-@OptIn(ExperimentalSerializationApi::class)
 class PluginsModel(
     private val context: Application,
     private val paths: PathManager,
@@ -43,7 +43,7 @@ class PluginsModel(
         private set
 
     val searchText: StateFlow<String>
-        private field = MutableStateFlow("")
+        field = MutableStateFlow("")
 
     var pluginsSafeMode = MutableStateFlow(false)
         private set

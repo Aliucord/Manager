@@ -30,7 +30,6 @@ import com.github.diamondminer88.zip.ZipReader
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 
@@ -108,7 +107,6 @@ class HomeModel(
             val metadataFile = ZipReader(applicationInfo.publicSourceDir)
                 .use { it.openEntry("aliucord.json")?.read() }
 
-            @OptIn(ExperimentalSerializationApi::class)
             metadataFile?.let { json.decodeFromStream<InstallMetadata>(it.inputStream()) }
         } catch (t: Throwable) {
             Log.w(BuildConfig.TAG, "Failed to parse Aliucord install metadata from package $packageName", t)
@@ -243,7 +241,6 @@ class HomeModel(
             val metadataFile = ZipReader(apkPath).use { it.openEntry("aliucord.json")?.read() }
                 ?: return false
 
-            @OptIn(ExperimentalSerializationApi::class)
             json.decodeFromStream<InstallMetadata>(metadataFile.inputStream())
         } catch (t: Throwable) {
             // If it failed to parse, then it's outdated
