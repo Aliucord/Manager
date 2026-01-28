@@ -38,7 +38,7 @@ class InstallStep(private val options: PatchOptions) : Step(), KoinComponent {
     override val localizedName = R.string.patch_step_install
 
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
 
         // If app backgrounded, show notification
         if (ProcessLifecycleOwner.get().lifecycle.currentState == Lifecycle.State.CREATED) {

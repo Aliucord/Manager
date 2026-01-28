@@ -36,7 +36,7 @@ class PatchCertsStep : Step(), KoinComponent {
     // to inject into Aliucord, except with the resource ids pointing to certificate files changed
     // to new ones injected into the patched app's arsc
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
 
         if (Build.VERSION.SDK_INT >= 26) {
             container.log("Modern device detected, skipping injecting root certs")

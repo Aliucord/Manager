@@ -27,7 +27,7 @@ class CleanupStep : Step(), KoinComponent {
             container.log("keepPatchedApks enabled, keeping working dir")
         } else {
             container.log("Deleting patching working dir")
-            if (!paths.patchingWorkingDir().deleteRecursively())
+            if (!paths.patchingWorkingDir.deleteRecursively())
                 throw IllegalStateException("Failed to delete patching working dir")
         }
     }

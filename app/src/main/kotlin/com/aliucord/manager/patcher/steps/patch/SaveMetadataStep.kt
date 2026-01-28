@@ -26,7 +26,7 @@ class SaveMetadataStep(private val options: PatchOptions) : Step(), KoinComponen
     override val localizedName = R.string.patch_step_save_metadata
 
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
         val aliuhook = container.getStep<DownloadAliuhookStep>()
         val injector = container.getStep<DownloadInjectorStep>()
         val patches = container.getStep<DownloadPatchesStep>()

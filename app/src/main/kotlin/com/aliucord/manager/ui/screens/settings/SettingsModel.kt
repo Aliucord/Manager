@@ -23,7 +23,7 @@ class SettingsModel(
 ) : ScreenModel {
     val installInfo = InstallInfo
 
-    var patchedApkExists by mutableStateOf(paths.patchedApk().exists())
+    var patchedApkExists by mutableStateOf(paths.patchedApk.exists())
         private set
     var showThemeDialog by mutableStateOf(false)
         private set
@@ -73,7 +73,7 @@ class SettingsModel(
     }
 
     fun shareApk() {
-        val file = paths.patchingWorkingDir().resolve("patched.apk")
+        val file = paths.patchingWorkingDir.resolve("patched.apk")
         val fileUri = FileProvider.getUriForFile(
             /* context = */ application,
             /* authority = */ "${BuildConfig.APPLICATION_ID}.provider",

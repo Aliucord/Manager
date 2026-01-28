@@ -22,7 +22,7 @@ class AlignmentStep : Step(), KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         val currentDeviceArch = Build.SUPPORTED_ABIS.first()
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
 
         var resourcesArscBytes: ByteArray? = null
         var dexCount: Int = -1
@@ -45,7 +45,7 @@ class AlignmentStep : Step(), KoinComponent {
                 // Copy all the dex files that need to be moved out of the apk
                 for (idx in 0..<dexCount) {
                     val bytes = zip.openEntry(getDexName(idx))!!.read()
-                    val file = paths.patchingWorkingDir().resolve(getDexName(idx))
+                    val file = paths.patchingWorkingDir.resolve(getDexName(idx))
                     file.writeBytes(bytes)
                 }
             }
@@ -67,7 +67,7 @@ class AlignmentStep : Step(), KoinComponent {
 
                 // Index is just used as a placeholder id to cache on disk
                 val bytes = zip.openEntry(path)!!.read()
-                val file = paths.patchingWorkingDir().resolve("$idx.so")
+                val file = paths.patchingWorkingDir.resolve("$idx.so")
                 file.writeBytes(bytes)
                 container.log("Extracted native lib $file")
             }
@@ -98,7 +98,7 @@ class AlignmentStep : Step(), KoinComponent {
 
             container.log("Writing dex files uncompressed aligned to 4 bytes")
             for (idx in 0..<dexCount) {
-                val file = paths.patchingWorkingDir().resolve(getDexName(idx))
+                val file = paths.patchingWorkingDir.resolve(getDexName(idx))
                 val bytes = file.readBytes()
                 zip.writeEntry(getDexName(idx), bytes, ZipCompression.NONE, 4)
             }
@@ -109,7 +109,7 @@ class AlignmentStep : Step(), KoinComponent {
                 if (!path.startsWith("lib/$currentDeviceArch"))
                     continue
 
-                val file = paths.patchingWorkingDir().resolve("$idx.so")
+                val file = paths.patchingWorkingDir.resolve("$idx.so")
                 val bytes = file.readBytes()
 
                 container.log("Writing $path uncompressed aligned to 16KiB")

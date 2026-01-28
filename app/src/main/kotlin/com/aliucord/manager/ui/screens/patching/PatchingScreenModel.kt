@@ -106,7 +106,7 @@ class PatchingScreenModel(
             incompleteDownloadStep?.getStoredFile(container)?.delete()
         }
 
-        paths.patchingWorkingDir().deleteRecursively()
+        paths.patchingWorkingDir.deleteRecursively()
     }
 
     fun install() = screenModelScope.launchBlock {

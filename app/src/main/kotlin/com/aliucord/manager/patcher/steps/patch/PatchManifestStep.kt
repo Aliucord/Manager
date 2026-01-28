@@ -18,7 +18,7 @@ class PatchManifestStep(private val options: PatchOptions) : Step() {
     override val localizedName = R.string.patch_step_patch_manifests
 
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
 
         container.log("Reading manifest from apk")
         val manifest = ZipReader(apk)

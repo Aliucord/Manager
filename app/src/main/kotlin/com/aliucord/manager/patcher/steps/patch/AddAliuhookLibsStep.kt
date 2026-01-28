@@ -21,7 +21,7 @@ class AddAliuhookLibsStep : Step(), KoinComponent {
 
     override suspend fun execute(container: StepRunner) {
         val currentDeviceArch = Build.SUPPORTED_ABIS.first()
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
         val aliuhook = container.getStep<DownloadAliuhookStep>().getStoredFile(container)
 
         ZipWriter(apk, /* append = */ true).use { patchedApk ->

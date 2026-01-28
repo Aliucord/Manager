@@ -18,7 +18,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
     override val localizedName = R.string.patch_step_reorganize_dex
 
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
         val dexProviders = container.steps
             .filterIsInstance<IDexProvider>()
             .sortedByDescending { it.dexPriority }
@@ -45,7 +45,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
 
                 container.log("Extracting ${getDexName(idx)} from apk")
                 val bytes = zip.openEntry(getDexName(idx))!!.read()
-                val file = paths.patchingWorkingDir().resolve(getDexName(idx))
+                val file = paths.patchingWorkingDir.resolve(getDexName(idx))
                 file.writeBytes(bytes)
             }
         }
@@ -84,7 +84,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
 
                 container.log("Moving old low priority dex file back into apk unaligned uncompressed: " + getDexName(dexCount + idx))
 
-                val file = paths.patchingWorkingDir().resolve(getDexName(idx))
+                val file = paths.patchingWorkingDir.resolve(getDexName(idx))
                 val bytes = file.readBytes()
                 zip.writeEntry(getDexName(dexCount + idx), bytes, ZipCompression.NONE)
             }
@@ -96,7 +96,7 @@ class ReorganizeDexStep : Step(), KoinComponent {
                 if (dexProvider.dexPriority > 0) continue
 
                 container.log(
-                    "Writing remaining low priority dex files into apk from step:" +
+                    "Writing remaining low priority dex files into apk from step: " +
                         "${dexProvider.javaClass.simpleName} with priority of ${dexProvider.dexPriority}"
                 )
 

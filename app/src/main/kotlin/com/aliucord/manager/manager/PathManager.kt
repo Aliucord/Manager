@@ -8,7 +8,6 @@ import java.io.File
 /**
  * A central place to provide all system paths that are used.
  */
-// TODO: clarify and cleanup when these directories are generated
 class PathManager(
     private val context: Application,
 ) {
@@ -45,7 +44,7 @@ class PathManager(
      * This should not be a cache dir provided by Android, since it will be wiped when
      * the device is low on storage, and result in a failed patching process.
      */
-    val patchingDir = context.filesDir.resolve("patching").apply { mkdirs() }
+    val patchingDir = context.filesDir.resolve("patching")
 
     /**
      * The internal app directory uses for downloads that should not be wiped,
@@ -81,11 +80,21 @@ class PathManager(
     val customPatchesDir = customComponentsDir.resolve("patches")
 
     /**
+     * The temporary working directory of a currently executing patching process.
+     */
+    val patchingWorkingDir = patchingDir.resolve("patched")
+
+    /**
+     * The APK that is worked on during the patching process.
+     */
+    val patchedApk = patchingWorkingDir.resolve("patched.apk")
+
+    /**
      * Delete all the cache dirs and recreate them.
      */
     fun clearCache() {
         for (dir in arrayOf(patchingDir, cacheDownloadDir, context.cacheDir))
-            dir.deleteRecursively() && dir.mkdirs()
+            dir.deleteRecursively()
     }
 
     /**
@@ -93,14 +102,13 @@ class PathManager(
      */
     fun cachedDiscordApk(version: Int, split: String = "base"): File = patchingDownloadDir
         .resolve("discord/$version")
-        .apply { mkdirs() }
         .resolve("$split.apk")
 
     /**
      * Resolve a specific path for a cached injector.
      */
     fun cachedInjector(version: SemVer) = patchingDownloadDir
-        .resolve("injector").apply { mkdirs() }
+        .resolve("injector")
         .resolve("$version.dex")
 
     /**
@@ -112,14 +120,14 @@ class PathManager(
      * Resolve a specific path for a versioned cached Aliuhook build
      */
     fun cachedAliuhookAAR(version: SemVer) = patchingDownloadDir
-        .resolve("aliuhook").apply { mkdirs() }
+        .resolve("aliuhook")
         .resolve("$version.aar")
 
     /**
      * Resolve a specific path for a versioned smali patches archive.
      */
     fun cachedSmaliPatches(version: SemVer) = patchingDownloadDir
-        .resolve("patches").apply { mkdirs() }
+        .resolve("patches")
         .resolve("$version.zip")
 
     /**
@@ -131,17 +139,6 @@ class PathManager(
      * Resolve a specific path for a versioned Kotlin stdlib dex.
      */
     fun cachedKotlinDex(version: SemVer) = patchingDownloadDir
-        .resolve("kotlin-stdlib").apply { mkdirs() }
+        .resolve("kotlin-stdlib")
         .resolve("$version.dex")
-
-    /**
-     * The temporary working directory of a currently executing patching process.
-     */
-    fun patchingWorkingDir() = patchingDir
-        .resolve("patched")
-
-    /**
-     * The APK that is worked on during the patching process.
-     */
-    fun patchedApk() = patchingWorkingDir().resolve("patched.apk")
 }

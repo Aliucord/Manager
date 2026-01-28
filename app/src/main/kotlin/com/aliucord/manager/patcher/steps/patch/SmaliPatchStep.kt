@@ -29,11 +29,11 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
     override val localizedName = R.string.patch_step_patch_smali
 
     private val coreCount = Runtime.getRuntime().availableProcessors()
-    private val smaliDir = paths.patchingWorkingDir().resolve("smali")
+    private val smaliDir = paths.patchingWorkingDir.resolve("smali")
     private val outDex = smaliDir.resolve("patched.dex")
 
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
         val patchesZip = container.getStep<DownloadPatchesStep>().getStoredFile(container)
 
         val patches = mutableListOf<LoadedPatch>()

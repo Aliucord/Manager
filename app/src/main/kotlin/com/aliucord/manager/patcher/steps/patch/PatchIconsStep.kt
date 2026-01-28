@@ -66,7 +66,7 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         }
 
         container.log("Parsing resources.arsc")
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
         val arsc = ArscUtil.readArsc(apk)
 
         if (isAdaptiveIconsAvailable) {

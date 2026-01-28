@@ -41,7 +41,7 @@ class SigningStep(
     override val localizedName = R.string.patch_step_signing
 
     override suspend fun execute(container: StepRunner) {
-        val apk = container.getStep<CopyDependenciesStep>().patchedApk
+        val apk = container.getStep<CopyDependenciesStep>().apk
         val tmpApk = apk.resolveSibling(apk.name + ".tmp")
 
         container.log("Building signing config and storing keystore")

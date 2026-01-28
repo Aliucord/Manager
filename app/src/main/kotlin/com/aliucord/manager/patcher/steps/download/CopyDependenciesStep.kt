@@ -23,25 +23,24 @@ class CopyDependenciesStep : Step(), KoinComponent {
     private val application: Application by inject()
 
     /**
-     * The target APK file which can be modified during patching
+     * The target APK file that will be modified during patching.
      */
-    val patchedApk: File = paths.patchedApk()
+    val apk: File = paths.patchedApk
 
     override val group = StepGroup.Download
     override val localizedName = R.string.patch_step_copy_deps
 
     override suspend fun execute(container: StepRunner) {
         val srcApk = container.getStep<DownloadDiscordStep>().getStoredFile(container)
-        val dir = paths.patchingWorkingDir()
 
         container.log("Clearing patched directory")
-        if (!dir.deleteRecursively())
+        if (!paths.patchingWorkingDir.deleteRecursively())
             throw Error("Failed to clear existing patched dir")
 
         // Preallocate space for file copy and future patching operations
         if (Build.VERSION.SDK_INT >= 26) {
             val storageManager = application.getSystemService<StorageManager>()!!
-            val targetFileStorageId = storageManager.getUuidForPath(patchedApk)
+            val targetFileStorageId = storageManager.getUuidForPath(apk)
             val fileSize = srcApk.length()
 
             // We request 3.5x the size of the APK, to give space for the following:
@@ -57,7 +56,8 @@ class CopyDependenciesStep : Step(), KoinComponent {
             }
         }
 
-        container.log("Copying patched apk from ${srcApk.absolutePath} to ${patchedApk.absolutePath}")
-        srcApk.copyTo(patchedApk)
+        container.log("Copying patched apk from ${srcApk.absolutePath} to ${apk.absolutePath}")
+        apk.parentFile!!.mkdirs()
+        srcApk.copyTo(apk)
     }
 }
