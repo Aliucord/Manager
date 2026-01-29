@@ -20,7 +20,7 @@ import com.github.difflib.UnifiedDiffUtils
 import com.github.difflib.patch.Patch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.FileNotFoundException
+import java.io.*
 
 class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
     private val paths: PathManager by inject()
@@ -121,13 +121,27 @@ class SmaliPatchStep : Step(), IDexProvider, KoinComponent {
         // Assemble the patched classes back into a single dex
         container.log("Reassembling patches smali classes into new dex")
         smaliDir.mkdir()
-        Smali.assemble(
+
+        // Capture stdout/stderr while assembling smali
+        val originalStdout = System.out
+        val originalStderr = System.err
+        val captured = ByteArrayOutputStream()
+        System.setOut(PrintStream(captured))
+        System.setErr(PrintStream(captured))
+        val success = Smali.assemble(
             SmaliOptions().apply {
                 this.jobs = coreCount - 1
                 this.outputDexFile = outDex.absolutePath
             },
             listOf(smaliDir.absolutePath),
         )
+        System.setOut(originalStdout)
+        System.setErr(originalStderr)
+
+        if (!success) {
+            container.log(captured.toString("UTF-8").trim())
+            throw Exception("Failed to assemble patched smali!")
+        }
     }
 
     override val dexPriority = 2
