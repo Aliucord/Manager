@@ -7,8 +7,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.PreferencesManager
-import com.aliucord.manager.patcher.steps.StepGroup
-import com.aliucord.manager.patcher.steps.base.DownloadStep
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.ui.util.InstallNotifications
 import kotlinx.collections.immutable.ImmutableList
@@ -86,15 +84,6 @@ abstract class StepRunner : KoinComponent {
             if (error != null) {
                 log("Failed on step: $stepName after ${step.getDuration()}ms")
                 maybeShowErrorNotification()
-
-                // If this is a patch step and it failed, then clear download cache just in case
-                if (step.group == StepGroup.Patch && !preferences.devMode) {
-                    log("Deleting download cache")
-                    for (downloadStep in steps.asSequence().filterIsInstance<DownloadStep<*>>()) {
-                        downloadStep.getStoredFile(this@StepRunner).delete()
-                    }
-                }
-
                 return error
             }
 

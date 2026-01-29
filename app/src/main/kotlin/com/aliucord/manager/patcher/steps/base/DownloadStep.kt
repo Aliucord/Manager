@@ -16,6 +16,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
+import kotlin.coroutines.cancellation.CancellationException
 
 @Stable
 abstract class DownloadStep<IVersion> : Step(), KoinComponent {
@@ -101,15 +102,13 @@ abstract class DownloadStep<IVersion> : Step(), KoinComponent {
 
                 try {
                     verify(container)
+                } catch (e: CancellationException) {
+                    file.delete()
+                    throw e
                 } catch (t: Throwable) {
                     mainThread { context.showToast(R.string.installer_dl_verify_fail) }
                     container.log("Failed to verify file, deleting...")
-
-                    try {
-                        file.delete()
-                    } catch (_: Throwable) {
-                        // Ignore
-                    }
+                    file.delete()
                     throw t
                 }
 
