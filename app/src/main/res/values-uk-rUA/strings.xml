@@ -18,6 +18,7 @@
   <string name="action_update_install">Оновити встановлювач Aliucord</string>
   <string name="action_update">Оновити</string>
   <string name="action_clear">Очистити</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Запустити</string>
   <string name="action_close">Закрити</string>
   <string name="action_search">Пошук</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Завантаження патчів smali</string>
   <string name="patch_step_copy_deps">Копіювання залежностей</string>
   <string name="patch_step_patch_manifests">Патч маніфесту APK</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Модифікація іконки додатка</string>
   <string name="patch_step_add_aliuhook">Додавання бібліотеки Aliuhook</string>
   <string name="patch_step_patch_smali">Застосування патчів Aliuhook</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Вмикає налагоджувальний маніфестний прапорець. Робіть це лише, якщо знаєте, що робите!</string>
   <string name="patchopts_icon_title">Замінити іконку додатка</string>
   <string name="patchopts_icon_desc">Змінити іконку додатку на іконку Aliucord (або власну) замість Discord.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Основні</string>
   <string name="patchopts_divider_advanced">Просунуті</string>
   <string name="patchopts_warning_invalid_iconopts">Обрані опції іконки недійсні!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Перегляд</string>
   <string name="iconopts_image_preview_desc">Повне, необрізане прев\'ю вибраного зображення.</string>
   <string name="iconopts_image_preview_none">Зображення не вибрано</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Звіт</string>
   <string name="log_section_install_info">Інформація про встановлення</string>
   <string name="log_section_env_info">Інформація про середовище</string>

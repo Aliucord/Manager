@@ -18,6 +18,7 @@
   <string name="action_update_install">Mettre à jour l\'installation</string>
   <string name="action_update">Mettre à jour</string>
   <string name="action_clear">Effacer</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Démarrer</string>
   <string name="action_close">Fermer</string>
   <string name="action_search">Rechercher</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Téléchargement des patchs smali</string>
   <string name="patch_step_copy_deps">Copie des dépendances</string>
   <string name="patch_step_patch_manifests">Patcher les manifestes apk</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Modification de l\'icône de l\'app</string>
   <string name="patch_step_add_aliuhook">Ajout de la bibliothèque Aliuhook</string>
   <string name="patch_step_patch_smali">Application des patchs smali</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Activez le drapeau débogable dans le manifeste. N\'utilisez cette option que si vous savez ce que vous faites !</string>
   <string name="patchopts_icon_title">Remplacer l\'icône de l\'application</string>
   <string name="patchopts_icon_desc">Changer l\'icône de l\'application en icône d\'Aliucord (ou une icône personnalisée) au lieu de celle de Discord.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Basique</string>
   <string name="patchopts_divider_advanced">Avancé</string>
   <string name="patchopts_warning_invalid_iconopts">Les options d\'icônes sélectionnées sont invalides !</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Aperçu</string>
   <string name="iconopts_image_preview_desc">Un aperçu complet et non recadré de l\'image sélectionnée.</string>
   <string name="iconopts_image_preview_none">Aucune image sélectionnée</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Log</string>
   <string name="log_section_install_info">Informations d’installation</string>
   <string name="log_section_env_info">Informations sur l’environnement</string>

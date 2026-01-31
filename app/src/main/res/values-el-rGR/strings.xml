@@ -18,6 +18,7 @@
   <string name="action_update_install">Ενημέρωση Εγκατάστασης</string>
   <string name="action_update">Ενημέρωση</string>
   <string name="action_clear">Εκκαθάριση</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Έναρξη</string>
   <string name="action_close">Κλείσιμο</string>
   <string name="action_search">Αναζήτηση</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Downloading smali patches</string>
   <string name="patch_step_copy_deps">Αντιγραφή εξαρτήσεων</string>
   <string name="patch_step_patch_manifests">Ενημέρωση των apk manifests</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Ενημέρωση εικονιδίων εφαρμογής</string>
   <string name="patch_step_add_aliuhook">Προσθήκη βιβλιοθήκης Aliuhook</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Ενεργοποιήστε τη σημαία αποσφαλμάτωσης. Χρησιμοποιήστε το μόνο αν γνωρίζετε τι κάνετε!</string>
   <string name="patchopts_icon_title">Αντικατάσταση εικονιδίου εφαρμογής</string>
   <string name="patchopts_icon_desc">Αλλάζει το εικονίδιο της εφαρμογής για να χρησιμοποιήσει την επωνυμία Aliucord αντί για του Discord.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Βασικό</string>
   <string name="patchopts_divider_advanced">Για προχωρημένους</string>
   <string name="patchopts_warning_invalid_iconopts">The selected icon options are invalid!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Preview</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">Δεν επιλέχθηκε εικόνα</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Αρχείο καταγραφής</string>
   <string name="log_section_install_info">Installation Info</string>
   <string name="log_section_env_info">Environment Info</string>

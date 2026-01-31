@@ -18,6 +18,7 @@
   <string name="action_update_install">Telepítés Frissítése</string>
   <string name="action_update">Frissítés</string>
   <string name="action_clear">Törlés</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Indítás</string>
   <string name="action_close">Bezárás</string>
   <string name="action_search">Keresés</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Smali patchek letöltése</string>
   <string name="patch_step_copy_deps">Függőségek másolása</string>
   <string name="patch_step_patch_manifests">APK manifeszt javítása</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Alkalmazás ikon patchelése</string>
   <string name="patch_step_add_aliuhook">Aliuhook könyvtár hozzáadása</string>
   <string name="patch_step_patch_smali">Smali patchek alkalmazása</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Debuggable manifest zászló engedélyezése. Csak akkor használd, ha tudod mit csinálsz!</string>
   <string name="patchopts_icon_title">App ikon lecserélése</string>
   <string name="patchopts_icon_desc">Change the app\'s icon to Aliucord\'s icon (or a custom one) instead of Discord\'s.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Alap</string>
   <string name="patchopts_divider_advanced">Haladó</string>
   <string name="patchopts_warning_invalid_iconopts">A kiválasztott ikon opciók nem érvényesek!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Előnézet</string>
   <string name="iconopts_image_preview_desc">A full, uncropped preview of the selected image.</string>
   <string name="iconopts_image_preview_none">Nincs kép kiválasztva</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Napló</string>
   <string name="log_section_install_info">Telepítési információ</string>
   <string name="log_section_env_info">Környezeti információ</string>

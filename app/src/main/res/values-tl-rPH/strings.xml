@@ -18,6 +18,7 @@
   <string name="action_update_install">I-update ang Install</string>
   <string name="action_update">I-update</string>
   <string name="action_clear">I-clear</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Buksan</string>
   <string name="action_close">Isara</string>
   <string name="action_search">Maghanap</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Dina-download ang mga smali patch</string>
   <string name="patch_step_copy_deps">Kinokopya ang mga dependency</string>
   <string name="patch_step_patch_manifests">Pina-patch ang manifest ng APK</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Pina-patch ang icon ng app</string>
   <string name="patch_step_add_aliuhook">Dinadagdag ang Aliuhook library</string>
   <string name="patch_step_patch_smali">Ina-apply ang mga smali patch</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Paganahin ang debuggable na manifest flag. Gamitin lamang ito kung alam mo ang ginagawa mo!</string>
   <string name="patchopts_icon_title">Palitan ang app icon</string>
   <string name="patchopts_icon_desc">Palitan ang app icon sa icon ng Aliucord (o isang pasadya) sa halip ng Discord.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Basic</string>
   <string name="patchopts_divider_advanced">Advanced</string>
   <string name="patchopts_warning_invalid_iconopts">Hindi wasto ang mga piniling opsyon ng icon!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Preview</string>
   <string name="iconopts_image_preview_desc">A full, uncropped preview of the selected image.</string>
   <string name="iconopts_image_preview_none">No image selected</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Log</string>
   <string name="log_section_install_info">Installation Info</string>
   <string name="log_section_env_info">Environment Info</string>

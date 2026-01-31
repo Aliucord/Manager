@@ -18,6 +18,7 @@
   <string name="action_update_install">更新安装</string>
   <string name="action_update">更新</string>
   <string name="action_clear">清除</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">启动</string>
   <string name="action_close">关闭</string>
   <string name="action_search">搜索</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">下载smali补丁</string>
   <string name="patch_step_copy_deps">正在复制依赖项</string>
   <string name="patch_step_patch_manifests">正在修补 APK 清单</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">正在修补应用程序图标</string>
   <string name="patch_step_add_aliuhook">正在添加 Aliuhook 库</string>
   <string name="patch_step_patch_smali">应用smali补丁</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">启用可调试清单标志。仅当您知道自己在做什么时才使用此功能！</string>
   <string name="patchopts_icon_title">替换应用图标</string>
   <string name="patchopts_icon_desc">将应用的图标更改为使用 Aliucord 品牌，而不是 Discord 自己的品牌。</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">高级</string>
   <string name="patchopts_warning_invalid_iconopts">选择的图标设置无效！</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">预览</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">没有选择图片</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">日志</string>
   <string name="log_section_install_info">安装信息</string>
   <string name="log_section_env_info">环境信息</string>

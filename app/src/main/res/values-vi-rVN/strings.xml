@@ -18,6 +18,7 @@
   <string name="action_update_install">Cài đặt cập nhật Aliucord</string>
   <string name="action_update">Cập nhật</string>
   <string name="action_clear">Xoá</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Khởi động</string>
   <string name="action_close">Đóng</string>
   <string name="action_search">Tìm kiếm</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Đang tải các bản vá nhỏ</string>
   <string name="patch_step_copy_deps">Đang sao chép phần phụ thuộc</string>
   <string name="patch_step_patch_manifests">Đang vá tệp kê khai APK</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Đang vá biểu tượng ứng dụng</string>
   <string name="patch_step_add_aliuhook">Đang thêm thư viện Aliuhook</string>
   <string name="patch_step_patch_smali">Đang áp dụng bản vá nhỏ</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Bật cờ manifest có thể gỡ lỗi. Chỉ sử dụng chức năng này nếu bạn biết mình đang làm gì!</string>
   <string name="patchopts_icon_title">Thay thế biểu tượng ứng dụng</string>
   <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Cơ bản</string>
   <string name="patchopts_divider_advanced">Nâng cao</string>
   <string name="patchopts_warning_invalid_iconopts">Các tùy chọn biểu tương đã chọn không hợp lệ!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Xem trước</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">Không có hình ảnh được chọn</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Nhật ký</string>
   <string name="log_section_install_info">Thông tin cài đặt</string>
   <string name="log_section_env_info">Thông tin môi trường</string>

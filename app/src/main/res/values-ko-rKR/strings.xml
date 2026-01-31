@@ -18,6 +18,7 @@
   <string name="action_update_install">업데이트 설치</string>
   <string name="action_update">업데이트</string>
   <string name="action_clear">초기화</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">실행</string>
   <string name="action_close">닫기</string>
   <string name="action_search">검색</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">smali 패치 다운로드 중</string>
   <string name="patch_step_copy_deps">종속성 복사 중</string>
   <string name="patch_step_patch_manifests">APK 매니페스트 패치 중</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">앱 아이콘 패치 중</string>
   <string name="patch_step_add_aliuhook">Aliuhook 라이브러리 추가 중</string>
   <string name="patch_step_patch_smali">smali 패치 적용 중</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">디버깅 가능한 매니페스트 플래그를 사용해요. 무엇을 하고 있는지 아는 경우에만 사용하세요!</string>
   <string name="patchopts_icon_title">앱 아이콘 대체</string>
   <string name="patchopts_icon_desc">앱 아이콘을 Discord 대신 Aliucord(또는 사용자 지정) 아이콘으로 변경해요.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">기본</string>
   <string name="patchopts_divider_advanced">고급</string>
   <string name="patchopts_warning_invalid_iconopts">선택한 아이콘 설정이 잘못됐어요!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">미리 보기</string>
   <string name="iconopts_image_preview_desc">선택한 이미지의 자르지 않은 미리 보기예요.</string>
   <string name="iconopts_image_preview_none">선택한 이미지가 없어요</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">기록</string>
   <string name="log_section_install_info">설치 정보</string>
   <string name="log_section_env_info">환경 정보</string>

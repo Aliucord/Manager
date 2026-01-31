@@ -18,6 +18,7 @@
   <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Güncelle</string>
   <string name="action_clear">Temizle</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Başlat</string>
   <string name="action_close">Kapat</string>
   <string name="action_search">Ara</string>
@@ -142,6 +143,7 @@ lütfen silin!</string>
   <string name="patch_step_dl_smali">Smali yamaları indiriliyor</string>
   <string name="patch_step_copy_deps">Bağımlılıklar kopyalanıyor</string>
   <string name="patch_step_patch_manifests">APK manifest dosyaları yamalanıyor</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Uygulama simgesi yamalanıyor</string>
   <string name="patch_step_add_aliuhook">Aliuhook kitaplığı ekleniyor</string>
   <string name="patch_step_patch_smali">Smali yamaları uygulanıyor</string>
@@ -182,6 +184,10 @@ lütfen silin!</string>
   <string name="patchopts_debuggable_desc">Hata ayıklanabilir manifest flag\'ini etkinleştir. Bunu sadece ne yaptığınızı biliyorsanız kullanın!</string>
   <string name="patchopts_icon_title">Uygulama simgesini değiştir</string>
   <string name="patchopts_icon_desc">Discord\'un simgesini Aliucord\'un simgesine değişir.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Temel</string>
   <string name="patchopts_divider_advanced">Gelişmiş</string>
   <string name="patchopts_warning_invalid_iconopts">İşaretlenmiş simge seçenekleri geçersiz!</string>
@@ -209,6 +215,10 @@ lütfen silin!</string>
   <string name="iconopts_image_preview_title">Önizleme</string>
   <string name="iconopts_image_preview_desc">Seçilen resmin kesilmemiş bir önizlemesi</string>
   <string name="iconopts_image_preview_none">Resim seçilmedi</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Kayıt</string>
   <string name="log_section_install_info">Kurulum Bilgisi</string>
   <string name="log_section_env_info">Ortam Bilgisi</string>

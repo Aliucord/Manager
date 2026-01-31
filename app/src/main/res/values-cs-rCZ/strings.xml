@@ -18,6 +18,7 @@
   <string name="action_update_install">Aktualizovat instalaci</string>
   <string name="action_update">Aktualizovat</string>
   <string name="action_clear">Vymazat</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Spustit</string>
   <string name="action_close">Zavřít</string>
   <string name="action_search">Hledat</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Stahování smali záplat</string>
   <string name="patch_step_copy_deps">Kopírování potřebných souborů</string>
   <string name="patch_step_patch_manifests">Záplatovaní APK manifestu</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Úprava ikony aplikace</string>
   <string name="patch_step_add_aliuhook">Přidávání Aliuhook knihovny</string>
   <string name="patch_step_patch_smali">Aplikování smali záplat</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Povolit indikátor manifestu pro ladění. Použijte pouze pokud víte, co děláte!</string>
   <string name="patchopts_icon_title">Nahradit ikonu aplikace</string>
   <string name="patchopts_icon_desc">Změní ikonu aplikace na ikonu Aliucord (nebo vlastní ikonu) namísto Discord.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Základní</string>
   <string name="patchopts_divider_advanced">Pokročilé</string>
   <string name="patchopts_warning_invalid_iconopts">Vybrané ikony jsou neplatné!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Náhled</string>
   <string name="iconopts_image_preview_desc">Celý, neoříznutý náhled vybraného obrázku.</string>
   <string name="iconopts_image_preview_none">Není vybrán žádný obrázek</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Záznam</string>
   <string name="log_section_install_info">Informace o instalaci</string>
   <string name="log_section_env_info">Informace o prostředí</string>

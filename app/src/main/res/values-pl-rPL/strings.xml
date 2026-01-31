@@ -18,6 +18,7 @@
   <string name="action_update_install">Update Aliucord Installation</string>
   <string name="action_update">Aktualizuj</string>
   <string name="action_clear">Wyczyść</string>
+  <string name="action_delete">Delete</string>
   <string name="action_launch">Uruchom</string>
   <string name="action_close">Zamknij</string>
   <string name="action_search">Wyszukaj</string>
@@ -141,6 +142,7 @@
   <string name="patch_step_dl_smali">Pobieranie patchów smali</string>
   <string name="patch_step_copy_deps">Kopiowanie zależności</string>
   <string name="patch_step_patch_manifests">Patchowanie manifestów APK</string>
+  <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Patchowanie ikony aplikacji</string>
   <string name="patch_step_add_aliuhook">Dodawanie biblioteki Aliuhook</string>
   <string name="patch_step_patch_smali">Stosowanie patchów smali</string>
@@ -181,6 +183,10 @@
   <string name="patchopts_debuggable_desc">Włącz debugowalność flag manifestu. Używaj tego, tylko jeżeli wiesz, co robisz!</string>
   <string name="patchopts_icon_title">Podmień ikonę aplikacji</string>
   <string name="patchopts_icon_desc">Changes the app\'s icon to use Aliucord branding instead of Discord\'s own.</string>
+  <string name="patchopts_custom_injector_title">Custom Injector</string>
+  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
+  <string name="patchopts_custom_patches_title">Custom Patches</string>
+  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
   <string name="patchopts_divider_basic">Podstawowe</string>
   <string name="patchopts_divider_advanced">Zaawansowane</string>
   <string name="patchopts_warning_invalid_iconopts">Wybrane opcje ikon są nieprawidłowe!</string>
@@ -208,6 +214,10 @@
   <string name="iconopts_image_preview_title">Podgląd</string>
   <string name="iconopts_image_preview_desc">Uncropped preview of the selected image</string>
   <string name="iconopts_image_preview_none">Nie wybrano obrazu</string>
+  <string name="componentopts_screen_title">Custom Component (%s)</string>
+  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
+  <string name="componentopts_selected_none">Latest</string>
+  <string name="componentopts_deleted">Successfully deleted component!</string>
   <string name="log_title">Dziennik zdarzeń</string>
   <string name="log_section_install_info">Informacje o instalacji</string>
   <string name="log_section_env_info">Informacje o środowisku</string>
