@@ -1,0 +1,81 @@
+name: Bug/Crash Report
+description: Report a bug or crash in Aliucord Manager. For issues with Aliucord or plugins, please use the plugin's repo or our support server.
+labels: [bug]
+body:
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: What’s the issue?
+      description: Describe what happens, when it happens, and where.
+      placeholder: |
+        Example:
+        When I open the settings page and tap on "Plugins", the app crashes with no warning.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: What did you expect to happen?
+      description: Describe the correct or expected behavior.
+      placeholder: |
+        Example:
+        I expected the "Plugins" page to open without crashing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: How can we reproduce it?
+      description: Provide step-by-step instructions.
+      placeholder: |
+        Steps:
+        1. Go to Settings
+        2. Tap on "Plugins"
+        3. App crashes immediately
+    validations:
+      required: true
+
+  - type: input
+    id: android-version
+    attributes:
+      label: Android Version
+      description: What Android version is this happening on?
+      placeholder: Android 13, or SDK 33
+    validations:
+      required: true
+
+  - type: input
+    id: device-info
+    attributes:
+      label: Device & OS Info
+      description: Device model and ROM/skin (e.g. One UI, LineageOS, Pixel Experience).
+      placeholder: Samsung Galaxy S21, One UI 5.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: install-log
+    attributes:
+      label: Installation failure log (if applicable)
+      description: The log for a failed installation. This can be obtained by going to the Home screen -> Log icon in top right -> most recent log -> save. Paste the log here (between triple backticks ```).
+      placeholder: |
+        ```
+        Paste your installation log here
+        ```
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: agreement-check
+    attributes:
+      label: Before Submitting
+      description: "Please confirm the following:"
+      options:
+        - label: I’ve checked that this issue hasn’t already been reported.
+          required: true
+
+  - type: markdown
+    attributes:
+      value: After creating this issue, please upload a file containing a logcat recording your crash in a separate comment! See [here](https://pastebin.com/pNhXwhrd) on how to accomplish this.
