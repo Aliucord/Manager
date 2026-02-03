@@ -164,7 +164,7 @@ class PluginsModel(
         @Serializable
         data class SafeModeSettings(
             @SerialName("AC_aliucord_safe_mode_enabled")
-            val safeMode: Boolean,
+            val safeMode: Boolean = false,
         )
 
         pluginsSafeMode.value = readAliucordSettings<SafeModeSettings>()?.safeMode ?: false
@@ -204,6 +204,7 @@ class PluginsModel(
         plugins.value = pluginItems.toUnsafeImmutable()
     }
 
+    // TODO: don't cause entire page to fail if one plugin is corrupted
     private fun loadPluginManifest(pluginFile: File): PluginManifest {
         return ZipReader(pluginFile).use {
             val manifest = it.openEntry("manifest.json")

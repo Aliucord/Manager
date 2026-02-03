@@ -110,15 +110,17 @@ fun PluginCard(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                IconButton(
-                    onClick = { uriHandler.openUri(plugin.manifest.repositoryUrl) },
-                    modifier = Modifier.size(25.dp),
-                ) {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(R.drawable.ic_account_github_white_24dp),
-                        contentDescription = stringResource(R.string.github)
-                    )
+                plugin.manifest.repositoryUrl?.let { repositoryUrl ->
+                    IconButton(
+                        onClick = { uriHandler.openUri(repositoryUrl) },
+                        modifier = Modifier.size(25.dp),
+                    ) {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(R.drawable.ic_account_github_white_24dp),
+                            contentDescription = stringResource(R.string.github)
+                        )
+                    }
                 }
 
                 if (plugin.manifest.changelog != null) {
