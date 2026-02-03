@@ -193,18 +193,22 @@ class PluginsModel(
             ?: throw IllegalStateException("Failed to read plugins directory")
 
         val pluginItems = pluginFiles
-            .map {
-                PluginItem(
-                    manifest = loadPluginManifest(it),
-                    path = it.absolutePath,
-                )
+            .mapNotNull {
+                try {
+                    PluginItem(
+                        manifest = loadPluginManifest(it),
+                        path = it.absolutePath,
+                    )
+                } catch (e: Exception) {
+                    Log.e(BuildConfig.TAG, "Failed to load plugin at ${it.absolutePath}", e)
+                    null
+                }
             }
             .sortedBy { it.manifest.name }
 
         plugins.value = pluginItems.toUnsafeImmutable()
     }
 
-    // TODO: don't cause entire page to fail if one plugin is corrupted
     private fun loadPluginManifest(pluginFile: File): PluginManifest {
         return ZipReader(pluginFile).use {
             val manifest = it.openEntry("manifest.json")
