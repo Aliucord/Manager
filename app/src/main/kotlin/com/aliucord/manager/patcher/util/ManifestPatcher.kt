@@ -61,12 +61,18 @@ object ManifestPatcher {
                             addExternalStoragePerm = false
                         }
 
-                        // Add permission to access front camera for Meta Quest VR headsets
                         if (addHorizonOsPerm) {
-                            super
-                                .child(null, "uses-permission")
-                                .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, "horizonos.permission.HEADSET_CAMERA")
                             addHorizonOsPerm = false
+
+                            // Add permissions for Aliucord to work properly for Meta Quest VR headsets
+                            for (permission in arrayOf(
+                                "horizonos.permission.HEADSET_CAMERA",
+                                "com.oculus.permission.PLAY_AUDIO_BACKGROUND",
+                                "com.oculus.permission.RECORD_AUDIO_BACKGROUND"
+                            )) {
+                                super.child(null, "uses-permission")
+                                    .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, permission)
+                            }
                         }
 
                         return when (name) {
