@@ -18,7 +18,7 @@
   <string name="action_update_install">更新インストール</string>
   <string name="action_update">アップデート</string>
   <string name="action_clear">クリア</string>
-  <string name="action_delete">Delete</string>
+  <string name="action_delete">削除</string>
   <string name="action_launch">開く</string>
   <string name="action_close">閉じる</string>
   <string name="action_search">検索</string>
@@ -143,7 +143,7 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="patch_step_dl_smali">Smaliパッチのダウンロード</string>
   <string name="patch_step_copy_deps">依存関係のコピー</string>
   <string name="patch_step_patch_manifests">APKマニフェストにパッチを適用</string>
-  <string name="patch_step_patch_certs">Adding modern root certificates</string>
+  <string name="patch_step_patch_certs">最新のルート証明書の追加</string>
   <string name="patch_step_patch_icon">アプリのアイコンにパッチを適用</string>
   <string name="patch_step_add_aliuhook">Aliuhookライブラリの追加</string>
   <string name="patch_step_patch_smali">Smaliパッチの適用</string>
@@ -184,10 +184,10 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="patchopts_debuggable_desc">デバッグ可能なマニフェストフラグを有効にします。使い方が分かっている場合のみ使用してください！</string>
   <string name="patchopts_icon_title">アプリアイコンを置換</string>
   <string name="patchopts_icon_desc">アプリのアイコンをDiscordアイコンではなく、Aliucordアイコン（またはカスタムアイコン）に変更する。</string>
-  <string name="patchopts_custom_injector_title">Custom Injector</string>
-  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
-  <string name="patchopts_custom_patches_title">Custom Patches</string>
-  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
+  <string name="patchopts_custom_injector_title">カスタムインジェクタ</string>
+  <string name="patchopts_custom_injector_desc">Managerによってインポートされたカスタムインジェクタビルドです。</string>
+  <string name="patchopts_custom_patches_title">カスタムパッチ</string>
+  <string name="patchopts_custom_patches_desc">Managerによってインポートされたカスタムsmaliパッチバンドルです。</string>
   <string name="patchopts_divider_basic">基本</string>
   <string name="patchopts_divider_advanced">高度</string>
   <string name="patchopts_warning_invalid_iconopts">選択したアイコンのオプションが無効です！</string>
@@ -215,10 +215,10 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="iconopts_image_preview_title">プレビュー</string>
   <string name="iconopts_image_preview_desc">選択した画像のトリミングされていない完全なプレビューです。</string>
   <string name="iconopts_image_preview_none">画像が選択されていません</string>
-  <string name="componentopts_screen_title">Custom Component (%s)</string>
-  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
-  <string name="componentopts_selected_none">Latest</string>
-  <string name="componentopts_deleted">Successfully deleted component!</string>
+  <string name="componentopts_screen_title">カスタムコンポーネント (%s)</string>
+  <string name="componentopts_screen_desc">Managerによってインポートされたカスタムビルドを選択してください。</string>
+  <string name="componentopts_selected_none">最新</string>
+  <string name="componentopts_deleted">コンポーネントを削除しました！</string>
   <string name="log_title">ログ</string>
   <string name="log_section_install_info">インストール情報</string>
   <string name="log_section_env_info">環境情報</string>

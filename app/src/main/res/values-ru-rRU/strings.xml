@@ -18,7 +18,7 @@
   <string name="action_update_install">Обновить экземпляр Aliucord</string>
   <string name="action_update">Обновить</string>
   <string name="action_clear">Стереть</string>
-  <string name="action_delete">Delete</string>
+  <string name="action_delete">Удалить</string>
   <string name="action_launch">Запустить</string>
   <string name="action_close">Закрыть</string>
   <string name="action_search">Поиск</string>
@@ -142,7 +142,7 @@
   <string name="patch_step_dl_smali">Скачивание smali-патчей</string>
   <string name="patch_step_copy_deps">Копирование зависимостей</string>
   <string name="patch_step_patch_manifests">Патч манифестов пакета</string>
-  <string name="patch_step_patch_certs">Adding modern root certificates</string>
+  <string name="patch_step_patch_certs">Добавление современных корневых сертификатов</string>
   <string name="patch_step_patch_icon">Патч значка приложения</string>
   <string name="patch_step_add_aliuhook">Добавление библиотеки Aliuhook</string>
   <string name="patch_step_patch_smali">Применение smali-патчей</string>
@@ -183,10 +183,10 @@
   <string name="patchopts_debuggable_desc">Включить флаг отладки в манифесте. Включайте его только в том случае, если вы знаете, что делаете!</string>
   <string name="patchopts_icon_title">Замена значка приложения</string>
   <string name="patchopts_icon_desc">Использовать значок Aliucord (или собственный) вместо значка Discord.</string>
-  <string name="patchopts_custom_injector_title">Custom Injector</string>
-  <string name="patchopts_custom_injector_desc">A custom injector build that was imported by Manager.</string>
-  <string name="patchopts_custom_patches_title">Custom Patches</string>
-  <string name="patchopts_custom_patches_desc">A custom smali patch bundle that was imported by Manager.</string>
+  <string name="patchopts_custom_injector_title">Пользовательский инжектор</string>
+  <string name="patchopts_custom_injector_desc">Пользовательская инжекторная сборка, импортированная менеджером.</string>
+  <string name="patchopts_custom_patches_title">Пользовательские патчи</string>
+  <string name="patchopts_custom_patches_desc">.</string>
   <string name="patchopts_divider_basic">Основные</string>
   <string name="patchopts_divider_advanced">Расширенные</string>
   <string name="patchopts_warning_invalid_iconopts">Выбраны недействительные параметры значка!</string>
@@ -214,10 +214,10 @@
   <string name="iconopts_image_preview_title">Предпросмотр</string>
   <string name="iconopts_image_preview_desc">Предпросмотр выбранного изображения без обрезки.</string>
   <string name="iconopts_image_preview_none">Не выбрано изображение</string>
-  <string name="componentopts_screen_title">Custom Component (%s)</string>
-  <string name="componentopts_screen_desc">Select a custom build that was imported by Manager.</string>
-  <string name="componentopts_selected_none">Latest</string>
-  <string name="componentopts_deleted">Successfully deleted component!</string>
+  <string name="componentopts_screen_title">Пользовательский компонент (%s)</string>
+  <string name="componentopts_screen_desc">Выберите пользовательскую сборку, импортированную менеджером.</string>
+  <string name="componentopts_selected_none">Последний</string>
+  <string name="componentopts_deleted">Компонент успешно удален!</string>
   <string name="log_title">Отчёт</string>
   <string name="log_section_install_info">Информация об установке</string>
   <string name="log_section_env_info">Информация об окружении</string>
