@@ -63,7 +63,7 @@
   <string name="setting_dynamic_color_desc">Android 12+で「Material You」テーマを有効にします</string>
   <string name="setting_developer_options">開発者向けオプション</string>
   <string name="setting_developer_options_desc">これが何をするか理解していない限り、絶対に有効にしないでください！（本当にです！）</string>
-  <string name="setting_installer">インストール方法</string>
+  <string name="setting_installer">インストール方式</string>
   <string name="setting_installer_desc">パッケージインストーラーは、様々な手法でのインストールがサポートされています。</string>
   <string name="setting_keep_patched_apks">パッチを適用したAPKを維持</string>
   <string name="setting_keep_patched_apks_desc">インストール後も、デバッグ用にパッチ済みファイルとAPKをすべて保持します。なお、APKのエクスポートはパッチ処理が正常に完了した後でのみ有効です。</string>
@@ -96,7 +96,7 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="navigation_about">アプリについて</string>
   <string name="navigation_logs">ログ</string>
   <string name="navigation_settings">設定</string>
-  <string name="contributors_lead">読み込み</string>
+  <string name="contributors_lead">リード</string>
   <string name="contributors">貢献者</string>
   <string name="contributors_contributions">%s 貢献</string>
   <string name="network_load_fail">読み込みに失敗しました</string>
@@ -251,9 +251,9 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="fun_fact_4">お前の壁の中にいるぜ〜ｗｗ</string>
   <string name="fun_fact_5">AliucordRNがEnmityとVendettaを生み出したことをご存知ですか？</string>
   <string name="fun_fact_6">困ったときはDiscordの #support チャンネルへどうぞ！</string>
-  <string name="fun_fact_7">IWillCrashYourDiscordプラグインはDiscordをクラッシュさせます。</string>
-  <string name="fun_fact_9">AliucordはWearOSで実行できます</string>
+  <string name="fun_fact_7">IWillCrashYourDiscordプラグインはDiscordをクラッシュさせるよ</string>
+  <string name="fun_fact_9">AliucordはWearOSで実行できるよ～</string>
   <string name="fun_fact_10">Aliucordは本物の昔のUIを使ってるよ、2022年中頃のやつ！</string>
-  <string name="fun_fact_11">AliucordをiOSで実行する試みがありました…</string>
+  <string name="fun_fact_11">AliucordをiOSで実行する試みがありました…:(</string>
   <string name="time_elapsed_seconds">%.2f秒</string>
 </resources>
