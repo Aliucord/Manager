@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
- */
+*/
 
 package com.aliucord.manager.ui.theme
 
@@ -22,26 +22,30 @@ fun ManagerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+    val context = LocalContext.current
     val dynamicColor = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val darkTheme = when (theme) {
-        Theme.System -> if(isSystemInDarkTheme()){1} else 2
-        Theme.Dark -> 1
-        Theme.Light -> 2
-        Theme.Black -> 3
-    }
-    val colorScheme = when {
-        dynamicColor && darkTheme == 1 -> dynamicDarkColorScheme(LocalContext.current)
-        dynamicColor && darkTheme == 2-> dynamicLightColorScheme(LocalContext.current)
-        dynamicColor && darkTheme == 3 -> dynamicDarkColorScheme(LocalContext.current).toPitchBlack()
 
-        darkTheme == 1 -> darkColorScheme()
-        darkTheme == 3 -> darkColorScheme().toPitchBlack()
+    val isDark = when (theme) {
+        Theme.System -> isSystemInDarkTheme()
+        Theme.Light -> false
+        else -> true // Dark and Black
+    }
+    val isBlack = theme == Theme.Black
+
+    val baseScheme = when {
+        dynamicColor && isDark -> dynamicDarkColorScheme(context)
+        dynamicColor -> dynamicLightColorScheme(context)
+        isDark -> darkColorScheme()
         else -> lightColorScheme()
     }
-    val customColors = when (darkTheme) {
-        2 -> LightCustomColors
-        else -> DarkCustomColors
 
+
+    val colorScheme = if (isBlack) baseScheme.toPitchBlack() else baseScheme
+
+
+    val customColors = when(isDark) {
+        true -> DarkCustomColors
+        false -> LightCustomColors
     }
 
     // As usual, Google deprecates accompanist libraries and replaces them with an incomplete and shitty replacement in androidx
@@ -52,7 +56,7 @@ fun ManagerTheme(
     SideEffect {
         systemUiController.setSystemBarsColor(
             color = colorScheme.background,
-            darkIcons = darkTheme == 2,
+            darkIcons = !isDark,
         )
         systemUiController.setNavigationBarColor(
             color = Color.Transparent,
@@ -74,28 +78,30 @@ enum class Theme {
     Dark,
     Black;
 
+    @Composable
+    fun toDisplayName() = stringResource(
+        when (this) {
+            System -> R.string.theme_system
+            Light -> R.string.theme_light
+            Dark, Black -> R.string.theme_dark
+        }
+    )
 
     @Composable
-    fun toDisplayName() = when (this) {
-        System -> stringResource(R.string.theme_system)
-        Light -> stringResource(R.string.theme_light)
-        Dark -> stringResource(R.string.theme_dark)
-        Black -> stringResource(R.string.theme_black)
-    }
-
-    @Composable
-    fun toPainter() = when (this) {
-        System -> painterResource(R.drawable.ic_sync)
-        Light -> painterResource(R.drawable.ic_light)
-        Dark -> painterResource(R.drawable.ic_night)
-        Black -> painterResource(R.drawable.ic_night)
-    }
+    fun toPainter() = painterResource(
+        when (this) {
+            System -> R.drawable.ic_sync
+            Light -> R.drawable.ic_light
+            Dark, Black -> R.drawable.ic_night
+        }
+    )
 }
+
 fun ColorScheme.toPitchBlack(): ColorScheme {
     return this.copy(
         background = Color.Black,
         surface = Color.Black,
-        surfaceVariant = Color.Black, // Optional: Makes cards/bars black too
+        surfaceVariant = Color.Black,
         onBackground = Color.White,
         onSurface = Color.White
     )
