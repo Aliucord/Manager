@@ -22,19 +22,27 @@ fun ManagerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+    val context = LocalContext.current
     val dynamicColor = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val darkTheme = when (theme) {
+
+    val isBlack = theme == Theme.Black
+    val isDark = when (theme) {
         Theme.System -> isSystemInDarkTheme()
-        Theme.Dark -> true
         Theme.Light -> false
+        Theme.Dark, Theme.Black -> true
     }
-    val colorScheme = when {
-        dynamicColor && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        dynamicColor && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
-        darkTheme -> darkColorScheme()
+
+    val baseScheme = when {
+        dynamicColor && isDark -> dynamicDarkColorScheme(context)
+        dynamicColor -> dynamicLightColorScheme(context)
+        isDark -> darkColorScheme()
         else -> lightColorScheme()
     }
-    val customColors = when (darkTheme) {
+    val colorScheme = when (isBlack) {
+        true -> baseScheme.toPitchBlack()
+        false -> baseScheme
+    }
+    val customColors = when (isDark) {
         true -> DarkCustomColors
         false -> LightCustomColors
     }
@@ -47,7 +55,7 @@ fun ManagerTheme(
     SideEffect {
         systemUiController.setSystemBarsColor(
             color = colorScheme.background,
-            darkIcons = !darkTheme,
+            darkIcons = !isDark,
         )
         systemUiController.setNavigationBarColor(
             color = Color.Transparent,
@@ -66,19 +74,36 @@ fun ManagerTheme(
 enum class Theme {
     System,
     Light,
-    Dark;
+    Dark,
+    Black;
 
     @Composable
-    fun toDisplayName() = when (this) {
-        System -> stringResource(R.string.theme_system)
-        Light -> stringResource(R.string.theme_light)
-        Dark -> stringResource(R.string.theme_dark)
-    }
+    fun toDisplayName() = stringResource(
+        when (this) {
+            System -> R.string.theme_system
+            Light -> R.string.theme_light
+            Dark -> R.string.theme_dark
+            Black -> R.string.theme_black
+        }
+    )
 
     @Composable
-    fun toPainter() = when (this) {
-        System -> painterResource(R.drawable.ic_sync)
-        Light -> painterResource(R.drawable.ic_light)
-        Dark -> painterResource(R.drawable.ic_night)
-    }
+    fun toPainter() = painterResource(
+        when (this) {
+            System -> R.drawable.ic_sync
+            Light -> R.drawable.ic_light
+            Dark -> R.drawable.ic_night
+            Black -> R.drawable.ic_brightness_empty
+        }
+    )
+}
+
+private fun ColorScheme.toPitchBlack(): ColorScheme {
+    return this.copy(
+        background = Color.Black,
+        surface = Color.Black,
+        surfaceVariant = Color.Black,
+        onBackground = Color.White,
+        onSurface = Color.White
+    )
 }

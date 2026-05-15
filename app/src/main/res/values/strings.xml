@@ -93,6 +93,7 @@
   <string name="theme_system">System</string>
   <string name="theme_dark">Dark</string>
   <string name="theme_light">Light</string>
+  <string name="theme_black">Black</string>
 
   <string name="plugins_title">Plugins</string>
   <string name="plugins_view_changelog">View changelog</string>
