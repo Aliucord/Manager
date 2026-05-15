@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 Juby210 & zt
  * Licensed under the Open Software License version 3.0
-*/
+ */
 
 package com.aliucord.manager.ui.theme
 
@@ -25,12 +25,12 @@ fun ManagerTheme(
     val context = LocalContext.current
     val dynamicColor = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
+    val isBlack = theme == Theme.Black
     val isDark = when (theme) {
         Theme.System -> isSystemInDarkTheme()
         Theme.Light -> false
-        else -> true // Dark and Black
+        Theme.Dark, Theme.Black -> true
     }
-    val isBlack = theme == Theme.Black
 
     val baseScheme = when {
         dynamicColor && isDark -> dynamicDarkColorScheme(context)
@@ -38,12 +38,11 @@ fun ManagerTheme(
         isDark -> darkColorScheme()
         else -> lightColorScheme()
     }
-
-
-    val colorScheme = if (isBlack) baseScheme.toPitchBlack() else baseScheme
-
-
-    val customColors = when(isDark) {
+    val colorScheme = when (isBlack) {
+        true -> baseScheme.toPitchBlack()
+        false -> baseScheme
+    }
+    val customColors = when (isDark) {
         true -> DarkCustomColors
         false -> LightCustomColors
     }
@@ -83,7 +82,8 @@ enum class Theme {
         when (this) {
             System -> R.string.theme_system
             Light -> R.string.theme_light
-            Dark, Black -> R.string.theme_dark
+            Dark -> R.string.theme_dark
+            Black -> R.string.theme_black
         }
     )
 
@@ -92,12 +92,13 @@ enum class Theme {
         when (this) {
             System -> R.drawable.ic_sync
             Light -> R.drawable.ic_light
-            Dark, Black -> R.drawable.ic_night
+            Dark -> R.drawable.ic_night
+            Black -> R.drawable.ic_brightness_empty
         }
     )
 }
 
-fun ColorScheme.toPitchBlack(): ColorScheme {
+private fun ColorScheme.toPitchBlack(): ColorScheme {
     return this.copy(
         background = Color.Black,
         surface = Color.Black,
