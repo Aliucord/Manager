@@ -82,6 +82,7 @@
   <string name="theme_system">System</string>
   <string name="theme_dark">Mørkt</string>
   <string name="theme_light">Lyst</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Plugins</string>
   <string name="plugins_view_changelog">Se ændringslog for %1$s</string>
   <string name="plugins_delete_plugin">Afinstallér %s</string>

@@ -82,6 +82,7 @@
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Madilim</string>
   <string name="theme_light">Maliwanag</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Mga plugin</string>
   <string name="plugins_view_changelog">Tignan ang changelog</string>
   <string name="plugins_delete_plugin">I-uninstall ang %s</string>

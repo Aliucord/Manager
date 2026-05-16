@@ -82,6 +82,7 @@
   <string name="theme_system">Järjestelmä</string>
   <string name="theme_dark">Tumma</string>
   <string name="theme_light">Vaalea</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Laajennukset</string>
   <string name="plugins_view_changelog">Katso muutosloki</string>
   <string name="plugins_delete_plugin">Poista %s asennus</string>

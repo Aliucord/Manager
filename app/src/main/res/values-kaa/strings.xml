@@ -82,6 +82,7 @@
   <string name="theme_system">System</string>
   <string name="theme_dark">Qarańǵı</string>
   <string name="theme_light">Jaqtı</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Plaginler</string>
   <string name="plugins_view_changelog">View changelog for %1$s</string>
   <string name="plugins_delete_plugin">Uninstall %s</string>

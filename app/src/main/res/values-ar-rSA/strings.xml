@@ -82,6 +82,7 @@
   <string name="theme_system">النظام</string>
   <string name="theme_dark">داكن</string>
   <string name="theme_light">فاتح</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">الإضافات</string>
   <string name="plugins_view_changelog">View changelog for %1$s</string>
   <string name="plugins_delete_plugin">إلغاء تثبيت %s</string>

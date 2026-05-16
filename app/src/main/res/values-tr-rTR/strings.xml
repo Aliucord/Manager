@@ -40,7 +40,7 @@
   <string name="permissions_granted">İzin verildi</string>
   <string name="permissions_header_options">Seçenekler</string>
   <string name="permissions_header_permissions">İzinler</string>
-  <string name="permissions_install_title">Bilinmeyen Kaynaklardan Yükleme</string>
+  <string name="permissions_install_title">Bilinmeyen Kaynaklardan Yükle</string>
   <string name="permissions_install_desc">İndirmeyi başlatmak için izin gerekmektedir.</string>
   <string name="permissions_storage_title">Harici Depolama</string>
   <string name="permissions_storage_desc">Aliucord ve Aliucord Yöneticisi paylaşılan verileri ~/Aliucord konumunda depoladığı için tüm dosyalara erişim iznine ihtiyaç duyar.</string>
@@ -82,6 +82,7 @@
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Koyu</string>
   <string name="theme_light">Açık</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Eklentiler</string>
   <string name="plugins_view_changelog">%1$s için Güncelleme Geçmişine Bak</string>
   <string name="plugins_delete_plugin">%s eklentisini kaldır</string>

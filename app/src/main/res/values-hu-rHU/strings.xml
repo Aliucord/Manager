@@ -82,6 +82,7 @@
   <string name="theme_system">Rendszer</string>
   <string name="theme_dark">Sötét</string>
   <string name="theme_light">Világos</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Bővítmények</string>
   <string name="plugins_view_changelog">View changelog</string>
   <string name="plugins_delete_plugin">%s törlése</string>

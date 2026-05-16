@@ -82,6 +82,7 @@
   <string name="theme_system">跟随系统</string>
   <string name="theme_dark">深色</string>
   <string name="theme_light">浅色</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">插件</string>
   <string name="plugins_view_changelog">查看 %1$s 的更新日志</string>
   <string name="plugins_delete_plugin">卸载%s</string>

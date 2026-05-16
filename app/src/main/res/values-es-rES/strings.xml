@@ -82,6 +82,7 @@
   <string name="theme_system">Sistema</string>
   <string name="theme_dark">Oscuro</string>
   <string name="theme_light">Claro</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Complementos</string>
   <string name="plugins_view_changelog">Ver el registro de cambios</string>
   <string name="plugins_delete_plugin">Desinstalar %s</string>

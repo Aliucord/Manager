@@ -82,6 +82,7 @@
   <string name="theme_system">시스템</string>
   <string name="theme_dark">어둡게</string>
   <string name="theme_light">밝게</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">플러그인</string>
   <string name="plugins_view_changelog">변경 사항 보기</string>
   <string name="plugins_delete_plugin">%s 설치 삭제</string>

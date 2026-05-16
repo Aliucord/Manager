@@ -82,6 +82,7 @@
   <string name="theme_system">Systém</string>
   <string name="theme_dark">Tmavý</string>
   <string name="theme_light">Světlý</string>
+  <string name="theme_black">Black</string>
   <string name="plugins_title">Pluginy</string>
   <string name="plugins_view_changelog">Zobrazit seznam změn</string>
   <string name="plugins_delete_plugin">Odinstalovat %s</string>
