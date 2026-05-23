@@ -82,7 +82,7 @@
   <string name="theme_system">Sistem</string>
   <string name="theme_dark">Koyu</string>
   <string name="theme_light">Açık</string>
-  <string name="theme_black">Black</string>
+  <string name="theme_black">Siyah</string>
   <string name="plugins_title">Eklentiler</string>
   <string name="plugins_view_changelog">%1$s için Güncelleme Geçmişine Bak</string>
   <string name="plugins_delete_plugin">%s eklentisini kaldır</string>
@@ -163,7 +163,7 @@ lütfen silin!</string>
   <string name="installer_abort_body">Hala bitmemiş bir kurulumu iptal etmek istediğinize emin misiniz? Bozulmaların önlenmesi için önbelleğe alınmış dosyalar temizlenecektir.</string>
   <string name="updater_title">%s sürümüne güncelle</string>
   <string name="updater_body">Aliucord Yöneticisi için yeni bir güncelleme yayınlandı! Düzgün çalışması için gerekli olabilir. Güncellemek ister misin?</string>
-  <string name="updater_open_github">Github\'da görüntüle</string>
+  <string name="updater_open_github">Github\'ta görüntüle</string>
   <string name="updater_check_fail">Güncellemeler kontrol edilemedi!</string>
   <string name="updater_update_fail">Güncelleme başarısız! Lütfen güncellemeyi kendiniz elle indirip yükleyin!</string>
   <string name="downloader_err_unknown">İndirme başarısız (Bilinmiyor)</string>
