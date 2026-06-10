@@ -1,5 +1,6 @@
 package com.aliucord.manager.patcher.steps.download
 
+import android.content.Context
 import androidx.compose.runtime.Stable
 import com.aliucord.manager.R
 import com.aliucord.manager.manager.PathManager
@@ -21,13 +22,24 @@ class DownloadPatchesStep(
     private val custom: PatchComponent?,
 ) : DownloadStep<SemVer>(), KoinComponent {
     private val paths: PathManager by inject()
+    private val context: Context by inject()
 
     override val localizedName = R.string.patch_step_dl_smali
 
     override fun getRemoteUrl(container: StepRunner) = URL
 
+    // Set when the Sunflower patches bundled in Manager assets are present
+    private val bundledVersion: SemVer? by lazy {
+        try {
+            context.assets.open(BUNDLED_ASSET).use { }
+            SemVer.parse(BUNDLED_VERSION)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     override fun getVersion(container: StepRunner) =
-        custom?.version ?: container.getStep<FetchInfoStep>().data.patchesVersion
+        custom?.version ?: bundledVersion ?: container.getStep<FetchInfoStep>().data.patchesVersion
 
     override fun getStoredFile(container: StepRunner) =
         custom?.getFile(paths) ?: paths.cachedSmaliPatches(getVersion(container))
@@ -47,10 +59,24 @@ class DownloadPatchesStep(
             return
         }
 
+        // Prefer the Sunflower smali patches bundled in Manager assets over a remote download
+        if (bundledVersion != null) {
+            val bundled = context.assets.open(BUNDLED_ASSET).use { it.readBytes() }
+            container.log("Using Sunflower patches $bundledVersion bundled in Manager assets (${bundled.size} bytes)")
+            getStoredFile(container).apply {
+                parentFile?.mkdirs()
+                writeBytes(bundled)
+            }
+            state = StepState.Skipped
+            return
+        }
+
         super.execute(container)
     }
 
     private companion object {
         const val URL = "https://builds.aliucord.com/patches.zip"
+        const val BUNDLED_ASSET = "sunflower/patches.zip"
+        const val BUNDLED_VERSION = "1.4.10"
     }
 }

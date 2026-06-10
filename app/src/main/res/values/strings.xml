@@ -166,7 +166,8 @@
   <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Patching app icon</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
-  <string name="patch_step_replace_libdiscord">Replacing voice engine (Sunflower)</string>
+  <string name="patch_step_replace_libdiscord">Replacing voice engine</string>
+  <string name="patch_step_add_core">Adding Aliucord core</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">Store metadata</string>
