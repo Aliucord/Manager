@@ -18,6 +18,8 @@ object ManifestPatcher {
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
     private const val LABEL = "label"
     private const val PACKAGE = "package"
+    private const val FOREGROUND_SERVICE_TYPE = "foregroundServiceType"
+    private const val FOREGROUND_SERVICE_TYPES = 0xE0
     private const val COMPILE_SDK_VERSION = "compileSdkVersion"
     private const val COMPILE_SDK_VERSION_CODENAME = "compileSdkVersionCodename"
 
@@ -154,6 +156,30 @@ object ManifestPatcher {
 
                                     return when (name) {
                                         "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to appName))
+                                        "service" -> object : NodeVisitor(visitor) {
+                                            private var foreServiceType = true
+
+                                            override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
+                                                if (name == FOREGROUND_SERVICE_TYPE) {
+                                                    foreServiceType = false
+                                                    super.attr(ns, name, resourceId, type, (value as Int) or FOREGROUND_SERVICE_TYPES)
+                                                } else {
+                                                    super.attr(ns, name, resourceId, type, value)
+                                                }
+                                            }
+
+                                            override fun end() {
+                                                if (foreServiceType && Build.VERSION.SDK_INT >= 29) super.attr(
+                                                    ANDROID_NAMESPACE,
+                                                    FOREGROUND_SERVICE_TYPE,
+                                                    android.R.attr.foregroundServiceType,
+                                                    TYPE_FIRST_INT,
+                                                    FOREGROUND_SERVICE_TYPES
+                                                )
+                                                super.end()
+                                            }
+                                        }
+
                                         "provider" -> object : NodeVisitor(visitor) {
                                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                                 super.attr(
