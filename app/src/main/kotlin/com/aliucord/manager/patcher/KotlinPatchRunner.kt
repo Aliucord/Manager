@@ -35,7 +35,6 @@ class KotlinPatchRunner(
         ReorganizeDexStep(),
         AddAliuhookLibsStep(),
         ReplaceLibdiscordStep(),
-        AddAliucordCoreStep(),
         SaveMetadataStep(options),
 
         // Install
