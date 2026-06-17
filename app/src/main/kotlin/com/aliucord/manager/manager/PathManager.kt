@@ -141,4 +141,11 @@ class PathManager(
     fun cachedKotlinDex(version: SemVer) = patchingDownloadDir
         .resolve("kotlin-stdlib")
         .resolve("$version.dex")
+
+    /**
+     * Resolve a specific path for a versioned prebuilt WebRTC dex.
+     */
+    fun cachedWebrtcDex(version: SemVer) = patchingDownloadDir
+        .resolve("webrtc")
+        .resolve("$version.dex")
 }
