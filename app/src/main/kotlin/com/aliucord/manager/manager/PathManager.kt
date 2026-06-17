@@ -143,9 +143,9 @@ class PathManager(
         .resolve("$version.dex")
 
     /**
-     * Resolve a specific path for a versioned prebuilt WebRTC dex.
+     * Resolve a specific path for a versioned cached Aliuvoice build
      */
-    fun cachedWebrtcDex(version: SemVer) = patchingDownloadDir
-        .resolve("webrtc")
-        .resolve("$version.dex")
+    fun cachedAliuvoiceAAR(version: SemVer) = patchingDownloadDir
+        .resolve("aliuvoice")
+        .resolve("$version.aar")
 }

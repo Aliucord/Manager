@@ -24,7 +24,7 @@ class KotlinPatchRunner(
         DownloadInjectorStep(options.customInjector),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
-        DownloadWebrtcStep(),
+        DownloadAliuvoiceStep(),
         DownloadPatchesStep(options.customPatches),
         CopyDependenciesStep(),
 

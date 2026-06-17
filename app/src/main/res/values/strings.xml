@@ -158,7 +158,7 @@
   <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Downloading Discord APK</string>
   <string name="patch_step_dl_kotlin">Downloading Kotlin library</string>
-  <string name="patch_step_dl_webrtc">Downloading WebRTC library</string>
+  <string name="patch_step_dl_aliuvoice">Downloading Aliuvoice library</string>
   <string name="patch_step_dl_injector">Downloading Aliucord Injector</string>
   <string name="patch_step_dl_aliuhook">Downloading Aliuhook library</string>
   <string name="patch_step_dl_smali">Downloading smali patches</string>
