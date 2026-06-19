@@ -37,8 +37,8 @@ class DownloadAliuvoiceStep : DownloadStep<SemVer>(), IDexProvider, KoinComponen
     override fun getStoredFile(container: StepRunner) =
         paths.cachedAliuvoiceAAR(getVersion(container))
 
-    override val dexPriority = 0
-    override val dexCount = 1
+    override val dexPriority = 1
+    override val dexCount get() = dexFiles?.size ?: 1
 
     // R8/d8 may split across webrtc.dex + classes*.dex
     private var dexFiles: List<ByteArray>? = null
