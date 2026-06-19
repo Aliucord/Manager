@@ -39,12 +39,26 @@ class DownloadAliuvoiceStep : DownloadStep<SemVer>(), IDexProvider, KoinComponen
 
     override val dexPriority = 0
     override val dexCount = 1
-    override fun getDexFiles(container: StepRunner): List<ByteArray> {
-        val dexBytes = ZipReader(getStoredFile(container)).use { zip ->
-            zip.openEntry("webrtc.dex")?.read()
-                ?: throw IllegalStateException("No prebuilt webrtc.dex in downloaded aliuvoice build")
+
+    // R8/d8 may split across webrtc.dex + classes*.dex
+    private var dexFiles: List<ByteArray>? = null
+
+    override suspend fun execute(container: StepRunner) {
+        super.execute(container)
+
+        dexFiles = ZipReader(getStoredFile(container)).use { aar ->
+            aar.entryNames
+                .filter { !it.contains('/') && it.endsWith(".dex") }
+                .sorted()
+                .map { name ->
+                    aar.openEntry(name)?.read() ?: throw IllegalStateException("Failed to read $name from aliuvoice aar")
+                }
         }
 
-        return listOf(dexBytes)
+        if (dexFiles!!.isEmpty())
+            throw IllegalStateException("No prebuilt dex files in downloaded aliuvoice build")
     }
+
+    override fun getDexFiles(container: StepRunner): List<ByteArray> =
+        dexFiles ?: throw IllegalStateException("Aliuvoice dex files not loaded, download step likely failed")
 }
