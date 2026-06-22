@@ -17,8 +17,8 @@ import org.koin.core.component.inject
 
 /**
  * Download a packaged AAR of the latest Aliuvoice build from the Aliucord maven.
- *  * The AAR bundles the Sunflower libdiscord.so libs (consumed by [ReplaceLibdiscordStep])
- *  * and a prebuilt webrtc.dex.
+ * The AAR carries the prebuilt webrtc.dex (org.webrtc). libdiscord.so is sourced
+ * separately by [ReplaceLibdiscordStep] from the Discord split APK.
  * Provides [ReorganizeDexStep] with the dex through the [IDexProvider] implementation.
  */
 @Stable

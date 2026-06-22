@@ -41,4 +41,7 @@ class AliucordMavenService(private val http: HttpService) {
 
     fun getAliuvoiceUrl(version: SemVer): String =
         "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuvoice/$version/Aliuvoice-$version.aar"
+
+    fun getLibraryApkUrl(version: Int, abi: String): String =
+        "${BuildConfig.MAVEN_URL}/com/discord/discord/$version/config-$abi.apk"
 }

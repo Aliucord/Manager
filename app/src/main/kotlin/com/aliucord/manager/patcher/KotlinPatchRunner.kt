@@ -25,6 +25,7 @@ class KotlinPatchRunner(
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
         DownloadAliuvoiceStep(),
+        DownloadLibdiscordStep(),
         DownloadPatchesStep(options.customPatches),
         CopyDependenciesStep(),
 

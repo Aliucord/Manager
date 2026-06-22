@@ -148,4 +148,11 @@ class PathManager(
     fun cachedAliuvoiceAAR(version: SemVer) = patchingDownloadDir
         .resolve("aliuvoice")
         .resolve("$version.aar")
+
+    /**
+     * Resolve a specific path for a cached Discord split APK carrying libdiscord.so.
+     */
+    fun cachedLibdiscordApk(version: Int, abi: String) = patchingDownloadDir
+        .resolve("libdiscord/$version")
+        .resolve("config-$abi.apk")
 }
