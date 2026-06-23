@@ -24,6 +24,8 @@ class KotlinPatchRunner(
         DownloadInjectorStep(options.customInjector),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
+        DownloadAliuvoiceStep(),
+        DownloadLibdiscordStep(),
         DownloadPatchesStep(options.customPatches),
         CopyDependenciesStep(),
 
@@ -34,6 +36,7 @@ class KotlinPatchRunner(
         PatchCertsStep(),
         ReorganizeDexStep(),
         AddAliuhookLibsStep(),
+        ReplaceLibdiscordStep(),
         SaveMetadataStep(options),
 
         // Install
