@@ -35,7 +35,7 @@
   <string name="intent_import_component_failure">Не удалось импортировать пользовательский компонент!</string>
   <string name="permissions_title">Предоставление разрешений</string>
   <string name="permissions_subtitle">Менеджер Aliucord требует разрешений:</string>
-  <string name="permissions_legend">%s указывает на необходимые разрешения!</string>
+  <string name="permissions_legend">%s Указывает на необходимые разрешения!</string>
   <string name="permissions_grant">Дать</string>
   <string name="permissions_granted">Выдано</string>
   <string name="permissions_header_options">Настройки</string>
@@ -62,7 +62,7 @@
   <string name="setting_dynamic_color">Динамические цвета</string>
   <string name="setting_dynamic_color_desc">Включает тему Material You на Android 12+</string>
   <string name="setting_developer_options">Настройки для разработчиков</string>
-  <string name="setting_developer_options_desc">Не включайте это, если не знаете, что делаете!</string>
+  <string name="setting_developer_options_desc">Не включайте это, если не знаете, что делаете! (Да, правда)</string>
   <string name="setting_installer">Способ установки</string>
   <string name="setting_installer_desc">Поддерживаются различные методы взаимодействия с установщиком пакетов системы.</string>
   <string name="setting_keep_patched_apks">Сохранять пропатченные APK</string>
@@ -98,7 +98,7 @@
   <string name="navigation_settings">Настройки</string>
   <string name="contributors_lead">Главные разработчики</string>
   <string name="contributors">Участники</string>
-  <string name="contributors_contributions">%s действий в разработке</string>
+  <string name="contributors_contributions">%s Действий в разработке</string>
   <string name="network_load_fail">Не удалось загрузить</string>
   <string name="network_warning_title">Ограниченная сеть</string>
   <string name="network_warning_body">Похоже, вы подключены к мобильным данным или потенциально лимитированной сети. Чтобы осуществить установку, может быть скачано несколько сотен мегабайт. Вы уверены, что хотите продолжить?</string>

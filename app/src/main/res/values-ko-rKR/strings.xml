@@ -35,7 +35,7 @@
   <string name="intent_import_component_failure">커스텀 컴포넌트를 가져오기에 실패했어요!</string>
   <string name="permissions_title">권한 허용</string>
   <string name="permissions_subtitle">Aliucord Manager는 다음 권한이 필요해요:</string>
-  <string name="permissions_legend">%s는 필수 권한이예요!</string>
+  <string name="permissions_legend">%s는 필수 권한이에요!</string>
   <string name="permissions_grant">허용</string>
   <string name="permissions_granted">허용됨</string>
   <string name="permissions_header_options">설정</string>
@@ -217,7 +217,7 @@
   <string name="iconopts_image_preview_none">선택한 이미지가 없어요</string>
   <string name="componentopts_screen_title">사용자 지정 요소 (%s)</string>
   <string name="componentopts_screen_desc">Manager에서 가져올 사용자 정의 빌드를 선택하세요.</string>
-  <string name="componentopts_selected_none">최신판</string>
+  <string name="componentopts_selected_none">최신</string>
   <string name="componentopts_deleted">선택된 항목을 삭제했어요!</string>
   <string name="log_title">기록</string>
   <string name="log_section_install_info">설치 정보</string>
