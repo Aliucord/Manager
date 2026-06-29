@@ -36,6 +36,17 @@ class FetchInfoStep : Step(), KoinComponent {
     lateinit var aliuhookVersion: SemVer
         private set
 
+    /**
+     * Remote data about the latest Aliuvoice version available from the Aliucord maven.
+     */
+    lateinit var aliuvoiceVersion: SemVer
+        private set
+
+    /**
+     * Discord build whose libdiscord.so is used as the voice engine.
+     */
+    val libdiscordVersion: Int = 333205
+
     override suspend fun execute(container: StepRunner) {
         container.log("Fetching ${AliucordGithubService.DATA_JSON_URL}")
         data = github.getBuildData(force = true).getOrThrow()
@@ -44,5 +55,9 @@ class FetchInfoStep : Step(), KoinComponent {
         container.log("Obtaining latest aliuhook version")
         aliuhookVersion = maven.getAliuhookVersion(force = true).getOrThrow()
         container.log("Fetched aliuhook version: $aliuhookVersion")
+
+        container.log("Obtaining latest aliuvoice version")
+        aliuvoiceVersion = maven.getAliuvoiceVersion(force = true).getOrThrow()
+        container.log("Fetched aliuvoice version: $aliuvoiceVersion")
     }
 }
