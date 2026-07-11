@@ -150,7 +150,7 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="patch_step_patch_smali">Smaliパッチの適用</string>
   <string name="patch_step_reorganize_dex">APKに.dexファイルの追加</string>
   <string name="patch_step_save_metadata">メタデータの保存</string>
-  <string name="patch_step_alignment">Aligning APKs</string>
+  <string name="patch_step_alignment">APKの整合性</string>
   <string name="patch_step_signing">APKの署名</string>
   <string name="patch_step_install">APKのインストール</string>
   <string name="patch_step_cleanup">お掃除中</string>
