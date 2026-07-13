@@ -35,7 +35,7 @@ class AliucordGithubService(
      * Fetches all the contributors with a 24h local cache.
      */
     suspend fun getContributors(): ApiResponse<List<Contributor>> = http.request {
-        url(CONTRIBUTORS_API_URL)
+        url(CONTRIBUTORS_JSON_URL)
         cacheControl(CacheControl.MaxAge(maxAgeSeconds = 60 * 60 * 24))
     }
 
@@ -45,6 +45,6 @@ class AliucordGithubService(
 
         const val DATA_JSON_URL = "https://builds.aliucord.com/data.json"
 
-        private const val CONTRIBUTORS_API_URL = "https://raw.githubusercontent.com/Importantamigo/guhhhhggh/main/contributors_data/all_contributors.json"
+        private const val CONTRIBUTORS_JSON_URL = "https://builds.aliucord.com/contributors.json"
     }
 }

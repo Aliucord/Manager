@@ -22,6 +22,13 @@ class AboutModel(
         mutableState.value = response.fold(
             success = { contributors ->
                 val sorted = contributors
+                    .map { contributor ->
+                        contributor.copy(
+                            repositories = contributor.repositories
+                                .map { it.copy(name = it.name.substringAfterLast("/")) }
+                                .toUnsafeImmutable()
+                        )
+                    }
                     .sortedByDescending { it.commits }
                     .toUnsafeImmutable()
 
