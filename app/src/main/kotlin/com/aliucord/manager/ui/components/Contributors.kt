@@ -66,7 +66,7 @@ fun ContributorCommitsItem(
             )
 
             Text(
-                text = user.repositories.joinToString { it.name },
+                text = user.repositories.joinToString { it.repository },
                 fontStyle = FontStyle.Italic,
                 style = MaterialTheme.typography.bodySmall
                     .copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)),

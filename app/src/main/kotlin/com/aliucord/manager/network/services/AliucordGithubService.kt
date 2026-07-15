@@ -1,11 +1,10 @@
 package com.aliucord.manager.network.services
 
-import com.aliucord.manager.network.models.BuildInfo
-import com.aliucord.manager.network.models.GithubRelease
+import com.aliucord.manager.di.cacheControl
+import com.aliucord.manager.network.models.*
 import com.aliucord.manager.network.utils.ApiResponse
-import io.ktor.client.request.header
 import io.ktor.client.request.url
-import io.ktor.http.HttpHeaders
+import io.ktor.http.CacheControl
 
 class AliucordGithubService(
     private val http: HttpService,
@@ -18,7 +17,7 @@ class AliucordGithubService(
         url(DATA_JSON_URL)
 
         if (force) {
-            header(HttpHeaders.CacheControl, "no-cache")
+            cacheControl(CacheControl.NoCache(null))
         }
     }
 
@@ -28,8 +27,16 @@ class AliucordGithubService(
     suspend fun getManagerReleases(): ApiResponse<List<GithubRelease>> {
         return http.request {
             url("https://api.github.com/repos/$ORG/$MANAGER_REPO/releases")
-            header(HttpHeaders.CacheControl, "public, max-age=60, s-maxage=60")
+            cacheControl(CacheControl.MaxAge(maxAgeSeconds = 60))
         }
+    }
+
+    /**
+     * Fetches all the contributors with a 24h local cache.
+     */
+    suspend fun getContributors(): ApiResponse<List<Contributor>> = http.request {
+        url(CONTRIBUTORS_JSON_URL)
+        cacheControl(CacheControl.MaxAge(maxAgeSeconds = 60 * 60 * 24))
     }
 
     companion object {
@@ -37,5 +44,7 @@ class AliucordGithubService(
         const val MANAGER_REPO = "Manager"
 
         const val DATA_JSON_URL = "https://builds.aliucord.com/data.json"
+
+        private const val CONTRIBUTORS_JSON_URL = "https://builds.aliucord.com/contributors.json"
     }
 }

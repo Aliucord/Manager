@@ -19,5 +19,8 @@ data class Contributor(
     data class Repository(
         val name: String,
         val commits: Int,
-    )
+    ) {
+        val repository: String
+            get() = name.substringAfterLast("/")
+    }
 }
