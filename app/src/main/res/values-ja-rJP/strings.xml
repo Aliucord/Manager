@@ -246,15 +246,15 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="play_protect_warning_open_gpp">Playプロテクトを開く</string>
   <string name="play_protect_warning_disable">再度表示しない</string>
   <string name="fun_fact_prefix">面白い事実：%s</string>
-  <string name="fun_fact_1">知ってましたか？Google Play Protectは役に立たないって。</string>
+  <string name="fun_fact_1">知ってた？Google Play Protectは役に立たないって。</string>
   <string name="fun_fact_2">150+のプラグインが入ったAliucordが、なぜかDiscordの新しいアプリよりも動作が良いって知ってた？</string>
   <string name="fun_fact_3">Aliucordには200以上のプラグインが利用可能だって知ってた？</string>
   <string name="fun_fact_4">お前の壁の中にいるぜ〜ｗｗ</string>
-  <string name="fun_fact_5">AliucordRNがEnmityとVendettaを生み出したことをご存知ですか？</string>
+  <string name="fun_fact_5">AliucordRNがEnmityとVendettaを生み出したってこと知ってる？</string>
   <string name="fun_fact_6">困ったときはDiscordの #support チャンネルへどうぞ！</string>
-  <string name="fun_fact_7">IWillCrashYourDiscordプラグインは君のDiscordをクラッシュさせるよ</string>
+  <string name="fun_fact_7">IWillCrashYourDiscordプラグインは君のDiscordをクラッシュさせるよ；）</string>
   <string name="fun_fact_9">AliucordはWearOSで実行できるよ～</string>
-  <string name="fun_fact_10">Aliucordは本物の昔のUIを使ってるよ、2022年中頃のやつ！</string>
+  <string name="fun_fact_10">Aliucordは「本物」の昔のUIを使ってるよ、2022年中頃のやつ！</string>
   <string name="fun_fact_11">AliucordをiOSで実行する試みがありました…:(</string>
   <string name="time_elapsed_seconds">%.2f秒</string>
 </resources>
