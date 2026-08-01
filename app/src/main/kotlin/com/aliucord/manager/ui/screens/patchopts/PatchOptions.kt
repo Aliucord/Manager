@@ -3,6 +3,7 @@ package com.aliucord.manager.ui.screens.patchopts
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import com.aliucord.manager.patcher.util.MonochromeWeighting
 import com.aliucord.manager.ui.screens.componentopts.PatchComponent
 import com.aliucord.manager.util.serialization.ColorParceler
 import com.aliucord.manager.util.serialization.ColorSerializer
@@ -90,10 +91,15 @@ data class PatchOptions(
         @Parcelize
         @Serializable
         @SerialName("image")
-        data class CustomImage(val imageBytes: ByteArray) : IconReplacement {
-            override fun hashCode() = imageBytes.contentHashCode()
+        data class CustomImage(
+            val imageBytes: ByteArray,
+            val weighting: MonochromeWeighting = MonochromeWeighting.Rec601,
+        ) : IconReplacement {
+            override fun hashCode() = 31 * imageBytes.contentHashCode() + weighting.hashCode()
             override fun equals(other: Any?) = this === other
-                || (javaClass == other?.javaClass && imageBytes.contentEquals((other as CustomImage).imageBytes))
+                || (javaClass == other?.javaClass && (other as CustomImage).let {
+                imageBytes.contentEquals(it.imageBytes) && weighting == it.weighting
+            })
         }
 
         companion object {

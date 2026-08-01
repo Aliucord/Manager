@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.*
 import androidx.core.graphics.drawable.toBitmap
 import com.aliucord.manager.R
+import com.aliucord.manager.patcher.util.MonochromeWeighting
 import com.aliucord.manager.ui.screens.iconopts.IconOptionsMode
 import com.aliucord.manager.ui.screens.iconopts.IconOptionsScreenContent
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
@@ -29,6 +30,7 @@ private fun IconOptionsScreenPreview(
 ) {
     var mode by remember { mutableStateOf(parameters.mode) }
     var color by remember { mutableStateOf(HsvColor(parameters.selectedColor)) }
+    var weighting by remember { mutableStateOf(MonochromeWeighting.Rec601) }
 
     DisposableEffect(parameters) {
         mode = parameters.mode
@@ -46,6 +48,8 @@ private fun IconOptionsScreenPreview(
             setSelectedColor = { color = it },
             selectedImage = { image },
             setSelectedImage = {},
+            selectedWeighting = weighting,
+            setSelectedWeighting = { weighting = it },
             onBackPressed = {},
         )
     }

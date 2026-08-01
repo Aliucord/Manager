@@ -103,13 +103,15 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         var foregroundIcon: BinaryResourceIdentifier? = null
         var backgroundIcon: BinaryResourceIdentifier? = null
         var monochromeIcon: BinaryResourceIdentifier? = null
+        val customIcon = options.iconReplacement as? IconReplacement.CustomImage
+        val monochromePath = "res/ic_aliucord_monochrome.${if (customIcon != null) "png" else "xml"}"
 
         // Add the monochrome resource and add the resource file later
         if (isMonochromeIconsAvailable) {
             container.log("Adding monochrome icon resource to arsc")
 
             val filePathIdx = arsc.getMainArscChunk().stringPool
-                .addString("res/ic_aliucord_monochrome.xml")
+                .addString(monochromePath)
 
             monochromeIcon = arsc.getPackageChunk().addResource(
                 typeName = "drawable",
@@ -177,14 +179,14 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         container.log("Writing other patched files back to apk")
         ZipWriter(apk, /* append = */ true).use {
             if (isMonochromeIconsAvailable) {
-                val monochromeIconId = if (options.iconReplacement is IconReplacement.OldDiscord) {
-                    R.drawable.ic_discord_old_monochrome
-                } else {
-                    R.drawable.ic_discord_monochrome
+                val monochromeBytes = when {
+                    customIcon != null -> customIcon.weighting.createMask(customIcon.imageBytes)
+                    options.iconReplacement is IconReplacement.OldDiscord -> context.resources.getRawBytes(R.drawable.ic_discord_old_monochrome)
+                    else -> context.resources.getRawBytes(R.drawable.ic_discord_monochrome)
                 }
 
-                container.log("Writing monochrome icon AXML to apk")
-                it.writeEntry("res/ic_aliucord_monochrome.xml", context.resources.getRawBytes(monochromeIconId))
+                container.log("Writing monochrome icon to apk at $monochromePath")
+                it.writeEntry(monochromePath, monochromeBytes)
             }
 
             if (options.iconReplacement is IconReplacement.OldDiscord) {
