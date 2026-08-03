@@ -35,7 +35,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import com.aliucord.manager.R
-import com.aliucord.manager.patcher.util.MonochromeWeighting
 import com.aliucord.manager.ui.components.*
 import com.aliucord.manager.ui.screens.iconopts.components.*
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
@@ -45,8 +44,6 @@ import com.aliucord.manager.ui.util.throttledState
 import com.aliucord.manager.util.back
 import dev.zt64.compose.pipette.CircularColorPicker
 import dev.zt64.compose.pipette.HsvColor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -76,8 +73,6 @@ class IconOptionsScreen : Screen, Parcelable {
             setSelectedColor = model::changeSelectedColor,
             selectedImage = { model.selectedImage },
             setSelectedImage = model::changeSelectedImageUri,
-            selectedWeighting = model.selectedWeighting,
-            setSelectedWeighting = model::changeSelectedWeighting,
             onBackPressed = { navigator.back(currentActivity = null) },
         )
     }
@@ -91,8 +86,6 @@ fun IconOptionsScreenContent(
     setSelectedColor: (HsvColor) -> Unit,
     selectedImage: () -> ByteArray?,
     setSelectedImage: (Uri) -> Unit,
-    selectedWeighting: MonochromeWeighting,
-    setSelectedWeighting: (MonochromeWeighting) -> Unit,
     onBackPressed: () -> Unit,
 ) {
     val isAdaptiveIconsAvailable = Build.VERSION.SDK_INT >= 26
@@ -170,8 +163,6 @@ fun IconOptionsScreenContent(
                 CustomImageOptions(
                     selectedImage = selectedImage,
                     setSelectedImage = setSelectedImage,
-                    selectedWeighting = selectedWeighting,
-                    setSelectedWeighting = setSelectedWeighting,
                 )
             }
 
@@ -337,102 +328,10 @@ private fun CustomColorOptions(
     }
 }
 
-// Themed icon picker
-@Composable
-private fun ThemedIconOptions(
-    selectedImage: () -> ByteArray?,
-    selectedWeighting: MonochromeWeighting,
-    setSelectedWeighting: (MonochromeWeighting) -> Unit,
-) {
-    val image = selectedImage() ?: return
-
-    // Masking is a per-pixel pass over the full image, so it stays off the composition thread
-    var masks by remember(image) { mutableStateOf<Map<MonochromeWeighting, ByteArray>>(emptyMap()) }
-    LaunchedEffect(image) {
-        masks = withContext(Dispatchers.Default) {
-            MonochromeWeighting.entries.associateWith { it.createMask(image) }
-        }
-    }
-
-    Label(
-        name = stringResource(R.string.iconopts_themed_title),
-        description = stringResource(R.string.iconopts_themed_desc),
-        modifier = Modifier.padding(top = 20.dp),
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth(),
-        ) {
-            MonochromeWeighting.entries.chunked(3).forEach { row ->
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    row.forEach { weighting ->
-                        WeightingTile(
-                            weighting = weighting,
-                            mask = masks[weighting],
-                            selected = weighting == selectedWeighting,
-                            onClick = { setSelectedWeighting(weighting) },
-                            modifier = Modifier.weight(1f),
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun WeightingTile(
-    weighting: MonochromeWeighting,
-    mask: ByteArray?,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val shape = RoundedCornerShape(8.dp)
-    val colors = MaterialTheme.colorScheme
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-        modifier = modifier
-            .clip(MaterialTheme.shapes.small)
-            .clickable(onClick = onClick)
-            .padding(6.dp),
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(64.dp)
-                .clip(shape)
-                .background(if (selected) colors.primaryContainer else colors.surfaceContainerLow)
-                .border(
-                    width = if (selected) 2.dp else 0.dp,
-                    color = if (selected) colors.primary else Color.Transparent,
-                    shape = shape,
-                ),
-        ) {
-            AsyncImage(model = mask, contentDescription = null)
-        }
-
-        Text(
-            text = stringResource(weighting.labelRes),
-            style = MaterialTheme.typography.labelMedium,
-            color = if (selected) colors.primary else Color.Unspecified,
-        )
-    }
-}
-
 @Composable
 private fun CustomImageOptions(
     selectedImage: () -> ByteArray?,
     setSelectedImage: (Uri) -> Unit,
-    selectedWeighting: MonochromeWeighting,
-    setSelectedWeighting: (MonochromeWeighting) -> Unit,
 ) {
     val pickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -457,12 +356,6 @@ private fun CustomImageOptions(
             colors = IconButtonDefaults.filledTonalIconButtonColors(
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             ),
-        )
-
-        ThemedIconOptions(
-            selectedImage = selectedImage,
-            selectedWeighting = selectedWeighting,
-            setSelectedWeighting = setSelectedWeighting,
         )
 
         Label(

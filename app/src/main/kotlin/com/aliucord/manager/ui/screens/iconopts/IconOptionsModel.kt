@@ -10,7 +10,6 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.aliucord.manager.BuildConfig
 import com.aliucord.manager.R
-import com.aliucord.manager.patcher.util.MonochromeWeighting
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 import com.aliucord.manager.util.*
 import dev.zt64.compose.pipette.HsvColor
@@ -38,14 +37,6 @@ class IconOptionsModel(
 
     private fun initSelectedColor(color: Color) {
         selectedColor = HsvColor(color)
-    }
-
-    // ---------- Themed icon weighting ---------- //
-    var selectedWeighting by mutableStateOf(MonochromeWeighting.Rec601)
-        private set
-
-    fun changeSelectedWeighting(weighting: MonochromeWeighting) {
-        selectedWeighting = weighting
     }
 
     // ---------- Replacement color ---------- //
@@ -96,7 +87,6 @@ class IconOptionsModel(
             is IconReplacement.CustomImage -> {
                 changeMode(IconOptionsMode.CustomImage)
                 selectedImage = prefilledOptions.imageBytes
-                changeSelectedWeighting(prefilledOptions.weighting)
             }
 
             IconReplacement.Original -> changeMode(IconOptionsMode.Original)
@@ -111,8 +101,7 @@ class IconOptionsModel(
             IconOptionsMode.Aliucord -> IconReplacement.CustomColor(IconReplacement.AliucordColor)
             IconOptionsMode.CustomColor -> IconReplacement.CustomColor(color = selectedColor.toColor())
             IconOptionsMode.CustomImage -> IconReplacement.CustomImage(
-                imageBytes = selectedImage ?: return null,
-                weighting = selectedWeighting,
+                imageBytes = selectedImage ?: return null
             )
         }
     }

@@ -26,6 +26,7 @@ import com.aliucord.manager.patcher.util.ArscUtil.getPackageChunk
 import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileName
 import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileNames
 import com.aliucord.manager.patcher.util.AxmlUtil
+import com.aliucord.manager.patcher.util.MonochromeMask
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 import com.aliucord.manager.util.getRawBytes
@@ -180,7 +181,7 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         ZipWriter(apk, /* append = */ true).use {
             if (isMonochromeIconsAvailable) {
                 val monochromeBytes = when {
-                    customIcon != null -> customIcon.weighting.createMask(customIcon.imageBytes)
+                    customIcon != null -> MonochromeMask.create(customIcon.imageBytes)
                     options.iconReplacement is IconReplacement.OldDiscord -> context.resources.getRawBytes(R.drawable.ic_discord_old_monochrome)
                     else -> context.resources.getRawBytes(R.drawable.ic_discord_monochrome)
                 }
