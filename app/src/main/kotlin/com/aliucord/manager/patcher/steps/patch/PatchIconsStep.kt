@@ -18,15 +18,13 @@ import com.aliucord.manager.patcher.steps.StepGroup
 import com.aliucord.manager.patcher.steps.base.Step
 import com.aliucord.manager.patcher.steps.base.StepState
 import com.aliucord.manager.patcher.steps.download.CopyDependenciesStep
-import com.aliucord.manager.patcher.util.ArscUtil
+import com.aliucord.manager.patcher.util.*
 import com.aliucord.manager.patcher.util.ArscUtil.addColorResource
 import com.aliucord.manager.patcher.util.ArscUtil.addResource
 import com.aliucord.manager.patcher.util.ArscUtil.getMainArscChunk
 import com.aliucord.manager.patcher.util.ArscUtil.getPackageChunk
 import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileName
 import com.aliucord.manager.patcher.util.ArscUtil.getResourceFileNames
-import com.aliucord.manager.patcher.util.AxmlUtil
-import com.aliucord.manager.patcher.util.MonochromeMask
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions
 import com.aliucord.manager.ui.screens.patchopts.PatchOptions.IconReplacement
 import com.aliucord.manager.util.getRawBytes
@@ -104,8 +102,10 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         var foregroundIcon: BinaryResourceIdentifier? = null
         var backgroundIcon: BinaryResourceIdentifier? = null
         var monochromeIcon: BinaryResourceIdentifier? = null
-        val customIcon = options.iconReplacement as? IconReplacement.CustomImage
-        val monochromePath = "res/ic_aliucord_monochrome.${if (customIcon != null) "png" else "xml"}"
+        val monochromePath = when (options.iconReplacement) {
+            is IconReplacement.CustomImage -> "res/ic_aliucord_monochrome.png"
+            else -> "res/ic_aliucord_monochrome.xml"
+        }
 
         // Add the monochrome resource and add the resource file later
         if (isMonochromeIconsAvailable) {
@@ -180,9 +180,17 @@ class PatchIconsStep(private val options: PatchOptions) : Step(), KoinComponent 
         container.log("Writing other patched files back to apk")
         ZipWriter(apk, /* append = */ true).use {
             if (isMonochromeIconsAvailable) {
-                val monochromeBytes = when {
-                    customIcon != null -> MonochromeMask.create(customIcon.imageBytes)
-                    options.iconReplacement is IconReplacement.OldDiscord -> context.resources.getRawBytes(R.drawable.ic_discord_old_monochrome)
+                val monochromeBytes = when (val icon = options.iconReplacement) {
+                    is IconReplacement.CustomImage -> {
+                        val image = BitmapFactory.decodeStream(icon.imageBytes.inputStream())
+                            ?: error("Custom icon could not be decoded")
+
+                        MonochromeMask.create(image)
+                            .also { image.recycle() }
+                    }
+
+                    is IconReplacement.OldDiscord -> context.resources.getRawBytes(R.drawable.ic_discord_old_monochrome)
+
                     else -> context.resources.getRawBytes(R.drawable.ic_discord_monochrome)
                 }
 
