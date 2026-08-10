@@ -67,10 +67,14 @@ object ManifestPatcher {
                             addHorizonOsPerm = false
 
                             // Add permissions for Aliucord to work properly for Meta Quest VR headsets
+                            // The VR headsets need the first three, the rest is for API 34, older devices ignore them
                             for (permission in arrayOf(
                                 "horizonos.permission.HEADSET_CAMERA",
                                 "com.oculus.permission.PLAY_AUDIO_BACKGROUND",
-                                "com.oculus.permission.RECORD_AUDIO_BACKGROUND"
+                                "com.oculus.permission.RECORD_AUDIO_BACKGROUND",
+                                "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+                                "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+                                "android.permission.FOREGROUND_SERVICE_CAMERA",
                             )) {
                                 super.child(null, "uses-permission")
                                     .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, permission)
