@@ -158,6 +158,8 @@
   <string name="patch_step_restore_cache">Restoring from cache</string>
   <string name="patch_step_dl_kt_apk">Downloading Discord APK</string>
   <string name="patch_step_dl_kotlin">Downloading Kotlin library</string>
+  <string name="patch_step_dl_aliuvoice">Downloading Aliuvoice library</string>
+  <string name="patch_step_dl_libdiscord">Downloading voice engine library</string>
   <string name="patch_step_dl_injector">Downloading Aliucord Injector</string>
   <string name="patch_step_dl_aliuhook">Downloading Aliuhook library</string>
   <string name="patch_step_dl_smali">Downloading smali patches</string>
@@ -166,6 +168,7 @@
   <string name="patch_step_patch_certs">Adding modern root certificates</string>
   <string name="patch_step_patch_icon">Patching app icon</string>
   <string name="patch_step_add_aliuhook">Adding Aliuhook library</string>
+  <string name="patch_step_replace_libdiscord">Replacing voice engine</string>
   <string name="patch_step_patch_smali">Applying smali patches</string>
   <string name="patch_step_reorganize_dex">Adding .dex files to APK</string>
   <string name="patch_step_save_metadata">Store metadata</string>
