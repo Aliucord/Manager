@@ -33,15 +33,6 @@ class AliucordMavenService(private val http: HttpService) {
     suspend fun getAliuhookVersion(force: Boolean = false): ApiResponse<SemVer> =
         getMavenMeta("Aliuhook", force)
 
-    suspend fun getAliuvoiceVersion(force: Boolean = false): ApiResponse<SemVer> =
-        getMavenMeta("Aliuvoice", force)
-
     fun getAliuhookUrl(version: SemVer): String =
         "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"
-
-    fun getAliuvoiceUrl(version: SemVer): String =
-        "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuvoice/$version/Aliuvoice-$version.aar"
-
-    fun getLibraryApkUrl(version: Int, abi: String): String =
-        "${BuildConfig.MAVEN_URL}/com/discord/discord/$version/config-$abi.apk"
 }
