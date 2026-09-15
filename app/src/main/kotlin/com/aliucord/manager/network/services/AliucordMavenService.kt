@@ -8,7 +8,7 @@ import io.ktor.client.request.url
 import io.ktor.http.*
 
 class AliucordMavenService(private val http: HttpService) {
-    suspend fun getMavenMeta(artifactName: String, force: Boolean): ApiResponse<SemVer> {
+    suspend fun getLatestArtifactVersion(artifactName: String, force: Boolean): ApiResponse<SemVer> {
         val metadataResponse = http.request<String> {
             url("${BuildConfig.MAVEN_URL}/com/aliucord/$artifactName/maven-metadata.xml")
 
@@ -31,7 +31,7 @@ class AliucordMavenService(private val http: HttpService) {
     }
 
     suspend fun getAliuhookVersion(force: Boolean = false): ApiResponse<SemVer> =
-        getMavenMeta("Aliuhook", force)
+        getLatestArtifactVersion("Aliuhook", force)
 
     fun getAliuhookUrl(version: SemVer): String =
         "${BuildConfig.MAVEN_URL}/com/aliucord/Aliuhook/$version/Aliuhook-$version.aar"

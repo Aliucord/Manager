@@ -17,7 +17,7 @@ import org.koin.core.component.KoinComponent
  */
 class PatchVoiceEngineStep : Step(), KoinComponent {
     override val group = StepGroup.Patch
-    override val localizedName = R.string.patch_step_replace_libdiscord
+    override val localizedName = R.string.patch_step_replace_voice_engine
 
     override suspend fun execute(container: StepRunner) {
         val currentDeviceArch = Build.SUPPORTED_ABIS.first()

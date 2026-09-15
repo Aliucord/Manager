@@ -20,7 +20,7 @@ import org.koin.core.component.inject
 class DownloadVoiceEngineStep : DownloadStep<Int>(), KoinComponent {
     private val paths: PathManager by inject()
 
-    override val localizedName = R.string.patch_step_dl_libdiscord
+    override val localizedName = R.string.patch_step_dl_voice_engine
 
     override fun getVersion(container: StepRunner) =
         container.getStep<FetchInfoStep>().data.voiceEngineVersionCode
