@@ -62,7 +62,7 @@
   <string name="setting_dynamic_color">ダイナミックカラー</string>
   <string name="setting_dynamic_color_desc">Android 12+で「Material You」テーマを有効にします</string>
   <string name="setting_developer_options">開発者向けオプション</string>
-  <string name="setting_developer_options_desc">これが何をするか理解していない限り、絶対に有効にしないでください！（本当にです！）</string>
+  <string name="setting_developer_options_desc">これが何をするか理解していない限り、絶対に有効にしないでください！（本当に！絶対に！！！）</string>
   <string name="setting_installer">インストール方式</string>
   <string name="setting_installer_desc">パッケージインストーラーは、様々な手法でのインストールがサポートされています。</string>
   <string name="setting_keep_patched_apks">パッチを適用したAPKを維持</string>
@@ -70,7 +70,7 @@
   <string name="settings_clear_cache">キャッシュを消去</string>
   <string name="settings_export_apk">APKをエクスポート</string>
   <string name="installer_pm">Direct</string>
-  <string name="installer_pm_desc">アプリのコンテキストから直接パッケージインストーラーAPIを呼び出します。(デフォルトはこれ)</string>
+  <string name="installer_pm_desc">アプリのコンテキストから直接パッケージインストーラーAPIを呼び出します。(デフォルトはこっち)</string>
   <string name="installer_root">Root</string>
   <string name="installer_intent">Intent</string>
   <string name="installer_intent_desc">システムに設定されたデフォルトのインストーラーを通じてインストールを処理するためのIntentを起動します。</string>
@@ -245,16 +245,16 @@ ADB、ワイヤレスADB、およびRootバックエンドがすべてサポー�
   <string name="play_protect_warning_ok">続行</string>
   <string name="play_protect_warning_open_gpp">Playプロテクトを開く</string>
   <string name="play_protect_warning_disable">再度表示しない</string>
-  <string name="fun_fact_prefix">面白い事実：%s</string>
+  <string name="fun_fact_prefix">面白い豆知識：%s</string>
   <string name="fun_fact_1">知ってた？Google Play Protectは役に立たないって。</string>
   <string name="fun_fact_2">150+のプラグインが入ったAliucordが、なぜかDiscordの新しいアプリよりも動作が良いって知ってた？</string>
   <string name="fun_fact_3">Aliucordには200以上のプラグインが利用可能だって知ってた？</string>
   <string name="fun_fact_4">お前の壁の中にいるぜ〜ｗｗ</string>
   <string name="fun_fact_5">AliucordRNがEnmityとVendettaを生み出したってこと知ってる？</string>
-  <string name="fun_fact_6">困ったときはDiscordの #support チャンネルへどうぞ！</string>
+  <string name="fun_fact_6">困ったときはDiscordの #support チャンネルへどうぞ！：D</string>
   <string name="fun_fact_7">IWillCrashYourDiscordプラグインは君のDiscordをクラッシュさせるよ；）</string>
   <string name="fun_fact_9">AliucordはWearOSで実行できるよ～</string>
-  <string name="fun_fact_10">Aliucordは「本物」の昔のUIを使ってるよ、2022年中頃のやつ！</string>
+  <string name="fun_fact_10">Aliucordは「本物」の昔のUIを使ってるよ。そう！2022年中頃のやつだね！</string>
   <string name="fun_fact_11">AliucordをiOSで実行する試みがありました…:(</string>
   <string name="time_elapsed_seconds">%.2f秒</string>
 </resources>
