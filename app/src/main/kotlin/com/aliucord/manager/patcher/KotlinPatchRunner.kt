@@ -24,6 +24,7 @@ class KotlinPatchRunner(
         DownloadInjectorStep(options.customInjector),
         DownloadAliuhookStep(),
         DownloadKotlinStep(),
+        DownloadVoiceEngineStep(),
         DownloadPatchesStep(options.customPatches),
         CopyDependenciesStep(),
 
@@ -34,6 +35,7 @@ class KotlinPatchRunner(
         PatchCertsStep(),
         ReorganizeDexStep(),
         AddAliuhookLibsStep(),
+        PatchVoiceEngineStep(),
         SaveMetadataStep(options),
 
         // Install

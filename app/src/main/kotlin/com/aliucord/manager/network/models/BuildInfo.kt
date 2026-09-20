@@ -20,7 +20,10 @@ data class BuildInfo(
     @SerialName("versionCode")
     val discordVersionCode: Int,
     // @SerialName("versionName")
-    // val discordVersionName: Int,
+    // val discordVersionName: String,
+    @Serializable(with = IntAsStringSerializer::class)
+    @SerialName("voiceEngineVersionCode")
+    val voiceEngineVersionCode: Int = 333012, // TODO: remove default, include in data.json instead
     // @SerialName("coreVersion")
     // val coreVersion: SemVer,
     @SerialName("injectorVersion")
