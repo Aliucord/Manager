@@ -20,7 +20,10 @@ object ManifestPatcher {
     private const val PACKAGE = "package"
     private const val COMPILE_SDK_VERSION = "compileSdkVersion"
     private const val COMPILE_SDK_VERSION_CODENAME = "compileSdkVersionCodename"
-    private const val MICROG_PACKAGE = "org.microg.gms"
+    private const val C2DM_REGISTER = "com.google.android.c2dm.intent.REGISTER"
+    private const val C2DM_RECEIVE = "com.google.android.c2dm.intent.RECEIVE"
+    private const val REVANCED_PUSH_RECEIVER = "com.aliucord.injector.ReVancedPushReceiver"
+    private const val REVANCED_SEND_PERMISSION = "app.revanced.android.c2dm.permission.SEND"
 
     fun patchManifest(
         manifestBytes: ByteArray,
@@ -116,15 +119,16 @@ object ManifestPatcher {
                                 }
                             }
 
-                            // Expose microG Limited Services to Injector
+                            // Expose every microG build to Injector, including ones installed after Aliucord
                             "queries" -> object : NodeVisitor(nv) {
-                                private var addMicroGPackage = true
+                                private var addC2dmIntent = true
 
                                 override fun child(ns: String?, name: String): NodeVisitor {
-                                    if (addMicroGPackage) {
-                                        addMicroGPackage = false
-                                        super.child(null, "package")
-                                            .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, MICROG_PACKAGE)
+                                    if (addC2dmIntent) {
+                                        addC2dmIntent = false
+                                        super.child(null, "intent")
+                                            .child(null, "action")
+                                            .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, C2DM_REGISTER)
                                     }
 
                                     return super.child(ns, name)
@@ -147,6 +151,7 @@ object ManifestPatcher {
                                 private var addUseEmbeddedDex = true
                                 private var addExtractNativeLibs = true
                                 private var addMetadata = true
+                                private var addReVancedReceiver = true
 
                                 override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                     if (name == REQUEST_LEGACY_EXTERNAL_STORAGE) addLegacyStorage = false
@@ -165,6 +170,19 @@ object ManifestPatcher {
                                         super.child(ANDROID_NAMESPACE, "meta-data").apply {
                                             attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, "isAliucord")
                                             attr(ANDROID_NAMESPACE, "value", android.R.attr.value, TYPE_INT_BOOLEAN, 1)
+                                        }
+                                    }
+
+                                    // ReVanced GmsCore receiver can't use the SEND intent because it's whitelisted by Play Services
+                                    if (addReVancedReceiver) {
+                                        addReVancedReceiver = false
+                                        super.child(null, "receiver").apply {
+                                            attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, REVANCED_PUSH_RECEIVER)
+                                            attr(ANDROID_NAMESPACE, "exported", android.R.attr.exported, TYPE_INT_BOOLEAN, 1)
+                                            attr(ANDROID_NAMESPACE, "permission", android.R.attr.permission, TYPE_STRING, REVANCED_SEND_PERMISSION)
+                                            child(null, "intent-filter")
+                                                .child(null, "action")
+                                                .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, C2DM_RECEIVE)
                                         }
                                     }
 
