@@ -20,6 +20,7 @@ object ManifestPatcher {
     private const val PACKAGE = "package"
     private const val COMPILE_SDK_VERSION = "compileSdkVersion"
     private const val COMPILE_SDK_VERSION_CODENAME = "compileSdkVersionCodename"
+    private const val MICROG_PACKAGE = "org.microg.gms"
 
     fun patchManifest(
         manifestBytes: ByteArray,
@@ -112,6 +113,21 @@ object ManifestPatcher {
                                             else -> value
                                         }
                                     )
+                                }
+                            }
+
+                            // Expose microG Limited Services to Injector
+                            "queries" -> object : NodeVisitor(nv) {
+                                private var addMicroGPackage = true
+
+                                override fun child(ns: String?, name: String): NodeVisitor {
+                                    if (addMicroGPackage) {
+                                        addMicroGPackage = false
+                                        super.child(null, "package")
+                                            .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, MICROG_PACKAGE)
+                                    }
+
+                                    return super.child(ns, name)
                                 }
                             }
 
