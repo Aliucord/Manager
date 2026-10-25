@@ -18,6 +18,10 @@ object ManifestPatcher {
     private const val REQUEST_LEGACY_EXTERNAL_STORAGE = "requestLegacyExternalStorage"
     private const val LABEL = "label"
     private const val PACKAGE = "package"
+    private const val FOREGROUND_SERVICE_TYPE = "foregroundServiceType"
+
+    // FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION | FOREGROUND_SERVICE_TYPE_CAMERA | FOREGROUND_SERVICE_TYPE_MICROPHONE
+    private const val FOREGROUND_SERVICE_TYPES = 0xE0
     private const val COMPILE_SDK_VERSION = "compileSdkVersion"
     private const val COMPILE_SDK_VERSION_CODENAME = "compileSdkVersionCodename"
 
@@ -64,11 +68,15 @@ object ManifestPatcher {
                         if (addHorizonOsPerm) {
                             addHorizonOsPerm = false
 
-                            // Add permissions for Aliucord to work properly for Meta Quest VR headsets
                             for (permission in arrayOf(
+                                // Add permissions for Aliucord to work properly for Meta Quest VR headsets
                                 "horizonos.permission.HEADSET_CAMERA",
                                 "com.oculus.permission.PLAY_AUDIO_BACKGROUND",
-                                "com.oculus.permission.RECORD_AUDIO_BACKGROUND"
+                                "com.oculus.permission.RECORD_AUDIO_BACKGROUND",
+                                // API 34 voice/sunflower permissions
+                                "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+                                "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+                                "android.permission.FOREGROUND_SERVICE_CAMERA",
                             )) {
                                 super.child(null, "uses-permission")
                                     .attr(ANDROID_NAMESPACE, "name", android.R.attr.name, TYPE_STRING, permission)
@@ -154,6 +162,32 @@ object ManifestPatcher {
 
                                     return when (name) {
                                         "activity" -> ReplaceAttrsVisitor(visitor, mapOf("label" to appName))
+
+                                        // Add all foreground service type flags to all services
+                                        "service" -> object : NodeVisitor(visitor) {
+                                            private var addForegroundServiceType = true
+
+                                            override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
+                                                if (name == FOREGROUND_SERVICE_TYPE) {
+                                                    addForegroundServiceType = false
+                                                    super.attr(ns, name, resourceId, type, (value as Int) or FOREGROUND_SERVICE_TYPES)
+                                                } else {
+                                                    super.attr(ns, name, resourceId, type, value)
+                                                }
+                                            }
+
+                                            override fun end() {
+                                                if (addForegroundServiceType && Build.VERSION.SDK_INT >= 29) super.attr(
+                                                    ANDROID_NAMESPACE,
+                                                    FOREGROUND_SERVICE_TYPE,
+                                                    android.R.attr.foregroundServiceType,
+                                                    TYPE_FIRST_INT,
+                                                    FOREGROUND_SERVICE_TYPES
+                                                )
+                                                super.end()
+                                            }
+                                        }
+
                                         "provider" -> object : NodeVisitor(visitor) {
                                             override fun attr(ns: String?, name: String, resourceId: Int, type: Int, value: Any?) {
                                                 super.attr(
